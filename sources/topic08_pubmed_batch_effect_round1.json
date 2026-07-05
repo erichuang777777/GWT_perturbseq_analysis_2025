@@ -1,0 +1,116 @@
+﻿{
+    "best_practices":  {
+                           "query":  "Luecken Theis Current best practices single-cell RNA-seq analysis tutorial 2019",
+                           "ids":  [
+                                       "31217225"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "31217225",
+                                              "title":  "Current best practices in single-cell RNA-seq analysis: a tutorial.",
+                                              "journal":  "Molecular systems biology",
+                                              "pubdate":  "2019 Jun 19",
+                                              "doi":  "10.15252/msb.20188746"
+                                          }
+                                      ]
+                       },
+    "integration_benchmark":  {
+                                  "query":  "Benchmarking atlas-level data integration in single-cell genomics Luecken 2022",
+                                  "ids":  [
+                                              "34949812"
+                                          ],
+                                  "papers":  [
+                                                 {
+                                                     "pmid":  "34949812",
+                                                     "title":  "Benchmarking atlas-level data integration in single-cell genomics.",
+                                                     "journal":  "Nature methods",
+                                                     "pubdate":  "2022 Jan",
+                                                     "doi":  "10.1038/s41592-021-01336-8"
+                                                 }
+                                             ]
+                              },
+    "batch_benchmark":  {
+                            "query":  "A benchmark of batch-effect correction methods for single-cell RNA sequencing data Tran 2020 Genome Biology",
+                            "ids":  [
+                                        "31948481"
+                                    ],
+                            "papers":  [
+                                           {
+                                               "pmid":  "31948481",
+                                               "title":  "A benchmark of batch-effect correction methods for single-cell RNA sequencing data.",
+                                               "journal":  "Genome biology",
+                                               "pubdate":  "2020 Jan 16",
+                                               "doi":  "10.1186/s13059-019-1850-9"
+                                           }
+                                       ]
+                        },
+    "scvi":  {
+                 "query":  "single-cell variational inference Lopez Regier Jordan Yosef 2018",
+                 "ids":  [
+                             "30504886"
+                         ],
+                 "papers":  [
+                                {
+                                    "pmid":  "30504886",
+                                    "title":  "Deep generative modeling for single-cell transcriptomics.",
+                                    "journal":  "Nature methods",
+                                    "pubdate":  "2018 Dec",
+                                    "doi":  "10.1038/s41592-018-0229-2"
+                                }
+                            ]
+             },
+    "harmony":  {
+                    "query":  "Harmony fast sensitive accurate integration single-cell data Korsunsky 2019",
+                    "ids":  [
+                                "31740819"
+                            ],
+                    "papers":  [
+                                   {
+                                       "pmid":  "31740819",
+                                       "title":  "Fast, sensitive and accurate integration of single-cell data with Harmony.",
+                                       "journal":  "Nature methods",
+                                       "pubdate":  "2019 Dec",
+                                       "doi":  "10.1038/s41592-019-0619-0"
+                                   }
+                               ]
+                },
+    "pseudoreplication":  {
+                              "query":  "practical solution to pseudoreplication bias in single-cell studies Zimmerman 2021",
+                              "ids":  [
+                                          "33531494"
+                                      ],
+                              "papers":  [
+                                             {
+                                                 "pmid":  "33531494",
+                                                 "title":  "A practical solution to pseudoreplication bias in single-cell studies.",
+                                                 "journal":  "Nature communications",
+                                                 "pubdate":  "2021 Feb 2",
+                                                 "doi":  "10.1038/s41467-021-21038-1"
+                                             }
+                                         ]
+                          },
+    "mixed_model_de":  {
+                           "query":  "dreamlet single-cell multi-sample differential expression variance partition",
+                           "ids":  [
+
+                                   ],
+                           "papers":  [
+
+                                      ]
+                       },
+    "single_cell_de_shortcomings":  {
+                                        "query":  "Exploring and mitigating shortcomings in single-cell differential expression analysis 2025",
+                                        "ids":  [
+                                                    "40098192"
+                                                ],
+                                        "papers":  [
+                                                       {
+                                                           "pmid":  "40098192",
+                                                           "title":  "Exploring and mitigating shortcomings in single-cell differential expression analysis with a new statistical paradigm.",
+                                                           "journal":  "Genome biology",
+                                                           "pubdate":  "2025 Mar 17",
+                                                           "doi":  "10.1186/s13059-025-03525-6"
+                                                       }
+                                                   ]
+                                    }
+}

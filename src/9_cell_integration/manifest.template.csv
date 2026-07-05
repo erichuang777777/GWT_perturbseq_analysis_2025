@@ -1,0 +1,3 @@
+dataset_id,path,format,source_name,species,tissue,cell_type,condition,donor_id,disease,platform,perturbation_context,obs_query,max_cells,apply_qc
+gwt_sample_01,data/example_gwt_sample.h5ad,h5ad,GWT,human,blood,CD4 T cell,Stim8hr,donor_1,healthy,10x,CRISPRi,,50000,true
+external_cd4_01,data/example_external_cd4.h5ad,h5ad,external_atlas,human,blood,CD4 T cell,unknown,unknown,autoimmune,10x,observational,"cell_type == 'CD4 T cell'",50000,true

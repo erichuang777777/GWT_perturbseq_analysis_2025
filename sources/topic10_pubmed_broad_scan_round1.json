@@ -1,0 +1,90 @@
+﻿{
+    "virtual_cell_benchmark":  {
+                                   "query":  "single-cell perturbation prediction benchmark foundation models Nature Methods 2025",
+                                   "ids":  [
+                                               "40999099",
+                                               "41381899",
+                                               "40759747"
+                                           ],
+                                   "papers":  [
+                                                  {
+                                                      "pmid":  "40999099",
+                                                      "title":  "EpiAgent: foundation model for single-cell epigenomics.",
+                                                      "journal":  "Nature methods",
+                                                      "pubdate":  "2025 Nov",
+                                                      "doi":  "10.1038/s41592-025-02822-z"
+                                                  },
+                                                  {
+                                                      "pmid":  "41381899",
+                                                      "title":  "Benchmarking algorithms for generalizable single-cell perturbation response prediction.",
+                                                      "journal":  "Nature methods",
+                                                      "pubdate":  "2026 Feb",
+                                                      "doi":  "10.1038/s41592-025-02980-0"
+                                                  },
+                                                  {
+                                                      "pmid":  "40759747",
+                                                      "title":  "Deep-learning-based gene perturbation effect prediction does not yet outperform simple linear baselines.",
+                                                      "journal":  "Nature methods",
+                                                      "pubdate":  "2025 Aug",
+                                                      "doi":  "10.1038/s41592-025-02772-6"
+                                                  }
+                                              ]
+                               },
+    "tcpggdb":  {
+                    "query":  "TCPGdb T-cell perturbation genomics database Cancer Immunology Research 2026",
+                    "ids":  [
+                                "41270225"
+                            ],
+                    "papers":  [
+                                   {
+                                       "pmid":  "41270225",
+                                       "title":  "TCPGdb: A Comprehensive T-cell Perturbation Genomics Database for the Identification of Critical T-cell Regulators.",
+                                       "journal":  "Cancer immunology research",
+                                       "pubdate":  "2026 Feb 3",
+                                       "doi":  "10.1158/2326-6066.CIR-25-0168"
+                                   }
+                               ]
+                },
+    "virtual_cell_challenge":  {
+                                   "query":  "Virtual Cell Challenge Turing test virtual cell Cell 2025",
+                                   "ids":  [
+                                               "40578317"
+                                           ],
+                                   "papers":  [
+                                                  {
+                                                      "pmid":  "40578317",
+                                                      "title":  "Virtual Cell Challenge: Toward a Turing test for the virtual cell.",
+                                                      "journal":  "Cell",
+                                                      "pubdate":  "2025 Jun 26",
+                                                      "doi":  "10.1016/j.cell.2025.06.008"
+                                                  }
+                                              ]
+                               },
+    "cellfie":  {
+                    "query":  "CELLFIE CRISPR boosted CAR T cell immunotherapies Nature 2025",
+                    "ids":  [
+
+                            ],
+                    "papers":  [
+
+                               ]
+                },
+    "state_model":  {
+                        "query":  "STATE virtual cell model Arc Institute 2025 perturbation drug response",
+                        "ids":  [
+
+                                ],
+                        "papers":  [
+
+                                   ]
+                    },
+    "target_discovery":  {
+                             "query":  "single-cell CRISPR perturbation screens drug target discovery primary human cells 2025",
+                             "ids":  [
+
+                                     ],
+                             "papers":  [
+
+                                        ]
+                         }
+}

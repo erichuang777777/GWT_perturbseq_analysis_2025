@@ -1,0 +1,7 @@
+culture_condition,offtarget_flag,n
+Rest,False,10344
+Rest,True,943
+Stim48hr,False,10379
+Stim48hr,True,902
+Stim8hr,False,10423
+Stim8hr,True,992

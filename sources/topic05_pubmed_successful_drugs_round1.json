@@ -1,0 +1,826 @@
+﻿{
+    "abatacept_belatacept_costimulation":  {
+                                               "query":  "(abatacept OR belatacept) AND (T cell costimulation OR CD28 OR CTLA4-Ig)",
+                                               "ids":  [
+                                                           "27192564",
+                                                           "8596936",
+                                                           "21878974",
+                                                           "11910893",
+                                                           "36252821",
+                                                           "11060799",
+                                                           "9784967",
+                                                           "9203422",
+                                                           "23044530",
+                                                           "36119115",
+                                                           "9010720",
+                                                           "30676815"
+                                                       ],
+                                               "papers":  [
+                                                              {
+                                                                  "pmid":  "27192564",
+                                                                  "title":  "CD28 Costimulation: From Mechanism to Therapy.",
+                                                                  "journal":  "Immunity",
+                                                                  "pubdate":  "2016 May 17",
+                                                                  "doi":  "10.1016/j.immuni.2016.04.020"
+                                                              },
+                                                              {
+                                                                  "pmid":  "8596936",
+                                                                  "title":  "Enhancement of antitumor immunity by CTLA-4 blockade.",
+                                                                  "journal":  "Science (New York, N.Y.)",
+                                                                  "pubdate":  "1996 Mar 22",
+                                                                  "doi":  "10.1126/science.271.5256.1734"
+                                                              },
+                                                              {
+                                                                  "pmid":  "21878974",
+                                                                  "title":  "Belatacept.",
+                                                                  "journal":  "Nature reviews. Drug discovery",
+                                                                  "pubdate":  "2011 Aug 31",
+                                                                  "doi":  "10.1038/nrd3536"
+                                                              },
+                                                              {
+                                                                  "pmid":  "11910893",
+                                                                  "title":  "The B7-CD28 superfamily.",
+                                                                  "journal":  "Nature reviews. Immunology",
+                                                                  "pubdate":  "2002 Feb",
+                                                                  "doi":  "10.1038/nri727"
+                                                              },
+                                                              {
+                                                                  "pmid":  "36252821",
+                                                                  "title":  "New immunosuppressive agents in transplantation.",
+                                                                  "journal":  "Presse medicale (Paris, France : 1983)",
+                                                                  "pubdate":  "2022 Dec",
+                                                                  "doi":  "10.1016/j.lpm.2022.104142"
+                                                              },
+                                                              {
+                                                                  "pmid":  "11060799",
+                                                                  "title":  "CTLA4-Ig: a novel immunosuppressive agent.",
+                                                                  "journal":  "Expert opinion on investigational drugs",
+                                                                  "pubdate":  "2000 Sep",
+                                                                  "doi":  "10.1517/13543784.9.9.2147"
+                                                              },
+                                                              {
+                                                                  "pmid":  "9784967",
+                                                                  "title":  "CD28/B7 costimulation: a review.",
+                                                                  "journal":  "Critical reviews in immunology",
+                                                                  "pubdate":  "1998",
+                                                                  "doi":  "10.1615/critrevimmunol.v18.i5.10"
+                                                              },
+                                                              {
+                                                                  "pmid":  "9203422",
+                                                                  "title":  "Co-stimulation in T cell responses.",
+                                                                  "journal":  "Current opinion in immunology",
+                                                                  "pubdate":  "1997 Jun",
+                                                                  "doi":  "10.1016/s0952-7915(97)80087-8"
+                                                              },
+                                                              {
+                                                                  "pmid":  "23044530",
+                                                                  "title":  "Belatacept in kidney transplantation.",
+                                                                  "journal":  "Current opinion in organ transplantation",
+                                                                  "pubdate":  "2012 Dec",
+                                                                  "doi":  "10.1097/MOT.0b013e32835a4c0d"
+                                                              },
+                                                              {
+                                                                  "pmid":  "36119115",
+                                                                  "title":  "Costimulation blockade and Tregs in solid organ transplantation.",
+                                                                  "journal":  "Frontiers in immunology",
+                                                                  "pubdate":  "2022",
+                                                                  "doi":  "10.3389/fimmu.2022.969633"
+                                                              },
+                                                              {
+                                                                  "pmid":  "9010720",
+                                                                  "title":  "The role of CD40 ligand in costimulation and T-cell activation.",
+                                                                  "journal":  "Immunological reviews",
+                                                                  "pubdate":  "1996 Oct",
+                                                                  "doi":  "10.1111/j.1600-065x.1996.tb00921.x"
+                                                              },
+                                                              {
+                                                                  "pmid":  "30676815",
+                                                                  "title":  "Belatacept in kidney transplantation and its limitations.",
+                                                                  "journal":  "Expert review of clinical immunology",
+                                                                  "pubdate":  "2019 Apr",
+                                                                  "doi":  "10.1080/1744666X.2019.1574570"
+                                                              }
+                                                          ]
+                                           },
+    "teplizumab_anti_cd3":  {
+                                "query":  "teplizumab anti-CD3 type 1 diabetes",
+                                "ids":  [
+                                            "31180194",
+                                            "38187075",
+                                            "23835333",
+                                            "21719095",
+                                            "39137044",
+                                            "40033931",
+                                            "31523950",
+                                            "37658243",
+                                            "38519028",
+                                            "36056809",
+                                            "40684616",
+                                            "39560746"
+                                        ],
+                                "papers":  [
+                                               {
+                                                   "pmid":  "31180194",
+                                                   "title":  "An Anti-CD3 Antibody, Teplizumab, in Relatives at Risk for Type 1 Diabetes.",
+                                                   "journal":  "The New England journal of medicine",
+                                                   "pubdate":  "2019 Aug 15",
+                                                   "doi":  "10.1056/NEJMoa1902226"
+                                               },
+                                               {
+                                                   "pmid":  "38187075",
+                                                   "title":  "Teplizumab in Type 1 Diabetes Mellitus: An Updated Review.",
+                                                   "journal":  "TouchREVIEWS in endocrinology",
+                                                   "pubdate":  "2023 Nov",
+                                                   "doi":  "10.17925/EE.2023.19.2.7"
+                                               },
+                                               {
+                                                   "pmid":  "23835333",
+                                                   "title":  "Teplizumab (anti-CD3 mAb) treatment preserves C-peptide responses in patients with new-onset type 1 diabetes in a randomized controlled trial: metabolic and immunologic features at baseline identify a subgroup of responders.",
+                                                   "journal":  "Diabetes",
+                                                   "pubdate":  "2013 Nov",
+                                                   "doi":  "10.2337/db13-0345"
+                                               },
+                                               {
+                                                   "pmid":  "21719095",
+                                                   "title":  "Teplizumab for treatment of type 1 diabetes (Protégé study): 1-year results from a randomised, placebo-controlled trial.",
+                                                   "journal":  "Lancet (London, England)",
+                                                   "pubdate":  "2011 Aug 6",
+                                                   "doi":  "10.1016/S0140-6736(11)60931-8"
+                                               },
+                                               {
+                                                   "pmid":  "39137044",
+                                                   "title":  "Teplizumab induces persistent changes in the antigen-specific repertoire in individuals at risk for type 1 diabetes.",
+                                                   "journal":  "The Journal of clinical investigation",
+                                                   "pubdate":  "2024 Aug 13",
+                                                   "doi":  "10.1172/JCI177492"
+                                               },
+                                               {
+                                                   "pmid":  "40033931",
+                                                   "title":  "Immunotherapies for prevention and treatment of type 1 diabetes.",
+                                                   "journal":  "Immunotherapy",
+                                                   "pubdate":  "2025 Feb",
+                                                   "doi":  "10.1080/1750743X.2025.2473311"
+                                               },
+                                               {
+                                                   "pmid":  "31523950",
+                                                   "title":  "Anti-CD3 Antibody for the Prevention of Type 1 Diabetes: A Story of Perseverance.",
+                                                   "journal":  "Biochemistry",
+                                                   "pubdate":  "2019 Oct 8",
+                                                   "doi":  "10.1021/acs.biochem.9b00707"
+                                               },
+                                               {
+                                                   "pmid":  "37658243",
+                                                   "title":  "Anti-CD3 monoclonal antibodies in treatment of type 1 diabetes: a systematic review and meta-analysis.",
+                                                   "journal":  "Endocrine",
+                                                   "pubdate":  "2024 Feb",
+                                                   "doi":  "10.1007/s12020-023-03499-0"
+                                               },
+                                               {
+                                                   "pmid":  "38519028",
+                                                   "title":  "Role of Teplizumab, a Humanized Anti-CD3 Monoclonal Antibody, in Managing Newly Diagnosed Type 1 Diabetes: An Updated Systematic Review and Meta-Analysis.",
+                                                   "journal":  "Endocrine practice : official journal of the American College of Endocrinology and the American Association of Clinical Endocrinologists",
+                                                   "pubdate":  "2024 May",
+                                                   "doi":  "10.1016/j.eprac.2024.03.006"
+                                               },
+                                               {
+                                                   "pmid":  "36056809",
+                                                   "title":  "Anti-CD3 monoclonal antibodies for the prevention and treatment of type 1 diabetes: A literature review.",
+                                                   "journal":  "American journal of health-system pharmacy : AJHP : official journal of the American Society of Health-System Pharmacists",
+                                                   "pubdate":  "2022 Nov 22",
+                                                   "doi":  "10.1093/ajhp/zxac244"
+                                               },
+                                               {
+                                                   "pmid":  "40684616",
+                                                   "title":  "What type 1 diabetes endotype is most suitable for anti-CD3 antibodies prevention trials?",
+                                                   "journal":  "Journal of diabetes and its complications",
+                                                   "pubdate":  "2025 Oct",
+                                                   "doi":  "10.1016/j.jdiacomp.2025.109132"
+                                               },
+                                               {
+                                                   "pmid":  "39560746",
+                                                   "title":  "Trajectory of beta cell function and insulin clearance in stage 2 type 1 diabetes: natural history and response to teplizumab.",
+                                                   "journal":  "Diabetologia",
+                                                   "pubdate":  "2025 Mar",
+                                                   "doi":  "10.1007/s00125-024-06323-0"
+                                               }
+                                           ]
+                            },
+    "il17_il23_axis":  {
+                           "query":  "(secukinumab OR ixekizumab OR brodalumab OR bimekizumab OR guselkumab OR risankizumab OR ustekinumab) AND (IL-17 OR IL-23) AND (psoriasis OR inflammatory bowel disease)",
+                           "ids":  [
+                                       "37069321",
+                                       "32719044",
+                                       "31583255",
+                                       "38796266",
+                                       "36847624",
+                                       "34688373",
+                                       "30478416",
+                                       "34460338",
+                                       "30181299",
+                                       "28887948",
+                                       "38266061",
+                                       "30097359"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "37069321",
+                                              "title":  "IL-12 and IL-23 pathway inhibition in inflammatory bowel disease.",
+                                              "journal":  "Nature reviews. Gastroenterology \u0026 hepatology",
+                                              "pubdate":  "2023 Jul",
+                                              "doi":  "10.1038/s41575-023-00768-1"
+                                          },
+                                          {
+                                              "pmid":  "32719044",
+                                              "title":  "Paradoxical gastrointestinal effects of interleukin-17 blockers.",
+                                              "journal":  "Annals of the rheumatic diseases",
+                                              "pubdate":  "2020 Sep",
+                                              "doi":  "10.1136/annrheumdis-2020-217927"
+                                          },
+                                          {
+                                              "pmid":  "31583255",
+                                              "title":  "Short-Term Efficacy and Safety of IL-17, IL-12/23, and IL-23 Inhibitors Brodalumab, Secukinumab, Ixekizumab, Ustekinumab, Guselkumab, Tildrakizumab, and Risankizumab for the Treatment of Moderate to Severe Plaque Psoriasis: A Systematic Review and Network Meta-Analysis of Randomized Controlled Trials.",
+                                              "journal":  "Journal of immunology research",
+                                              "pubdate":  "2019",
+                                              "doi":  "10.1155/2019/2546161"
+                                          },
+                                          {
+                                              "pmid":  "38796266",
+                                              "title":  "Biologics for Psoriasis.",
+                                              "journal":  "Dermatologic clinics",
+                                              "pubdate":  "2024 Jul",
+                                              "doi":  "10.1016/j.det.2024.02.001"
+                                          },
+                                          {
+                                              "pmid":  "36847624",
+                                              "title":  "Secukinumab, ixekizumab, bimekizumab and brodalumab for psoriasis and psoriatic arthritis.",
+                                              "journal":  "Drugs of today (Barcelona, Spain : 1998)",
+                                              "pubdate":  "2023 Mar",
+                                              "doi":  "10.1358/dot.2023.59.3.3419557"
+                                          },
+                                          {
+                                              "pmid":  "34688373",
+                                              "title":  "Comparative efficacy and safety of biologic therapies for moderate-to-severe Crohn\u0027s disease: a systematic review and network meta-analysis.",
+                                              "journal":  "The lancet. Gastroenterology \u0026 hepatology",
+                                              "pubdate":  "2021 Dec",
+                                              "doi":  "10.1016/S2468-1253(21)00312-5"
+                                          },
+                                          {
+                                              "pmid":  "30478416",
+                                              "title":  "IL-12, IL-23 and IL-17 in IBD: immunobiology and therapeutic targeting.",
+                                              "journal":  "Nature reviews. Gastroenterology \u0026 hepatology",
+                                              "pubdate":  "2019 Mar",
+                                              "doi":  "10.1038/s41575-018-0084-8"
+                                          },
+                                          {
+                                              "pmid":  "34460338",
+                                              "title":  "A non-clinical comparative study of IL-23 antibodies in psoriasis.",
+                                              "journal":  "mAbs",
+                                              "pubdate":  "2021 Jan-Dec",
+                                              "doi":  "10.1080/19420862.2021.1964420"
+                                          },
+                                          {
+                                              "pmid":  "30181299",
+                                              "title":  "Discovery of the IL-23/IL-17 Signaling Pathway and the Treatment of Psoriasis.",
+                                              "journal":  "Journal of immunology (Baltimore, Md. : 1950)",
+                                              "pubdate":  "2018 Sep 15",
+                                              "doi":  "10.4049/jimmunol.1800013"
+                                          },
+                                          {
+                                              "pmid":  "28887948",
+                                              "title":  "Psoriasis pathogenesis and the development of novel targeted immune therapies.",
+                                              "journal":  "The Journal of allergy and clinical immunology",
+                                              "pubdate":  "2017 Sep",
+                                              "doi":  "10.1016/j.jaci.2017.07.004"
+                                          },
+                                          {
+                                              "pmid":  "38266061",
+                                              "title":  "Risankizumab: Mechanism of action, clinical and translational science.",
+                                              "journal":  "Clinical and translational science",
+                                              "pubdate":  "2024 Jan",
+                                              "doi":  "10.1111/cts.13706"
+                                          },
+                                          {
+                                              "pmid":  "30097359",
+                                              "title":  "Efficacy and safety of risankizumab in moderate-to-severe plaque psoriasis (UltIMMa-1 and UltIMMa-2): results from two double-blind, randomised, placebo-controlled and ustekinumab-controlled phase 3 trials.",
+                                              "journal":  "Lancet (London, England)",
+                                              "pubdate":  "2018 Aug 25",
+                                              "doi":  "10.1016/S0140-6736(18)31713-6"
+                                          }
+                                      ]
+                       },
+    "jak_inhibitors":  {
+                           "query":  "(tofacitinib OR upadacitinib OR baricitinib OR ritlecitinib) AND (JAK inhibitor) AND (rheumatoid arthritis OR ulcerative colitis OR atopic dermatitis OR alopecia)",
+                           "ids":  [
+                                       "34437922",
+                                       "37591562",
+                                       "38186219",
+                                       "36569854",
+                                       "37014106",
+                                       "37943240",
+                                       "37984057",
+                                       "39186564",
+                                       "38216757",
+                                       "40562170",
+                                       "34023008",
+                                       "40875187"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "34437922",
+                                              "title":  "JAK inhibitors in the treatment of atopic dermatitis.",
+                                              "journal":  "The Journal of allergy and clinical immunology",
+                                              "pubdate":  "2021 Oct",
+                                              "doi":  "10.1016/j.jaci.2021.08.009"
+                                          },
+                                          {
+                                              "pmid":  "37591562",
+                                              "title":  "Janus kinase inhibitors for alopecia areata.",
+                                              "journal":  "Journal of the American Academy of Dermatology",
+                                              "pubdate":  "2023 Aug",
+                                              "doi":  "10.1016/j.jaad.2023.05.049"
+                                          },
+                                          {
+                                              "pmid":  "38186219",
+                                              "title":  "Treatment of atopic dermatitis: Recently approved drugs and advanced clinical development programs.",
+                                              "journal":  "Allergy",
+                                              "pubdate":  "2024 Jun",
+                                              "doi":  "10.1111/all.16009"
+                                          },
+                                          {
+                                              "pmid":  "36569854",
+                                              "title":  "JAK-STAT signaling pathway in the pathogenesis of atopic dermatitis: An updated review.",
+                                              "journal":  "Frontiers in immunology",
+                                              "pubdate":  "2022",
+                                              "doi":  "10.3389/fimmu.2022.1068260"
+                                          },
+                                          {
+                                              "pmid":  "37014106",
+                                              "title":  "JAK inhibitors for rheumatoid arthritis.",
+                                              "journal":  "Expert opinion on investigational drugs",
+                                              "pubdate":  "2023 Apr",
+                                              "doi":  "10.1080/13543784.2023.2199919"
+                                          },
+                                          {
+                                              "pmid":  "37943240",
+                                              "title":  "Guidelines of care for the management of atopic dermatitis in adults with phototherapy and systemic therapies.",
+                                              "journal":  "Journal of the American Academy of Dermatology",
+                                              "pubdate":  "2024 Feb",
+                                              "doi":  "10.1016/j.jaad.2023.08.102"
+                                          },
+                                          {
+                                              "pmid":  "37984057",
+                                              "title":  "Upadacitinib: Mechanism of action, clinical, and translational science.",
+                                              "journal":  "Clinical and translational science",
+                                              "pubdate":  "2024 Jan",
+                                              "doi":  "10.1111/cts.13688"
+                                          },
+                                          {
+                                              "pmid":  "39186564",
+                                              "title":  "Upadacitinib for Acute Severe Ulcerative Colitis: A Systematic Review.",
+                                              "journal":  "Inflammatory bowel diseases",
+                                              "pubdate":  "2025 Apr 10",
+                                              "doi":  "10.1093/ibd/izae191"
+                                          },
+                                          {
+                                              "pmid":  "38216757",
+                                              "title":  "Efficacy and safety of JAK inhibitors in rheumatoid arthritis: update for the practising clinician.",
+                                              "journal":  "Nature reviews. Rheumatology",
+                                              "pubdate":  "2024 Feb",
+                                              "doi":  "10.1038/s41584-023-01062-9"
+                                          },
+                                          {
+                                              "pmid":  "40562170",
+                                              "title":  "New treatments in atopic dermatitis update.",
+                                              "journal":  "Annals of allergy, asthma \u0026 immunology : official publication of the American College of Allergy, Asthma, \u0026 Immunology",
+                                              "pubdate":  "2025 Nov",
+                                              "doi":  "10.1016/j.anai.2025.06.020"
+                                          },
+                                          {
+                                              "pmid":  "34023008",
+                                              "title":  "Once-daily upadacitinib versus placebo in adolescents and adults with moderate-to-severe atopic dermatitis (Measure Up 1 and Measure Up 2): results from two replicate double-blind, randomised controlled phase 3 trials.",
+                                              "journal":  "Lancet (London, England)",
+                                              "pubdate":  "2021 Jun 5",
+                                              "doi":  "10.1016/S0140-6736(21)00588-2"
+                                          },
+                                          {
+                                              "pmid":  "40875187",
+                                              "title":  "Safety Profile of Upadacitinib: Descriptive Analysis in Over 27,000 Patient-Years Across Rheumatoid Arthritis, Psoriatic Arthritis, Axial Spondyloarthritis, Atopic Dermatitis, and Inflammatory Bowel Disease.",
+                                              "journal":  "Advances in therapy",
+                                              "pubdate":  "2025 Oct",
+                                              "doi":  "10.1007/s12325-025-03328-y"
+                                          }
+                                      ]
+                       },
+    "s1p_modulators":  {
+                           "query":  "(fingolimod OR ozanimod OR etrasimod OR siponimod) AND (S1P receptor modulator) AND (multiple sclerosis OR ulcerative colitis)",
+                           "ids":  [
+                                       "39425738",
+                                       "34587385",
+                                       "34940954",
+                                       "34175020",
+                                       "38366285",
+                                       "38613425",
+                                       "38877972",
+                                       "26742785",
+                                       "38032059",
+                                       "39317165",
+                                       "32385738",
+                                       "41043449"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "39425738",
+                                              "title":  "Comparative Efficacy of Advanced Therapies for Management of Moderate-to-Severe Ulcerative Colitis: 2024 American Gastroenterological Association Evidence Synthesis.",
+                                              "journal":  "Gastroenterology",
+                                              "pubdate":  "2024 Dec",
+                                              "doi":  "10.1053/j.gastro.2024.07.046"
+                                          },
+                                          {
+                                              "pmid":  "34587385",
+                                              "title":  "Ozanimod as Induction and Maintenance Therapy for Ulcerative Colitis.",
+                                              "journal":  "The New England journal of medicine",
+                                              "pubdate":  "2021 Sep 30",
+                                              "doi":  "10.1056/NEJMoa2033617"
+                                          },
+                                          {
+                                              "pmid":  "34940954",
+                                              "title":  "Multiple Sclerosis in Children: Differential Diagnosis, Prognosis, and Disease-Modifying Treatment.",
+                                              "journal":  "CNS drugs",
+                                              "pubdate":  "2022 Jan",
+                                              "doi":  "10.1007/s40263-021-00887-w"
+                                          },
+                                          {
+                                              "pmid":  "34175020",
+                                              "title":  "Sphingosine 1-phosphate receptor modulators in multiple sclerosis and other conditions.",
+                                              "journal":  "Lancet (London, England)",
+                                              "pubdate":  "2021 Sep 25",
+                                              "doi":  "10.1016/S0140-6736(21)00244-0"
+                                          },
+                                          {
+                                              "pmid":  "38366285",
+                                              "title":  "Sphingosine 1-phosphate receptor modulators in multiple sclerosis treatment: A practical review.",
+                                              "journal":  "Annals of clinical and translational neurology",
+                                              "pubdate":  "2024 Apr",
+                                              "doi":  "10.1002/acn3.52017"
+                                          },
+                                          {
+                                              "pmid":  "38613425",
+                                              "title":  "Efficacy and Safety of Etrasimod in Patients with Moderately to Severely Active Isolated Proctitis: Results From the Phase 3 ELEVATE UC Clinical Programme.",
+                                              "journal":  "Journal of Crohn\u0027s \u0026 colitis",
+                                              "pubdate":  "2024 Aug 14",
+                                              "doi":  "10.1093/ecco-jcc/jjae038"
+                                          },
+                                          {
+                                              "pmid":  "38877972",
+                                              "title":  "Impact of Prior Biologic or Janus Kinase Inhibitor Therapy on Efficacy and Safety of Etrasimod in the ELEVATE UC 52 and ELEVATE UC 12 Trials.",
+                                              "journal":  "Journal of Crohn\u0027s \u0026 colitis",
+                                              "pubdate":  "2024 Nov 4",
+                                              "doi":  "10.1093/ecco-jcc/jjae079"
+                                          },
+                                          {
+                                              "pmid":  "26742785",
+                                              "title":  "Famous.",
+                                              "journal":  "Survey of ophthalmology",
+                                              "pubdate":  "2016 Jul-Aug",
+                                              "doi":  "10.1016/j.survophthal.2015.12.008"
+                                          },
+                                          {
+                                              "pmid":  "38032059",
+                                              "title":  "Adverse effects of immunotherapies for multiple sclerosis: a network meta-analysis.",
+                                              "journal":  "The Cochrane database of systematic reviews",
+                                              "pubdate":  "2023 Nov 30",
+                                              "doi":  "10.1002/14651858.CD012186.pub2"
+                                          },
+                                          {
+                                              "pmid":  "39317165",
+                                              "title":  "Efficacy and Safety of Etrasimod in Patients with Ulcerative Colitis in Japan: Data from the Phase 3 ELEVATE UC 12 and ELEVATE UC 40 JAPAN Trials.",
+                                              "journal":  "Digestion",
+                                              "pubdate":  "2025",
+                                              "doi":  "10.1159/000541383"
+                                          },
+                                          {
+                                              "pmid":  "32385738",
+                                              "title":  "Ozanimod: First Approval.",
+                                              "journal":  "Drugs",
+                                              "pubdate":  "2020 Jun",
+                                              "doi":  "10.1007/s40265-020-01319-7"
+                                          },
+                                          {
+                                              "pmid":  "41043449",
+                                              "title":  "Etrasimod as induction and maintenance treatment for patients with moderately to severely active ulcerative colitis in East Asia (ENLIGHT UC): a randomised, double-blind, placebo-controlled, multicentre, phase 3 study.",
+                                              "journal":  "The lancet. Gastroenterology \u0026 hepatology",
+                                              "pubdate":  "2025 Dec",
+                                              "doi":  "10.1016/S2468-1253(25)00198-0"
+                                          }
+                                      ]
+                       },
+    "vedolizumab_integrin":  {
+                                 "query":  "vedolizumab alpha4 beta7 integrin ulcerative colitis Crohn disease",
+                                 "ids":  [
+                                             "26567768",
+                                             "27096357",
+                                             "25341118",
+                                             "26948838",
+                                             "39343250",
+                                             "28070861",
+                                             "32570252",
+                                             "29668955",
+                                             "25186623",
+                                             "29930467",
+                                             "24918648",
+                                             "32370274"
+                                         ],
+                                 "papers":  [
+                                                {
+                                                    "pmid":  "26567768",
+                                                    "title":  "Vedolizumab for the treatment of ulcerative colitis.",
+                                                    "journal":  "Expert opinion on biological therapy",
+                                                    "pubdate":  "2016",
+                                                    "doi":  "10.1517/14712598.2016.1121231"
+                                                },
+                                                {
+                                                    "pmid":  "27096357",
+                                                    "title":  "Pharmacodynamic assessment of vedolizumab for the treatment of ulcerative colitis.",
+                                                    "journal":  "Expert opinion on drug metabolism \u0026 toxicology",
+                                                    "pubdate":  "2016 Jul",
+                                                    "doi":  "10.1080/17425255.2016.1181171"
+                                                },
+                                                {
+                                                    "pmid":  "25341118",
+                                                    "title":  "Vedolizumab for ulcerative colitis and Crohn\u0027s disease: results and implications of GEMINI studies.",
+                                                    "journal":  "Immunotherapy",
+                                                    "pubdate":  "2014",
+                                                    "doi":  "10.2217/imt.14.66"
+                                                },
+                                                {
+                                                    "pmid":  "26948838",
+                                                    "title":  "Efficacy and safety of vedolizumab in the treatment of ulcerative colitis.",
+                                                    "journal":  "Gastroenterologia y hepatologia",
+                                                    "pubdate":  "2016 Dec",
+                                                    "doi":  "10.1016/j.gastrohep.2015.11.010"
+                                                },
+                                                {
+                                                    "pmid":  "39343250",
+                                                    "title":  "Multimodal Profiling of Peripheral Blood Identifies Proliferating Circulating Effector CD4(+) T Cells as Predictors for Response to Integrin α4β7-Blocking Therapy in Inflammatory Bowel Disease.",
+                                                    "journal":  "Gastroenterology",
+                                                    "pubdate":  "2025 Feb",
+                                                    "doi":  "10.1053/j.gastro.2024.09.021"
+                                                },
+                                                {
+                                                    "pmid":  "28070861",
+                                                    "title":  "Efficacy and Safety of Vedolizumab in Ulcerative Colitis and Crohn\u0027s Disease Patients Stratified by Age.",
+                                                    "journal":  "Advances in therapy",
+                                                    "pubdate":  "2017 Feb",
+                                                    "doi":  "10.1007/s12325-016-0467-6"
+                                                },
+                                                {
+                                                    "pmid":  "32570252",
+                                                    "title":  "Emerging Treatment Options in Inflammatory Bowel Disease: Janus Kinases, Stem Cells, and More.",
+                                                    "journal":  "Digestion",
+                                                    "pubdate":  "2020",
+                                                    "doi":  "10.1159/000507782"
+                                                },
+                                                {
+                                                    "pmid":  "29668955",
+                                                    "title":  "What Is the Risk of Progressive Multifocal Leukoencephalopathy in Patients With Ulcerative Colitis or Crohn\u0027s Disease Treated With Vedolizumab?",
+                                                    "journal":  "Inflammatory bowel diseases",
+                                                    "pubdate":  "2018 Apr 23",
+                                                    "doi":  "10.1093/ibd/izx097"
+                                                },
+                                                {
+                                                    "pmid":  "25186623",
+                                                    "title":  "Vedolizumab: an α4β7 integrin inhibitor for inflammatory bowel diseases.",
+                                                    "journal":  "The Annals of pharmacotherapy",
+                                                    "pubdate":  "2014 Dec",
+                                                    "doi":  "10.1177/1060028014549799"
+                                                },
+                                                {
+                                                    "pmid":  "29930467",
+                                                    "title":  "Vedolizumab for inflammatory bowel disease: From randomized controlled trials to real-life evidence.",
+                                                    "journal":  "World journal of gastroenterology",
+                                                    "pubdate":  "2018 Jun 21",
+                                                    "doi":  "10.3748/wjg.v24.i23.2457"
+                                                },
+                                                {
+                                                    "pmid":  "24918648",
+                                                    "title":  "Vedolizumab for the treatment of inflammatory bowel disease.",
+                                                    "journal":  "Drugs of today (Barcelona, Spain : 1998)",
+                                                    "pubdate":  "2014 Apr",
+                                                    "doi":  "10.1358/dot.2014.50.4.2125093"
+                                                },
+                                                {
+                                                    "pmid":  "32370274",
+                                                    "title":  "Serum Interleukin-6 and -8 as Predictors of Response to Vedolizumab in Inflammatory Bowel Diseases.",
+                                                    "journal":  "Journal of clinical medicine",
+                                                    "pubdate":  "2020 May 2",
+                                                    "doi":  "10.3390/jcm9051323"
+                                                }
+                                            ]
+                             },
+    "calcineurin_inhibitors":  {
+                                   "query":  "(cyclosporine OR tacrolimus) AND calcineurin NFAT T cell transplant",
+                                   "ids":  [
+                                               "41361657",
+                                               "24479879",
+                                               "22611159",
+                                               "17017956",
+                                               "36191295",
+                                               "12091710",
+                                               "33822776",
+                                               "25452304",
+                                               "20007805",
+                                               "20598751",
+                                               "21228752",
+                                               "10702633"
+                                           ],
+                                   "papers":  [
+                                                  {
+                                                      "pmid":  "41361657",
+                                                      "title":  "Calcineurin Inhibitors: Current Role, Toxicity Management, and Future Frontiers in Immunosuppression.",
+                                                      "journal":  "Molecular neurobiology",
+                                                      "pubdate":  "2025 Dec 9",
+                                                      "doi":  "10.1007/s12035-025-05549-2"
+                                                  },
+                                                  {
+                                                      "pmid":  "24479879",
+                                                      "title":  "Calcineurin/NFAT signaling and innate host defence: a role for NOD1-mediated phagocytic functions.",
+                                                      "journal":  "Cell communication and signaling : CCS",
+                                                      "pubdate":  "2014 Jan 30",
+                                                      "doi":  "10.1186/1478-811X-12-8"
+                                                  },
+                                                  {
+                                                      "pmid":  "22611159",
+                                                      "title":  "NFAT control of innate immunity.",
+                                                      "journal":  "Blood",
+                                                      "pubdate":  "2012 Aug 16",
+                                                      "doi":  "10.1182/blood-2012-02-404475"
+                                                  },
+                                                  {
+                                                      "pmid":  "17017956",
+                                                      "title":  "Immunosuppressive drugs in HIV disease.",
+                                                      "journal":  "Current topics in medicinal chemistry",
+                                                      "pubdate":  "2006",
+                                                      "doi":  "10.2174/156802606778194271"
+                                                  },
+                                                  {
+                                                      "pmid":  "36191295",
+                                                      "title":  "Pharmacodynamic Monitoring of Ciclosporin and Tacrolimus: Insights From Nuclear Factor of Activated T-Cell-Regulated Gene Expression in Healthy Volunteers.",
+                                                      "journal":  "Therapeutic drug monitoring",
+                                                      "pubdate":  "2023 Feb 1",
+                                                      "doi":  "10.1097/FTD.0000000000001046"
+                                                  },
+                                                  {
+                                                      "pmid":  "12091710",
+                                                      "title":  "Defective T cell development and function in calcineurin A beta -deficient mice.",
+                                                      "journal":  "Proceedings of the National Academy of Sciences of the United States of America",
+                                                      "pubdate":  "2002 Jul 9",
+                                                      "doi":  "10.1073/pnas.152665399"
+                                                  },
+                                                  {
+                                                      "pmid":  "33822776",
+                                                      "title":  "Calcineurin inhibitors suppress acute graft-versus-host disease via NFAT-independent inhibition of T cell receptor signaling.",
+                                                      "journal":  "The Journal of clinical investigation",
+                                                      "pubdate":  "2021 Jun 1",
+                                                      "doi":  "10.1172/JCI147683"
+                                                  },
+                                                  {
+                                                      "pmid":  "25452304",
+                                                      "title":  "The calcineurin-NFAT axis controls allograft immunity in myeloid-derived suppressor cells through reprogramming T cell differentiation.",
+                                                      "journal":  "Molecular and cellular biology",
+                                                      "pubdate":  "2015 Feb",
+                                                      "doi":  "10.1128/MCB.01251-14"
+                                                  },
+                                                  {
+                                                      "pmid":  "20007805",
+                                                      "title":  "A CD8 T cell-intrinsic role for the calcineurin-NFAT pathway for tolerance induction in vivo.",
+                                                      "journal":  "Blood",
+                                                      "pubdate":  "2010 Feb 11",
+                                                      "doi":  "10.1182/blood-2009-07-230680"
+                                                  },
+                                                  {
+                                                      "pmid":  "20598751",
+                                                      "title":  "Cyclosporin A and atherosclerosis--cellular pathways in atherogenesis.",
+                                                      "journal":  "Pharmacology \u0026 therapeutics",
+                                                      "pubdate":  "2010 Oct",
+                                                      "doi":  "10.1016/j.pharmthera.2010.06.001"
+                                                  },
+                                                  {
+                                                      "pmid":  "21228752",
+                                                      "title":  "Inhibition of nuclear translocation of calcineurin suppresses T-cell activation and prevents acute rejection of donor hearts.",
+                                                      "journal":  "Transplantation",
+                                                      "pubdate":  "2011 Mar 27",
+                                                      "doi":  "10.1097/TP.0b013e3182090f67"
+                                                  },
+                                                  {
+                                                      "pmid":  "10702633",
+                                                      "title":  "The impact of immunosuppressive drugs on the analysis of T cell activation.",
+                                                      "journal":  "Current medicinal chemistry",
+                                                      "pubdate":  "2000 Jul",
+                                                      "doi":  "10.2174/0929867003374778"
+                                                  }
+                                              ]
+                               },
+    "tnf_inhibitors":  {
+                           "query":  "(infliximab OR adalimumab OR etanercept OR golimumab OR certolizumab) AND TNF inhibitor autoimmune disease review",
+                           "ids":  [
+                                       "34635295",
+                                       "33805757",
+                                       "22137924",
+                                       "27567553",
+                                       "39432288",
+                                       "17049139",
+                                       "27311183",
+                                       "21927056",
+                                       "27311185",
+                                       "20190560",
+                                       "30461542",
+                                       "21794764"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "34635295",
+                                              "title":  "Uveitis in Children and Adolescents.",
+                                              "journal":  "Rheumatic diseases clinics of North America",
+                                              "pubdate":  "2021 Nov",
+                                              "doi":  "10.1016/j.rdc.2021.07.005"
+                                          },
+                                          {
+                                              "pmid":  "33805757",
+                                              "title":  "The Role of TNF-α and Anti-TNF-α Agents during Preconception, Pregnancy, and Breastfeeding.",
+                                              "journal":  "International journal of molecular sciences",
+                                              "pubdate":  "2021 Mar 13",
+                                              "doi":  "10.3390/ijms22062922"
+                                          },
+                                          {
+                                              "pmid":  "22137924",
+                                              "title":  "Anti-TNF therapy.",
+                                              "journal":  "Best practice \u0026 research. Clinical rheumatology",
+                                              "pubdate":  "2011 Aug",
+                                              "doi":  "10.1016/j.berh.2011.10.004"
+                                          },
+                                          {
+                                              "pmid":  "27567553",
+                                              "title":  "Molecular mechanisms of action of anti-TNF-α agents - Comparison among therapeutic TNF-α antagonists.",
+                                              "journal":  "Cytokine",
+                                              "pubdate":  "2018 Jan",
+                                              "doi":  "10.1016/j.cyto.2016.08.014"
+                                          },
+                                          {
+                                              "pmid":  "39432288",
+                                              "title":  "Risk of Inflammatory Central Nervous System Diseases After Tumor Necrosis Factor-Inhibitor Treatment for Autoimmune Diseases: A Systematic Review and Meta-Analysis.",
+                                              "journal":  "JAMA neurology",
+                                              "pubdate":  "2024 Dec 1",
+                                              "doi":  "10.1001/jamaneurol.2024.3524"
+                                          },
+                                          {
+                                              "pmid":  "17049139",
+                                              "title":  "A systematic review of the effectiveness of adalimumab, etanercept and infliximab for the treatment of rheumatoid arthritis in adults and an economic evaluation of their cost-effectiveness.",
+                                              "journal":  "Health technology assessment (Winchester, England)",
+                                              "pubdate":  "2006 Nov",
+                                              "doi":  "10.3310/hta10420"
+                                          },
+                                          {
+                                              "pmid":  "27311183",
+                                              "title":  "[MTX].",
+                                              "journal":  "Nihon rinsho. Japanese journal of clinical medicine",
+                                              "pubdate":  "2016 Jun",
+                                              "doi":  null
+                                          },
+                                          {
+                                              "pmid":  "21927056",
+                                              "title":  "Painful rheumatoid arthritis.",
+                                              "journal":  "Pain physician",
+                                              "pubdate":  "2011 Sep-Oct",
+                                              "doi":  null
+                                          },
+                                          {
+                                              "pmid":  "27311185",
+                                              "title":  "[TNF inhibitors].",
+                                              "journal":  "Nihon rinsho. Japanese journal of clinical medicine",
+                                              "pubdate":  "2016 Jun",
+                                              "doi":  null
+                                          },
+                                          {
+                                              "pmid":  "20190560",
+                                              "title":  "Certolizumab pegol.",
+                                              "journal":  "mAbs",
+                                              "pubdate":  "2010 Mar-Apr",
+                                              "doi":  "10.4161/mabs.2.2.11271"
+                                          },
+                                          {
+                                              "pmid":  "30461542",
+                                              "title":  "Management of large-vessel vasculitis.",
+                                              "journal":  "Current opinion in rheumatology",
+                                              "pubdate":  "2019 Jan",
+                                              "doi":  "10.1097/BOR.0000000000000561"
+                                          },
+                                          {
+                                              "pmid":  "21794764",
+                                              "title":  "[Certolizumab pegol].",
+                                              "journal":  "Reumatologia clinica",
+                                              "pubdate":  "2011 Mar",
+                                              "doi":  "10.1016/j.reuma.2010.11.011"
+                                          }
+                                      ]
+                       }
+}

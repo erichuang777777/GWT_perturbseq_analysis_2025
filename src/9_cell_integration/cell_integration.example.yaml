@@ -1,0 +1,88 @@
+batch_key: dataset_id
+
+manifest_metadata_columns:
+  - source_name
+  - species
+  - tissue
+  - cell_type
+  - condition
+  - donor_id
+  - disease
+  - platform
+  - perturbation_context
+
+required_obs_columns:
+  - source_name
+  - species
+  - tissue
+  - cell_type
+  - condition
+  - donor_id
+  - disease
+  - platform
+  - perturbation_context
+
+obs_rename:
+  sample: sample_id
+  donor: donor_id
+  batch: batch_id
+  celltype: cell_type
+
+obs_constants:
+  project: gwt_cell_integration
+
+gene_symbol_columns:
+  - gene_symbol
+  - gene_name
+  - features
+  - symbol
+
+gene_id_columns:
+  - gene_id
+  - gene_ids
+  - ensembl_id
+  - id
+
+qc:
+  min_genes: 200
+  min_counts: 500
+  max_genes:
+  max_counts:
+  max_pct_mt: 20
+  mitochondrial_prefixes:
+    - MT-
+
+concat:
+  join: inner
+
+preprocess:
+  target_sum: 10000
+  n_top_genes: 3000
+  hvg_flavor: seurat
+  subset_hvg: true
+  scale_max_value: 10
+  n_pcs: 50
+
+integration:
+  method: none
+  # method options:
+  # - none: PCA only, no correction.
+  # - combat: expression-level sensitivity run; avoid as primary DE input.
+  # - harmony: batch-corrected PCA representation; requires harmonypy.
+  # - scvi: probabilistic integration; requires scvi-tools and raw counts layer.
+
+scvi:
+  n_latent: 30
+  max_epochs: 100
+  categorical_covariates:
+    - donor_id
+    - condition
+  continuous_covariates:
+    - pct_counts_mt
+  model_dir: outputs/cell_integration/scvi_model
+
+embedding:
+  n_neighbors: 15
+  umap_min_dist: 0.4
+  run_leiden: true
+  leiden_resolution: 0.8

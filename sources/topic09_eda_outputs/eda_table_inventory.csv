@@ -1,0 +1,5 @@
+table,rows,columns,path
+sample_metadata,12,19,metadata/suppl_tables/sample_metadata.suppl_table.csv
+DE_stats,33983,20,metadata/suppl_tables/DE_stats.suppl_table.csv
+guide_kd_efficiency,73765,15,metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv
+sgrna_library_metadata,26504,31,metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv

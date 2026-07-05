@@ -1,0 +1,165 @@
+﻿{
+    "attrition_reasons":  {
+                              "query":  "why 90% clinical drug development fails lack efficacy safety PMID",
+                              "ids":  [
+
+                                      ],
+                              "papers":  [
+
+                                         ]
+                          },
+    "genetic_success":  {
+                            "query":  "Refining impact genetic evidence clinical success drug targets PMID 38632401",
+                            "ids":  [
+
+                                    ],
+                            "papers":  [
+
+                                       ]
+                        },
+    "phase3_failure":  {
+                           "query":  "Failure of investigational drugs in late-stage clinical development phase 3 reasons efficacy safety PMID",
+                           "ids":  [
+
+                                   ],
+                           "papers":  [
+
+                                      ]
+                       },
+    "tgn1412":  {
+                    "query":  "TGN1412 cytokine storm phase 1 anti-CD28 PMID",
+                    "ids":  [
+
+                            ],
+                    "papers":  [
+
+                               ]
+                },
+    "secukinumab_crohn":  {
+                              "query":  "secukinumab Crohn disease trial IL-17A ineffective PMID",
+                              "ids":  [
+
+                                      ],
+                              "papers":  [
+
+                                         ]
+                          },
+    "abatacept_ibd":  {
+                          "query":  "abatacept Crohn ulcerative colitis trial not efficacious PMID",
+                          "ids":  [
+                                      "37455227",
+                                      "25861835",
+                                      "22504093",
+                                      "24502344",
+                                      "23166955",
+                                      "20926878"
+                                  ],
+                          "papers":  [
+                                         {
+                                             "pmid":  "37455227",
+                                             "title":  "Pharmacologic Treatment Strategies in Psoriatic Arthritis.",
+                                             "journal":  "Clinical therapeutics",
+                                             "pubdate":  "2023 Sep",
+                                             "doi":  "10.1016/j.clinthera.2023.05.010"
+                                         },
+                                         {
+                                             "pmid":  "25861835",
+                                             "title":  "Inflammatory bowel disease therapies discontinued between 2009 and 2014.",
+                                             "journal":  "Expert opinion on investigational drugs",
+                                             "pubdate":  "2015",
+                                             "doi":  "10.1517/13543784.2015.1035432"
+                                         },
+                                         {
+                                             "pmid":  "22504093",
+                                             "title":  "Abatacept for Crohn\u0027s disease and ulcerative colitis.",
+                                             "journal":  "Gastroenterology",
+                                             "pubdate":  "2012 Jul",
+                                             "doi":  "10.1053/j.gastro.2012.04.010"
+                                         },
+                                         {
+                                             "pmid":  "24502344",
+                                             "title":  "New biologic therapeutics for ulcerative colitis and Crohn\u0027s disease.",
+                                             "journal":  "Expert opinion on biological therapy",
+                                             "pubdate":  "2014 May",
+                                             "doi":  "10.1517/14712598.2014.885945"
+                                         },
+                                         {
+                                             "pmid":  "23166955",
+                                             "title":  "",
+                                             "journal":  "",
+                                             "pubdate":  "2012 Mar",
+                                             "doi":  null
+                                         },
+                                         {
+                                             "pmid":  "20926878",
+                                             "title":  "The role of biologics in ulcerative colitis.",
+                                             "journal":  "Digestive diseases (Basel, Switzerland)",
+                                             "pubdate":  "2010",
+                                             "doi":  "10.1159/000320408"
+                                         }
+                                     ]
+                      },
+    "otelixizumab":  {
+                         "query":  "otelixizumab DEFEND-1 type 1 diabetes failed C-peptide PMID",
+                         "ids":  [
+
+                                 ],
+                         "papers":  [
+
+                                    ]
+                     },
+    "teplizumab_success":  {
+                               "query":  "teplizumab relatives at risk type 1 diabetes delayed diagnosis PMID",
+                               "ids":  [
+
+                                       ],
+                               "papers":  [
+
+                                          ]
+                           },
+    "abatacept_success":  {
+                              "query":  "abatacept rheumatoid arthritis trial PMID 16785475",
+                              "ids":  [
+
+                                      ],
+                              "papers":  [
+
+                                         ]
+                          },
+    "belatacept_success":  {
+                               "query":  "belatacept kidney transplant BENEFIT trial PMID 20415897",
+                               "ids":  [
+
+                                       ],
+                               "papers":  [
+
+                                          ]
+                           },
+    "daclizumab_withdrawn":  {
+                                 "query":  "daclizumab multiple sclerosis withdrawn encephalitis liver injury PMID",
+                                 "ids":  [
+
+                                         ],
+                                 "papers":  [
+
+                                            ]
+                             },
+    "il17_psoriasis_success":  {
+                                   "query":  "secukinumab psoriasis phase 3 trial PMID 25007392",
+                                   "ids":  [
+
+                                           ],
+                                   "papers":  [
+
+                                              ]
+                               },
+    "jak_safety":  {
+                       "query":  "ORAL Surveillance tofacitinib rheumatoid arthritis PMID 35081280",
+                       "ids":  [
+
+                               ],
+                       "papers":  [
+
+                                  ]
+                   }
+}

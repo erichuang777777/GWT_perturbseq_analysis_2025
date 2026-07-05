@@ -1,0 +1,6 @@
+10xrun_id,culture_condition,n_samples
+CD4i_R1,Rest,2
+CD4i_R1,Stim8hr,2
+CD4i_R2,Rest,2
+CD4i_R2,Stim48hr,4
+CD4i_R2,Stim8hr,2

@@ -1,0 +1,439 @@
+﻿{
+    "cropseq_exact":  {
+                          "query":  "\"Pooled CRISPR screening with single-cell transcriptome readout\"",
+                          "ids":  [
+                                      "28099430",
+                                      "37704762",
+                                      "40081369",
+                                      "33899013",
+                                      "39178831",
+                                      "33649592",
+                                      "36481809",
+                                      "31085639",
+                                      "36778497",
+                                      "34494921"
+                                  ],
+                          "papers":  [
+                                         {
+                                             "pmid":  "28099430",
+                                             "title":  "Pooled CRISPR screening with single-cell transcriptome readout.",
+                                             "journal":  "Nature methods",
+                                             "pubdate":  "2017 Mar",
+                                             "doi":  "10.1038/nmeth.4177",
+                                             "pmc":  "PMC5334791"
+                                         },
+                                         {
+                                             "pmid":  "37704762",
+                                             "title":  "Single-cell brain organoid screening identifies developmental defects in autism.",
+                                             "journal":  "Nature",
+                                             "pubdate":  "2023 Sep",
+                                             "doi":  "10.1038/s41586-023-06473-y",
+                                             "pmc":  "PMC10499611"
+                                         },
+                                         {
+                                             "pmid":  "40081369",
+                                             "title":  "Simultaneous CRISPR screening and spatial transcriptomics reveal intracellular, intercellular, and functional transcriptional circuits.",
+                                             "journal":  "Cell",
+                                             "pubdate":  "2025 Apr 17",
+                                             "doi":  "10.1016/j.cell.2025.02.012",
+                                             "pmc":  "PMC12135205"
+                                         },
+                                         {
+                                             "pmid":  "33899013",
+                                             "title":  "Pooled CRISPR-activation screening coupled with single-cell RNA-seq in mouse embryonic stem cells.",
+                                             "journal":  "STAR protocols",
+                                             "pubdate":  "2021 Jun 18",
+                                             "doi":  "10.1016/j.xpro.2021.100426",
+                                             "pmc":  "PMC8055612"
+                                         },
+                                         {
+                                             "pmid":  "39178831",
+                                             "title":  "Toward a foundation model of causal cell and tissue biology with a Perturbation Cell and Tissue Atlas.",
+                                             "journal":  "Cell",
+                                             "pubdate":  "2024 Aug 22",
+                                             "doi":  "10.1016/j.cell.2024.07.035",
+                                             "pmc":  null
+                                         },
+                                         {
+                                             "pmid":  "33649592",
+                                             "title":  "Multimodal pooled Perturb-CITE-seq screens in patient models define mechanisms of cancer immune evasion.",
+                                             "journal":  "Nature genetics",
+                                             "pubdate":  "2021 Mar",
+                                             "doi":  "10.1038/s41588-021-00779-1",
+                                             "pmc":  "PMC8376399"
+                                         },
+                                         {
+                                             "pmid":  "36481809",
+                                             "title":  "CRISPR screens for functional interrogation of immunity.",
+                                             "journal":  "Nature reviews. Immunology",
+                                             "pubdate":  "2023 Jun",
+                                             "doi":  "10.1038/s41577-022-00802-4",
+                                             "pmc":  null
+                                         },
+                                         {
+                                             "pmid":  "31085639",
+                                             "title":  "Imaging-based pooled CRISPR screening reveals regulators of lncRNA localization.",
+                                             "journal":  "Proceedings of the National Academy of Sciences of the United States of America",
+                                             "pubdate":  "2019 May 28",
+                                             "doi":  "10.1073/pnas.1903808116",
+                                             "pmc":  "PMC6561216"
+                                         },
+                                         {
+                                             "pmid":  "36778497",
+                                             "title":  "PerturbSci-Kinetics: Dissecting key regulators of transcriptome kinetics through scalable single-cell RNA profiling of pooled CRISPR screens.",
+                                             "journal":  "bioRxiv : the preprint server for biology",
+                                             "pubdate":  "2023 May 11",
+                                             "doi":  "10.1101/2023.01.29.526143",
+                                             "pmc":  "PMC9915486"
+                                         },
+                                         {
+                                             "pmid":  "34494921",
+                                             "title":  "Single-cell heterogeneity analysis and CRISPR screens in MIN6 cell line reveal transcriptional regulators of insulin.",
+                                             "journal":  "Cell cycle (Georgetown, Tex.)",
+                                             "pubdate":  "2021 Oct",
+                                             "doi":  "10.1080/15384101.2021.1969204",
+                                             "pmc":  "PMC8565812"
+                                         }
+                                     ]
+                      },
+    "mosaicseq":  {
+                      "query":  "\"Mosaic-seq\" single-cell RNA-seq CRISPR",
+                      "ids":  [
+                                  "28416141"
+                              ],
+                      "papers":  [
+                                     {
+                                         "pmid":  "28416141",
+                                         "title":  "Multiplexed Engineering and Analysis of Combinatorial Enhancer Activity in Single Cells.",
+                                         "journal":  "Molecular cell",
+                                         "pubdate":  "2017 Apr 20",
+                                         "doi":  "10.1016/j.molcel.2017.03.007",
+                                         "pmc":  null
+                                     }
+                                 ]
+                  },
+    "direct_capture_perturbseq":  {
+                                      "query":  "\"Direct-capture Perturb-seq\"",
+                                      "ids":  [
+                                                  "32231336",
+                                                  "40347943",
+                                                  "39005466"
+                                              ],
+                                      "papers":  [
+                                                     {
+                                                         "pmid":  "32231336",
+                                                         "title":  "Combinatorial single-cell CRISPR screens by direct guide RNA capture and targeted sequencing.",
+                                                         "journal":  "Nature biotechnology",
+                                                         "pubdate":  "2020 Aug",
+                                                         "doi":  "10.1038/s41587-020-0470-y",
+                                                         "pmc":  "PMC7416462"
+                                                     },
+                                                     {
+                                                         "pmid":  "40347943",
+                                                         "title":  "Identification of targetable vulnerabilities of PLK1-overexpressing cancers by synthetic dosage lethality.",
+                                                         "journal":  "Cell genomics",
+                                                         "pubdate":  "2025 Jun 11",
+                                                         "doi":  "10.1016/j.xgen.2025.100876",
+                                                         "pmc":  "PMC12230241"
+                                                     },
+                                                     {
+                                                         "pmid":  "39005466",
+                                                         "title":  "Human Accelerated Regions regulate gene networks implicated in apical-to-basal neural progenitor fate transitions.",
+                                                         "journal":  "bioRxiv : the preprint server for biology",
+                                                         "pubdate":  "2024 Jul 1",
+                                                         "doi":  "10.1101/2024.06.30.601407",
+                                                         "pmc":  "PMC11244942"
+                                                     }
+                                                 ]
+                                  },
+    "t_cell_activation_crispr_scrna":  {
+                                           "query":  "(T cell activation) AND (CRISPR screen) AND (single-cell RNA-seq OR CROP-seq OR Perturb-seq)",
+                                           "ids":  [
+                                                       "35113687",
+                                                       "30449619",
+                                                       "41544628",
+                                                       "40215981",
+                                                       "36509106",
+                                                       "31744829",
+                                                       "36711632",
+                                                       "40023158",
+                                                       "39663454",
+                                                       "40057744"
+                                                   ],
+                                           "papers":  [
+                                                          {
+                                                              "pmid":  "35113687",
+                                                              "title":  "CRISPR activation and interference screens decode stimulation responses in primary human T cells.",
+                                                              "journal":  "Science (New York, N.Y.)",
+                                                              "pubdate":  "2022 Feb 4",
+                                                              "doi":  "10.1126/science.abj4008",
+                                                              "pmc":  "PMC9307090"
+                                                          },
+                                                          {
+                                                              "pmid":  "30449619",
+                                                              "title":  "Genome-wide CRISPR Screens in Primary Human T Cells Reveal Key Regulators of Immune Function.",
+                                                              "journal":  "Cell",
+                                                              "pubdate":  "2018 Dec 13",
+                                                              "doi":  "10.1016/j.cell.2018.10.024",
+                                                              "pmc":  "PMC6689405"
+                                                          },
+                                                          {
+                                                              "pmid":  "41544628",
+                                                              "title":  "Single-cell screens identify ADAM12 as a fibroblast checkpoint impeding anti-tumor immunity.",
+                                                              "journal":  "Cancer cell",
+                                                              "pubdate":  "2026 Feb 9",
+                                                              "doi":  "10.1016/j.ccell.2025.12.018",
+                                                              "pmc":  null
+                                                          },
+                                                          {
+                                                              "pmid":  "40215981",
+                                                              "title":  "ZEB2 is a master switch controlling the tumor-associated macrophage program.",
+                                                              "journal":  "Cancer cell",
+                                                              "pubdate":  "2025 Jul 14",
+                                                              "doi":  "10.1016/j.ccell.2025.03.021",
+                                                              "pmc":  null
+                                                          },
+                                                          {
+                                                              "pmid":  "36509106",
+                                                              "title":  "Active eosinophils regulate host defence and immune responses in colitis.",
+                                                              "journal":  "Nature",
+                                                              "pubdate":  "2023 Mar",
+                                                              "doi":  "10.1038/s41586-022-05628-7",
+                                                              "pmc":  "PMC9977678"
+                                                          },
+                                                          {
+                                                              "pmid":  "31744829",
+                                                              "title":  "In Vivo Epigenetic CRISPR Screen Identifies Asf1a as an Immunotherapeutic Target in Kras-Mutant Lung Adenocarcinoma.",
+                                                              "journal":  "Cancer discovery",
+                                                              "pubdate":  "2020 Feb",
+                                                              "doi":  "10.1158/2159-8290.CD-19-0780",
+                                                              "pmc":  "PMC7007372"
+                                                          },
+                                                          {
+                                                              "pmid":  "36711632",
+                                                              "title":  "Atlas-Guided Discovery of Transcription Factors for T Cell Programming.",
+                                                              "journal":  "bioRxiv : the preprint server for biology",
+                                                              "pubdate":  "2025 Nov 2",
+                                                              "doi":  "10.1101/2023.01.03.522354",
+                                                              "pmc":  "PMC9881845"
+                                                          },
+                                                          {
+                                                              "pmid":  "40023158",
+                                                              "title":  "Integrated computational analysis identifies therapeutic targets with dual action in cancer cells and T cells.",
+                                                              "journal":  "Immunity",
+                                                              "pubdate":  "2025 Mar 11",
+                                                              "doi":  "10.1016/j.immuni.2025.02.007",
+                                                              "pmc":  null
+                                                          },
+                                                          {
+                                                              "pmid":  "39663454",
+                                                              "title":  "Central control of dynamic gene circuits governs T cell rest and activation.",
+                                                              "journal":  "Nature",
+                                                              "pubdate":  "2025 Jan",
+                                                              "doi":  "10.1038/s41586-024-08314-y",
+                                                              "pmc":  "PMC11754113"
+                                                          },
+                                                          {
+                                                              "pmid":  "40057744",
+                                                              "title":  "IL-19 as a promising theranostic target to reprogram the glioblastoma immunosuppressive microenvironment.",
+                                                              "journal":  "Journal of biomedical science",
+                                                              "pubdate":  "2025 Mar 8",
+                                                              "doi":  "10.1186/s12929-025-01126-w",
+                                                              "pmc":  "PMC11889942"
+                                                          }
+                                                      ]
+                                       },
+    "shifrut_primary_t_cells":  {
+                                    "query":  "Shifrut primary human T cells CRISPR single-cell RNA-seq",
+                                    "ids":  [
+
+                                            ],
+                                    "papers":  [
+
+                                               ]
+                                },
+    "primary_t_cell_regulatory_network":  {
+                                              "query":  "\"Genome-wide CRISPR screens in primary human T cells\" single-cell",
+                                              "ids":  [
+
+                                                      ],
+                                              "papers":  [
+
+                                                         ]
+                                          },
+    "jurkat_tcr_activation_single_cell_crispr":  {
+                                                     "query":  "Jurkat TCR activation single-cell CRISPR screen",
+                                                     "ids":  [
+                                                                 "41294842",
+                                                                 "36298482",
+                                                                 "41653624"
+                                                             ],
+                                                     "papers":  [
+                                                                    {
+                                                                        "pmid":  "41294842",
+                                                                        "title":  "NeoPAIR-T: Functional Mapping of Neoantigen-TCR Pairs Using a CRISPR-Engineered Jurkat Reporter System.",
+                                                                        "journal":  "Cells",
+                                                                        "pubdate":  "2025 Nov 14",
+                                                                        "doi":  "10.3390/cells14221789",
+                                                                        "pmc":  "PMC12650950"
+                                                                    },
+                                                                    {
+                                                                        "pmid":  "36298482",
+                                                                        "title":  "Gene Signatures of T-Cell Activation Can Serve as Predictors of Functionality for SARS-CoV-2-Specific T-Cell Receptors.",
+                                                                        "journal":  "Vaccines",
+                                                                        "pubdate":  "2022 Sep 27",
+                                                                        "doi":  "10.3390/vaccines10101617",
+                                                                        "pmc":  "PMC9611811"
+                                                                    },
+                                                                    {
+                                                                        "pmid":  "41653624",
+                                                                        "title":  "Dual knockout of Fas and TCRα in Jurkat reporter cells enables highly sensitive identification of antigen-specific TCRs.",
+                                                                        "journal":  "Biochemical and biophysical research communications",
+                                                                        "pubdate":  "2026 Mar 19",
+                                                                        "doi":  "10.1016/j.bbrc.2026.153400",
+                                                                        "pmc":  null
+                                                                    }
+                                                                ]
+                                                 },
+    "sci_plex_exact":  {
+                           "query":  "\"sci-Plex\" \"single-cell\" \"chemical\"",
+                           "ids":  [
+                                       "31806696",
+                                       "38278156",
+                                       "37398090",
+                                       "39377396"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "31806696",
+                                              "title":  "Massively multiplex chemical transcriptomics at single-cell resolution.",
+                                              "journal":  "Science (New York, N.Y.)",
+                                              "pubdate":  "2020 Jan 3",
+                                              "doi":  "10.1126/science.aax6234",
+                                              "pmc":  "PMC7289078"
+                                          },
+                                          {
+                                              "pmid":  "38278156",
+                                              "title":  "Multiplex single-cell chemical genomics reveals the kinase dependence of the response to targeted therapy.",
+                                              "journal":  "Cell genomics",
+                                              "pubdate":  "2024 Feb 14",
+                                              "doi":  "10.1016/j.xgen.2023.100487",
+                                              "pmc":  "PMC10879025"
+                                          },
+                                          {
+                                              "pmid":  "37398090",
+                                              "title":  "Multiplex single-cell chemical genomics reveals the kinase dependence of the response to targeted therapy.",
+                                              "journal":  "bioRxiv : the preprint server for biology",
+                                              "pubdate":  "2023 Jun 14",
+                                              "doi":  "10.1101/2023.03.10.531983",
+                                              "pmc":  "PMC10312454"
+                                          },
+                                          {
+                                              "pmid":  "39377396",
+                                              "title":  "PerturBase: a comprehensive database for single-cell perturbation data analysis and visualization.",
+                                              "journal":  "Nucleic acids research",
+                                              "pubdate":  "2025 Jan 6",
+                                              "doi":  "10.1093/nar/gkae858",
+                                              "pmc":  "PMC11701531"
+                                          }
+                                      ]
+                       },
+    "sci_plex3_exact":  {
+                            "query":  "\"sci-Plex3\"",
+                            "ids":  [
+                                        "42019216"
+                                    ],
+                            "papers":  [
+                                           {
+                                               "pmid":  "42019216",
+                                               "title":  "Deep generative framework for modeling single-cell drug perturbation response.",
+                                               "journal":  "Neural networks : the official journal of the International Neural Network Society",
+                                               "pubdate":  "2026 Apr 15",
+                                               "doi":  "10.1016/j.neunet.2026.109005",
+                                               "pmc":  null
+                                           }
+                                       ]
+                        },
+    "multiplexed_scrna_drug":  {
+                                   "query":  "multiplexed single-cell RNA-seq chemical perturbation sci-Plex3",
+                                   "ids":  [
+
+                                           ],
+                                   "papers":  [
+
+                                              ]
+                               },
+    "perturb_cite_seq_exact":  {
+                                   "query":  "\"Multimodal pooled Perturb-CITE-seq screens\"",
+                                   "ids":  [
+                                               "33649592"
+                                           ],
+                                   "papers":  [
+                                                  {
+                                                      "pmid":  "33649592",
+                                                      "title":  "Multimodal pooled Perturb-CITE-seq screens in patient models define mechanisms of cancer immune evasion.",
+                                                      "journal":  "Nature genetics",
+                                                      "pubdate":  "2021 Mar",
+                                                      "doi":  "10.1038/s41588-021-00779-1",
+                                                      "pmc":  "PMC8376399"
+                                                  }
+                                              ]
+                               },
+    "eccite_exact":  {
+                         "query":  "\"Multiplexed detection of proteins, transcriptomes, clonotypes and CRISPR perturbations\"",
+                         "ids":  [
+                                     "31011186"
+                                 ],
+                         "papers":  [
+                                        {
+                                            "pmid":  "31011186",
+                                            "title":  "Multiplexed detection of proteins, transcriptomes, clonotypes and CRISPR perturbations in single cells.",
+                                            "journal":  "Nature methods",
+                                            "pubdate":  "2019 May",
+                                            "doi":  "10.1038/s41592-019-0392-0",
+                                            "pmc":  "PMC6557128"
+                                        }
+                                    ]
+                     },
+    "scmageck_exact":  {
+                           "query":  "\"scMAGeCK\"",
+                           "ids":  [
+                                       "31980032"
+                                   ],
+                           "papers":  [
+                                          {
+                                              "pmid":  "31980032",
+                                              "title":  "scMAGeCK links genotypes with multiple phenotypes in single-cell CRISPR screens.",
+                                              "journal":  "Genome biology",
+                                              "pubdate":  "2020 Jan 24",
+                                              "doi":  "10.1186/s13059-020-1928-4",
+                                              "pmc":  "PMC6979386"
+                                          }
+                                      ]
+                       },
+    "perturbdb_exact":  {
+                            "query":  "\"PerturbDB\" \"Perturb-seq\"",
+                            "ids":  [
+                                        "39265120"
+                                    ],
+                            "papers":  [
+                                           {
+                                               "pmid":  "39265120",
+                                               "title":  "PerturbDB for unraveling gene functions and regulatory networks.",
+                                               "journal":  "Nucleic acids research",
+                                               "pubdate":  "2025 Jan 6",
+                                               "doi":  "10.1093/nar/gkae777",
+                                               "pmc":  "PMC11701683"
+                                           }
+                                       ]
+                        },
+    "perturbseqdb_exact":  {
+                               "query":  "\"PerturbSeq.db\"",
+                               "ids":  [
+
+                                       ],
+                               "papers":  [
+
+                                          ]
+                           }
+}

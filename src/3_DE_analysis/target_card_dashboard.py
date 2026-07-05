@@ -1,0 +1,516 @@
+"""Streamlit dashboard for target-condition evidence exploration."""
+
+from __future__ import annotations
+
+import base64
+import os
+from typing import Any, Dict, Iterable
+
+import pandas as pd
+import requests
+import streamlit as st
+
+
+API_BASE = os.getenv("GWT_API_BASE", "http://127.0.0.1:8000").rstrip("/")
+DEFAULT_DE = "metadata/suppl_tables/DE_stats.suppl_table.csv"
+DEFAULT_GUIDE = "metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv"
+DEFAULT_LIBRARY = "metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv"
+DEFAULT_BENCHMARK = "sources/topic05_successful_drug_benchmarks.csv"
+MAX_UPLOAD_BYTES = 25 * 1024 * 1024
+
+
+def _api_get(path: str, params: Dict[str, Any] | None = None) -> Any:
+    url = f"{API_BASE}{path}"
+    r = requests.get(url, params=params, timeout=60)
+    if r.status_code >= 400:
+        raise RuntimeError(f"{r.status_code}: {r.text}")
+    return r.json()
+
+
+def _api_post(path: str, payload: Dict[str, Any]) -> Any:
+    url = f"{API_BASE}{path}"
+    r = requests.post(url, json=payload, timeout=180)
+    if r.status_code >= 400:
+        raise RuntimeError(f"{r.status_code}: {r.text}")
+    return r.json()
+
+
+def _api_post_timeout(path: str, payload: Dict[str, Any], timeout: int) -> Any:
+    url = f"{API_BASE}{path}"
+    r = requests.post(url, json=payload, timeout=timeout)
+    if r.status_code >= 400:
+        raise RuntimeError(f"{r.status_code}: {r.text}")
+    return r.json()
+
+
+def _api_download(path: str, params: Dict[str, Any] | None = None) -> bytes:
+    url = f"{API_BASE}{path}"
+    r = requests.get(url, params=params, timeout=60)
+    if r.status_code >= 400:
+        raise RuntimeError(f"{r.status_code}: {r.text}")
+    return r.content
+
+
+@st.cache_data(ttl=20)
+def _summary(dataset_id: str, top_n: int) -> Dict[str, Any]:
+    return _api_get(f"/api/summary/{dataset_id}", params={"top_n": top_n})
+
+
+@st.cache_data(ttl=20)
+def _datasets() -> pd.DataFrame:
+    return pd.DataFrame(_api_get("/api/datasets"))
+
+
+@st.cache_data(ttl=60)
+def _options(dataset_id: str) -> Dict[str, Any]:
+    return _api_get(f"/api/options/{dataset_id}")
+
+
+@st.cache_data(ttl=20)
+def _targets(dataset_id: str, params: Dict[str, Any]) -> pd.DataFrame:
+    rows = _api_get(f"/api/targets/{dataset_id}", params=params)
+    return pd.DataFrame(rows)
+
+
+@st.cache_data(ttl=20)
+def _target_detail(dataset_id: str, target: str) -> Dict[str, Any]:
+    return _api_get(f"/api/targets/{dataset_id}/{target}")
+
+
+@st.cache_data(ttl=30)
+def _modules(dataset_id: str) -> pd.DataFrame:
+    return pd.DataFrame(_api_get(f"/api/modules/{dataset_id}"))
+
+
+@st.cache_data(ttl=20)
+def _imports() -> pd.DataFrame:
+    return pd.DataFrame(_api_get("/api/imports"))
+
+
+@st.cache_data(ttl=20)
+def _import_preview(import_id: str) -> pd.DataFrame:
+    return pd.DataFrame(_api_get(f"/api/imports/{import_id}/preview"))
+
+
+def _metric_value(summary: Dict[str, Any], key: str) -> str:
+    value = summary.get(key, 0)
+    if isinstance(value, float):
+        return f"{value:,.2f}"
+    if isinstance(value, int):
+        return f"{value:,}"
+    return str(value)
+
+
+def _count_chart(records: Iterable[Dict[str, Any]], label_col: str) -> pd.DataFrame:
+    df = pd.DataFrame(records)
+    if df.empty or label_col not in df.columns or "n" not in df.columns:
+        return pd.DataFrame()
+    return df.set_index(label_col)[["n"]]
+
+
+def _evidence_graph(target: str, row: Dict[str, Any]) -> str:
+    pathway = str(row.get("pathway_axis") or "unassigned")
+    clinical = str(row.get("clinical_axis") or "unassigned")
+    grade = str(row.get("statistical_evidence_grade") or "NA")
+    cap = str(row.get("score_cap_reason") or "none")
+    return f"""
+digraph evidence {{
+  graph [rankdir=LR, bgcolor="transparent"];
+  node [shape=box, style="rounded,filled", color="#9fb3c8", fillcolor="#f5f7fa", fontname="Arial"];
+  edge [color="#6b7c93"];
+  "{target}" -> "{pathway}";
+  "{target}" -> "grade {grade}";
+  "{pathway}" -> "{clinical}";
+  "{clinical}" -> "{cap}";
+}}
+"""
+
+
+def _run_job() -> None:
+    payload = {
+        "de_stats": st.session_state.get("de_stats", DEFAULT_DE),
+        "guide_kd": st.session_state.get("guide_kd", DEFAULT_GUIDE),
+        "library_metadata": st.session_state.get("library_metadata", DEFAULT_LIBRARY),
+        "clinical_benchmark": None if st.session_state.get("skip_benchmark") else st.session_state.get("clinical_benchmark", DEFAULT_BENCHMARK),
+        "min_cells": int(st.session_state.get("min_cells", 200)),
+        "min_de_genes": int(st.session_state.get("min_de", 50)),
+        "skip_benchmark": bool(st.session_state.get("skip_benchmark", False)),
+        "max_rows": int(st.session_state.get("preview_rows", 50)),
+        "include_module_scores": True,
+    }
+    result = _api_post("/api/run/target-card", payload)
+    st.session_state["dataset_id"] = result.get("dataset_id", "")
+    st.cache_data.clear()
+
+
+def _register_upload() -> Dict[str, Any]:
+    uploaded = st.session_state.get("import_file")
+    if uploaded is None:
+        raise RuntimeError("Choose a file to upload.")
+    if getattr(uploaded, "size", 0) and uploaded.size > MAX_UPLOAD_BYTES:
+        raise RuntimeError(f"Uploaded files must be <= {MAX_UPLOAD_BYTES // (1024 * 1024)} MB. Use local path registration for large raw-cell files.")
+    content = uploaded.getvalue()
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise RuntimeError(f"Uploaded files must be <= {MAX_UPLOAD_BYTES // (1024 * 1024)} MB. Use local path registration for large raw-cell files.")
+    payload = {
+        "source_name": st.session_state.get("import_source_name") or uploaded.name,
+        "filename": uploaded.name,
+        "content_base64": base64.b64encode(content).decode("ascii"),
+        "declared_source_type": st.session_state.get("import_declared_type", "auto"),
+        "mode": st.session_state.get("import_mode", "strict"),
+        "notes": st.session_state.get("import_notes", ""),
+    }
+    return _api_post_timeout("/api/imports", payload, timeout=240)
+
+
+def _register_local_path() -> Dict[str, Any]:
+    file_path = st.session_state.get("import_file_path", "").strip()
+    if not file_path:
+        raise RuntimeError("Enter a local file path.")
+    payload = {
+        "source_name": st.session_state.get("path_source_name") or os.path.basename(file_path),
+        "file_path": file_path,
+        "declared_source_type": st.session_state.get("path_declared_type", "auto"),
+        "mode": st.session_state.get("path_import_mode", "strict"),
+        "notes": st.session_state.get("path_import_notes", ""),
+    }
+    return _api_post_timeout("/api/imports", payload, timeout=240)
+
+
+def _render_imports_tab() -> None:
+    st.subheader("Upload / Import Staging")
+    st.caption("Imports are staged first. Approval marks a source as ready for downstream use, but does not merge it into target cards automatically.")
+
+    source_types = ["auto", "target_evidence", "guide_evidence", "external_evidence", "metadata_manifest", "raw_cell_data"]
+    import_cols = st.columns(2)
+    with import_cols[0]:
+        st.markdown("**Upload small table/source**")
+        st.file_uploader("file", key="import_file", type=["csv", "tsv", "txt", "json", "jsonl"])
+        st.text_input("source name", key="import_source_name", placeholder="e.g. external_pubmed_hits")
+        st.selectbox("source type", source_types, key="import_declared_type")
+        st.selectbox("mode", ["strict", "exploratory"], key="import_mode")
+        st.text_area("notes", key="import_notes", height=80)
+        if st.button("Stage uploaded file"):
+            try:
+                result = _register_upload()
+                st.cache_data.clear()
+                st.success(f"staged import_id={result['import_id']}")
+            except Exception as e:
+                st.error(f"Import failed: {e}")
+
+    with import_cols[1]:
+        st.markdown("**Register local large file**")
+        st.caption("Local paths must be under the project root unless GWT_IMPORT_ALLOW_ROOTS is configured on the API server.")
+        st.text_input("local file path", key="import_file_path", placeholder="D:\\data\\sample.assigned_guide.h5ad")
+        st.text_input("source name", key="path_source_name", placeholder="e.g. GWT donor 1 Stim8hr")
+        st.selectbox("source type", source_types, key="path_declared_type")
+        st.selectbox("mode", ["strict", "exploratory"], key="path_import_mode")
+        st.text_area("notes", key="path_import_notes", height=80)
+        if st.button("Stage local path"):
+            try:
+                result = _register_local_path()
+                st.cache_data.clear()
+                st.success(f"staged import_id={result['import_id']}")
+            except Exception as e:
+                st.error(f"Import failed: {e}")
+
+    try:
+        import_df = _imports()
+    except Exception as e:
+        st.error(f"Could not load imports: {e}")
+        return
+
+    st.subheader("Staged sources")
+    if import_df.empty:
+        st.info("No staged imports yet.")
+        return
+
+    display_cols = [
+        "import_id",
+        "created_at",
+        "source_name",
+        "source_type",
+        "route",
+        "merge_status",
+        "mode",
+        "filename",
+    ]
+    display_cols = [c for c in display_cols if c in import_df.columns]
+    st.dataframe(import_df[display_cols], use_container_width=True, hide_index=True)
+
+    selected_import = st.selectbox("Inspect import", import_df["import_id"].tolist())
+    selected_row = import_df[import_df["import_id"] == selected_import].iloc[0].to_dict()
+    schema = selected_row.get("schema_validation", {}) or {}
+    context = selected_row.get("context_match", {}) or {}
+
+    metric_cols = st.columns(4)
+    metric_cols[0].metric("Schema", schema.get("status", "unknown"))
+    metric_cols[1].metric("Context score", context.get("score", "NA"))
+    metric_cols[2].metric("Context tier", context.get("tier", "NA"))
+    metric_cols[3].metric("Route", selected_row.get("route", "NA"))
+
+    detail_cols = st.columns(2)
+    with detail_cols[0]:
+        st.markdown("**Warnings**")
+        warnings = schema.get("warnings", [])
+        if warnings:
+            for warning in warnings:
+                st.write(f"- {warning}")
+        else:
+            st.write("No schema warnings.")
+    with detail_cols[1]:
+        st.markdown("**Context reasons**")
+        reasons = context.get("reasons", [])
+        if reasons:
+            for reason in reasons:
+                st.write(f"- {reason}")
+        else:
+            st.write("No context evidence detected.")
+
+    with st.expander("Import metadata", expanded=False):
+        st.json(selected_row)
+
+    preview_df = _import_preview(selected_import)
+    if not preview_df.empty:
+        st.subheader("Preview")
+        st.dataframe(preview_df, use_container_width=True, hide_index=True)
+
+    merge_status = str(selected_row.get("merge_status", ""))
+    if merge_status == "staged":
+        if st.button("Approve staged table for downstream use"):
+            try:
+                _api_post(f"/api/imports/{selected_import}/approve", {"approved_by": "dashboard_user"})
+                st.cache_data.clear()
+                st.success("Import approved for downstream use.")
+            except Exception as e:
+                st.error(f"Approval failed: {e}")
+    elif merge_status.startswith("approved"):
+        st.success("This import is approved for downstream use.")
+    else:
+        st.warning(f"Approval blocked until review is resolved: {merge_status}")
+
+
+st.set_page_config(page_title="GWT Target Evidence Browser", layout="wide")
+st.markdown(
+    """
+    <style>
+    .stMetric { border: 1px solid #d8dee8; border-radius: 6px; padding: 10px 12px; background: #fbfcfd; }
+    div[data-testid="stDataFrame"] { border: 1px solid #d8dee8; border-radius: 6px; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.title("GWT Target Evidence Browser")
+
+with st.sidebar:
+    st.subheader("Dataset")
+    st.text_input("API base", value=API_BASE, disabled=True)
+    try:
+        dataset_df = _datasets()
+    except Exception:
+        dataset_df = pd.DataFrame()
+
+    dataset_choices = dataset_df["dataset_id"].tolist() if not dataset_df.empty and "dataset_id" in dataset_df.columns else []
+    if dataset_choices:
+        current = st.session_state.get("dataset_id", dataset_choices[0])
+        if current not in dataset_choices:
+            current = dataset_choices[0]
+        selected_dataset = st.selectbox("recent dataset", dataset_choices, index=dataset_choices.index(current))
+        st.session_state["dataset_id"] = selected_dataset
+
+    st.text_input("dataset_id", key="dataset_id")
+
+    with st.expander("Build target cards", expanded=not bool(st.session_state.get("dataset_id"))):
+        st.text_input("DE stats", key="de_stats", value=DEFAULT_DE)
+        st.text_input("guide_kd_efficiency", key="guide_kd", value=DEFAULT_GUIDE)
+        st.text_input("library metadata", key="library_metadata", value=DEFAULT_LIBRARY)
+        st.text_input("clinical benchmark", key="clinical_benchmark", value=DEFAULT_BENCHMARK)
+        st.slider("min_cells", min_value=1, max_value=1000, value=200, key="min_cells")
+        st.slider("min_de_genes", min_value=1, max_value=300, value=50, key="min_de")
+        st.number_input("preview rows", min_value=1, max_value=5000, value=50, key="preview_rows")
+        st.checkbox("skip benchmark mapping", value=False, key="skip_benchmark")
+        if st.button("Run build", type="primary"):
+            try:
+                with st.spinner("Building target cards..."):
+                    _run_job()
+                st.success(f"dataset_id={st.session_state['dataset_id']}")
+            except Exception as e:
+                st.error(f"Run failed: {e}")
+
+dataset_id = st.session_state.get("dataset_id", "").strip()
+if not dataset_id:
+    st.info("Run a build, paste an existing dataset_id in the sidebar, or stage external sources in Imports.")
+    import_only_tab = st.tabs(["Imports"])[0]
+    with import_only_tab:
+        _render_imports_tab()
+    st.stop()
+
+try:
+    opts = _options(dataset_id)
+    summary_payload = _summary(dataset_id, top_n=50)
+except Exception as e:
+    st.error(f"Dataset not available: {e}")
+    st.stop()
+
+summary = summary_payload.get("summary", {})
+tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export"])
+
+with tabs[0]:
+    cols = st.columns(6)
+    for col, key, label in zip(
+        cols,
+        ["n_rows", "n_targets", "n_conditions", "n_grade_3_or_4", "n_replicate_pass", "n_watchlist"],
+        ["Rows", "Targets", "Conditions", "Grade 3-4", "Replicate pass", "Watchlist"],
+    ):
+        col.metric(label, _metric_value(summary, key))
+
+    chart_cols = st.columns(3)
+    with chart_cols[0]:
+        st.subheader("Evidence grade")
+        grade_chart = _count_chart(summary_payload.get("grade_counts", []), "statistical_evidence_grade")
+        if not grade_chart.empty:
+            st.bar_chart(grade_chart)
+    with chart_cols[1]:
+        st.subheader("Condition")
+        condition_chart = _count_chart(summary_payload.get("condition_counts", []), "condition")
+        if not condition_chart.empty:
+            st.bar_chart(condition_chart)
+    with chart_cols[2]:
+        st.subheader("Pathway axis")
+        pathway_chart = _count_chart(summary_payload.get("pathway_counts", []), "pathway_axis")
+        if not pathway_chart.empty:
+            st.bar_chart(pathway_chart)
+
+    st.subheader("Top candidates")
+    top_df = pd.DataFrame(summary_payload.get("top_candidates", []))
+    st.dataframe(top_df, use_container_width=True, hide_index=True)
+
+    st.subheader("Watchlist")
+    watch_df = pd.DataFrame(summary_payload.get("watchlist", []))
+    st.dataframe(watch_df, use_container_width=True, hide_index=True)
+
+with tabs[1]:
+    filter_cols = st.columns([1, 1, 1, 1])
+    condition_options = [""] + opts.get("conditions", [])
+    pathway_options = [""] + opts.get("pathway_axis", [])
+    clinical_options = [""] + opts.get("clinical_axis", [])
+    cap_options = [""] + opts.get("score_cap_reason", [])
+
+    with filter_cols[0]:
+        grade = st.slider("minimum grade", min_value=1, max_value=4, value=2)
+        condition = st.selectbox("condition", condition_options)
+    with filter_cols[1]:
+        pathway = st.selectbox("pathway axis", pathway_options)
+        clinical = st.selectbox("clinical axis", clinical_options)
+    with filter_cols[2]:
+        cap_reason = st.selectbox("score cap reason", cap_options)
+        target_search = st.text_input("target contains", "")
+    with filter_cols[3]:
+        replicate_pass = st.checkbox("replicate pass only", value=False)
+        exclude_offtarget = st.checkbox("exclude off-target", value=True)
+        min_de = st.number_input("min DE genes", min_value=0, max_value=1000, value=50)
+        show_rows = st.number_input("rows", min_value=10, max_value=2000, value=200, step=10)
+
+    params: Dict[str, Any] = {
+        "grade": int(grade),
+        "max_rows": int(show_rows),
+        "min_de_genes": int(min_de),
+    }
+    if condition:
+        params["condition"] = condition
+    if pathway:
+        params["pathway_axis"] = pathway
+    if clinical:
+        params["clinical_axis"] = clinical
+    if cap_reason:
+        params["cap_reason"] = cap_reason
+    if target_search:
+        params["target_search"] = target_search
+    if replicate_pass:
+        params["replicate_pass"] = True
+    if exclude_offtarget:
+        params["off_target"] = False
+
+    df = _targets(dataset_id, params)
+    st.dataframe(df, use_container_width=True, hide_index=True)
+
+    if not df.empty and "target" in df.columns:
+        selected = st.selectbox("Target detail", sorted(df["target"].dropna().unique().tolist()))
+        detail = _target_detail(dataset_id, selected)
+        rows = pd.DataFrame(detail.get("rows", []))
+        summary_row = detail.get("summary", {})
+
+        detail_cols = st.columns(5)
+        detail_cols[0].metric("Best grade", summary_row.get("statistical_evidence_grade", "NA"))
+        detail_cols[1].metric("Cells", summary_row.get("n_cells_target", "NA"))
+        detail_cols[2].metric("DE genes", summary_row.get("n_total_de_genes", "NA"))
+        detail_cols[3].metric("Guides", summary_row.get("n_guides", "NA"))
+        detail_cols[4].metric("Replicate pass", str(summary_row.get("replicate_pass_flag", "NA")))
+
+        st.subheader(f"{selected} across conditions")
+        st.dataframe(rows, use_container_width=True, hide_index=True)
+
+        numeric_view = rows[[c for c in ["condition", "n_total_de_genes", "n_cells_target", "condition_specificity_score"] if c in rows.columns]].copy()
+        if not numeric_view.empty and "condition" in numeric_view.columns:
+            st.bar_chart(numeric_view.set_index("condition"))
+
+        st.subheader("Evidence graph")
+        st.graphviz_chart(_evidence_graph(selected, summary_row))
+
+with tabs[2]:
+    module_df = _modules(dataset_id)
+    clinical_chart = _count_chart(summary_payload.get("clinical_counts", []), "clinical_axis")
+    panel_cols = st.columns(2)
+    with panel_cols[0]:
+        st.subheader("Clinical axis")
+        if not clinical_chart.empty:
+            st.bar_chart(clinical_chart)
+    with panel_cols[1]:
+        st.subheader("Module hits")
+        if module_df.empty:
+            st.info("No module mapping available.")
+        else:
+            module_counts = module_df["module_name"].value_counts().rename_axis("module_name").reset_index(name="n")
+            st.bar_chart(module_counts.set_index("module_name"))
+
+    st.subheader("Module hit table")
+    st.dataframe(module_df, use_container_width=True, hide_index=True)
+
+with tabs[3]:
+    _render_imports_tab()
+
+with tabs[4]:
+    report_top_n = st.slider("report top_n", min_value=10, max_value=500, value=50, step=10)
+    report = _summary(dataset_id, top_n=int(report_top_n))
+    st.write(report.get("summary", {}))
+
+    col_csv, col_json, col_html, col_md = st.columns(4)
+    with col_csv:
+        st.download_button(
+            "CSV",
+            data=_api_download(f"/api/exports/{dataset_id}", params={"fmt": "csv"}),
+            file_name="target_cards.csv",
+            mime="text/csv",
+        )
+    with col_json:
+        st.download_button(
+            "JSON report",
+            data=_api_download(f"/api/reports/{dataset_id}", params={"fmt": "json", "top_n": int(report_top_n)}),
+            file_name="target_report.json",
+            mime="application/json",
+        )
+    with col_html:
+        st.download_button(
+            "HTML report",
+            data=_api_download(f"/api/reports/{dataset_id}", params={"fmt": "html", "top_n": int(report_top_n)}),
+            file_name="target_report.html",
+            mime="text/html",
+        )
+    with col_md:
+        st.download_button(
+            "Markdown report",
+            data=_api_download(f"/api/reports/{dataset_id}", params={"fmt": "md", "top_n": int(report_top_n)}),
+            file_name="target_report.md",
+            mime="text/markdown",
+        )

@@ -1,0 +1,10 @@
+culture_condition,ontarget_effect_category,n
+Rest,no on-target KD,4281
+Rest,on-target KD,6869
+Rest,putative off-target,137
+Stim48hr,no on-target KD,3969
+Stim48hr,on-target KD,7193
+Stim48hr,putative off-target,119
+Stim8hr,no on-target KD,4133
+Stim8hr,on-target KD,7154
+Stim8hr,putative off-target,128

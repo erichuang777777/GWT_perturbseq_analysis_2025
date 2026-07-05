@@ -1,0 +1,24 @@
+category,dataset_or_resource,cell_context,perturbation_or_context,scale_format,accession_or_url,pmid_or_doi,primary_use,download_priority
+main_data,Primary Human CD4+ T Cell Perturb-seq,primary human CD4 T cells,genome-scale CRISPRi Rest Stim8hr Stim48hr,22M cells h5ad/pseudobulk/DE,https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq,DOI:10.64898/2025.12.23.696273v1,main GWT analysis,large_later
+validation,CROP-seq primary human T cells,primary human CD8 T cells,CRISPR KO TCR stimulated/unstimulated,48 sgRNA GEO,GSE119450,NA,T cell activation validation,medium
+validation,Jurkat TCR CROP-seq,Jurkat T cells,TCR signaling regulator KO anti-CD3/CD28,5905 cells CSV/raw,GSE92872,PMID:28099430,TCR pathway validation,small
+immune_tme,Perturb-CITE-seq melanoma/TIL,patient melanoma and autologous TIL,tumor-intrinsic CRISPR perturbations,218k cells RNA+protein,SCP1064,PMID:33649592,checkpoint resistance/IFN-JAK-STAT mapping,medium
+immune_method,Dixit/Parnas Perturb-seq,mouse BMDC and K562,CRISPR KO TFs LPS immune activation,about 200k cells,GSE90063,DOI:10.1016/j.cell.2016.11.038,immune activation GRN benchmark,medium
+benchmark,Adamson UPR Perturb-seq,K562,CRISPRi UPR genes thapsigargin,65k-200k cells,GSE90546,PMID:27984732,canonical perturb-seq benchmark,medium
+benchmark,Norman CRISPRa genetic interactions,K562,single and paired CRISPRa,figshare h5ad/GEO,GSE133344,PMID:31806698,combination/epistasis modeling,medium
+benchmark,Replogle genome-scale Perturb-seq,K562/RPE1,genome-scale CRISPRi,2.5M+ cells,http://gwps.wi.mit.edu; PRJNA831566,PMID:35793669,large model pretraining/benchmark,large_later
+drug,sci-Plex3,A549 K562 MCF7,188 compounds x 4 doses,650k cells h5ad/GEO/CELLxGENE,GSE139944,PMID:31806696,MoA and repurposing signatures,medium
+drug,Open Problems PBMC perturbation,human PBMC,144 small molecules 24h 3 donors,Kaggle/Open Problems,https://openproblems.bio/results/perturbation_prediction,DOI:10.1038/s41587-025-02694-w,immune drug-response benchmark,small_medium
+disease,Smillie UC colon atlas,human colon UC/control,IBD tissue scRNA,366650 cells,SCP259; HCA cd61771b,PMID:31348891,IBD CD4/Th17/Treg disease mapping,medium
+disease,Crohn anti-TNF resistance,ileal Crohn lesions,anti-TNF response tissue scRNA,GEO,GSE134809,PMID:31474370,therapy-response signature mapping,medium
+disease,Longitudinal adalimumab IBD atlas,Crohn/UC gut biopsies,treatment response atlas,about 1M cells,GSE282122,Nature Immunology 2024,TNF therapy stratification,large_later
+disease,AMP RA synovium atlas,RA synovial tissue,CITE-seq/scRNA,314k+ cells,https://immunogenomics.io/ampra2/,NA,RA T cell/fibroblast/myeloid disease mapping,medium
+disease,Lupus PBMC atlas,SLE PBMC,case/control scRNA,1.2M+ PBMC,GSE174188; CELLxGENE collection 436154da,DOI:10.1126/science.abf1970,SLE IFN/CD4 disease mapping,large_later
+disease,Psoriasis skin atlas,human lesional/nonlesional skin,skin scRNA,GSE162183/HCA,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162183,PMID:33958582,IL17/IL23 skin T cell context,medium
+disease,Pan-cancer T cell atlas/TMEAtlas,tumor infiltrating T cells,TME scRNA atlas,large portal,https://tmeatlas.stanford.edu/,NA,immuno-oncology CD4/Treg/exhaustion context,metadata_first
+hub,scPerturb,harmonized perturbation datasets,genetic/drug/protein/epigenomic perturbations,44 datasets h5ad,https://projects.sanderlab.org/scperturb/,PMID:38279009,benchmark and external validation,metadata_first
+hub,PerturBase,single-cell perturbation database,genetic and chemical perturbations,122 datasets 5M cells,https://www.perturbase.cn/,PMID:39377396,cross-dataset perturbation evidence,metadata_first
+hub,PerturbSeq.db,single-cell perturbation database,genetic/chemical scRNA/scATAC perturbations,189 datasets,http://bioailab.com/PerturbSeq.db/,NA,perturbation data discovery,metadata_first
+hub,CELLxGENE Census,curated public single-cell atlas,human/mouse tissue and disease atlas,h5ad/API,https://cellxgene.cziscience.com/,DOI:10.1093/nar/gkae1142,cell context and baseline expression,api_first
+hub,GEO/SRA,raw and processed sequencing,many,FASTQ/matrix,https://www.ncbi.nlm.nih.gov/geo/,NA,provenance/raw reprocessing,as_needed
+hub,Broad Single Cell Portal,study-level scRNA portals,immune/TME/IBD datasets,matrix/metadata,https://singlecell.broadinstitute.org/,NA,disease atlas access,as_needed

@@ -1,0 +1,41 @@
+name: gwt-env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.11
+  - bowtie2
+  - pip:
+    - scanpy
+    - rapids-singlecell
+    - jupyter
+    - git+https://github.com/scverse/anndata.git
+    - git+https://github.com/emdann/pert2state_model.git@main
+    - genomic_features
+    - ibis-framework==8.0.0
+    - scipy
+    - numpy
+    - pandas
+    - openpyxl
+    - mudata
+    - scvi
+    - crispat
+    - pertpy
+    - pydeseq2
+    - formulaic_contrasts
+    - Bio
+    - pysam
+    - gffutils
+    - pyfaidx
+    - matplotlib
+    - seaborn
+    - scikit-learn
+    - statsmodels
+    - requests
+    - pyyaml
+    - tqdm
+    - xarray
+    - dask
+    - adjustText
+    - pyensembl

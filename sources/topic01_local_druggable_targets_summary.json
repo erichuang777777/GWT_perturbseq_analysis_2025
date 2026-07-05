@@ -1,0 +1,26 @@
+{
+  "n_de_rows": 33983,
+  "n_unique_targets": 11526,
+  "n_druggable_class_targets_in_DE": 1014,
+  "n_strong_rows": 2174,
+  "n_strong_targets": 1269,
+  "n_strong_druggable_targets": 78,
+  "class_target_counts_in_DE": {
+    "kinase": 242,
+    "gpcr": 125,
+    "ion_channel": 100,
+    "cytokine_receptor": 84,
+    "cytokine": 129,
+    "nuclear_receptor": 46,
+    "transporter": 308
+  },
+  "class_target_counts_strong": {
+    "kinase": 30,
+    "gpcr": 5,
+    "ion_channel": 5,
+    "cytokine_receptor": 9,
+    "cytokine": 1,
+    "nuclear_receptor": 4,
+    "transporter": 25
+  }
+}

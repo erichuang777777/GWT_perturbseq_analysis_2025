@@ -1,0 +1,162 @@
+PilotD2Redo:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/PilotD2Redo/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.PilotD2Redo.csv
+    sample_id_mapping:
+
+PilotD2Redo_Lane2:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/PilotD2Redo_Lane2/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.PilotD2Redo_Lane2.csv
+    sample_id_mapping:
+
+PilotD2Redo_Lane2_Ultima:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/PilotD2Redo_Lane2_Ultima/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.PilotD2Redo_Lane2_Ultima.csv
+    sample_id_mapping:
+        PilotD2Redo_Day7: PilotD2Redo_Day7_Lane2_Ultima
+        PilotD2Redo_Rest: PilotD2Redo_Rest_Lane2_Ultima
+        PilotD2Redo_Restim6hr: PilotD2Redo_Restim6hr_Lane2_Ultima
+        PilotD2Redo_Restim24hr: PilotD2Redo_Restim24hr_Lane2_Ultima
+
+
+CD4iR1_Psomagen:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CD4iR1_Psomagen/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CD4iR1_Psomagen.csv
+    lane_ids:
+      - CD4i_R1L01
+      - CD4i_R1L02
+      - CD4i_R1L03
+      - CD4i_R1L04
+      - CD4i_R1L05
+      - CD4i_R1L06
+      - CD4i_R1L07
+      - CD4i_R1L08
+      - CD4i_R1L09
+      - CD4i_R1L10
+      - CD4i_R1L11
+      - CD4i_R1L13
+      - CD4i_R1L14
+      - CD4i_R1L15
+      - CD4i_R1L16
+      - CD4i_R1L17
+      - CD4i_R1L18
+      - CD4i_R1L19
+      - CD4i_R1L20
+      - CD4i_R1L21
+      - CD4i_R1L22
+      - CD4i_R1L12
+      - CD4i_R1L23
+    sample_id_mapping:
+        CD4i_R1_D1_Rest: CD4i_R1_D1_Rest_CD4i_R1_Ultima
+        CD4i_R1_D2_Rest: CD4i_R1_D2_Rest_CD4i_R1_Ultima
+        CD4i_R1_D1_Stim8hr: CD4i_R1_D1_Stim8hr_CD4i_R1_Ultima
+        CD4i_R1_D2_Stim8hr: CD4i_R1_D2_Stim8hr_CD4i_R1_Ultima
+
+
+CD4iR2_Psomagen:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CD4iR2_Psomagen/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CD4iR2_Psomagen.csv
+    lane_ids:
+      - CD4i_R2L01
+      - CD4i_R2L02
+      - CD4i_R2L03
+      - CD4i_R2L04
+      - CD4i_R2L05
+      - CD4i_R2L06
+      - CD4i_R2L07
+      - CD4i_R2L08
+      - CD4i_R2L09
+      - CD4i_R2L10
+      - CD4i_R2L11
+      - CD4i_R2L13
+      - CD4i_R2L14
+      - CD4i_R2L15
+      - CD4i_R2L16
+      - CD4i_R2L17
+      - CD4i_R2L18
+      - CD4i_R2L19
+      - CD4i_R2L20
+      - CD4i_R2L21
+      - CD4i_R2L22
+      - CD4i_R2L12
+      - CD4i_R2L23
+      - CD4i_R2L24
+      - CD4i_R2L25
+      - CD4i_R2L26
+      - CD4i_R2L27
+      - CD4i_R2L28
+      - CD4i_R2L29
+      - CD4i_R2L30
+      - CD4i_R2L31
+      - CD4i_R2L32
+      - CD4i_R2L33
+      - CD4i_R2L34
+      - CD4i_R2L35
+      - CD4i_R2L36
+      - CD4i_R2L37
+      - CD4i_R2L38
+      - CD4i_R2L39
+      - CD4i_R2L40
+      - CD4i_R2L41
+      - CD4i_R2L42
+      - CD4i_R2L43
+      - CD4i_R2L44
+      - CD4i_R2L45
+      - CD4i_R2L46
+      - CD4i_R2L47
+      - CD4i_R2L48
+    sample_id_mapping:
+        CD4i_R2_D3_Rest: CD4i_R2_D3_Rest_CD4i_R2_Ultima
+        CD4i_R2_D4_Rest: CD4i_R2_D4_Rest_CD4i_R2_Ultima
+        CD4i_R2_D3_Stim8hr: CD4i_R2_D3_Stim8hr_CD4i_R2_Ultima
+        CD4i_R2_D4_Stim8hr: CD4i_R2_D4_Stim8hr_CD4i_R2_Ultima
+        CD4i_R2_D1_Stim48hr: CD4i_R2_D1_Stim48hr_CD4i_R2_Ultima
+        CD4i_R2_D2_Stim48hr: CD4i_R2_D2_Stim48hr_CD4i_R2_Ultima
+        CD4i_R2_D3_Stim48hr: CD4i_R2_D3_Stim48hr_CD4i_R2_Ultima
+        CD4i_R2_D4_Stim48hr: CD4i_R2_D4_Stim48hr_CD4i_R2_Ultima
+
+CRiCD4_Run1_Illumina:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CRiCD4_Run1_Illumina/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CRiCD4_Run1_Illumina.csv
+    lane_ids:
+    - lane13
+    - lane21
+    - lane5
+    sample_id_mapping:
+        CRiCD4IL2D1_Rest: CRiCD4IL2D1_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D1_Stim8hr: CRiCD4IL2D1_Stim8hr_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Rest: CRiCD4IL2D2_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Stim8hr: CRiCD4IL2D2_Stim8hr_CRiCD4IL2_Run1_Illumina
+
+
+CRiCD4_Run1_Illumina_lane21:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CRiCD4_Run1_Illumina_lane21/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CRiCD4_Run1_Illumina.csv
+    sample_id_mapping:
+        CRiCD4IL2D1_Rest: CRiCD4IL2D1_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D1_Stim8hr: CRiCD4IL2D1_Stim8hr_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Rest: CRiCD4IL2D2_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Stim8hr: CRiCD4IL2D2_Stim8hr_CRiCD4IL2_Run1_Illumina
+
+CRiCD4_Run1_Illumina_lane5:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CRiCD4_Run1_Illumina_lane5/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CRiCD4_Run1_Illumina.csv
+    sample_id_mapping:
+        CRiCD4IL2D1_Rest: CRiCD4IL2D1_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D1_Stim8hr: CRiCD4IL2D1_Stim8hr_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Rest: CRiCD4IL2D2_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Stim8hr: CRiCD4IL2D2_Stim8hr_CRiCD4IL2_Run1_Illumina
+
+CRiCD4_Run1_Illumina_lane13:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/CRiCD4_Run1_Illumina_lane13/
+    sample_metadata: /oak/stanford/groups/pritch/users/emma/data/GWT/sample_metadata/GWT_sample_metadata.CRiCD4_Run1_Illumina.csv
+    sample_id_mapping:
+        CRiCD4IL2D1_Rest: CRiCD4IL2D1_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D1_Stim8hr: CRiCD4IL2D1_Stim8hr_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Rest: CRiCD4IL2D2_Rest_CRiCD4IL2_Run1_Illumina
+        CRiCD4IL2D2_Stim8hr: CRiCD4IL2D2_Stim8hr_CRiCD4IL2_Run1_Illumina
+
+Pilot:
+    datadir: /oak/stanford/groups/pritch/users/emma/data/GWT/TcellsGW_pilot/
+    sample_metadata: 
+    sample_id_mapping:
+

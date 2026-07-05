@@ -1,0 +1,202 @@
+﻿[
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "27984732",
+        "title":  "Perturb-Seq: Dissecting Molecular Circuits with Scalable Single-Cell RNA Profiling of Pooled Genetic Screens.",
+        "journal":  "Cell",
+        "pubdate":  "2016 Dec 15",
+        "doi":  "10.1016/j.cell.2016.11.038"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "27984733",
+        "title":  "A Multiplexed Single-Cell CRISPR Screening Platform Enables Systematic Dissection of the Unfolded Protein Response.",
+        "journal":  "Cell",
+        "pubdate":  "2016 Dec 15",
+        "doi":  "10.1016/j.cell.2016.11.048"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "35688146",
+        "title":  "Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq.",
+        "journal":  "Cell",
+        "pubdate":  "2022 Jul 7",
+        "doi":  "10.1016/j.cell.2022.05.013"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "32231336",
+        "title":  "Combinatorial single-cell CRISPR screens by direct guide RNA capture and targeted sequencing.",
+        "journal":  "Nature biotechnology",
+        "pubdate":  "2020 Aug",
+        "doi":  "10.1038/s41587-020-0470-y"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "31422865",
+        "title":  "CRISPR Interference-Based Platform for Multimodal Genetic Screens in Human iPSC-Derived Neurons.",
+        "journal":  "Neuron",
+        "pubdate":  "2019 Oct 23",
+        "doi":  "10.1016/j.neuron.2019.07.014"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "38772369",
+        "title":  "Massively parallel in vivo Perturb-seq reveals cell-type-specific transcriptional networks in cortical development.",
+        "journal":  "Cell",
+        "pubdate":  "2024 Jun 20",
+        "doi":  "10.1016/j.cell.2024.04.050"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "32483332",
+        "title":  "Targeted Perturb-seq enables genome-scale genetic screens in single cells.",
+        "journal":  "Nature methods",
+        "pubdate":  "2020 Jun",
+        "doi":  "10.1038/s41592-020-0837-5"
+    },
+    {
+        "query":  "Perturb-seq single-cell CRISPR screen",
+        "pmid":  "41544628",
+        "title":  "Single-cell screens identify ADAM12 as a fibroblast checkpoint impeding anti-tumor immunity.",
+        "journal":  "Cancer cell",
+        "pubdate":  "2026 Feb 9",
+        "doi":  "10.1016/j.ccell.2025.12.018"
+    },
+    {
+        "query":  "SCEPTRE single-cell CRISPR screen",
+        "pmid":  "34930414",
+        "title":  "SCEPTRE improves calibration and sensitivity in single-cell CRISPR screen analysis.",
+        "journal":  "Genome biology",
+        "pubdate":  "2021 Dec 20",
+        "doi":  "10.1186/s13059-021-02545-2"
+    },
+    {
+        "query":  "SCEPTRE single-cell CRISPR screen",
+        "pmid":  "38760839",
+        "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+        "journal":  "Genome biology",
+        "pubdate":  "2024 May 17",
+        "doi":  "10.1186/s13059-024-03254-2"
+    },
+    {
+        "query":  "SCEPTRE single-cell CRISPR screen",
+        "pmid":  "42229614",
+        "title":  "Enhancing statistical accuracy in gene perturbation studies.",
+        "journal":  "Bio Systems",
+        "pubdate":  "2026 Jun 1",
+        "doi":  "10.1016/j.biosystems.2026.105819"
+    },
+    {
+        "query":  "SCEPTRE single-cell CRISPR screen",
+        "pmid":  "38659821",
+        "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+        "journal":  "bioRxiv : the preprint server for biology",
+        "pubdate":  "2024 Apr 18",
+        "doi":  "10.1101/2023.05.15.540875"
+    },
+    {
+        "query":  "Mixscape single-cell CRISPR screen",
+        "pmid":  "34930414",
+        "title":  "SCEPTRE improves calibration and sensitivity in single-cell CRISPR screen analysis.",
+        "journal":  "Genome biology",
+        "pubdate":  "2021 Dec 20",
+        "doi":  "10.1186/s13059-021-02545-2"
+    },
+    {
+        "query":  "Mixscape single-cell CRISPR screen",
+        "pmid":  "38760839",
+        "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+        "journal":  "Genome biology",
+        "pubdate":  "2024 May 17",
+        "doi":  "10.1186/s13059-024-03254-2"
+    },
+    {
+        "query":  "Mixscape single-cell CRISPR screen",
+        "pmid":  "42229614",
+        "title":  "Enhancing statistical accuracy in gene perturbation studies.",
+        "journal":  "Bio Systems",
+        "pubdate":  "2026 Jun 1",
+        "doi":  "10.1016/j.biosystems.2026.105819"
+    },
+    {
+        "query":  "Mixscape single-cell CRISPR screen",
+        "pmid":  "38659821",
+        "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+        "journal":  "bioRxiv : the preprint server for biology",
+        "pubdate":  "2024 Apr 18",
+        "doi":  "10.1101/2023.05.15.540875"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "31948481",
+        "title":  "A benchmark of batch-effect correction methods for single-cell RNA sequencing data.",
+        "journal":  "Genome biology",
+        "pubdate":  "2020 Jan 16",
+        "doi":  "10.1186/s13059-019-1850-9"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "37961672",
+        "title":  "Integrating single-cell RNA-seq datasets with substantial batch effects.",
+        "journal":  "bioRxiv : the preprint server for biology",
+        "pubdate":  "2024 Feb 10",
+        "doi":  "10.1101/2023.11.03.565463"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "33839756",
+        "title":  "iSMNN: batch effect correction for single-cell RNA-seq data via iterative supervised mutual nearest neighbor refinement.",
+        "journal":  "Briefings in bioinformatics",
+        "pubdate":  "2021 Sep 2",
+        "doi":  "10.1093/bib/bbab122"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "41168710",
+        "title":  "Integrating single-cell RNA-seq datasets with substantial batch effects.",
+        "journal":  "BMC genomics",
+        "pubdate":  "2025 Oct 30",
+        "doi":  "10.1186/s12864-025-12126-3"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "36944632",
+        "title":  "Benchmarking integration of single-cell differential expression.",
+        "journal":  "Nature communications",
+        "pubdate":  "2023 Mar 21",
+        "doi":  "10.1038/s41467-023-37126-3"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "38287014",
+        "title":  "Semi-supervised integration of single-cell transcriptomics data.",
+        "journal":  "Nature communications",
+        "pubdate":  "2024 Jan 29",
+        "doi":  "10.1038/s41467-024-45240-z"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "40537825",
+        "title":  "scExtract: leveraging large language models for fully automated single-cell RNA-seq data annotation and prior-informed multi-dataset integration.",
+        "journal":  "Genome biology",
+        "pubdate":  "2025 Jun 19",
+        "doi":  "10.1186/s13059-025-03639-x"
+    },
+    {
+        "query":  "single-cell RNA-seq batch correction integration benchmark",
+        "pmid":  "34903266",
+        "title":  "CIDER: an interpretable meta-clustering framework for single-cell RNA-seq data integration and evaluation.",
+        "journal":  "Genome biology",
+        "pubdate":  "2021 Dec 13",
+        "doi":  "10.1186/s13059-021-02561-2"
+    },
+    {
+        "query":  "Perturb-CITE-seq single-cell CRISPR",
+        "pmid":  "33649592",
+        "title":  "Multimodal pooled Perturb-CITE-seq screens in patient models define mechanisms of cancer immune evasion.",
+        "journal":  "Nature genetics",
+        "pubdate":  "2021 Mar",
+        "doi":  "10.1038/s41588-021-00779-1"
+    }
+]

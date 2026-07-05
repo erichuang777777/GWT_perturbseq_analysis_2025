@@ -1,0 +1,26 @@
+category,tool_or_platform,primary_use,local_csv_ready,needs_cell_level_h5ad,external_api_or_data,representative_source
+Perturb-seq analysis,pertpy,scverse perturbation analysis framework,partial,yes,no,https://www.nature.com/articles/s41592-025-02909-7
+Perturb-seq analysis,Mixscape/Mixscale,identify perturbed escaped cells and perturbation strength,no,yes,no,https://satijalab.org/seurat/articles/mixscape_vignette
+Perturb-seq analysis,SCEPTRE,calibrated perturbation-gene association testing,no,yes,no,PMID:34930414
+Perturb-seq analysis,scMAGeCK,link sgRNA/genotype to expression phenotypes,partial,yes,no,PMID:31980032
+Perturb-seq analysis,MUSIC,topic-model perturbation effects,no,yes,no,PMID:31110232
+Perturb-seq analysis,GSFA,guided sparse factor analysis for biological processes,no,yes,no,PMID:37770710
+Prediction model,GEARS,predict genetic perturbation outcomes,no,yes,no,PMID:37592036
+Prediction model,CPA,predict complex perturbation and dose response,no,yes,no,PMID:37154091
+Prediction model,scGen,predict single-cell perturbation responses,no,yes,no,PMID:31363220
+Foundation model,Geneformer,in silico perturbation and network biology,optional,yes,no,PMID:37258680
+Foundation model,scGPT,single-cell foundation model embeddings and prediction,optional,yes,no,https://www.nature.com/articles/s41592-024-02201-0
+Pathway/TF,decoupleR,TF and pathway activity from signatures,yes,optional,no,PMID:36699385
+Pathway/TF,PROGENy,pathway activity inference from expression signatures,yes,optional,no,https://saezlab.github.io/progeny/
+Pathway/TF,DoRothEA,TF activity inference from regulon prior,yes,optional,no,https://saezlab.github.io/dorothea/
+Signature scoring,UCell,rank-based gene set scoring,no,yes,no,PMID:34285779
+Regulatory network,SCENIC/pySCENIC,regulon inference and TF activity,no,yes,no,https://github.com/aertslab/SCENIC
+Regulatory network,CellOracle,GRN inference and in silico perturbation,no,yes,no,PMID:36755098
+Drug discovery,Open Targets,target-disease-drug-safety evidence,yes,no,yes,PMID:33196847
+Drug discovery,LINCS/CMap/CLUE,drug and genetic perturbation signature matching,yes,no,yes,PMID:29195078
+Drug discovery,DepMap,cancer dependency and essentiality evidence,yes,no,yes,https://depmap.org/
+Single-cell atlas,CELLxGENE Census,baseline expression in immune/disease cells,yes,no,yes,https://cellxgene.cziscience.com/
+Perturbation database,PerturBase,cross-dataset perturbation evidence,yes,no,yes,PMID:39377396
+Immune resource,DICE,immune expression and eQTL context,yes,no,yes,PMID:30449622
+Immune oncology,TISCH/TISCH2,tumor immune single-cell states,yes,no,yes,DOI:10.1093/nar/gkaa1020
+Immune signature,ImmuCellAI,T-cell subset signature reference,yes,optional,yes,DOI:10.1002/advs.201902880

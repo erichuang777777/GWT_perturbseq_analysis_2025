@@ -1,0 +1,13 @@
+culture_condition,n_total_genes_category,n
+Rest,1 DE gene,2504
+Rest,2-10 DE genes,4436
+Rest,>10 DE genes,2459
+Rest,no effect,1888
+Stim48hr,1 DE gene,2441
+Stim48hr,2-10 DE genes,4764
+Stim48hr,>10 DE genes,2481
+Stim48hr,no effect,1595
+Stim8hr,1 DE gene,2475
+Stim8hr,2-10 DE genes,4567
+Stim8hr,>10 DE genes,2630
+Stim8hr,no effect,1743

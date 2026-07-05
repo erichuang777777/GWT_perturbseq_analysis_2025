@@ -1,0 +1,19 @@
+{
+  "dataset_id": "e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137",
+  "status": "completed",
+  "params": {
+    "de_stats": "metadata/suppl_tables/DE_stats.suppl_table.csv",
+    "guide_kd": "metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv",
+    "library_metadata": "metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv",
+    "clinical_benchmark": "D:\\GWT_perturbseq_analysis_2025-master\\GWT_perturbseq_analysis_2025-master\\sources\\topic05_successful_drug_benchmarks.csv",
+    "min_cells": 200,
+    "min_de_genes": 50,
+    "skip_benchmark": true,
+    "include_module_scores": true,
+    "max_rows": 5
+  },
+  "rows": 33983,
+  "output": "D:\\GWT_perturbseq_analysis_2025-master\\GWT_perturbseq_analysis_2025-master\\sources\\target_tool_cache\\e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137\\target_cards.csv",
+  "module_scores_enabled": true,
+  "preview_limit": 5
+}

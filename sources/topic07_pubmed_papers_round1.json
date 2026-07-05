@@ -1,0 +1,363 @@
+﻿{
+    "perturb_seq_original":  {
+                                 "query":  "Perturb-seq dissecting molecular circuits pooled genetic screens single-cell RNA sequencing",
+                                 "ids":  [
+                                             "27984732"
+                                         ],
+                                 "papers":  [
+                                                {
+                                                    "pmid":  "27984732",
+                                                    "title":  "Perturb-Seq: Dissecting Molecular Circuits with Scalable Single-Cell RNA Profiling of Pooled Genetic Screens.",
+                                                    "journal":  "Cell",
+                                                    "pubdate":  "2016 Dec 15",
+                                                    "doi":  "10.1016/j.cell.2016.11.038",
+                                                    "pmc":  "PMC5181115"
+                                                }
+                                            ]
+                             },
+    "crop_seq_original":  {
+                              "query":  "CROP-seq pooled CRISPR screens single-cell transcriptome regulation",
+                              "ids":  [
+                                          "41826830"
+                                      ],
+                              "papers":  [
+                                             {
+                                                 "pmid":  "41826830",
+                                                 "title":  "Insights from pooled CRISPRi single-cell screens in K562 cells reveal gene functions, regulatory networks, and highlight opportunities and limitations.",
+                                                 "journal":  "BMC genomics",
+                                                 "pubdate":  "2026 Mar 13",
+                                                 "doi":  "10.1186/s12864-026-12667-1",
+                                                 "pmc":  "PMC13097927"
+                                             }
+                                         ]
+                          },
+    "crispr_screen_scrna_original":  {
+                                         "query":  "CRISPR screening single-cell RNA-seq genome scale Perturb-seq Dixit Adamson",
+                                         "ids":  [
+                                                     "27984732",
+                                                     "27984733"
+                                                 ],
+                                         "papers":  [
+                                                        {
+                                                            "pmid":  "27984732",
+                                                            "title":  "Perturb-Seq: Dissecting Molecular Circuits with Scalable Single-Cell RNA Profiling of Pooled Genetic Screens.",
+                                                            "journal":  "Cell",
+                                                            "pubdate":  "2016 Dec 15",
+                                                            "doi":  "10.1016/j.cell.2016.11.038",
+                                                            "pmc":  "PMC5181115"
+                                                        },
+                                                        {
+                                                            "pmid":  "27984733",
+                                                            "title":  "A Multiplexed Single-Cell CRISPR Screening Platform Enables Systematic Dissection of the Unfolded Protein Response.",
+                                                            "journal":  "Cell",
+                                                            "pubdate":  "2016 Dec 15",
+                                                            "doi":  "10.1016/j.cell.2016.11.048",
+                                                            "pmc":  "PMC5315571"
+                                                        }
+                                                    ]
+                                     },
+    "jurkat_tcr_cropseq":  {
+                               "query":  "Jurkat TCR activation CROP-seq GSE92872",
+                               "ids":  [
+
+                                       ],
+                               "papers":  [
+
+                                          ]
+                           },
+    "primary_human_t_cell_cropseq":  {
+                                         "query":  "primary human T cell CROP-seq CRISPR GSE119450",
+                                         "ids":  [
+
+                                                 ],
+                                         "papers":  [
+
+                                                    ]
+                                     },
+    "immune_checkpoint_perturbseq_mixscape":  {
+                                                  "query":  "single-cell perturb-seq immune checkpoint regulators Mixscape Nature Genetics 2021",
+                                                  "ids":  [
+
+                                                          ],
+                                                  "papers":  [
+
+                                                             ]
+                                              },
+    "perturb_citeseq":  {
+                            "query":  "Perturb-CITE-seq melanoma tumor infiltrating lymphocytes single-cell perturbation",
+                            "ids":  [
+                                        "33649592"
+                                    ],
+                            "papers":  [
+                                           {
+                                               "pmid":  "33649592",
+                                               "title":  "Multimodal pooled Perturb-CITE-seq screens in patient models define mechanisms of cancer immune evasion.",
+                                               "journal":  "Nature genetics",
+                                               "pubdate":  "2021 Mar",
+                                               "doi":  "10.1038/s41588-021-00779-1",
+                                               "pmc":  "PMC8376399"
+                                           }
+                                       ]
+                        },
+    "eccite_seq":  {
+                       "query":  "ECCITE-seq CRISPR perturbations multimodal single-cell RNA protein",
+                       "ids":  [
+                                   "31011186"
+                               ],
+                       "papers":  [
+                                      {
+                                          "pmid":  "31011186",
+                                          "title":  "Multiplexed detection of proteins, transcriptomes, clonotypes and CRISPR perturbations in single cells.",
+                                          "journal":  "Nature methods",
+                                          "pubdate":  "2019 May",
+                                          "doi":  "10.1038/s41592-019-0392-0",
+                                          "pmc":  "PMC6557128"
+                                      }
+                                  ]
+                   },
+    "sci_plex3":  {
+                      "query":  "sci-Plex3 single-cell chemical perturbation multiplexed",
+                      "ids":  [
+
+                              ],
+                      "papers":  [
+
+                                 ]
+                  },
+    "replogle_genome_scale":  {
+                                  "query":  "Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq Replogle",
+                                  "ids":  [
+                                              "35688146"
+                                          ],
+                                  "papers":  [
+                                                 {
+                                                     "pmid":  "35688146",
+                                                     "title":  "Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq.",
+                                                     "journal":  "Cell",
+                                                     "pubdate":  "2022 Jul 7",
+                                                     "doi":  "10.1016/j.cell.2022.05.013",
+                                                     "pmc":  "PMC9380471"
+                                                 }
+                                             ]
+                              },
+    "norman_combinatorial":  {
+                                 "query":  "Exploring genetic interaction manifolds constructed from rich single-cell phenotypes Norman Perturb-seq",
+                                 "ids":  [
+                                             "31395745"
+                                         ],
+                                 "papers":  [
+                                                {
+                                                    "pmid":  "31395745",
+                                                    "title":  "Exploring genetic interaction manifolds constructed from rich single-cell phenotypes.",
+                                                    "journal":  "Science (New York, N.Y.)",
+                                                    "pubdate":  "2019 Aug 23",
+                                                    "doi":  "10.1126/science.aax4438",
+                                                    "pmc":  "PMC6746554"
+                                                }
+                                            ]
+                             },
+    "papalexi":  {
+                     "query":  "Characterizing the molecular regulation of inhibitory immune checkpoints with multimodal single-cell screens",
+                     "ids":  [
+                                 "33649593"
+                             ],
+                     "papers":  [
+                                    {
+                                        "pmid":  "33649593",
+                                        "title":  "Characterizing the molecular regulation of inhibitory immune checkpoints with multimodal single-cell screens.",
+                                        "journal":  "Nature genetics",
+                                        "pubdate":  "2021 Mar",
+                                        "doi":  "10.1038/s41588-021-00778-2",
+                                        "pmc":  "PMC8011839"
+                                    }
+                                ]
+                 },
+    "sceptre":  {
+                    "query":  "SCEPTRE single-cell CRISPR screen association testing",
+                    "ids":  [
+                                "38760839",
+                                "38659821",
+                                "42229614"
+                            ],
+                    "papers":  [
+                                   {
+                                       "pmid":  "38760839",
+                                       "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+                                       "journal":  "Genome biology",
+                                       "pubdate":  "2024 May 17",
+                                       "doi":  "10.1186/s13059-024-03254-2",
+                                       "pmc":  "PMC11100084"
+                                   },
+                                   {
+                                       "pmid":  "38659821",
+                                       "title":  "Robust differential expression testing for single-cell CRISPR screens at low multiplicity of infection.",
+                                       "journal":  "bioRxiv : the preprint server for biology",
+                                       "pubdate":  "2024 Apr 18",
+                                       "doi":  "10.1101/2023.05.15.540875",
+                                       "pmc":  "PMC11042176"
+                                   },
+                                   {
+                                       "pmid":  "42229614",
+                                       "title":  "Enhancing statistical accuracy in gene perturbation studies.",
+                                       "journal":  "Bio Systems",
+                                       "pubdate":  "2026 Jun 1",
+                                       "doi":  "10.1016/j.biosystems.2026.105819",
+                                       "pmc":  null
+                                   }
+                               ]
+                },
+    "scmageck":  {
+                     "query":  "scMAGeCK robust identification perturbation targets single-cell CRISPR screen",
+                     "ids":  [
+
+                             ],
+                     "papers":  [
+
+                                ]
+                 },
+    "mixscape":  {
+                     "query":  "Mixscape perturbation single-cell CRISPR screens non-perturbed cells",
+                     "ids":  [
+
+                             ],
+                     "papers":  [
+
+                                ]
+                 },
+    "pertpy":  {
+                   "query":  "pertpy end-to-end framework perturbation analysis single-cell",
+                   "ids":  [
+                               "41476114"
+                           ],
+                   "papers":  [
+                                  {
+                                      "pmid":  "41476114",
+                                      "title":  "Pertpy: an end-to-end framework for perturbation analysis.",
+                                      "journal":  "Nature methods",
+                                      "pubdate":  "2026 Feb",
+                                      "doi":  "10.1038/s41592-025-02909-7",
+                                      "pmc":  "PMC12904789"
+                                  }
+                              ]
+               },
+    "scperturb":  {
+                      "query":  "scPerturb harmonized single-cell perturbation data",
+                      "ids":  [
+                                  "38279009"
+                              ],
+                      "papers":  [
+                                     {
+                                         "pmid":  "38279009",
+                                         "title":  "scPerturb: harmonized single-cell perturbation data.",
+                                         "journal":  "Nature methods",
+                                         "pubdate":  "2024 Mar",
+                                         "doi":  "10.1038/s41592-023-02144-y",
+                                         "pmc":  "PMC12220817"
+                                     }
+                                 ]
+                  },
+    "perturbase":  {
+                       "query":  "PerturBase single-cell perturbation database",
+                       "ids":  [
+                                   "39377396"
+                               ],
+                       "papers":  [
+                                      {
+                                          "pmid":  "39377396",
+                                          "title":  "PerturBase: a comprehensive database for single-cell perturbation data analysis and visualization.",
+                                          "journal":  "Nucleic acids research",
+                                          "pubdate":  "2025 Jan 6",
+                                          "doi":  "10.1093/nar/gkae858",
+                                          "pmc":  "PMC11701531"
+                                      }
+                                  ]
+                   },
+    "perturbdb":  {
+                      "query":  "PerturbDB genome-scale Perturb-seq database",
+                      "ids":  [
+
+                              ],
+                      "papers":  [
+
+                                 ]
+                  },
+    "perturbseqdb":  {
+                         "query":  "PerturbSeq.db single-cell perturbation database",
+                         "ids":  [
+                                     "40695276",
+                                     "32690972",
+                                     "35239393",
+                                     "40381983",
+                                     "38566100",
+                                     "41923163",
+                                     "39377396",
+                                     "32541867"
+                                 ],
+                         "papers":  [
+                                        {
+                                            "pmid":  "40695276",
+                                            "title":  "Cell-type-directed network-correcting combination therapy for Alzheimer\u0027s disease.",
+                                            "journal":  "Cell",
+                                            "pubdate":  "2025 Oct 2",
+                                            "doi":  "10.1016/j.cell.2025.06.035",
+                                            "pmc":  "PMC12313259"
+                                        },
+                                        {
+                                            "pmid":  "32690972",
+                                            "title":  "Cell type prioritization in single-cell data.",
+                                            "journal":  "Nature biotechnology",
+                                            "pubdate":  "2021 Jan",
+                                            "doi":  "10.1038/s41587-020-0605-1",
+                                            "pmc":  "PMC7610525"
+                                        },
+                                        {
+                                            "pmid":  "35239393",
+                                            "title":  "Fly Cell Atlas: A single-nucleus transcriptomic atlas of the adult fruit fly.",
+                                            "journal":  "Science (New York, N.Y.)",
+                                            "pubdate":  "2022 Mar 4",
+                                            "doi":  "10.1126/science.abk2432",
+                                            "pmc":  "PMC8944923"
+                                        },
+                                        {
+                                            "pmid":  "40381983",
+                                            "title":  "PerturbSeq.db: An Integrated Repository for Comprehensive Analysis of Single-cell Perturbation Data.",
+                                            "journal":  "Journal of molecular biology",
+                                            "pubdate":  "2025 Sep 1",
+                                            "doi":  "10.1016/j.jmb.2025.169209",
+                                            "pmc":  null
+                                        },
+                                        {
+                                            "pmid":  "38566100",
+                                            "title":  "Single cell analysis reveals the roles and regulatory mechanisms of type-I interferons in Parkinson\u0027s disease.",
+                                            "journal":  "Cell communication and signaling : CCS",
+                                            "pubdate":  "2024 Apr 2",
+                                            "doi":  "10.1186/s12964-024-01590-1",
+                                            "pmc":  "PMC10985960"
+                                        },
+                                        {
+                                            "pmid":  "41923163",
+                                            "title":  "Oxidative stress reprograms benign prostatic hyperplasia microenvironments: insights from integrative multi-omics and machine learning.",
+                                            "journal":  "Journal of translational medicine",
+                                            "pubdate":  "2026 Apr 1",
+                                            "doi":  "10.1186/s12967-026-08055-8",
+                                            "pmc":  "PMC13169760"
+                                        },
+                                        {
+                                            "pmid":  "39377396",
+                                            "title":  "PerturBase: a comprehensive database for single-cell perturbation data analysis and visualization.",
+                                            "journal":  "Nucleic acids research",
+                                            "pubdate":  "2025 Jan 6",
+                                            "doi":  "10.1093/nar/gkae858",
+                                            "pmc":  "PMC11701531"
+                                        },
+                                        {
+                                            "pmid":  "32541867",
+                                            "title":  "Reconstruction of cell spatial organization from single-cell RNA sequencing data based on ligand-receptor mediated self-assembly.",
+                                            "journal":  "Cell research",
+                                            "pubdate":  "2020 Sep",
+                                            "doi":  "10.1038/s41422-020-0353-2",
+                                            "pmc":  "PMC7608415"
+                                        }
+                                    ]
+                     }
+}

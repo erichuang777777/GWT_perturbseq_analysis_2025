@@ -1,0 +1,19 @@
+field,definition,primary_sources,gwt_direct_support,score_or_rule
+target_id,Gene symbol or Ensembl ID,GWT perturbation annotation; Ensembl,yes,identifier
+disease_context,Indication or disease program such as RA IBD SLE MS cancer immunity,User-defined; Open Targets disease ontology,partial,required for target card
+cd4_cell_state,Affected CD4 state or subset such as Treg Th1 Th17 Tfh exhausted activated,GWT clusters; marker genes,yes,score evidence context
+perturbation_effect_size,Effect size on disease-relevant CD4 state module or signature,GWT Perturb-seq output,yes,0-5 biology_causality_score
+effect_direction,Therapeutic direction: inhibit activate degrade block ligand restore or uncertain,GWT plus biology interpretation,partial,uncertain direction caps call at validate
+biology_causality_score,Whether perturbation supports causal disease-relevant pathway not passenger effect,GWT networks; pathway DB; literature,partial,0 none; 3 interpretable CD4 pathway effect; 5 orthogonal or rescue support
+disease_relevance_score,Whether target and signature match patient disease biology,GWT; patient scRNA; Open Targets; GWAS/eQTL,partial,0 no link; 3 disease CD4 program; 5 patient plus genetics support
+human_genetic_support,GWAS rare variant eQTL/sQTL colocalization MR LoF/GoF directionality,Open Targets Genetics; GWAS Catalog; ClinVar,no,external evidence level
+tractability_modality,Likely modality: small molecule antibody biologic ASO siRNA PROTAC cell/gene therapy,Open Targets tractability; ChEMBL; UniProt; PDB; HPA,no,required for advance unless clear validation goal
+tractability_score,Feasibility based on pocket epitope localization ligand precedent delivery,Open Targets; ChEMBL; DrugBank; PDB,no,0 none; 3 plausible modality; 5 approved/clinical asset or validated binder
+safety_window_score,On-target and immune safety window including expression breadth essentiality known adverse effects,Open Targets safety; DepMap; GTEx; FAERS; literature,partial,0 killer risk; 3 risk known but testable; 5 supportive genetics/function
+cd4_immune_red_flags,Infection risk global immunosuppression cytokine release autoimmunity Treg/Th17 imbalance,GWT stress/cytokine signatures; immunology literature; cytokine assays,partial,red-flag override
+biomarker_score,Availability of target engagement PD or patient-selection biomarkers,GWT signatures; assay literature; proteomics,partial,0 none; 3 RNA PD signature; 5 protein/flow/qPCR/ELISA marker
+translation_score,Robustness across donors conditions datasets and disease models,GWT metadata; public scRNA; primary cell validation,partial,0 single weak signal; 3 replicated dataset; 5 primary/disease ex vivo/in vivo support
+clinical_feasibility_score,Indication endpoint patient subgroup competitor differentiation and development path,ClinicalTrials.gov; labels; literature; market/landscape,no,0 no path; 3 plausible indication; 5 clear biomarker/endpoints/path
+overall_readiness_stage,Stage-gated readiness class derived from domain scores and red flags,Rule engine,derived,R0 deprioritize; R1 exploratory; R2 hypothesis-ready; R3 validation-ready; R4 program-candidate; R5 nomination-ready
+readiness_call,Final decision label,Rule engine,derived,advance validate watchlist deprioritize
+next_validation_step,Most important next experiment or data overlay to reduce uncertainty,Target card synthesis,derived,free text

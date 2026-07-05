@@ -1,0 +1,92 @@
+﻿{
+    "scrna_best_practices":  {
+                                 "query":  "single-cell RNA-seq best practices analysis workflow PMID",
+                                 "ids":  [
+
+                                         ],
+                                 "papers":  [
+
+                                            ]
+                             },
+    "scrna_de_pseudobulk":  {
+                                "query":  "single cell RNA-seq differential expression pseudobulk mixed model PMID",
+                                "ids":  [
+
+                                        ],
+                                "papers":  [
+
+                                           ]
+                            },
+    "scrna_batch_integration":  {
+                                    "query":  "single-cell RNA-seq batch correction integration benchmark PMID",
+                                    "ids":  [
+
+                                            ],
+                                    "papers":  [
+
+                                               ]
+                                },
+    "scrna_multiple_testing":  {
+                                   "query":  "single cell RNA-seq differential expression false discovery rate pseudoreplication PMID",
+                                   "ids":  [
+
+                                           ],
+                                   "papers":  [
+
+                                              ]
+                               },
+    "scrna_compositional":  {
+                                "query":  "single-cell RNA-seq compositional analysis differential abundance methods PMID",
+                                "ids":  [
+
+                                        ],
+                                "papers":  [
+
+                                           ]
+                            },
+    "scrna_pathway_gene_set":  {
+                                   "query":  "single cell RNA-seq gene set enrichment pathway activity scoring PMID",
+                                   "ids":  [
+
+                                           ],
+                                   "papers":  [
+
+                                              ]
+                               },
+    "scrna_trajectory_velocity":  {
+                                      "query":  "single cell RNA velocity trajectory inference PMID",
+                                      "ids":  [
+
+                                              ],
+                                      "papers":  [
+
+                                                 ]
+                                  },
+    "scrna_cell_cell_communication":  {
+                                          "query":  "single cell RNA-seq cell cell communication benchmark PMID",
+                                          "ids":  [
+
+                                                  ],
+                                          "papers":  [
+
+                                                     ]
+                                      },
+    "perturbseq_statistics":  {
+                                  "query":  "Perturb-seq statistical analysis SCEPTRE scMAGeCK Mixscape PMID",
+                                  "ids":  [
+
+                                          ],
+                                  "papers":  [
+
+                                             ]
+                              },
+    "perturbseq_power":  {
+                             "query":  "single-cell CRISPR screen power analysis Perturb-seq PMID",
+                             "ids":  [
+
+                                     ],
+                             "papers":  [
+
+                                        ]
+                         }
+}

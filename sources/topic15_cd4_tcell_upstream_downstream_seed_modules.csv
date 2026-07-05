@@ -1,0 +1,21 @@
+module_id,module_name,category,seed_genes,primary_question,notes
+M01,TCR_Core_Receptor,Upstream,"CD3D,CD3E,CD3G,CD247,TRBC1,TRBC2",CD4 TCR 起始訊號是否可重塑活化阈值,與 ZAP70/LCK/LAT 串接成一組檢驗
+M02,TCR_Proximal_Signaling,Upstream,"LCK,FYN,ZAP70,LAT,LCP2,PLCG1,ITK,VAV1,CARD11,BCL10,MALT1",TCR 下游早期信號是否可被可視為可藥物調節節點,適合用 Rest 與 Stim 比較
+M03,Costimulation,Upstream,"CD28,ICOS,GRB2,PIK3R1,TRAT1,CD80,CD86",共刺激是否造成增殖/活化程式重配,"需與 CD28 blockade/agonist context 交叉驗證"
+M04,Checkpoint_Module,Upstream,"CTLA4,PDCD1,TIGIT,LAG3,ICOS,CD40,CD40LG",抑制軸是否顯示可逆/可增強訊號,"免疫抑制與活化平衡判斷"
+M05,IL2R_JAKSTAT,Upstream,"IL2RA,IL2RB,JAK1,JAK3,STAT5A,STAT5B",IL-2 存活與增殖回路是否被 perturbation 重置,可關聯 Treg/effector 分流
+M06,IFN_Response,Upstream,"IFNAR1,IFNAR2,IFNGR1,IFNGR2,STAT1,IRF1,IRF9",炎症型刺激反應敏感性是否放大/抑制,對抗病毒與發炎疾病研究有參考價值
+M07,Th1_Polarization,Downstream,"TBX21,IFNG,IRF1,EOMES,STAT4,CXCR3",是否推動 Th1-like transcriptomic shift,與刺激條件耦合後再解讀
+M08,Th2_Polarization,Downstream,"GATA3,IL4,IL13,IL4R,STAT6,IRF4",是否推動 Th2-like 偏轉,避免與炎症共發生混淆
+M09,Th17_Polarization,Downstream,"RORC,IL17A,IL17F,IL23R,STAT3,CCR6",是否推動 Th17-like 炎症程式,常見於慢性發炎自體免疫背景
+M10,Treg_Modulation,Downstream,"FOXP3,IKZF2,CTLA4,IL2RA,TGFB1,TGFB2,IKZF2",是否改變耐受/抑制軸,需搭配 protein layer 驗證
+M11,NFkB_Axis,Downstream,"NFKB1,RELA,IKBKB,TRAF2,TNFRSF1A,REL",是否改變先天/炎症訊號放大,"與細胞壓力/死亡訊號可能耦合，需注意假訊號"
+M12,AP1_NFAT_Activation,Downstream,"FOS,JUN,FOSB,FOSL2,NR4A1,NR4A2,NFATC1,NFATC2",即時活化早期反應是否同步偏移,可作為 perturbation directionality sanity check
+M13,PI3K_AKT_mTOR,Upstream,"PIK3CD,PIK3R1,MTOR,RPTOR,AKT1",代謝與增殖訊號是否被改寫,與細胞週期/細胞量偏差同時追蹤
+M14,Metabolic_Switch,Downstream,"MYC,SLC2A1,HIF1A,CCND3,RPS6KB1",代謝重編程是否跟活化一致,需配合條件特異性分層
+M15,Maturation_Memory_Trafficking,Downstream,"CCR7,SELL,LTB,S1PR1,IL7R",是否保留 naive/memory 歸巢輪廓,易受刺激時間長短影響
+M16,Chemotaxis_Tissue_Infiltration,Downstream,"CXCR3,CXCR4,CCR5,CCR6,XCL1,XCL2",是否改變遷移/組織定位相關程式,若有外部環境資料可做配對驗證
+M17,Cytotoxic_Like_Differentiation,Downstream,"GZMB,PRF1,NKG7,FAS,FASLG,IFNG",是否偏向 effector-like 或非典型細胞毒程式,通常需蛋白與功能 assay 補強
+M18,Exhaustion_Escape,Downstream,"PDCD1,HAVCR2,LAG3,TOX,ENTPD1",長時間刺激下是否出現耗竭或可逆壓制訊號,用於 safety 和療效窗口評估
+M19,Memory_Fate_Program,Downstream,"TCF7,BCL11B,RUNX3,BACH2,SMARCA4,ARID1A",命運可塑性與穩定性是否改變,適合做 long-term follow-up biomarker
+M20,Cell_Cycle_Proliferation,Downstream,"MKI67,TOP2A,MCM7,PCNA,TYMS",是否主要驅動增殖效應而非特異 immune pathway,高分數需排除非特異增殖背景

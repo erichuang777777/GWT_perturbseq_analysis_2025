@@ -1,0 +1,86 @@
+﻿{
+    "pertpy":  {
+                   "query":  "pertpy end-to-end framework perturbation analysis Nature Methods 2025",
+                   "ids":  [
+                               "41476114"
+                           ],
+                   "papers":  [
+                                  {
+                                      "pmid":  "41476114",
+                                      "title":  "Pertpy: an end-to-end framework for perturbation analysis.",
+                                      "journal":  "Nature methods",
+                                      "pubdate":  "2026 Feb",
+                                      "doi":  "10.1038/s41592-025-02909-7"
+                                  }
+                              ]
+               },
+    "scperturb":  {
+                      "query":  "scPerturb harmonized single-cell perturbation data Nature Methods 2024",
+                      "ids":  [
+                                  "38279009"
+                              ],
+                      "papers":  [
+                                     {
+                                         "pmid":  "38279009",
+                                         "title":  "scPerturb: harmonized single-cell perturbation data.",
+                                         "journal":  "Nature methods",
+                                         "pubdate":  "2024 Mar",
+                                         "doi":  "10.1038/s41592-023-02144-y"
+                                     }
+                                 ]
+                  },
+    "perturbase":  {
+                       "query":  "PerturBase comprehensive database single-cell perturbation data analysis visualization",
+                       "ids":  [
+                                   "39377396"
+                               ],
+                       "papers":  [
+                                      {
+                                          "pmid":  "39377396",
+                                          "title":  "PerturBase: a comprehensive database for single-cell perturbation data analysis and visualization.",
+                                          "journal":  "Nucleic acids research",
+                                          "pubdate":  "2025 Jan 6",
+                                          "doi":  "10.1093/nar/gkae858"
+                                      }
+                                  ]
+                   },
+    "sceptre_mixscape":  {
+                             "query":  "SCEPTRE Mixscape Perturb-seq single-cell perturbation analysis",
+                             "ids":  [
+
+                                     ],
+                             "papers":  [
+
+                                        ]
+                         },
+    "prediction_benchmark":  {
+                                 "query":  "foundation models in silico perturbation prediction single-cell benchmark Nature Methods 2025",
+                                 "ids":  [
+                                             "40999099"
+                                         ],
+                                 "papers":  [
+                                                {
+                                                    "pmid":  "40999099",
+                                                    "title":  "EpiAgent: foundation model for single-cell epigenomics.",
+                                                    "journal":  "Nature methods",
+                                                    "pubdate":  "2025 Nov",
+                                                    "doi":  "10.1038/s41592-025-02822-z"
+                                                }
+                                            ]
+                             },
+    "gperturb":  {
+                     "query":  "GPerturb Gaussian process single-cell perturbation data",
+                     "ids":  [
+                                 "40593897"
+                             ],
+                     "papers":  [
+                                    {
+                                        "pmid":  "40593897",
+                                        "title":  "GPerturb: Gaussian process modelling of single-cell perturbation data.",
+                                        "journal":  "Nature communications",
+                                        "pubdate":  "2025 Jul 1",
+                                        "doi":  "10.1038/s41467-025-61165-7"
+                                    }
+                                ]
+                 }
+}
