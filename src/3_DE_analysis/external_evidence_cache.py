@@ -258,6 +258,130 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
     }
 
 
+
+def _open_targets_known_drugs(ensembl_id: str) -> List[Dict[str, Any]]:
+    """Known/investigational drugs directly targeting this gene (Open Targets)."""
+    query = """
+    query TargetDrugs($id: String!) {
+      target(ensemblId: $id) {
+        drugAndClinicalCandidates {
+          count
+          rows { maxClinicalStage drug { id name drugType } }
+        }
+      }
+    }
+    """
+    resp = requests.post(
+        OPEN_TARGETS_GRAPHQL_API,
+        json={"query": query, "variables": {"id": ensembl_id}},
+        timeout=DEFAULT_TIMEOUT,
+    )
+    resp.raise_for_status()
+    target = (resp.json().get("data", {}) or {}).get("target") or {}
+    rows = ((target.get("drugAndClinicalCandidates") or {}).get("rows")) or []
+    return [
+        {
+            "drug_name": (r.get("drug") or {}).get("name"),
+            "drug_type": (r.get("drug") or {}).get("drugType"),
+            "max_clinical_stage": r.get("maxClinicalStage"),
+        }
+        for r in rows
+    ]
+
+
+def _clinicaltrials_count_for_drug(drug_name: str, disease_name: str) -> Dict[str, Any]:
+    """Count ClinicalTrials.gov studies actually pairing this drug with this disease.
+
+    This is the step that keeps evidence-matching honest: Open Targets says a
+    drug targets a gene, but does not say the drug has ever been trialled for
+    the *disease the user asked about*. A drug's real approved/trialled
+    indication (e.g. basiliximab -> kidney transplant, not rheumatoid
+    arthritis) must be checked against the disease actually queried, not
+    assumed from the gene-disease genetic association alone.
+    """
+    try:
+        resp = requests.get(
+            CLINICALTRIALS_API,
+            params={
+                "query.intr": drug_name,
+                "query.cond": disease_name,
+                "pageSize": 1,
+                "countTotal": "true",
+                "fields": "NCTId",
+            },
+            timeout=DEFAULT_TIMEOUT,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        return {"source_status": "ok", "n_trials": data.get("totalCount")}
+    except Exception as exc:
+        return {"source_status": "unavailable", "reason": f"{type(exc).__name__}: {exc}", "n_trials": None}
+
+
+def match_disease_drug_evidence(gene: str, disease_name: str, max_drugs: int = 10) -> Dict[str, Any]:
+    """Evidence-matching only -- NOT a treatment recommendation or efficacy prediction.
+
+    Given a gene and a disease name, this answers two separate, checkable
+    questions -- and keeps them separate rather than collapsing them into a
+    single score:
+
+    1. Does Open Targets know of any drug (approved or in clinical
+       development) whose target is this gene?
+    2. For each such drug, has it actually been trialled for *this* disease
+       on ClinicalTrials.gov -- as opposed to some other indication entirely?
+
+    A drug can legitimately target the right gene and still have zero
+    trials for the disease asked about (e.g. IL2RA's approved antibody
+    basiliximab is trialled extensively for kidney-transplant rejection, not
+    for rheumatoid arthritis) -- that is not a bug in this function, it is
+    the honest signal the tool exists to surface. Verified drug-indication
+    pairings must still be confirmed against the drug label and a qualified
+    physician; this function never outputs a dose, a drug choice, or a
+    prediction of efficacy for any individual patient.
+
+    Returns ``{"available": False, "reason": ...}`` when Open Targets has no
+    entry for the gene or the network is unavailable -- never a fabricated
+    match.
+    """
+    if requests is None:
+        return {"available": False, "reason": "requests library not installed"}
+
+    try:
+        ensembl_id = _open_targets_resolve_ensembl_id(gene)
+    except Exception as exc:
+        return {"available": False, "reason": f"{type(exc).__name__}: {exc}"}
+
+    if ensembl_id is None:
+        return {"available": False, "reason": f"gene '{gene}' not found in Open Targets"}
+
+    try:
+        drugs = _open_targets_known_drugs(ensembl_id)
+    except Exception as exc:
+        return {"available": False, "reason": f"{type(exc).__name__}: {exc}"}
+
+    drugs = drugs[:max_drugs]
+    for d in drugs:
+        if d["drug_name"]:
+            d["trials_for_this_disease"] = _clinicaltrials_count_for_drug(d["drug_name"], disease_name)
+
+    return {
+        "available": True,
+        "gene": gene.upper(),
+        "disease_queried": disease_name,
+        "ensembl_id": ensembl_id,
+        "n_known_drugs_for_gene": len(drugs),
+        "drugs": drugs,
+        "caveat": (
+            "evidence-matching only -- not a treatment recommendation or efficacy "
+            "prediction; a nonzero drug count for this gene does not mean the drug "
+            "has been trialled for the disease queried (see trials_for_this_disease "
+            "per drug); verified drug-indication pairings must be confirmed against "
+            "the drug label and a qualified physician"
+        ),
+        "fetched_at": _now(),
+        "source_version": SOURCE_VERSION,
+    }
+
 def _cache_path(cache_dir: Path, gene: str) -> Path:
     safe_gene = "".join(c if c.isalnum() or c in "-_" else "_" for c in gene.upper())
     return Path(cache_dir) / f"{safe_gene}.json"
