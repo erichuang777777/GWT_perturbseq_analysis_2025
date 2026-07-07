@@ -323,22 +323,27 @@ byte-identical before/after. This is also a **third independent evidence source*
 tractability and gnomAD constraint, both proposed in `docs/mvp-research/ENHANCEMENT_連結器加強建議.md`)
 that agrees with the C7 `broad_effect` quarantine: MED12/CCNC are not real membrane targets.
 
-**Safety-window (GTEx) half — shipped once the file arrived.** `gtex_per_tissue.parquet` (public
-GTEx-derived, 9,727 genes x 30 tissues, median TPM per gene-tissue pair) was placed at
-`sources/target_tool_cache/_overlays/gtex_per_tissue.parquet`. `load_gtex_safety_overlay()` aggregates it
-to one row per gene (`n_tissues_expressed` = count of tissues clearing a TPM>1 detectable-expression
-threshold), keyed by gene **symbol** (this file has no Ensembl ID column, unlike the membrane overlay) —
-`safety_window_from_gtex()` wires it into `safety_window_score` as an additive `gtex_overlay` parameter.
-**Verified:** CD3E → 23/30 tissues (real, non-`unknown` value); MED12 → 30/30 (fully ubiquitous —
-consistent with it being a Mediator-complex subunit and, independently, the C7 `broad_effect` quarantine's
-textbook example); a gene absent from the ~9,727-gene overlay (e.g. VAV1) stays `unknown`, never a
-fabricated `0`. Confirmed `safety_window_score` is causally independent of `readiness_call`/
-`overall_readiness_stage` (`_stage()` never takes a safety argument) — the GTEx overlay changes only its
-own column, verified both alone and combined with the membrane overlay. The raw tissue-breadth count is
-returned as-is rather than collapsed into a tight/moderate/wide tier, so the interpretation stays visible
-and revisable rather than baked into a lossy label (see the module docstring for the direction-of-effect
-reasoning). TCGA columns are still deliberately not scored (ADC/oncology concept, not relevant to this
-CD4 platform, per the ingestion spec's own §2d). Requires `pyarrow` (added to setup instructions) to read
+**Safety-window (GTEx) half — shipped once the file arrived.** `gtex_per_tissue.parquet` at
+`sources/target_tool_cache/_overlays/gtex_per_tissue.parquet` is a pre-aggregated, per-gene table
+(`ensembl_id`, `gene_symbol`, `n_tissues_expressed`, `max_expression_outside_cd4_context`), derived from
+public GTEx per-tissue median TPM. Critically, the aggregation **excludes CD4-relevant tissues
+(Blood/Spleen)** from both fields — this directly addresses the context-inversion problem the ingestion
+spec flagged in §1: "CD4 T cell high expression" is an *off-target* risk signal in the ADC/oncology
+context the source database was built for, but is normal, expected biology on this CD4 platform, so it
+must not count against a gene's safety window here. `load_gtex_safety_overlay()` reads this table
+as-is (already aggregated, no further work needed); `safety_window_from_gtex()` wires it into
+`safety_window_score` as an additive `gtex_overlay` parameter, keyed by **Ensembl gene ID** (same
+convention as the membrane overlay). **Verified:** CD3E → 21/30 off-context tissues (real,
+non-`unknown` value); MED12 → 28/30 (near-ubiquitous outside CD4 context — consistent with it being a
+Mediator-complex subunit and, independently, the C7 `broad_effect` quarantine's textbook example); a gene
+absent from the ~9,718-gene overlay (e.g. VAV1) stays `unknown`, never a fabricated `0`. Confirmed
+`safety_window_score` is causally independent of `readiness_call`/`overall_readiness_stage` (`_stage()`
+never takes a safety argument) — the GTEx overlay changes only its own column, verified both alone and
+combined with the membrane overlay. The raw tissue-breadth count is returned as-is rather than collapsed
+into a tight/moderate/wide tier, so the interpretation stays visible and revisable rather than baked into
+a lossy label (see the module docstring for the direction-of-effect reasoning). TCGA columns are still
+deliberately not scored (ADC/oncology concept, not relevant to this CD4 platform, per the ingestion
+spec's own §2d). Requires `pyarrow` (added to setup instructions) to read
 the `.parquet` snapshots.
 
 ### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**

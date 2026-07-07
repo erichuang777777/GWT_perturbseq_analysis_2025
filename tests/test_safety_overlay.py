@@ -35,8 +35,10 @@ def test_load_gtex_safety_overlay_real_file():
 
     result = load_gtex_safety_overlay()
     assert result["available"] is True
-    assert len(result["table"]) == 9727
-    assert set(["gene_symbol", "n_tissues_total", "n_tissues_expressed"]).issubset(result["table"].columns)
+    assert len(result["table"]) == 9718
+    assert set(["ensembl_id", "gene_symbol", "n_tissues_expressed", "max_expression_outside_cd4_context"]).issubset(
+        result["table"].columns
+    )
 
 
 def test_load_gtex_safety_overlay_missing_file_is_honest(tmp_path):
@@ -86,29 +88,31 @@ def test_safety_window_from_gtex_is_unknown_when_overlay_unavailable():
     from safety_overlay import UNKNOWN, safety_window_from_gtex
 
     unavailable = {"available": False, "reason": "x", "table": pd.DataFrame()}
-    assert safety_window_from_gtex("CD3E", unavailable) == UNKNOWN
+    assert safety_window_from_gtex("ENSG00000198851", unavailable) == UNKNOWN
 
 
 def test_safety_window_from_gtex_matches_real_verified_values():
-    """Regression-pins the real, independently spot-checked aggregation:
-    CD3E is expressed (TPM>1) in 23/30 GTEx tissues; MED12 (a Mediator-complex
-    subunit, plausibly housekeeping) is expressed in all 30/30 -- consistent
-    with MED12 also being the C7 broad_effect quarantine's textbook example.
+    """Regression-pins the real, independently spot-checked off-context
+    aggregation (Blood/Spleen excluded, per the ADC ingestion spec's
+    context-inversion note): CD3E is off-context-expressed in 21/30 tissues;
+    MED12 (a Mediator-complex subunit, plausibly housekeeping) in 28/30 --
+    consistent with MED12 also being the C7 broad_effect quarantine's
+    textbook example.
     """
     from safety_overlay import load_gtex_safety_overlay, safety_window_from_gtex
 
     overlay = load_gtex_safety_overlay()
-    assert safety_window_from_gtex("CD3E", overlay) == 23
-    assert safety_window_from_gtex("MED12", overlay) == 30
+    assert safety_window_from_gtex("ENSG00000198851", overlay) == 21  # CD3E
+    assert safety_window_from_gtex("ENSG00000184634", overlay) == 28  # MED12
 
 
 def test_safety_window_from_gtex_gene_absent_is_unknown():
-    """VAV1 is confirmed absent from this ~9,727-gene GTEx overlay -- must be
+    """VAV1 is confirmed absent from this ~9,718-gene GTEx overlay -- must be
     unknown (unchecked), never a fabricated breadth count."""
     from safety_overlay import UNKNOWN, load_gtex_safety_overlay, safety_window_from_gtex
 
     overlay = load_gtex_safety_overlay()
-    assert safety_window_from_gtex("VAV1", overlay) == UNKNOWN
+    assert safety_window_from_gtex("ENSG00000141968", overlay) == UNKNOWN  # VAV1
 
 
 def test_readiness_engine_overlays_are_a_pure_upgrade_never_a_regression(real_cards, real_data_available):
@@ -157,7 +161,7 @@ def test_readiness_engine_overlays_are_a_pure_upgrade_never_a_regression(real_ca
     # safety_window_score is a real, non-essential-gated value now that both
     # overlays have real data -- confirms the GTEx wiring is actually live.
     assert cd3e_before["safety_window_score"] == "unknown"
-    assert cd3e_after["safety_window_score"] == 23
+    assert cd3e_after["safety_window_score"] == 21
 
 
 def test_readiness_engine_gtex_overlay_alone_does_not_change_tractability(real_cards, real_data_available):
@@ -178,7 +182,7 @@ def test_readiness_engine_gtex_overlay_alone_does_not_change_tractability(real_c
         assert (baseline[col].astype(str) == gtex_only[col].astype(str)).all(), f"{col} must be unaffected by gtex_overlay alone"
 
     cd3e = gtex_only[gtex_only["target"] == "CD3E"].iloc[0]
-    assert cd3e["safety_window_score"] == 23
+    assert cd3e["safety_window_score"] == 21
 
 
 def test_readiness_engine_without_overlays_is_unchanged_regression():
