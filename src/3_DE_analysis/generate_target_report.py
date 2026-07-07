@@ -100,6 +100,7 @@ def build_report_payload(
     cards: pd.DataFrame,
     dataset_id: str = "local",
     top_n: int = 50,
+    provenance: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     df = normalize_cards(cards)
     top = _top_candidates(df, top_n)
@@ -142,6 +143,11 @@ def build_report_payload(
             "Use h5ad-level validation for selected targets: donor-aware pseudobulk, module scoring, and batch sensitivity checks.",
             "Map short-listed targets to clinical mechanism, safety liability, and assay feasibility before drug discovery handoff.",
         ],
+        # Four-layer provenance (dataset_version/engine_version/schema_version/
+        # signature_set_version) per docs/IMPLEMENTATION_PLAN.md's B4 response --
+        # every export should carry them, not just the live API. Empty dict when
+        # the caller has no dataset metadata (e.g. a bare CSV with no build record).
+        "provenance": provenance or {},
     }
 
 
@@ -187,6 +193,12 @@ def render_markdown(payload: Dict[str, Any]) -> str:
     ]
     lines.extend(f"- {item}" for item in payload["next_steps"])
     lines.append("")
+    provenance = payload.get("provenance") or {}
+    if provenance:
+        lines.append("## Provenance")
+        lines.append("")
+        lines.extend(f"- {k}: `{v}`" for k, v in provenance.items())
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -201,6 +213,11 @@ def render_html(payload: Dict[str, Any]) -> str:
         f"<div class='metric'><span>{k}</span><strong>{v}</strong></div>"
         for k, v in summary.items()
     )
+    provenance = payload.get("provenance") or {}
+    provenance_section = ""
+    if provenance:
+        provenance_items = "".join(f"<li><code>{k}</code>: {v}</li>" for k, v in provenance.items())
+        provenance_section = f"<h2>Provenance</h2>\n  <ul>{provenance_items}</ul>"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -227,14 +244,22 @@ def render_html(payload: Dict[str, Any]) -> str:
   {watch_html}
   <h2>Next Steps</h2>
   <ul>{next_steps}</ul>
+  {provenance_section}
 </body>
 </html>
 """
 
 
-def write_report(cards_path: Path, out_path: Path, dataset_id: str = "local", fmt: str = "html", top_n: int = 50) -> Path:
+def write_report(
+    cards_path: Path,
+    out_path: Path,
+    dataset_id: str = "local",
+    fmt: str = "html",
+    top_n: int = 50,
+    provenance: Optional[Dict[str, Any]] = None,
+) -> Path:
     cards = pd.read_csv(cards_path)
-    payload = build_report_payload(cards, dataset_id=dataset_id, top_n=top_n)
+    payload = build_report_payload(cards, dataset_id=dataset_id, top_n=top_n, provenance=provenance)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     if fmt == "json":
         out_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")

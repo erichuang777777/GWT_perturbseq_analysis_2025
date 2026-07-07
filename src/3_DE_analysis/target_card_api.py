@@ -23,6 +23,7 @@ from build_target_cards import load_gene_set
 from calibration import run_calibration
 from external_evidence_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
 from disease_translator import list_diseases, load_disease_associations, translate_disease
+from gene_identifier_resolver import load_resolver, result_status
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -61,6 +62,19 @@ DISEASE_ASSOCIATIONS_PATH = ROOT / "src" / "6_functional_interaction" / "results
 def _disease_associations():
     return load_disease_associations(DISEASE_ASSOCIATIONS_PATH)
 
+
+_GENE_RESOLVER = None
+
+
+def _gene_resolver():
+    # Built once and cached: the alias table is a deterministic function of two
+    # static input files, so there is no correctness reason to rebuild it per
+    # request -- only a performance one to avoid re-parsing a 26,504-row CSV.
+    global _GENE_RESOLVER
+    if _GENE_RESOLVER is None:
+        _GENE_RESOLVER = load_resolver(DEFAULT_LIB, DEFAULT_GUIDE)
+    return _GENE_RESOLVER
+
 # Bump whenever build_target_cards.py, readiness_engine.py, calibration.py, or
 # external_evidence_cache.py change scoring/engine behavior, so every dataset's
 # provenance footer can say exactly which engine produced it.
@@ -72,6 +86,15 @@ ENGINE_VERSION = "1.3.0"  # wave 3: readiness engine + real batch flag + upload 
 # per docs/de_and_baseline_spec.md and the manuscript DOI in README.md.
 DATASET_VERSION = "gwt_marson2025/bioRxiv-10.64898-2025.12.23.696273v1"
 
+# The target_cards.csv COLUMN CONTRACT itself, independent of engine scoring
+# logic. Bump when out_cols in build_target_cards.py adds/removes/renames a
+# column, so a consumer can tell whether its column-name assumptions still
+# hold. v1 = the original 24-column spec (sources/topic14_target_card_specification.md);
+# v2 = + druggable_class/tractability_modality/safety_note, kd_status/
+# kd_threshold_version/target_baseline_expression, condition_specificity_zscore,
+# effect_direction_flip_flag.
+CARD_SCHEMA_VERSION = "card_schema/v2"
+
 
 def _data_version_fingerprint(paths: List[Path]) -> str:
     """Deterministic fingerprint of input file identity: name + mtime + size, joined."""
@@ -81,6 +104,11 @@ def _data_version_fingerprint(paths: List[Path]) -> str:
             stat = Path(path).stat()
             parts.append(f"{Path(path).name}@{int(stat.st_mtime)}:{stat.st_size}")
     return ";".join(parts) if parts else "unknown"
+
+
+def _signature_set_version() -> str:
+    """Fingerprint of the seed CD4 module list used for module scoring/mechanism graphs."""
+    return _data_version_fingerprint([SEED_MODULES])
 
 
 def _overlays():
@@ -293,9 +321,11 @@ def _persist_metadata(dataset_id: str, status: str, payload: Dict[str, Any]) -> 
         "dataset_id": dataset_id,
         "status": status,
         "engine_version": ENGINE_VERSION,
+        "schema_version": CARD_SCHEMA_VERSION,
+        "signature_set_version": _signature_set_version(),
         "built_at": utc_now(),
     }
-    data.update(payload)  # payload may override engine_version/built_at/data_version if the caller sets them explicitly
+    data.update(payload)  # payload may override any of the above if the caller sets them explicitly
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
@@ -622,6 +652,44 @@ def get_calibration(dataset_id: str, refresh: bool = Query(default=False)) -> Di
     return {"dataset_id": dataset_id, **report}
 
 
+@app.get("/api/genes/resolve")
+def resolve_gene(q: str = Query(..., description="gene symbol, alias, or Ensembl ID")) -> Dict[str, Any]:
+    resolver = _gene_resolver()
+    return resolver.resolve(q)
+
+
+@app.post("/api/genes/resolve")
+def resolve_genes_batch(queries: List[str]) -> List[Dict[str, Any]]:
+    resolver = _gene_resolver()
+    return resolver.resolve_many(queries)
+
+
+@app.get("/api/genes/status")
+def gene_result_status(
+    q: str = Query(..., description="gene symbol, alias, or Ensembl ID"),
+    dataset_id: Optional[str] = Query(default=None, description="built dataset to check; defaults to the raw reference DE table"),
+) -> Dict[str, Any]:
+    """Three-state (+has_effect) result status for any gene, per docs/de_and_baseline_spec.md.
+
+    Without dataset_id, checks against the raw reference DE_stats table (always
+    locally available) so a query never depends on a dataset having been built.
+    """
+    resolver = _gene_resolver()
+    if dataset_id:
+        out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+        if not out_csv.exists():
+            raise HTTPException(status_code=404, detail="dataset_id not found")
+        de_df = _load_cards(out_csv)
+        source = f"dataset:{dataset_id}"
+    elif DEFAULT_DE.exists():
+        de_df = pd.read_csv(DEFAULT_DE)
+        source = str(DEFAULT_DE.relative_to(ROOT))
+    else:
+        de_df = pd.DataFrame(columns=["target"])
+        source = "unavailable"
+    return {"source": source, **result_status(resolver, q, de_df)}
+
+
 @app.get("/api/disease")
 def get_diseases() -> Dict[str, Any]:
     associations = _disease_associations()
@@ -765,12 +833,22 @@ def list_targets(
     return _json_records(df)
 
 
+def _provenance_block(dataset_id: str) -> Dict[str, Any]:
+    """The four version layers (B4) for a dataset, pulled from its persisted metadata."""
+    meta = _read_metadata(dataset_id)
+    return {
+        k: meta.get(k)
+        for k in ["dataset_version", "engine_version", "schema_version", "signature_set_version", "built_at"]
+        if meta.get(k) is not None
+    }
+
+
 @app.get("/api/summary/{dataset_id}")
 def summarize_dataset(dataset_id: str, top_n: int = Query(default=50, ge=1, le=500)) -> Dict[str, Any]:
     out_csv = _dataset_path(dataset_id) / "target_cards.csv"
     if not out_csv.exists():
         raise HTTPException(status_code=404, detail="dataset_id not found")
-    return build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n)
+    return build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n, provenance=_provenance_block(dataset_id))
 
 
 @app.get("/api/options/{dataset_id}")
@@ -852,14 +930,15 @@ def report_dataset(
     out_csv = job_dir / "target_cards.csv"
     if not out_csv.exists():
         raise HTTPException(status_code=404, detail="dataset_id not found")
+    provenance = _provenance_block(dataset_id)
     if fmt == "json":
-        payload = build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n)
+        payload = build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n, provenance=provenance)
         return JSONResponse(content=payload)
     if fmt not in {"html", "md"}:
         raise HTTPException(status_code=400, detail="fmt must be html, md, or json")
 
     report_path = job_dir / f"target_report.{fmt}"
-    write_report(out_csv, report_path, dataset_id=dataset_id, fmt=fmt, top_n=top_n)
+    write_report(out_csv, report_path, dataset_id=dataset_id, fmt=fmt, top_n=top_n, provenance=provenance)
     media_type = "text/html" if fmt == "html" else "text/markdown"
     return FileResponse(str(report_path), filename=f"target_report.{fmt}", media_type=media_type)
 
