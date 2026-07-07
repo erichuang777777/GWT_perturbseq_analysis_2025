@@ -1,0 +1,9 @@
+guide_id,perturbed_gene_id,culture_condition,ntc_mean_expr,ntc_std_expr,ntc_n,guide_mean_expr,guide_std_expr,guide_n,t_statistic,p_value,adj_p_value,signif_knockdown
+ZAP70_g1,ENSG_ZAP70,Rest,5.0,0.8,300,1.1,0.3,150,-8.0,0.0001,0.001,True
+ZAP70_g2,ENSG_ZAP70,Rest,5.0,0.8,300,1.3,0.3,150,-7.0,0.0002,0.002,True
+ZAP70_g1,ENSG_ZAP70,Stim8hr,6.0,0.9,350,1.2,0.3,180,-9.0,0.0001,0.001,True
+ZAP70_g2,ENSG_ZAP70,Stim8hr,6.0,0.9,350,1.4,0.3,180,-8.5,0.0001,0.0015,True
+MED12_g1,ENSG_MED12,Rest,4.0,0.7,250,1.0,0.3,120,-5.0,0.001,0.01,True
+MED12_g2,ENSG_MED12,Rest,4.0,0.7,250,1.2,0.3,120,-4.5,0.002,0.02,True
+LOWEXPR1_g1,ENSG_LOWEXPR1,Rest,0.0005,0.001,300,0.0004,0.001,150,-0.2,0.9,1.0,False
+NOEFFECT1_g1,ENSG_NOEFFECT1,Rest,0.5,0.2,250,0.48,0.2,125,-0.5,0.8,0.9,False

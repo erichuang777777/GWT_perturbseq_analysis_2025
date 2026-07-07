@@ -128,12 +128,11 @@ questions).
 **Not carried forward from the review, with reasons:** A2's confidence-score calibration was already
 substantially addressed pre-review (discrete `statistical_evidence_grade` + `score_cap_reason` +
 `readiness_reasons`, not a single opaque float); A3 (signature scoring method) mirrors the already-
-descoped §1.5 gap (no per-gene downstream direction data); B1 (Ensembl-primary-key gene resolution),
-B3 (cell-level access pattern — see §1.9, already backed-mode), B5 (CRE schema placeholders), B6
-(search infra), and the C-series process/testing recommendations (golden-file tests, data dictionary,
-licensing checklist) are reasonable but apply to build-out this repo hasn't reached yet or to a
-platform-scale rewrite beyond this toolkit's current CSV-first scope; they're noted here rather than
-silently dropped, in case they matter to a future document that does exist.
+descoped §1.5 gap (no per-gene downstream direction data); B3 (cell-level access pattern — see §1.9,
+already backed-mode) is covered by the §1.9 code-done state. B1, B5, B6, and the C-series
+process/testing items were initially deferred here as "apply to a platform-scale rewrite beyond this
+toolkit's current scope" — the project owner subsequently asked for exactly that ("我想要打造成平台級
+工具"), so they were built. See §1.11 for what shipped.
 
 ---
 
@@ -299,7 +298,69 @@ only the first is true as of this entry.
 
 ### 1.10 v2 hypothesis generators (guarded)  *(optional)*
 Signature-to-compound (LINCS/CMap), mechanism graph, perturbation prediction (**benchmark vs baselines
-first; never feed readiness decisions**), combination explorer (research-only).
+first; never feed readiness decisions**), combination explorer (research-only). **Status:** not started;
+the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
+(§1.11), which took priority. Revisit if/when requested.
+
+### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3) — **DONE** (C4/C5/C6 pending)
+Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the
+external review flagged as "reasonable but out of this toolkit's current scope" now that the scope is
+platform-grade.
+
+**B1 — Gene identifier resolution (`gene_identifier_resolver.py`, new).** Ensembl gene ID as primary
+key; alias table built entirely from real, already-in-repo data (`sgrna_library_metadata.suppl_table.csv`'s
+`target_gene_name` vs `target_gene_name_from_sgRNA`), not an external HGNC download. **Verified:** 344
+of 12,654 library genes have a real sgRNA-design-time vs curated-symbol difference (e.g. `ICK`→`CILK1`,
+`QARS`→`QARS1`, `HIST1H2BN`→`H2BC15`); 0 alias-symbol collisions with a different gene's canonical
+symbol; Ensembl ID confirmed 1:1 with canonical symbol (0/12,654 violate this).
+
+**B2 — Three-state `result_status` (`gene_identifier_resolver.py::result_status`).** Distinguishes
+`not_in_library` / `not_expressed` / `no_significant_effect` / `has_effect` for any gene query, reusing
+the same 0.001 NTC-expression floor as `kd_status` for the `not_expressed` boundary. Covered by
+`tests/test_empty_states.py`.
+
+**B5 — CRE schema placeholders (`cre_schema.py`, new).** Additive, empty-but-valid data contracts
+(`CisRegulatoryElement`, `VariantCRELink`) reserving the data model without fabricating data — no CRE
+dataset (e.g. a Moonen-style enhancer screen) exists anywhere in this repo (confirmed by search).
+**Verified:** both the honest "not loaded" path (real state: no CRE file present) and correct
+gene-linking logic against a mock CRE table.
+
+**B6 — Lightweight alias-tolerant search (`gene_search.py`, new).** Ranked exact/alias/prefix/fuzzy gene
+search using only the Python standard library (`difflib`) plus B1's real alias table — no new
+infrastructure or dependency, since a ~12,654-gene list doesn't justify the reviewed PostgreSQL
+trigram-search alternative (itself contingent on the multi-user persistence layer the project owner
+deprioritized in §1.8). **Verified:** `"ZAP"`→`ZAP70` (prefix), `"ZAP71"` (typo)→`ZAP70` (fuzzy, ranked
+below any exact/alias/prefix hit), `"ICK"`→`CILK1` (alias, ranked above fuzzy noise), a garbage query→no
+results (never "everything").
+
+**C3 — Automated test suite (`tests/`, new, `pytest.ini`).** 29 tests across 4 files, all passing:
+- `test_golden_file.py` — a small, hand-verified DE/guide-KD fixture (`tests/fixtures/golden_de_stats.csv`,
+  `golden_guide_kd.csv`) covering a clean positive control (`ZAP70`, 2 conditions → grade 4,
+  `kd_status="confirmed"`), a broad-effect gene (`MED12`, real member of `sources/broad_effect_genes.txt`),
+  a below-KD-floor gene (`LOWEXPR1` → `kd_status="not_measurable"`), and a weak-signal gene (`NOEFFECT1`
+  → `kd_status="weak"`) — pins exact grade/kd_status/score_cap_reason values so a future scoring change
+  is a deliberate diff, not a silent drift.
+- `test_join_integrity.py` — guide→target aggregation row counts, DE-row preservation across the
+  guide-KD merge (no drops/duplicates), a target/condition entirely missing from guide-KD degrading to
+  `n_guides=0` rather than crashing, and card→readiness row linkage being exactly 1:1.
+- `test_known_answer.py` — regression-pins the REAL 33,983-row GWT reference build (session-scoped
+  fixture, ~15–20s once): the EDA funnel's exact stage counts (33,983 → 4,182 → 1,102, matching
+  `sources/topic09_eda_report.md`'s independently-computed cascade), the control-panel calibration
+  numbers found during development (20/21 positive controls present, 20% reach grade≥3, 93.1% not
+  deprioritized; 5,084 negative-control rows, 99.37% at grade 1, 0% reach grade≥3 or
+  advance/validate), and the specific bug class caught earlier in this project (`kd_status=="weak"`
+  never reaching `readiness_call=="advance"`, joined correctly on `(target, condition)` — an ad hoc
+  target-only join had produced false positives during manual verification).
+- `test_empty_states.py` — all four B2 `result_status` states, resolver behavior on empty/`None`/garbage
+  queries, `build_cards_frame` on a zero-row DE table, `readiness_summary`'s empty-branch key-set parity
+  fix, `control_panel_calibration`/`cre_schema`/`gene_search` on missing-column and missing-file inputs.
+
+Skips (not fails) the real-data tests gracefully if `metadata/suppl_tables/*.csv` isn't present in a
+given checkout (`real_data_available` fixture in `tests/conftest.py`), so the suite stays green on a
+metadata-less clone.
+
+**C4/C5/C6 — pending:** data dictionary document, data governance checklist, cache/version invalidation
+policy doc. Tracked as the next item in this wave.
 
 ---
 
@@ -310,7 +371,8 @@ Wave 1 (DONE):   foundation + C4 batch flag + readiness engine (R1–R3) + uploa
 Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
 Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1.5 descoped, see §1.5]
 Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
-Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (needs h5ad download, not started)  →  1.10 v2 generators (guarded, not started)
+Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (code done, real-data run pending on owner's machine)
+Wave 6 (partial): §1.11 platform-grade backlog — B1/B2/B5/B6/C3 (DONE)  →  C4/C5/C6 (pending)  [1.10 v2 generators deferred, see §1.10]
 ```
 
 **Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,

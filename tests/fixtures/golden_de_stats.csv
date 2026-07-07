@@ -1,0 +1,6 @@
+index,target_contrast_gene_name,culture_condition,target_contrast,chunk,n_cells_target,n_up_genes,n_down_genes,n_total_de_genes,ontarget_effect_size,ontarget_significant,target_baseMean,offtarget_flag,n_total_genes_category,ontarget_effect_category,n_downstream,crossdonor_correlation_mean,crossdonor_correlation_min,crossguide_correlation
+0,ZAP70,Rest,ENSG_ZAP70,1,500,35,25,60,-2.1,True,10.0,False,>10 DE genes,on-target KD,58,0.5,0.4,0.5
+1,ZAP70,Stim8hr,ENSG_ZAP70,1,600,40,30,70,-2.4,True,12.0,False,>10 DE genes,on-target KD,68,0.6,0.5,0.6
+2,MED12,Rest,ENSG_MED12,1,400,30,25,55,-1.8,True,8.0,False,>10 DE genes,on-target KD,53,0.4,0.35,0.4
+3,LOWEXPR1,Rest,ENSG_LOWEXPR1,1,300,2,1,3,0.0,False,0.0005,False,no effect,no on-target KD,3,,,
+4,NOEFFECT1,Rest,ENSG_NOEFFECT1,1,250,1,1,2,-0.1,False,0.5,False,no effect,no on-target KD,2,0.1,0.05,0.1
