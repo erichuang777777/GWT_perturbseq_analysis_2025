@@ -33,6 +33,7 @@ from build_target_cards import (
     POSITIVE_CONTROLS,
     load_gene_set,
 )
+from common import coerce
 from external_evidence_cache import load_snapshot as load_evidence_snapshot
 from safety_overlay import (
     safety_window_from_gtex,
@@ -67,12 +68,13 @@ def _gene(row: pd.Series) -> str:
     return str(row.get("target", "") or "").strip().upper()
 
 
-def _num(value: Any) -> float:
-    try:
-        v = float(value)
-        return v
-    except (TypeError, ValueError):
-        return np.nan
+# Re-export for backward compatibility -- canonical implementation now lives
+# in common/coerce.py (architecture refactor Phase 1). Note this now follows
+# common.coerce.to_float's stringify-then-parse behavior rather than calling
+# float(value) directly; see common/coerce.py's module docstring for why
+# that's the safer canonical choice, and confirmation that no call site here
+# ever passes a literal bool (the only case where the two differ).
+_num = coerce.to_float
 
 
 def _known_pathway(row: pd.Series) -> bool:

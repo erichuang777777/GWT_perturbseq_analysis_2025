@@ -18,6 +18,7 @@ from typing import Dict, Iterable, List, Optional, Sequence
 import numpy as np
 import pandas as pd
 
+from common import coerce
 from config import settings, thresholds, versions
 
 POSITIVE_CONTROLS = {
@@ -244,22 +245,13 @@ def adapt_generic_de(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def _to_bool(v: object) -> bool:
-    if isinstance(v, bool):
-        return v
-    if v is None or (isinstance(v, float) and np.isnan(v)):
-        return False
-    s = str(v).strip().lower()
-    return s in {"true", "1", "yes", "y", "t"}
-
-
-def _to_float(v: object) -> float:
-    try:
-        if v is None or (isinstance(v, float) and np.isnan(v)):
-            return np.nan
-        return float(str(v).strip())
-    except (TypeError, ValueError):
-        return np.nan
+# Re-export for backward compatibility -- canonical implementations now live
+# in common/coerce.py (architecture refactor Phase 1; see that module's
+# docstring for the duplication this consolidates, including why _to_float's
+# stringify-then-parse behavior -- not readiness_engine._num's -- was chosen
+# as canonical).
+_to_bool = coerce.to_bool
+_to_float = coerce.to_float
 
 
 def _normalize_cols(df: pd.DataFrame) -> pd.DataFrame:
