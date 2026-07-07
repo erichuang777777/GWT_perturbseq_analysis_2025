@@ -1,0 +1,29 @@
+{
+  "gene": "VAV1",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "39060140",
+          "title": "VAV1 as a putative therapeutic target in autoimmune and chronic inflammatory diseases.",
+          "year": "2024",
+          "journal": "Trends Immunol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39060140/",
+          "doi": "10.1016/j.it.2024.06.004"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

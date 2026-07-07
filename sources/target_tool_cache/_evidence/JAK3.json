@@ -1,0 +1,51 @@
+{
+  "gene": "JAK3",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": [
+        {
+          "nct_id": "NCT05754710",
+          "title": "Korean Post-marketing Surveillance for Xeljanz (tofacitinib) in Patients With Active pJIA and jPsA",
+          "phase": null,
+          "status": "RECRUITING",
+          "conditions": [
+            "Polyarticular Juvenile Idiopathic Arthritis",
+            "Psoriatic Arthritis, Juvenile"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT05754710"
+        },
+        {
+          "nct_id": "NCT02566967",
+          "title": "An Evaluation of the Optimal Dose of Tofacitinib Needed to Achieve LDA or Clinical Remission in Patients With Active Rheumatoid Arthritis",
+          "phase": "PHASE3",
+          "status": "COMPLETED",
+          "conditions": [
+            "Rheumatoid Arthritis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT02566967"
+        }
+      ]
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "36252553",
+          "title": "JAK: Not Just Another Kinase.",
+          "year": "2022",
+          "journal": "Mol Cancer Ther",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36252553/",
+          "doi": "10.1158/1535-7163.MCT-22-0323"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "gene": "ZAP70",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "39776902",
+          "title": "CD28 shapes T cell receptor signaling by regulating Lck dynamics and ZAP70 activation.",
+          "year": "2024",
+          "journal": "Front Immunol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39776902/",
+          "doi": "10.3389/fimmu.2024.1503018"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

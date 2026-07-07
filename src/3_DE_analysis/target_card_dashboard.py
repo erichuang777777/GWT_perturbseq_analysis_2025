@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import base64
 import os
-from typing import Any, Dict, Iterable
+from typing import Any, Dict, Iterable, Optional
 
 import pandas as pd
 import requests
@@ -102,12 +102,48 @@ def _readiness(dataset_id: str) -> Dict[str, Any]:
     return _api_get(f"/api/readiness/{dataset_id}")
 
 
+@st.cache_data(ttl=60)
+def _calibration(dataset_id: str) -> Dict[str, Any]:
+    return _api_get(f"/api/calibration/{dataset_id}")
+
+
+@st.cache_data(ttl=300)
+def _evidence(gene: str) -> Optional[Dict[str, Any]]:
+    try:
+        return _api_get(f"/api/evidence/{gene}")
+    except Exception:
+        return None
+
+
 @st.cache_data(ttl=30)
 def _dataset_status(dataset_id: str) -> Dict[str, Any]:
     try:
         return _api_get(f"/api/status/{dataset_id}")
     except Exception:
         return {}
+
+
+@st.cache_data(ttl=300)
+def _diseases() -> Dict[str, Any]:
+    return _api_get("/api/disease")
+
+
+@st.cache_data(ttl=60)
+def _disease_targets(disease_name: str, dataset_id: str, min_grade: int, top_n: int) -> Dict[str, Any]:
+    return _api_get(f"/api/disease/{disease_name}/targets/{dataset_id}", params={"min_grade": min_grade, "top_n": top_n})
+
+
+@st.cache_data(ttl=60)
+def _gene_search(query: str, limit: int = 10) -> Dict[str, Any]:
+    return _api_get("/api/search", params={"q": query, "limit": limit})
+
+
+@st.cache_data(ttl=60)
+def _gene_status(query: str, dataset_id: Optional[str] = None) -> Dict[str, Any]:
+    params = {"q": query}
+    if dataset_id:
+        params["dataset_id"] = dataset_id
+    return _api_get("/api/genes/status", params=params)
 
 
 def _compatibility_banner(dataset_id: str) -> None:
@@ -390,6 +426,22 @@ st.markdown(
 st.title("GWT Target Evidence Browser")
 
 with st.sidebar:
+    with st.expander("Gene lookup", expanded=False):
+        st.caption("Alias-tolerant search (typos/partial/old symbols OK) + three-state result status. Works without a loaded dataset.")
+        lookup_query = st.text_input("gene symbol, alias, or Ensembl ID", key="gene_lookup_query")
+        if lookup_query:
+            try:
+                search_result = _gene_search(lookup_query, limit=5)
+                for hit in search_result.get("results", []):
+                    st.write(f"- **{hit['canonical_symbol']}** ({hit['match_type']}, score {hit['score']}) — `{hit['ensembl_gene_id']}`")
+                if not search_result.get("results"):
+                    st.caption("No matches.")
+                status_dataset = st.session_state.get("dataset_id", "").strip() or None
+                status_result = _gene_status(lookup_query, dataset_id=status_dataset)
+                st.info(f"result_status: **{status_result.get('result_status')}** (source: {status_result.get('source', 'reference DE table')})")
+            except Exception as e:
+                st.error(f"Lookup failed: {e}")
+
     st.subheader("Dataset")
     st.text_input("API base", value=API_BASE, disabled=True)
     try:
@@ -441,7 +493,7 @@ except Exception as e:
 
 summary = summary_payload.get("summary", {})
 _compatibility_banner(dataset_id)
-tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export"])
+tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export", "Disease Translator"])
 
 with tabs[0]:
     cols = st.columns(6)
@@ -496,6 +548,52 @@ with tabs[0]:
             st.caption(f"External overlays not yet wired (domains stay 'unknown'): {', '.join(missing)}")
     except Exception as e:
         st.info(f"Readiness not available: {e}")
+
+    st.subheader("Calibration — does this ranking recover known biology?")
+    st.caption("Deterministic, reproducible checks: positive-control recovery, known drug-axis enrichment, and rank stability under strict robustness filtering.")
+    try:
+        calibration_payload = _calibration(dataset_id)
+        for line in calibration_payload.get("narrative", []):
+            st.write(f"- {line}")
+        with st.expander("Calibration details", expanded=False):
+            pc = calibration_payload.get("positive_control_recovery", {})
+            st.write(f"Positive-control gene set size: {pc.get('gene_set_size', 'NA')} | fraction in top-2 deciles: {pc.get('fraction_in_top_2_deciles', 'NA')}")
+            axis = calibration_payload.get("known_drug_axis_enrichment", {})
+            if axis.get("available"):
+                st.write(f"Known drug axes recovered: {axis.get('known_axes_recovered', [])}")
+                st.write(f"Known drug axes missing: {axis.get('known_axes_missing', [])}")
+            stability = calibration_payload.get("rank_stability", {})
+            st.write(
+                f"Top-{stability.get('top_n', 'NA')} overlap after strict filtering: "
+                f"{stability.get('top_n_overlap', 'NA')}/{stability.get('top_n', 'NA')} "
+                f"(Spearman r={stability.get('spearman_rank_correlation', 'NA')})"
+            )
+
+        st.subheader("QC funnel")
+        st.caption("Row count surviving each successive robustness gate (the EDA's strict actionable filter).")
+        funnel = calibration_payload.get("qc_funnel", {})
+        stages = funnel.get("stages", [])
+        if stages:
+            funnel_df = pd.DataFrame(stages).set_index("stage")[["n"]]
+            st.bar_chart(funnel_df)
+            st.caption(f"High-confidence rows after all gates: {funnel.get('high_confidence_rows', 'NA')}")
+    except Exception as e:
+        st.info(f"Calibration not available: {e}")
+
+    st.subheader("Cross-guide vs cross-donor robustness")
+    st.caption("Every target-condition row in this dataset (up to 2,000 sampled). Robustness gates used elsewhere in this tool sit at 0.2 (candidate) and 0.3 (strong).")
+    try:
+        robustness_df = _targets(dataset_id, {"max_rows": 2000})
+        scatter_cols = [c for c in ["crossguide_correlation", "crossdonor_correlation_mean"] if c in robustness_df.columns]
+        if len(scatter_cols) == 2 and not robustness_df.empty:
+            try:
+                st.scatter_chart(robustness_df, x="crossguide_correlation", y="crossdonor_correlation_mean")
+            except Exception:
+                st.dataframe(robustness_df[["target", "condition"] + scatter_cols], use_container_width=True, hide_index=True)
+        else:
+            st.info("Robustness columns not available in this dataset.")
+    except Exception as e:
+        st.info(f"Robustness scatter not available: {e}")
 
 with tabs[1]:
     filter_cols = st.columns([1, 1, 1, 1])
@@ -555,6 +653,12 @@ with tabs[1]:
         detail_cols[3].metric("Guides", summary_row.get("n_guides", "NA"))
         detail_cols[4].metric("Replicate pass", str(summary_row.get("replicate_pass_flag", "NA")))
 
+        modality_cols = st.columns(3)
+        modality_cols[0].metric("Druggable class", str(summary_row.get("druggable_class") or "none"))
+        modality_cols[1].metric("Likely modality", str(summary_row.get("tractability_modality") or "unknown"))
+        safety_note = str(summary_row.get("safety_note") or "")
+        modality_cols[2].metric("Safety notes", safety_note.replace(";", ", ") if safety_note else "none")
+
         st.subheader(f"{selected} across conditions")
         st.dataframe(rows, use_container_width=True, hide_index=True)
 
@@ -582,13 +686,83 @@ with tabs[1]:
                     use_container_width=True,
                     hide_index=True,
                 )
+
+                st.caption("Evidence components for this condition (not a summed total -- domains combine via rules, not addition).")
+                domain_cols = [
+                    "biology_causality_score",
+                    "translation_score",
+                    "tractability_score",
+                    "biomarker_score",
+                    "disease_relevance_score",
+                    "clinical_feasibility_score",
+                ]
+                domain_values = {}
+                for col in domain_cols:
+                    val = rr.get(col)
+                    domain_values[col] = pd.to_numeric(pd.Series([val]), errors="coerce").iloc[0]
+                waterfall_series = pd.Series(domain_values, name="score").dropna()
+                if not waterfall_series.empty:
+                    st.bar_chart(waterfall_series)
+                unknown_domains = [c for c in domain_cols if pd.isna(domain_values.get(c))]
+                if unknown_domains:
+                    st.caption(f"Not chartable (unknown -- no overlay/evidence yet): {', '.join(unknown_domains)}")
             else:
                 st.info("No readiness record for this target.")
         except Exception as e:
             st.info(f"Readiness not available: {e}")
 
+        st.subheader("External evidence")
+        snapshot = _evidence(selected)
+        if snapshot is None:
+            st.info(f"No external evidence fetched yet for {selected}. Use the API to build it: POST /api/evidence/build {{\"genes\": [\"{selected}\"]}}")
+        else:
+            st.caption(f"Fetched {snapshot.get('fetched_at', 'NA')} · source_version {snapshot.get('source_version', 'NA')}")
+            ev_cols = st.columns(3)
+            sources = snapshot.get("sources", {})
+            with ev_cols[0]:
+                st.markdown("**Clinical trials**")
+                trials = sources.get("clinical_trials", {})
+                if trials.get("source_status") == "ok":
+                    for t in trials.get("items", [])[:5]:
+                        st.write(f"- [{t.get('nct_id', '')}]({t.get('url', '')}) {t.get('title', '')} ({t.get('phase') or 'NA'}, {t.get('status', 'NA')})")
+                    if not trials.get("items"):
+                        st.caption("No trials found.")
+                else:
+                    st.caption(f"unavailable: {trials.get('reason', 'not fetched')}")
+            with ev_cols[1]:
+                st.markdown("**Literature**")
+                lit = sources.get("literature", {})
+                if lit.get("source_status") == "ok":
+                    for item in lit.get("items", [])[:5]:
+                        st.write(f"- [{item.get('pmid', '')}]({item.get('url', '')}) {item.get('title', '')} ({item.get('year', 'NA')})")
+                    if not lit.get("items"):
+                        st.caption("No literature found.")
+                else:
+                    st.caption(f"unavailable: {lit.get('reason', 'not fetched')}")
+            with ev_cols[2]:
+                st.markdown("**Open Targets (tractability/genetics)**")
+                ot = sources.get("open_targets", {})
+                if ot.get("source_status") == "ok":
+                    st.write(ot.get("items", []))
+                else:
+                    st.caption(f"unavailable: {ot.get('reason', 'not fetched')}")
+
         st.subheader("Evidence graph")
         st.graphviz_chart(_evidence_graph(selected, summary_row))
+
+        status = _dataset_status(dataset_id)
+        lineage = status.get("lineage") or {}
+        footer_bits = [
+            f"dataset_id={dataset_id}",
+            f"origin={status.get('origin', 'gwt_reference')}",
+            f"engine_version={status.get('engine_version', 'NA')}",
+            f"built_at={status.get('built_at', 'NA')}",
+            f"data_version={status.get('data_version', 'NA')}",
+        ]
+        if lineage:
+            footer_bits.append(f"import_id={lineage.get('import_id', 'NA')}")
+            footer_bits.append(f"source_name={lineage.get('source_name', 'NA')}")
+        st.caption(" · ".join(footer_bits))
 
 with tabs[2]:
     module_df = _modules(dataset_id)
@@ -646,3 +820,44 @@ with tabs[4]:
             file_name="target_report.md",
             mime="text/markdown",
         )
+
+with tabs[5]:
+    st.subheader("Disease Translator")
+    st.caption(
+        "Ranks target cards by real Open Targets genetic-association evidence for a chosen indication. "
+        "Coverage is restricted to diseases already present in the local association table -- "
+        "no free-text disease is guessed or fabricated."
+    )
+    try:
+        disease_payload = _diseases()
+        disease_options = [d["disease_name"] for d in disease_payload.get("diseases", [])]
+    except Exception as e:
+        disease_options = []
+        st.error(f"Could not load disease list: {e}")
+
+    if not disease_options:
+        st.info("No local disease-association table available.")
+    else:
+        disease_cols = st.columns([2, 1, 1])
+        with disease_cols[0]:
+            selected_disease = st.selectbox("Indication", disease_options)
+        with disease_cols[1]:
+            disease_min_grade = st.slider("min grade", min_value=1, max_value=4, value=2, key="disease_min_grade")
+        with disease_cols[2]:
+            disease_top_n = st.number_input("top N", min_value=5, max_value=200, value=30, step=5, key="disease_top_n")
+
+        try:
+            result = _disease_targets(selected_disease, dataset_id, int(disease_min_grade), int(disease_top_n))
+        except Exception as e:
+            result = {"matched": False, "reason": str(e), "targets": []}
+
+        if not result.get("matched"):
+            st.warning(result.get("reason", "No match."))
+        elif not result.get("targets"):
+            st.info(result.get("reason") or "No target-condition rows matched this indication at the current filters.")
+        else:
+            disease_df = pd.DataFrame(result["targets"])
+            st.dataframe(disease_df, use_container_width=True, hide_index=True)
+            if "disease_association_score" in disease_df.columns and "target" in disease_df.columns:
+                chart_df = disease_df.drop_duplicates("target").set_index("target")[["disease_association_score"]]
+                st.bar_chart(chart_df)

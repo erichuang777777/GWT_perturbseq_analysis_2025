@@ -68,6 +68,98 @@ BENCHMARK_CSV_DEFAULT = Path("sources/topic05_successful_drug_benchmarks.csv")
 # Canonical target-evidence contract used by generic (uploaded) DE tables.
 GENERIC_TARGET_FIELDS = ("target", "condition", "effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides")
 
+# Local druggable-class gene lists (metadata/gene_lists/<name>.tsv) -> likely modality.
+# Shared with readiness_engine.py so tractability inference stays in one place.
+DRUGGABLE_CLASS_MODALITY: Dict[str, str] = {
+    "kinases": "small molecule",
+    "gpcr_union": "small molecule",
+    "rhodop_gpcr": "small molecule",
+    "ion_channels": "small molecule",
+    "transporters": "small molecule",
+    "nuclear_receptors": "small molecule",
+    "enzymes": "small molecule",
+    "catalytic_receptors": "small molecule / biologic",
+    "cytokine_receptors": "antibody / biologic",
+    "gpi_anchored": "antibody (surface)",
+}
+
+GENE_LISTS_DIR_DEFAULT = Path("metadata/gene_lists")
+IMMUNE_EFFECTOR_CSV_DEFAULT = Path("metadata/immune_effector_genes.csv")
+
+
+def load_druggable_overlays(gene_lists_dir: Path) -> Dict[str, set]:
+    """Load druggable-class + genetics gene sets from ``metadata/gene_lists``."""
+    gene_lists_dir = Path(gene_lists_dir)
+    overlays: Dict[str, set] = {}
+    for name in list(DRUGGABLE_CLASS_MODALITY) + ["gwascatalog", "clinvar_path_likelypath"]:
+        genes = load_gene_set(gene_lists_dir / f"{name}.tsv")
+        if genes:
+            overlays[name] = genes
+    return overlays
+
+
+def load_immune_effector_map(path: Path) -> Dict[str, str]:
+    """Load ``gene_name,Category`` immune-effector annotations into an upper-cased dict."""
+    path = Path(path)
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    cols = {c.lower(): c for c in df.columns}
+    gene_col = cols.get("gene_name") or cols.get("gene")
+    cat_col = cols.get("category")
+    if not gene_col or not cat_col:
+        return {}
+    out: Dict[str, str] = {}
+    for _, row in df.iterrows():
+        gene = str(row[gene_col]).strip().upper()
+        if gene:
+            out[gene] = str(row[cat_col]).strip()
+    return out
+
+
+def _druggable_class_for(gene: str, overlays: Dict[str, set]) -> tuple:
+    for name, modality in DRUGGABLE_CLASS_MODALITY.items():
+        genes = overlays.get(name)
+        if genes and gene in genes:
+            return name, modality
+    return "", ""
+
+
+def annotate_local_overlays(
+    card_df: pd.DataFrame,
+    gene_lists_dir: Path = GENE_LISTS_DIR_DEFAULT,
+    immune_effector_csv: Path = IMMUNE_EFFECTOR_CSV_DEFAULT,
+) -> pd.DataFrame:
+    """Add ``druggable_class``, ``tractability_modality``, and ``safety_note`` columns.
+
+    Purely local, offline overlays (no external calls): druggable-gene-class lists,
+    ClinVar pathogenic/likely-pathogenic membership, and immune-effector-gene
+    category membership. A target absent from every local list gets empty strings,
+    never a fabricated value.
+    """
+    overlays = load_druggable_overlays(gene_lists_dir)
+    clinvar = overlays.get("clinvar_path_likelypath", set())
+    immune_map = load_immune_effector_map(immune_effector_csv)
+
+    genes = card_df["target"].astype(str).str.strip().str.upper()
+    classes, modalities, notes = [], [], []
+    for gene in genes:
+        cls, modality = _druggable_class_for(gene, overlays)
+        classes.append(cls)
+        modalities.append(modality)
+        note_parts = []
+        if gene in clinvar:
+            note_parts.append("clinvar_pathogenic_or_likely_pathogenic")
+        if gene in immune_map:
+            note_parts.append(f"immune_effector:{immune_map[gene]}")
+        notes.append(";".join(note_parts))
+
+    out = card_df.copy()
+    out["druggable_class"] = classes
+    out["tractability_modality"] = modalities
+    out["safety_note"] = notes
+    return out
+
 
 def load_gene_set(path: Path) -> set:
     """Load a newline-delimited gene-symbol list (no header) into an upper-cased set."""
@@ -218,18 +310,51 @@ def _build_guide_summary(
     g = guide_df.copy()
     g["signif_knockdown"] = g["signif_knockdown"].apply(_to_bool)
     g["guide_id"] = g.get("guide_id", g.index.astype(str))
+    agg_kwargs = dict(
+        n_guides=("guide_id", "nunique"),
+        guide_signif_ratio=("signif_knockdown", "mean"),
+        guide_fdr_min=("adj_p_value", lambda s: pd.to_numeric(s, errors="coerce").min()),
+        guide_t_abs_median=("t_statistic", lambda s: pd.to_numeric(s, errors="coerce").abs().median()),
+    )
+    if "ntc_mean_expr" in g.columns:
+        # Invariant across guides within a target x condition (confirmed against the
+        # real guide_kd_efficiency.suppl_table.csv: 0/37,578 groups show >1 unique
+        # value), so "first" is exact, not an approximation.
+        agg_kwargs["target_baseline_expression"] = ("ntc_mean_expr", "first")
     agg = (
         g.groupby(["perturbed_gene_id", "culture_condition"], dropna=False)
-        .agg(
-            n_guides=("guide_id", "nunique"),
-            guide_signif_ratio=("signif_knockdown", "mean"),
-            guide_fdr_min=("adj_p_value", lambda s: pd.to_numeric(s, errors="coerce").min()),
-            guide_t_abs_median=("t_statistic", lambda s: pd.to_numeric(s, errors="coerce").abs().median()),
-        )
+        .agg(**agg_kwargs)
         .reset_index()
         .rename(columns={"perturbed_gene_id": "target_id"})
     )
     return agg
+
+
+# Per metadata/data_sharing_readme.md's documented definition of
+# high_confidence_no_effect_guides: "target expression in NTCs > 0.001" is the
+# repo's own stated floor for whether knockdown is assessable at all. Reused
+# here rather than inventing a new threshold.
+KD_NOT_MEASURABLE_EXPRESSION_FLOOR = 0.001
+KD_THRESHOLD_VERSION = "kd_status/v1"
+
+
+def _kd_status(row: pd.Series) -> str:
+    """Three-state on-target knockdown status: confirmed / weak / not_measurable.
+
+    CRISPRi's causal chain is target-suppressed -> downstream transcription
+    changes; if the target itself was never knocked down, downstream DE is
+    not causally interpretable. Separately, low target_baseline_expression
+    means knockdown cannot be reliably assessed at all -- a different failure
+    mode from "measurable but not significantly knocked down."
+    """
+    baseline = row.get("target_baseline_expression")
+    if pd.isna(baseline) or baseline <= KD_NOT_MEASURABLE_EXPRESSION_FLOOR:
+        return "not_measurable"
+    ratio = row.get("guide_signif_ratio")
+    fdr = row.get("guide_fdr_min")
+    if pd.notna(ratio) and pd.notna(fdr) and ratio >= 0.5 and fdr <= 0.05:
+        return "confirmed"
+    return "weak"
 
 
 def _load_benchmark(path: Optional[Path]) -> Optional[pd.DataFrame]:
@@ -298,7 +423,14 @@ def _score_cap_reasons(
     if row.get("batch_sensitivity_flag") == "sensitive":
         reasons.append("batch_sensitive")
     if row["n_guides"] < 2:
-        reasons.append("single_donor_dominance")
+        reasons.append("single_guide")
+    kd_status = row.get("kd_status")
+    if kd_status == "not_measurable":
+        reasons.append("kd_not_measurable")
+    elif kd_status == "weak":
+        reasons.append("kd_weak")
+    # De-duplicate while preserving first-seen order.
+    reasons = list(dict.fromkeys(reasons))
     return ";".join(reasons) if reasons else "none"
 
 
@@ -374,22 +506,50 @@ def build_cards_frame(
         card_df["guide_fdr_min"] = card_df.get("_generic_fdr_min", np.nan)
         card_df["guide_t_abs_median"] = np.nan
 
+    if "target_baseline_expression" not in card_df.columns:
+        card_df["target_baseline_expression"] = np.nan
+    card_df["kd_status"] = card_df.apply(_kd_status, axis=1)
+    card_df["kd_threshold_version"] = KD_THRESHOLD_VERSION
+
     card_df["n_guides"] = card_df["n_guides"].fillna(0).astype(int)
     card_df["guide_signif_ratio"] = card_df["guide_signif_ratio"].fillna(0.0)
     card_df["guide_fdr_min"] = card_df["guide_fdr_min"].astype(float)
     card_df["guide_t_abs_median"] = card_df["guide_t_abs_median"].astype(float)
     card_df["fdr_min"] = card_df["guide_fdr_min"]
 
-    # Replace missing numeric correlations with low confidence values.
-    for c in ["crossdonor_correlation_mean", "crossdonor_correlation_min", "crossguide_correlation"]:
-        card_df[c] = card_df[c].fillna(np.nan)
+    # Missing correlations stay NaN on purpose: every downstream comparison
+    # (_make_score, replicate_pass_flag, _score_cap_reasons) already treats NaN
+    # as failing/weak, so no sentinel substitution is needed.
 
     # target-condition score enrichment
+    # NOTE (condition_specificity_score is a HEURISTIC, not a statistical test):
+    # a raw share-of-total-DE-count ratio is noise-insensitive (a single
+    # low-power condition can dominate a small total), direction-blind (an
+    # activation-dependent sign flip in the target's own on-target effect is
+    # invisible to it), and not comparable across conditions with different
+    # typical DE-count scales (per the EDA: Rest/Stim48hr/Stim8hr have
+    # different mean DE-gene counts). A rigorous replacement would be a
+    # condition x perturbation interaction test against the underlying
+    # DESeq2 contrasts, which needs per-guide/per-cell modeling not
+    # computable from this summary CSV -- out of scope here, same as the
+    # signed-module-scoring descope (see docs/IMPLEMENTATION_PLAN.md).
+    # Two additive, buildable fixes ship instead: (a) a within-condition
+    # z-score version of the same signal, so a target-condition's DE count
+    # is judged relative to that condition's own typical scale rather than
+    # an absolute cross-condition-incomparable count; (b) an explicit
+    # direction-flip flag from the target's own on-target effect sign.
     total_by_target = card_df.groupby("target_contrast")["n_total_de_genes"].transform("sum")
     card_df["condition_specificity_score"] = np.where(
         total_by_target > 0,
         card_df["n_total_de_genes"] / total_by_target,
         0.0,
+    )
+    condition_mean = card_df.groupby("culture_condition")["n_total_de_genes"].transform("mean")
+    condition_std = card_df.groupby("culture_condition")["n_total_de_genes"].transform("std").replace(0, np.nan)
+    card_df["condition_specificity_zscore"] = (card_df["n_total_de_genes"] - condition_mean) / condition_std
+
+    card_df["effect_direction_flip_flag"] = card_df.groupby("target_contrast")["ontarget_effect_size"].transform(
+        lambda s: bool((s.dropna() > 0).any() and (s.dropna() < 0).any())
     )
     card_df["replicate_pass_flag"] = ((card_df["n_cells_target"] >= min_cells) &
                                      (card_df["n_total_de_genes"] >= min_de_genes) &
@@ -431,15 +591,17 @@ def build_cards_frame(
     )
 
     def _cap_reason(row: pd.Series) -> str:
-        if row["n_cells_target"] < min_cells:
-            reasons = ["low_cells"]
-        else:
-            reasons = []
-        if row["n_total_de_genes"] < min_de_genes:
-            reasons.append("low_signal")
+        # Always compute the full reason set (off-target, batch, replicability,
+        # direction, guide flags) and union in the low-cell/low-signal/hint tokens.
+        # A previous early-return here suppressed every other reason on any
+        # low-cell or low-signal row, hiding off-target and batch-confound
+        # signals on ~1,100 rows of the reference dataset.
+        full = _score_cap_reasons(row, min_cells=min_cells, min_de_genes=min_de_genes)
+        reasons = [] if full == "none" else full.split(";")
         if row.get("single_donor_dominance_hint", False):
             reasons.append("single_donor_dominance")
-        return ";".join(reasons) if reasons else _score_cap_reasons(row, min_cells=min_cells, min_de_genes=min_de_genes)
+        reasons = list(dict.fromkeys(reasons))
+        return ";".join(reasons) if reasons else "none"
 
     card_df["score_cap_reason"] = card_df.apply(_cap_reason, axis=1)
 
@@ -469,9 +631,14 @@ def build_cards_frame(
         "positive_control_similarity",
         "pathway_axis",
         "condition_specificity_score",
+        "condition_specificity_zscore",
+        "effect_direction_flip_flag",
         "clinical_axis",
         "nearest_success_drug",
         "nearest_failure_or_warning",
+        "target_baseline_expression",
+        "kd_status",
+        "kd_threshold_version",
         "statistical_evidence_grade",
         "score_cap_reason",
     ]
@@ -490,6 +657,7 @@ def build_cards_frame(
     card_out = card_out.rename(columns={"culture_condition": "condition", "target_contrast": "target_id"})
     # Keep a stable alias for score_cap_reason string.
     card_out = card_out.reset_index(drop=True)
+    card_out = annotate_local_overlays(card_out)
     return card_out
 
 

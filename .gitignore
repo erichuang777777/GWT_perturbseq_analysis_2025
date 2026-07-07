@@ -191,3 +191,11 @@ cython_debug/
 *.pkl
 *.tar
 *.gz
+
+# Transient runtime target-card caches produced by the target_card_api service.
+# Keep the intentional _evidence seed snapshots and any already-tracked demo
+# datasets tracked; ignore new per-run dataset/import dirs so test/runtime
+# artifacts do not get committed.
+sources/target_tool_cache/usr_*/
+sources/target_tool_cache/imports/*/
+sources/target_tool_cache/[0-9a-f]*-[0-9a-f]*/

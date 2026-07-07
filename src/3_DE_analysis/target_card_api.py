@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
@@ -20,6 +20,12 @@ from generate_target_report import build_report_payload, write_report
 from build_target_cards import adapt_generic_de, build_cards_frame
 from readiness_engine import compute_readiness, load_overlays, readiness_summary
 from build_target_cards import load_gene_set
+from calibration import run_calibration
+from external_evidence_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
+from disease_translator import list_diseases, load_disease_associations, translate_disease
+from gene_identifier_resolver import load_resolver, result_status
+from gene_search import search_genes
+from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -34,6 +40,7 @@ from import_manager import (
     read_table_preview,
     register_import,
     suggested_mapping,
+    utc_now,
 )
 
 
@@ -49,6 +56,69 @@ DEFAULT_BUILD_SCRIPT = SRC / "build_target_cards.py"
 DEFAULT_SAMPLE_META = ROOT / "metadata" / "suppl_tables" / "sample_metadata.suppl_table.csv"
 GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
+DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
+EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
+DISEASE_ASSOCIATIONS_PATH = ROOT / "src" / "6_functional_interaction" / "results" / "disease_gene_associations_detailed.csv"
+
+# B5 schema placeholders: no CRE dataset is present in this repo. These paths
+# intentionally point at files that don't exist yet -- load_cre_elements /
+# load_variant_cre_links report an explicit "not loaded" status rather than
+# fabricating data. Point them at a real file (e.g. a processed Moonen CRE
+# export) when one becomes available; no other code needs to change.
+CRE_ELEMENTS_PATH = ROOT / "sources" / "cre_elements.csv"
+VARIANT_CRE_LINKS_PATH = ROOT / "sources" / "variant_cre_links.csv"
+
+
+def _disease_associations():
+    return load_disease_associations(DISEASE_ASSOCIATIONS_PATH)
+
+
+_GENE_RESOLVER = None
+
+
+def _gene_resolver():
+    # Built once and cached: the alias table is a deterministic function of two
+    # static input files, so there is no correctness reason to rebuild it per
+    # request -- only a performance one to avoid re-parsing a 26,504-row CSV.
+    global _GENE_RESOLVER
+    if _GENE_RESOLVER is None:
+        _GENE_RESOLVER = load_resolver(DEFAULT_LIB, DEFAULT_GUIDE)
+    return _GENE_RESOLVER
+
+# Bump whenever build_target_cards.py, readiness_engine.py, calibration.py, or
+# external_evidence_cache.py change scoring/engine behavior, so every dataset's
+# provenance footer can say exactly which engine produced it.
+ENGINE_VERSION = "1.3.0"  # wave 3: readiness engine + real batch flag + upload merge loop (1.0-1.2) + external evidence (1.3)
+
+# Which upstream GWT dataset release this toolkit's local CSVs correspond to.
+# Distinct from ENGINE_VERSION (this toolkit's own scoring logic) -- bump only
+# when the underlying DE_stats/guide_kd/sgrna_library upstream release changes,
+# per docs/de_and_baseline_spec.md and the manuscript DOI in README.md.
+DATASET_VERSION = "gwt_marson2025/bioRxiv-10.64898-2025.12.23.696273v1"
+
+# The target_cards.csv COLUMN CONTRACT itself, independent of engine scoring
+# logic. Bump when out_cols in build_target_cards.py adds/removes/renames a
+# column, so a consumer can tell whether its column-name assumptions still
+# hold. v1 = the original 24-column spec (sources/topic14_target_card_specification.md);
+# v2 = + druggable_class/tractability_modality/safety_note, kd_status/
+# kd_threshold_version/target_baseline_expression, condition_specificity_zscore,
+# effect_direction_flip_flag.
+CARD_SCHEMA_VERSION = "card_schema/v2"
+
+
+def _data_version_fingerprint(paths: List[Path]) -> str:
+    """Deterministic fingerprint of input file identity: name + mtime + size, joined."""
+    parts = []
+    for path in paths:
+        if path and Path(path).exists():
+            stat = Path(path).stat()
+            parts.append(f"{Path(path).name}@{int(stat.st_mtime)}:{stat.st_size}")
+    return ";".join(parts) if parts else "unknown"
+
+
+def _signature_set_version() -> str:
+    """Fingerprint of the seed CD4 module list used for module scoring/mechanism graphs."""
+    return _data_version_fingerprint([SEED_MODULES])
 
 
 def _overlays():
@@ -57,6 +127,10 @@ def _overlays():
 
 def _essentials():
     return load_gene_set(DEFAULT_ESSENTIALS)
+
+
+def _broad_effect_genes():
+    return load_gene_set(DEFAULT_BROAD_EFFECT)
 
 
 def _import_allowed_roots() -> List[Path]:
@@ -126,6 +200,13 @@ class MappingRequest(BaseModel):
 class MergeRequest(BaseModel):
     min_cells: int = 200
     min_de_genes: int = 50
+    force: bool = False
+
+
+class EvidenceBuildRequest(BaseModel):
+    dataset_id: Optional[str] = None
+    genes: Optional[List[str]] = None
+    top_n: int = 20
     force: bool = False
 
 
@@ -246,8 +327,15 @@ def _module_scores(df: pd.DataFrame) -> pd.DataFrame:
 
 def _persist_metadata(dataset_id: str, status: str, payload: Dict[str, Any]) -> None:
     path = _dataset_path(dataset_id) / "metadata.json"
-    data = {"dataset_id": dataset_id, "status": status}
-    data.update(payload)
+    data = {
+        "dataset_id": dataset_id,
+        "status": status,
+        "engine_version": ENGINE_VERSION,
+        "schema_version": CARD_SCHEMA_VERSION,
+        "signature_set_version": _signature_set_version(),
+        "built_at": utc_now(),
+    }
+    data.update(payload)  # payload may override any of the above if the caller sets them explicitly
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
@@ -444,6 +532,7 @@ def merge_import(import_id: str, req: MergeRequest) -> Dict[str, Any]:
             "origin": "user_upload",
             "rows": int(cards.shape[0]),
             "output": str(out_csv),
+            "data_version": _data_version_fingerprint([source_path]),
             "lineage": {
                 "kind": "user_merge",
                 "import_id": import_id,
@@ -462,6 +551,13 @@ def merge_import(import_id: str, req: MergeRequest) -> Dict[str, Any]:
     return {"dataset_id": dataset_id, "status": "completed", "rows": int(cards.shape[0]), "preview": preview}
 
 
+def _evidence_dir_mtime() -> float:
+    if not EVIDENCE_CACHE_DIR.exists():
+        return 0.0
+    mtimes = [p.stat().st_mtime for p in EVIDENCE_CACHE_DIR.glob("*.json")]
+    return max(mtimes, default=0.0)
+
+
 @app.get("/api/readiness/{dataset_id}")
 def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict[str, Any]:
     out_csv = _dataset_path(dataset_id) / "target_cards.csv"
@@ -469,9 +565,21 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
         raise HTTPException(status_code=404, detail="dataset_id not found")
     readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
     overlays = _overlays()
-    if refresh or not readiness_csv.exists() or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime:
+    stale = (
+        refresh
+        or not readiness_csv.exists()
+        or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime
+        or readiness_csv.stat().st_mtime < _evidence_dir_mtime()
+    )
+    if stale:
         cards = _normalize_cell_values(_load_cards(out_csv))
-        readiness = compute_readiness(cards, overlays=overlays, essentials=_essentials())
+        readiness = compute_readiness(
+            cards,
+            overlays=overlays,
+            essentials=_essentials(),
+            broad_effect_genes=_broad_effect_genes(),
+            evidence_dir=EVIDENCE_CACHE_DIR,
+        )
         readiness.to_csv(readiness_csv, index=False)
     else:
         readiness = pd.read_csv(readiness_csv)
@@ -480,6 +588,174 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
         **readiness_summary(readiness, overlays=overlays),
         "readiness": _json_records(readiness),
     }
+
+
+@app.get("/api/evidence/{gene}")
+def get_evidence(gene: str) -> Dict[str, Any]:
+    snapshot = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene)
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail=f"no evidence snapshot fetched yet for {gene}")
+    return snapshot
+
+
+# Hard cap on how many genes one build request may schedule, so a single call
+# can never fan out into an unbounded number of external HTTP fetches.
+MAX_EVIDENCE_GENES = 50
+
+
+@app.post("/api/evidence/build")
+def build_evidence(req: EvidenceBuildRequest, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    genes = list(req.genes or [])
+    if req.dataset_id:
+        out_csv = _dataset_path(req.dataset_id) / "target_cards.csv"
+        if not out_csv.exists():
+            raise HTTPException(status_code=404, detail="dataset_id not found")
+        df = _load_cards(out_csv)
+        df = df.sort_values(
+            by=[c for c in ["statistical_evidence_grade", "n_total_de_genes"] if c in df.columns],
+            ascending=False,
+        )
+        genes.extend(df["target"].dropna().astype(str).str.upper().unique().tolist()[: req.top_n])
+    genes = list(dict.fromkeys(g.upper() for g in genes if g))[:MAX_EVIDENCE_GENES]
+    if not genes:
+        raise HTTPException(status_code=400, detail="no genes to build evidence for (pass dataset_id or genes)")
+
+    # Report what is already cached synchronously (no network); schedule only the
+    # missing/forced genes as a BACKGROUND task so the request returns promptly
+    # and external fetches never block the HTTP response (external_evidence_cache
+    # is designed as an offline batch job, not a request-path call).
+    cached: Dict[str, Any] = {}
+    to_fetch = []
+    for gene in genes:
+        snap = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene)
+        if snap is not None and not req.force:
+            cached[gene] = {name: src.get("source_status") for name, src in snap.get("sources", {}).items()}
+        else:
+            to_fetch.append(gene)
+
+    if to_fetch:
+        background_tasks.add_task(build_evidence_for_genes, to_fetch, EVIDENCE_CACHE_DIR, force=req.force)
+
+    return {
+        "genes": genes,
+        "cache_dir": str(EVIDENCE_CACHE_DIR),
+        "cached": cached,
+        "scheduled": to_fetch,
+        "note": "scheduled genes are fetched in the background; poll GET /api/evidence/{gene} for results",
+    }
+
+
+@app.get("/api/calibration/{dataset_id}")
+def get_calibration(dataset_id: str, refresh: bool = Query(default=False)) -> Dict[str, Any]:
+    out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    calib_json = _dataset_path(dataset_id) / "calibration.json"
+    if refresh or not calib_json.exists() or calib_json.stat().st_mtime < out_csv.stat().st_mtime:
+        cards = _normalize_cell_values(_load_cards(out_csv))
+        readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+        readiness_df = pd.read_csv(readiness_csv) if readiness_csv.exists() else None
+        report = run_calibration(cards, readiness=readiness_df)
+        calib_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    else:
+        report = json.loads(calib_json.read_text(encoding="utf-8"))
+    return {"dataset_id": dataset_id, **report}
+
+
+@app.get("/api/genes/resolve")
+def resolve_gene(q: str = Query(..., description="gene symbol, alias, or Ensembl ID")) -> Dict[str, Any]:
+    resolver = _gene_resolver()
+    return resolver.resolve(q)
+
+
+@app.post("/api/genes/resolve")
+def resolve_genes_batch(queries: List[str]) -> List[Dict[str, Any]]:
+    resolver = _gene_resolver()
+    return resolver.resolve_many(queries)
+
+
+@app.get("/api/genes/status")
+def gene_result_status(
+    q: str = Query(..., description="gene symbol, alias, or Ensembl ID"),
+    dataset_id: Optional[str] = Query(default=None, description="built dataset to check; defaults to the raw reference DE table"),
+) -> Dict[str, Any]:
+    """Three-state (+has_effect) result status for any gene, per docs/de_and_baseline_spec.md.
+
+    Without dataset_id, checks against the raw reference DE_stats table (always
+    locally available) so a query never depends on a dataset having been built.
+    """
+    resolver = _gene_resolver()
+    if dataset_id:
+        out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+        if not out_csv.exists():
+            raise HTTPException(status_code=404, detail="dataset_id not found")
+        de_df = _load_cards(out_csv)
+        source = f"dataset:{dataset_id}"
+    elif DEFAULT_DE.exists():
+        de_df = pd.read_csv(DEFAULT_DE)
+        source = str(DEFAULT_DE.relative_to(ROOT))
+    else:
+        de_df = pd.DataFrame(columns=["target"])
+        source = "unavailable"
+    return {"source": source, **result_status(resolver, q, de_df)}
+
+
+@app.get("/api/search")
+def search_genes_endpoint(q: str = Query(..., min_length=1), limit: int = Query(default=10, ge=1, le=50)) -> Dict[str, Any]:
+    resolver = _gene_resolver()
+    return {"query": q, "results": search_genes(resolver, q, limit=limit)}
+
+
+@app.get("/api/cre/{gene_query}")
+def get_cre_for_gene(gene_query: str) -> Dict[str, Any]:
+    """CRE (cis-regulatory element) links for a gene -- schema placeholder (B5).
+
+    Honestly reports 'not loaded' (never fabricates elements) until a real
+    CRE dataset is configured at CRE_ELEMENTS_PATH/VARIANT_CRE_LINKS_PATH.
+    """
+    resolver = _gene_resolver()
+    resolution = resolver.resolve(gene_query)
+    cre_result = load_cre_elements(CRE_ELEMENTS_PATH if CRE_ELEMENTS_PATH.exists() else None)
+    variant_result = load_variant_cre_links(VARIANT_CRE_LINKS_PATH if VARIANT_CRE_LINKS_PATH.exists() else None)
+    elements = cre_for_gene(resolution.get("ensembl_gene_id") or gene_query, cre_result) if resolution.get("matched") else []
+    return {
+        "gene_query": gene_query,
+        "resolution": resolution,
+        "cre_available": cre_result["available"],
+        "cre_reason": cre_result["reason"],
+        "variant_link_available": variant_result["available"],
+        "variant_link_reason": variant_result["reason"],
+        "elements": elements,
+    }
+
+
+@app.get("/api/disease")
+def get_diseases() -> Dict[str, Any]:
+    associations = _disease_associations()
+    return {
+        "source": str(DISEASE_ASSOCIATIONS_PATH.relative_to(ROOT)) if DISEASE_ASSOCIATIONS_PATH.exists() else None,
+        "diseases": list_diseases(associations),
+    }
+
+
+@app.get("/api/disease/{disease_name}/targets/{dataset_id}")
+def get_disease_targets(
+    disease_name: str,
+    dataset_id: str,
+    min_grade: int = Query(default=2, ge=1, le=4),
+    top_n: int = Query(default=50, ge=1, le=500),
+) -> Dict[str, Any]:
+    out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    cards = _normalize_cell_values(_load_cards(out_csv))
+    associations = _disease_associations()
+
+    readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+    readiness_df = pd.read_csv(readiness_csv) if readiness_csv.exists() else None
+
+    result = translate_disease(cards, disease_name, associations, readiness=readiness_df, min_grade=min_grade, top_n=top_n)
+    return {"dataset_id": dataset_id, "disease_name": disease_name, **result}
 
 
 @app.post("/api/run/target-card")
@@ -532,11 +808,14 @@ def run_target_card(req: RunRequest) -> Dict[str, Any]:
     preview_limit = int(req.max_rows) if req.max_rows and req.max_rows > 0 else 20
     metadata = {
         "dataset_id": dataset_id,
+        "origin": "gwt_reference",
         "params": req.dict(),
         "rows": int(cards.shape[0]),
         "output": str(out_csv),
         "module_scores_enabled": bool(req.include_module_scores),
         "preview_limit": preview_limit,
+        "data_version": _data_version_fingerprint([de_stats, guide_kd, library_metadata, bench, DEFAULT_SAMPLE_META]),
+        "dataset_version": DATASET_VERSION,
     }
     preview = cards.head(preview_limit).to_dict(orient="records")
     _persist_metadata(dataset_id, status="completed", payload=metadata)
@@ -593,12 +872,22 @@ def list_targets(
     return _json_records(df)
 
 
+def _provenance_block(dataset_id: str) -> Dict[str, Any]:
+    """The four version layers (B4) for a dataset, pulled from its persisted metadata."""
+    meta = _read_metadata(dataset_id)
+    return {
+        k: meta.get(k)
+        for k in ["dataset_version", "engine_version", "schema_version", "signature_set_version", "built_at"]
+        if meta.get(k) is not None
+    }
+
+
 @app.get("/api/summary/{dataset_id}")
 def summarize_dataset(dataset_id: str, top_n: int = Query(default=50, ge=1, le=500)) -> Dict[str, Any]:
     out_csv = _dataset_path(dataset_id) / "target_cards.csv"
     if not out_csv.exists():
         raise HTTPException(status_code=404, detail="dataset_id not found")
-    return build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n)
+    return build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n, provenance=_provenance_block(dataset_id))
 
 
 @app.get("/api/options/{dataset_id}")
@@ -680,14 +969,15 @@ def report_dataset(
     out_csv = job_dir / "target_cards.csv"
     if not out_csv.exists():
         raise HTTPException(status_code=404, detail="dataset_id not found")
+    provenance = _provenance_block(dataset_id)
     if fmt == "json":
-        payload = build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n)
+        payload = build_report_payload(_load_cards(out_csv), dataset_id=dataset_id, top_n=top_n, provenance=provenance)
         return JSONResponse(content=payload)
     if fmt not in {"html", "md"}:
         raise HTTPException(status_code=400, detail="fmt must be html, md, or json")
 
     report_path = job_dir / f"target_report.{fmt}"
-    write_report(out_csv, report_path, dataset_id=dataset_id, fmt=fmt, top_n=top_n)
+    write_report(out_csv, report_path, dataset_id=dataset_id, fmt=fmt, top_n=top_n, provenance=provenance)
     media_type = "text/html" if fmt == "html" else "text/markdown"
     return FileResponse(str(report_path), filename=f"target_report.{fmt}", media_type=media_type)
 

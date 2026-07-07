@@ -1,0 +1,48 @@
+{
+  "gene": "IL2RA",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": [
+        {
+          "nct_id": "NCT04738981",
+          "title": "Efficacy and Safety of UC-MSCS for the Treatment of Steroid-resistant aGVHD Following Allo-HSCT",
+          "phase": "PHASE3",
+          "status": "COMPLETED",
+          "conditions": [
+            "Graft Vs Host Disease"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT04738981"
+        }
+      ]
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "32367041",
+          "title": "Transcriptional and epigenetic basis of Treg cell development and function: its genetic anomalies or variations in autoimmune diseases.",
+          "year": "2020",
+          "journal": "Cell Mol Immunol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32367041/",
+          "doi": "10.1038/s41422-020-0324-7"
+        },
+        {
+          "pmid": "40633593",
+          "title": "Inborn errors of regulatory T-cell differentiation and function.",
+          "year": "2025",
+          "journal": "J Allergy Clin Immunol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40633593/",
+          "doi": "10.1016/j.jaci.2025.07.001"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

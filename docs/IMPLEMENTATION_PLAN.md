@@ -1,6 +1,7 @@
 # Implementation Plan — CD4 Perturb-seq Target-Discovery Toolkit
 
-**Status:** living plan · **Last updated:** 2026-07-07 · **Branch:** `claude/drug-discovery-tool-plan-258jof` (PR #1)
+**Status:** living plan · **Last updated:** 2026-07-07 · **Branch:** `claude/drug-discovery-tool-plan-258jof`
+(PR #1 merged wave 1; this branch was rebuilt from `main` post-merge for wave 2 per repo workflow rules)
 
 This is the executable companion to `docs/DRUG_DISCOVERY_TOOL_DEVELOPMENT_PLAN.md` (the strategy).
 It tracks what is **built and verified**, what is **next**, and gives each remaining piece a concrete
@@ -26,10 +27,112 @@ The first implementation wave is landed and tested end-to-end against the real i
 **Files changed:** `src/3_DE_analysis/build_target_cards.py`, `readiness_engine.py` (new),
 `import_manager.py`, `target_card_api.py`, `target_card_dashboard.py`.
 
-### Known scientific gap surfaced during verification
-The `advance` set still contains broad chromatin/essential-like genes (`MED12`, `CREBBP`, `KDM1A`,
-`ELOB`) because `core_essentials_hart.tsv` (283 genes) does not cover them. This is the planned
-**C7 confounder quarantine** — see §1.1. It is flagged, not ignored.
+### Wave 2 — landed and verified (this update)
+
+| Piece | Module | State | Evidence of verification |
+|---|---|---|---|
+| Broad-effect/chromatin confounder quarantine | C7 (§1.1) | **done** | `sources/broad_effect_genes.txt` (239 genes: EDA-named offenders ∪ CORUM chromatin/transcription complexes); `MED12/CREBBP/KDM1A/SGF29` no longer reach `advance` (319→302 unique targets), `PLCG1/CD247/ITK` unaffected, 513 rows carry the reason |
+| Local druggability/safety overlay columns | T1/T9 (§1.3) | **done** | `druggable_class`, `tractability_modality`, `safety_note` columns on every card; `DRUGGABLE_CLASS_MODALITY` is a single source of truth shared by the builder and the readiness engine; verified via TestClient on `/api/targets/{id}/{target}` |
+| Calibration harness | §1.6 | **done** | `calibration.py` + `GET /api/calibration/{id}` + Overview-tab section; on the real GWT cards, Stim8hr recovers **all 8** TCR/proximal positive controls in the top decile; naive top-50 by DE breadth only 13/50-overlaps the strict-filtered top-50 (Spearman r=0.943) — an honest finding that the naive ranking alone is not robustness-safe |
+
+Wave 2 closed the scientific gap noted below (superseded, kept for history): the `advance` set
+used to contain broad chromatin/essential-like genes (`MED12`, `CREBBP`, `KDM1A`, `ELOB`) because
+`core_essentials_hart.tsv` (283 genes) alone did not cover them.
+
+### Hardening pass — full pipeline review (this update)
+
+A whole-pipeline correctness/robustness audit (all 7 modules, verified against the real CSVs) found and
+fixed six issues; the end-to-end flow had no crash-level defect. Fixed:
+
+1. **(was producing wrong output)** `score_cap_reason` suppressed off-target / batch / replicability
+   flags on any low-cell or low-signal row — an early `return` skipped the full reason set. On the real
+   reference data this hid `high_offtarget` on 211 rows and `batch_sensitive` on 890 low-cell rows.
+   Now the full reason set is always computed and unioned with the low-cell/low-signal tokens
+   (verified: 211/211 and 890/890 now surface correctly; readiness calls were already correct because
+   red flags re-derive from raw columns).
+2. `/api/evidence/build` fetched synchronously in the request handler (up to 60 sequential HTTP calls).
+   Now returns already-cached statuses immediately and schedules only missing/forced genes via a
+   FastAPI `BackgroundTasks`, hard-capped at 50 genes.
+3. `readiness_summary` returned a different key set for empty vs non-empty datasets (KeyError risk on
+   empty uploads). Empty branch now returns the full key set.
+4. Removed a dead `fillna(np.nan)` no-op that contradicted its own comment.
+5. De-duplicated `score_cap_reason` tokens and renamed the guide-count reason `single_donor_dominance`
+   → `single_guide` (it was neither about donors nor a duplicate of the DE-share flag).
+6. Calibration bool coercion now uses an explicit string→bool normalizer (`_as_bool`) instead of
+   `.astype(bool)`, so the strict filter can't invert on object-dtype `"True"`/`"False"` strings via
+   the CLI path.
+
+Also added `.gitignore` rules for transient runtime dataset/import caches under
+`sources/target_tool_cache/` (keeping the intentional `_evidence` seeds and demo data tracked).
+
+### Wave 3 — landed and verified (this update)
+
+| Piece | Module | State | Evidence of verification |
+|---|---|---|---|
+| External-evidence layer | §1.2 | **done** | `external_evidence_cache.py` + `/api/evidence/{gene}` + `/api/evidence/build`; readiness `clinical_feasibility_score` upgrades 3→5 when a real Phase 3/4 trial exists |
+| Target Card provenance footer | §1.4 (partial) | **done** | Every dataset stamped with `engine_version`, `built_at`, `data_version`; rendered on the Target Explorer detail |
+| Signed CD4 module scoring | §1.5 | **descoped — see below** | Confirmed `DE_stats.suppl_table.csv` has no per-gene downstream direction data to score against |
+
+**Module C (§1.2) implementation notes.** `external_evidence_cache.py` hits the public
+ClinicalTrials.gov API v2, NCBI PubMed E-utilities, and the Open Targets Platform GraphQL API
+directly via `requests` — not through session-scoped MCP connectors, since the module runs inside
+the standalone FastAPI backend. In this sandboxed verification environment, the outbound proxy's
+own status endpoint confirms a policy denial (`connect_rejected`/403) for all three domains, so the
+graceful-degradation path (`source_status: "unavailable"`, no crash) is what was actually exercised
+end-to-end here — this is the correct thing to verify, since a locked-down deployment is exactly the
+scenario the design anticipates. Separately, **9 genes were seeded with real evidence** (the
+calibration harness's 8 TCR/proximal positive controls plus 4 clinically-precedented targets) by using
+the live ClinicalTrials.gov/PubMed connectors available in *this* agent session and hand-curating for
+topical relevance (e.g. teplizumab/CD3 in T1D, abatacept/CTLA4-CD28 in RA, tofacitinib/JAK3 in RA) —
+these ship in `sources/target_tool_cache/_evidence/*.json` so the dashboard has real evidence to show
+immediately, independent of whatever network policy a given deployment has. Open Targets could not be
+seeded this way (no GraphQL-capable MCP tool was available) and is honestly marked `unavailable` in
+every seeded snapshot.
+
+**§1.5 descope — honest finding, not a shortcut.** The plan's original design said "use each target's
+DE direction (`ontarget_effect_size` / up-down split) against the 20 signed modules." Checking
+`DE_stats.suppl_table.csv` directly: it stores only **counts** (`n_up_genes`, `n_down_genes`), not
+which specific downstream genes were up- or down-regulated. Without per-gene downstream DE records
+(not present in any `metadata/suppl_tables/*` file), a genuinely signed *pathway-specific* direction
+score cannot be computed without fabricating a mapping. Rather than ship a score that looks
+mechanistic but isn't backed by the data, this item is descoped until per-gene downstream DE tables
+are available (would require the h5ad extension, §1.9, or a new pseudobulk export). The existing
+binary-membership module score (`/api/modules`) is left as-is.
+
+### Response to an external technical review (this update)
+
+An independent technical review of a related "CD4 Perturb-seq Explorer" planning document (a document
+this repo does not have and could not locate — see the review's own reference,
+`CD4_Perturbseq_Explorer_Development_Plan.md v1.0`) was received. Rather than fabricate that referenced
+document, its concretely-actionable, high-value critiques were checked against and applied directly to
+the real code and data in this repo, since several turned out to be exact, verifiable gaps:
+
+| Review item | Finding in this repo | Fix shipped |
+|---|---|---|
+| A1: KD status must be a first-class 3-state field (confirmed/weak/not_measurable), not a diluted confidence weight | Confirmed real: `ntc_mean_expr` (target baseline expression in NTC cells) exists in `guide_kd_efficiency.suppl_table.csv` and is invariant per target-condition (0/37,578 groups have >1 value); 13.9% of guide-level rows have `ntc_mean_expr <= 0.001` — a real, large "can't even assess" population | `build_target_cards.py::_kd_status` (confirmed/weak/not_measurable, reusing the dataset's own documented 0.001 expression floor for `high_confidence_no_effect_guides`); wired into `score_cap_reason` and as `readiness_engine.py` red-flag overrides (`kd_not_measurable` caps at watchlist, `kd_weak` caps at validate) |
+| A4: NTC baseline / DE methodology must be documented, not implicit | Confirmed: `metadata/data_sharing_readme.md` already states the pseudobulk unit (guide x donor x condition), the 10% FDR threshold, and the KD t-test definition — it just wasn't written up as a citable spec | `docs/de_and_baseline_spec.md` (new) |
+| A5: `condition_specificity_score` (CSI) is a naive share-of-total ratio: noise-insensitive, direction-blind, cross-condition-scale-biased | Confirmed real: `condition_specificity_score = n_total_de_genes / total_by_target` is exactly this formula | Added `condition_specificity_zscore` (within-condition standardization) and `effect_direction_flip_flag` (736/34k rows have a sign-flipping on-target effect across conditions) alongside the original score, which is now code-commented as a heuristic; a rigorous condition x perturbation interaction test is out of scope (needs per-guide/per-cell modeling this toolkit doesn't have) |
+| B4: every export/response should carry dataset/engine version layers | Already had `engine_version`/`built_at`/`data_version` (Wave 3) | Added `DATASET_VERSION` (references the GWT bioRxiv DOI), stamped on GWT-reference builds only (not user uploads, which are a different dataset) |
+| C2: validation panel needs BOTH positive and negative controls, calibrated against real thresholds | Already had `positive_control_recovery` (Wave 2); no negative-control check existed | `calibration.py::control_panel_calibration` — 21-gene positive panel (existing `POSITIVE_CONTROLS` + STAT5A/STAT5B/TNFRSF9) + `kd_status=="not_measurable"` as the operational negative-control population |
+
+**Calibration finding, reported honestly rather than tuned away:** negative controls work cleanly —
+99.37% of 5,084 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
+advance/validate readiness call. Positive controls are more nuanced: only 20% of the 21-gene panel
+reach the strict `statistical_evidence_grade>=3` bar (which requires cross-donor AND cross-guide
+robustness with ≥2 guides simultaneously), but 93.1% are *not* deprioritized by the readiness engine.
+This was not "fixed" by loosening thresholds to make the number look better — see
+`docs/de_and_baseline_spec.md` §5 for why that would be calibrating the metric to the answer rather
+than validating it, and what the finding actually means (grade and readiness answer different
+questions).
+
+**Not carried forward from the review, with reasons:** A2's confidence-score calibration was already
+substantially addressed pre-review (discrete `statistical_evidence_grade` + `score_cap_reason` +
+`readiness_reasons`, not a single opaque float); A3 (signature scoring method) mirrors the already-
+descoped §1.5 gap (no per-gene downstream direction data); B3 (cell-level access pattern — see §1.9,
+already backed-mode) is covered by the §1.9 code-done state. B1, B5, B6, and the C-series
+process/testing items were initially deferred here as "apply to a platform-scale rewrite beyond this
+toolkit's current scope" — the project owner subsequently asked for exactly that ("我想要打造成平台級
+工具"), so they were built. See §1.11 for what shipped.
 
 ---
 
@@ -37,93 +140,258 @@ The `advance` set still contains broad chromatin/essential-like genes (`MED12`, 
 
 Ordered by ROI and dependency. Each item is independently shippable.
 
-### 1.1 C7 — Broad/essential-confounder quarantine  *(small, offline-verifiable)*
+### 1.1 C7 — Broad/essential-confounder quarantine  *(small, offline-verifiable)* — **DONE**
 **Why:** raises trust in the existing readiness list immediately; the EDA explicitly warns that
 broad chromatin/essential hits dominate high-DE rankings and must not read as narrow immune pathway hits.
-**Design:**
-- Build a combined "broad-effect" gene set from local resources: `metadata/gene_lists/core_essentials_hart.tsv`
-  + CORUM complexes (`metadata/enrichment_database/corum_humanComplexes.txt`, extract chromatin/transcription
-  complexes) + a curated chromatin/basal-transcription list (the EDA already names the offenders:
-  `TADA2B, SGF29, SUPT20H, TADA1, CCNC, TAF13, KDM1A, NFRKB, MED12, CREBBP, LEO1, ELOB, DENR, TFAM, ARNT, ATP2A2`).
-- In `readiness_engine.py`, add a `broad_effect` red flag (distinct from `essential_gene`) that caps the
-  call at **watchlist** and adds `cd4_immune_red_flags += "broad_effect"`, with a reason string.
-- Keep it a *separate, named* flag so users see "broad/pleiotropic effect" vs "core essential."
-**Files:** `readiness_engine.py`, plus a small `sources/broad_effect_genes.txt` curation.
-**Acceptance:** `MED12`, `CREBBP`, `KDM1A` no longer appear in `advance`; genuine immune genes (`PLCG1`,
-`CD247`, `ITK`) still can; every quarantined row carries a `broad_effect` reason. Verify offline:
-`python readiness_engine.py /tmp/gwt_cards.csv` and assert the set difference.
+**Shipped:** `sources/broad_effect_genes.txt` (239 genes: EDA-named offenders ∪ CORUM chromatin/
+transcription complexes matched by keyword); `readiness_engine.py` `broad_effect` red flag (distinct
+from `essential_gene`) caps the call at watchlist and surfaces in `cd4_immune_red_flags` /
+`next_validation_step`. Verified: `MED12/CREBBP/KDM1A/SGF29` no longer reach `advance`; `PLCG1/CD247/ITK`
+unaffected; 513 rows carry the reason; deterministic.
 
-### 1.2 Module C — External-evidence layer  *(medium; uses live connectors)*
+### 1.2 Module C — External-evidence layer  *(medium; uses live connectors)* — **DONE**
 **Why:** fills the readiness domains currently stuck at `unknown` (tractability, genetics, clinical) and
 gives each card trials + literature. This is the biggest jump in decision-grade value.
-**Design (cache-first, connector-backed, offline batch — never in the request path):**
-- New `src/3_DE_analysis/external_evidence_cache.py`:
-  - `fetch_trials(gene, conditions)` → ClinicalTrials.gov (immune indications, phase/status/intervention).
-  - `fetch_literature(gene, context="CD4 T cell")` → PubMed + bioRxiv top-N.
-  - `fetch_open_targets(gene)` → GraphQL: tractability buckets, genetic association, safety.
-  - `build_evidence_for_genes(genes, force=False)` → writes `sources/target_tool_cache/_evidence/<gene>.json`
-    with `fetched_at` + `source_version`; respects a TTL; records `source_status: "unavailable"` when a
-    connector is absent (headless-safe).
-- API: `GET /api/evidence/{gene}` (cached snapshot; 404 → not fetched), `POST /api/evidence/build`
-  `{dataset_id, top_n}` (batch the top-N genes of a dataset).
-- Feed genetics/tractability snapshots into `readiness_engine` overlays so `human_genetic_support` and
-  `tractability_score` graduate from `unknown` to real values, unlocking R3→R4 where warranted.
-- Target Card page renders trials/literature/genetics sub-panels with `fetched_at` shown.
-**Files:** `external_evidence_cache.py` (new), `target_card_api.py`, `readiness_engine.py`, dashboard.
-**Acceptance:** for a shortlist (e.g. `IL2RA`, `JAK1`, `CTLA4`) snapshots contain ≥1 trial and ≥1
-citation where they exist; readiness for those genes shows non-`unknown` tractability; connector-absent
-runs degrade to `source_status: "unavailable"` without crashing.
+**Shipped:** `external_evidence_cache.py` fetches ClinicalTrials.gov API v2, NCBI PubMed E-utilities,
+and Open Targets GraphQL directly (not via MCP — the module runs standalone inside the FastAPI
+backend); every fetcher degrades to `source_status: "unavailable"` on any network failure instead of
+raising. `GET /api/evidence/{gene}` (404 if not fetched) and `POST /api/evidence/build`
+`{dataset_id|genes, top_n, force}`. `readiness_engine.compute_readiness(..., evidence_dir=...)` upgrades
+`clinical_feasibility_score` (3→5 with a real Phase 3/4 trial) and `human_genetic_support` when a
+snapshot was actually fetched, leaving genes with no snapshot unaffected. Dashboard Target Explorer
+detail renders trials/literature/Open-Targets sub-panels with `fetched_at` shown.
+**Verified:** graceful degradation confirmed in this sandboxed environment (outbound proxy policy
+blocks all three domains — confirmed via the proxy's own status endpoint); 9 genes seeded with real
+evidence via this session's live MCP connectors (see Wave 3 notes above); TestClient covers
+GET/POST endpoints and the readiness upgrade (`CD28`/`IL2RA`/`CTLA4` clinical_feasibility 3→5).
 
-### 1.3 Local translational overlays  *(small; offline)*
+### 1.3 Local translational overlays  *(small; offline)* — **DONE**
 **Why:** cheap, local, no external calls — strengthens tractability before Module C lands.
-**Design:** T1 druggable-class overlay (kinase/GPCR/enzyme/surface/cytokine-R/NR from
-`metadata/gene_lists/*`) is already loaded by `readiness_engine.load_overlays`. Expose it as a card
-column (`druggable_class`, `tractability_modality`) in `build_cards_frame` output and in the dashboard
-Target Card so users see modality without opening readiness. T9 safety overlay: add
-`clinvar_path_likelypath` + IUIS-IEI immune-effector membership as a `safety_note`.
-**Files:** `build_target_cards.py`, dashboard. **Acceptance:** kinases show "small molecule", cytokine
-receptors show "antibody/biologic"; genes in no class show "none".
+**Shipped:** every card now carries `druggable_class`, `tractability_modality` (from
+`metadata/gene_lists/*` druggable-class files; `DRUGGABLE_CLASS_MODALITY` lives once in
+`build_target_cards.py` and is imported by `readiness_engine.py` so the two never drift), and
+`safety_note` (ClinVar pathogenic/likely-pathogenic ∪ `metadata/immune_effector_genes.csv` category
+membership — substituted for the originally planned IUIS-IEI table, which is disease-level, not a
+clean gene list, so using it would have meant fabricating a parser over messy free-text fields).
+Verified: `ZAP70`→kinases/small molecule, `IL2RA`→catalytic_receptors/small molecule-biologic,
+`CTLA4`→no druggable-class match but carries ClinVar + immune-effector notes; 4,592/33,983 rows matched.
 
-### 1.4 Module D+ — Target Card dossier page  *(medium)*
+### 1.4 Module D+ — Target Card dossier  *(medium)* — **PARTIALLY DONE**
 **Why:** the deep per-`target × condition` view ties everything together with provenance.
-**Design:** query-param deep view `?dataset_id=&target=&condition=` rendering the 10 sections from the
-strategy doc (§6.1.3): identity + grades, GWT evidence, robustness/caveats, signed CD4 module scores,
-benchmark axis, druggability, external evidence, readiness call + reasons, next experiment, provenance
-footer. Reuse existing `_target_detail`, `_modules`, new `_readiness`, `_evidence`.
-**Files:** `target_card_dashboard.py`. **Acceptance:** navigating to a known positive control (`CD3E`/Stim8hr)
-and a `Stim48hr`-only hit renders both, with the batch caveat and readiness caps visible on the latter.
+**Shipped:** rather than a separate query-param page (which would duplicate a lot of the existing
+Target Explorer detail block), the 10 dossier sections were folded directly into that existing view
+as each module landed: GWT evidence + robustness (existing), druggability/safety metrics (§1.3),
+readiness call + reasons + next step (wave 1), external evidence panel (§1.2), a **provenance footer**
+(`dataset_id`, `origin`, `engine_version`, `built_at`, `data_version`, and — for user uploads —
+`import_id`/`source_name`), a **QC funnel** chart (Overview tab; `calibration.qc_funnel()` reproduces
+the EDA's exact cascade — `n_total_de_genes>=50` stage matches the EDA's stated 4,182 rows exactly), a
+**dataset-wide cross-guide vs cross-donor scatter** (Overview tab, up to 2,000 sampled rows, with a
+defensive fallback to a plain table if the installed Streamlit lacks `st.scatter_chart`), and a
+**per-target evidence-components chart** (Target Explorer detail; explicitly labeled as components-at-
+a-glance, not a summed total, since the readiness domains combine via rules, not addition). `ENGINE_VERSION`
+is a single constant in `target_card_api.py`, auto-stamped onto every dataset's `metadata.json` by
+`_persist_metadata`; bump it whenever `build_target_cards.py`/`readiness_engine.py`/`calibration.py`/
+`external_evidence_cache.py` change scoring behavior. **Remaining:** signed CD4 module scores (blocked,
+see §1.5); the graphviz evidence-graph could still be extended into a richer mechanism graph (§V2,
+guarded/optional).
+**Verification caveat:** the Streamlit runtime is not installed in this sandbox (`environment.yaml` is
+the analysis-pipeline env, not the dashboard's), so the new charts are `py_compile`/AST-verified and
+logic-tested (numeric coercion for the waterfall chart, the funnel/scatter data paths via TestClient)
+but not visually rendered in this session -- a manual `streamlit run` smoke test is still recommended
+before merge (already flagged in the PR test plan).
 
-### 1.5 Signed CD4 module scoring upgrade (C8)  *(medium; offline)*
-**Why:** current `/api/modules` is binary membership; upgrade to signed direction scoring so a card says
-*how* a target moves a program.
-**Design:** use each target's DE direction (`ontarget_effect_size` / up-down split) against the 20 signed
-modules in `sources/topic15_cd4_tcell_upstream_downstream_seed_modules.csv`; emit per-module signed scores.
-**Files:** `target_card_api.py` `_module_scores`, dashboard. **Acceptance:** Treg/Th1/Th2 modules score with
-sign; positive controls land in expected modules.
+### 1.5 Signed CD4 module scoring upgrade (C8)  *(medium; offline)* — **DESCOPED (data gap, see Wave 3 notes above)*
+**Why:** current `/api/modules` is binary membership; the original idea was to upgrade to signed
+direction scoring so a card says *how* a target moves a program.
+**Finding:** `DE_stats.suppl_table.csv` stores only `n_up_genes`/`n_down_genes` **counts**, not which
+specific downstream genes moved which direction — there is no per-gene downstream DE table in
+`metadata/suppl_tables/*` to score module-specific direction against. Computing a "signed" score from
+counts alone would be a fabricated signal presented as mechanistic. Descoped until per-gene downstream
+DE becomes available (most likely via the h5ad extension, §1.9, or a new pseudobulk export). The
+existing binary-membership `/api/modules` endpoint is unchanged.
 
-### 1.6 Calibration harness  *(medium; offline)*
+### 1.6 Calibration harness  *(medium; offline)* — **DONE**
 **Why:** trust is demonstrated, not asserted — recover known biology on demand.
-**Design:** `src/3_DE_analysis/calibration.py`: positive-control recovery (TCR/proximal genes in top
-deciles), known drug-axis recovery, rank stability after dropping off-target/low-cell/low-robustness rows,
-donor/guide-holdout concordance (inputs exist under `donor_robustness/`, `guide_robustness/`). Emit a
-`calibration_report` the dashboard renders. **Acceptance:** `CD3E/LAT/ZAP70/PLCG1` in top deciles; report
-reproducible.
+**Shipped:** `src/3_DE_analysis/calibration.py` computes positive-control recovery (8 TCR/proximal genes,
+per-condition decile rank), known drug-axis enrichment (`clinical_axis` assignment rate in grade≥3 rows
+vs overall, plus which of the 6 named axes are actually recovered), and rank stability (Spearman
+correlation + top-50 churn between the naive DE-breadth ranking and the same ranking after the EDA's
+strict off-target/low-cell/low-robustness filter) — built directly on `target_cards.csv`'s existing
+`crossdonor_correlation_mean`/`crossguide_correlation` columns rather than recomputing pairwise donor/guide
+holdout correlations from the raw per-guide/per-donor result files, since those are already summarized
+into the card. `GET /api/calibration/{dataset_id}` (cached alongside `readiness.csv`) + an Overview-tab
+section. **Verified:** Stim8hr recovers all 8 positive controls in the top decile (matching the EDA's own
+finding that Stim8hr has the strongest acute-activation signal); 75% land in top-2-deciles overall; 2/6
+known drug axes recovered among grade≥3 rows; naive top-50 only 13/50-overlaps the strict-filtered top-50
+(Spearman r=0.943) — a real, honest finding that the naive ranking alone is not robustness-safe.
 
-### 1.7 Disease translator (T8)  *(large)*
-Indication picker (RA/IBD/MS/SLE/psoriasis/cancer-TME via ICD-10 normalization) → targets whose CD4
-programs + genetics + trials align. Depends on Module C. New page + `GET /api/disease`.
+### 1.7 Disease translator (T8)  *(large → shipped small)* — **DONE**
+**Why:** connect CD4 target cards to disease genetics so a researcher can pick an indication and see
+which targets have both perturbation evidence and human genetic support.
+**Finding that shrank the scope:** the plan assumed this needed live ICD-10 normalization plus new
+GWAS/eQTL fetches. It didn't — `src/6_functional_interaction/results/disease_gene_associations_detailed.csv`
+already existed in the repo from prior research: a real, local Open Targets genetic-association export,
+7,528 rows across 13 autoimmune/inflammatory indications (RA, IBD, Crohn's, UC, MS, SLE, psoriasis,
+T1D, asthma, ankylosing spondylitis, Hashimoto's, celiac, and a general "autoimmune disease" bucket),
+with `association_score` and `genetic_evidence_score` per gene. `disease_translator.py` (new) just
+joins that table against a built `target_cards.csv` — no new fetch needed.
+**Shipped:** `disease_translator.py` (`load_disease_associations`, `list_diseases`, `translate_disease`);
+`GET /api/disease` (list the 13 available indications) and `GET /api/disease/{name}/targets/{dataset_id}`
+(ranked targets, joined with readiness call when available); a new **Disease Translator** dashboard tab
+(indication picker, min-grade/top-N filters, ranked table + bar chart). Coverage is intentionally
+restricted to the 13 diseases actually in the table — an unmatched indication returns an explicit
+reason, never a guessed match.
+**Verified:** rheumatoid arthritis surfaces `TYK2` (top-ranked; deucravacitinib is an approved TYK2
+inhibitor, for psoriasis) and `TNF` (the largest anti-TNF biologic drug class in RA) at the top;
+psoriasis surfaces `TYK2`, `IL17RA` (targeted by brodalumab), and `TRAF3IP2`/Act1 (a genetically
+established IL-17-pathway psoriasis gene) — real, clinically recognizable biology recovered purely
+from joining the tool's own perturbation evidence with real external genetics. TestClient covers both
+the disease list and per-dataset ranking, plus the unmatched-disease path.
 
-### 1.8 Persistence + multi-user (governance)  *(large)*
+### 1.8 Persistence + multi-user (governance)  *(large)* — **DEPRIORITIZED (user decision, 2026-07-07)**
 Move from file-cache to Supabase/Postgres (datasets, imports, users, provenance, merge lineage) + auth +
 per-user workspaces. Keep the file cache as an export target. Add server/proxy request-body limits.
+**Status:** not needed for now, per explicit project-owner decision — single-user / file-cache research
+use is the current target, not a multi-user platform. Revisit if/when multiple concurrent researchers
+need isolated workspaces. No infrastructure was provisioned.
 
-### 1.9 Cell-level (h5ad) extension  *(large; needs S3 download)*
-H1–H6: loaders, per-cell QC, Mixscape, SCEPTRE, pertpy/UCell, state-specific effects bridged back to the
-card schema; U6 raw-cell manifest builder + on-demand jobs. Opt-in per analysis (1.6+ TiB, never auto-download).
+### 1.9 Cell-level (h5ad) extension  *(large; needs S3 download)* — **CODE DONE, REAL-DATA RUN PENDING**
+**Why:** per-cell QC, responder/escaper calling, and CD4 program scores strengthen or cap a card's
+grade exactly like the CSV-first robustness fields already do.
+**Hard constraint confirmed, not assumed:** `data/marson2025_data/manifest.csv` lists 32 files totaling
+1.68 TiB; the *smallest* single per-donor-condition file is ~131 GiB. This session's sandbox had 29 GiB
+free disk — even the S3 bucket being reachable (confirmed: `HEAD` returns 200) doesn't help when a
+single file exceeds available storage by 4x. Downloading and processing the real dataset was therefore
+delegated to the project owner's own machine, per their explicit instruction.
+**Shipped (in `src/9_cell_integration/`, the repo's own pre-existing scaffold directory for this work,
+whose "Next Extensions" list already named exactly these items):**
+- `perturbation_response_analysis.py`: H1 loader (`load_donor_condition_h5ad`, backed-mode, parses
+  donor/condition from the `D{n}_{condition}.assigned_guide.h5ad` filename convention since they are
+  not obs columns in the real file — confirmed against `metadata/data_sharing_readme.md`'s documented
+  schema), H2 `guide_assignment_qc` (matches the `QC_summaries_per_sample_lane.csv` categories), H3
+  `classify_perturbation_response` (Mixscape-style responder/escaper calling via PCA
+  difference-of-means + 2-component GMM — reimplemented directly with scikit-learn because `pertpy`
+  failed to install in this sandbox on an unrelated transitive dependency, `blitzgsea`'s build), H4
+  `run_sceptre_external` (an honest external-hook, not a reimplementation — SCEPTRE's calibration is a
+  nontrivial conditional-resampling procedure; a naive Python reimplementation risks reproducing
+  exactly the miscalibration SCEPTRE exists to fix), H5 `score_cd4_programs` (via
+  `scanpy.tl.score_genes`, documented as a standard alternative to UCell/AUCell's specific rank-based
+  algorithm, not a reimplementation of it), H6 `summarize_state_specific_effects` +
+  `merge_donor_condition_summaries` + `bridge_to_card_columns` (additive join onto `target_cards.csv`
+  by `(target, condition)`, producing `n_cells_classified`/`responder_fraction`/`n_donors_classified`).
+- Every function is written backed-mode-safe (works against `anndata.read_h5ad(path, backed="r")`,
+  materializing only small explicit slices — per-target cell subsets for classification, an explicit
+  `max_cells` cap for program scoring) so it scales to a 130+ GiB file without loading it fully into
+  memory.
+- `RUN_ON_REAL_DATA.md` (new): the exact commands to run once real files are downloaded, with storage/
+  memory/network sizing, environment setup, and a bridge-back-to-cards walkthrough.
+**Verified:** built and tested against `build_synthetic_adata()`, a fixture matching the *exact* real
+schema (not a loosely-approximated one) documented in `metadata/data_sharing_readme.md`. The classifier
+recovers a known injected responder/escaper ground truth at **81.8% accuracy** (consistent 80–83.5%
+across 3 simulated targets); cross-donor merge correctly cell-count-weights; program scoring correctly
+skips modules with <2 genes present rather than fabricating a score; the SCEPTRE hook degrades honestly
+when R/a driver script are absent.
+**Explicitly not claimed:** this has NOT been run against the real 1.68 TiB dataset — that is the
+project owner's task on their own machine, per `RUN_ON_REAL_DATA.md`. "Code is correct and tested
+against a schema-faithful synthetic fixture" and "has processed the real dataset" are different claims;
+only the first is true as of this entry.
 
 ### 1.10 v2 hypothesis generators (guarded)  *(optional)*
 Signature-to-compound (LINCS/CMap), mechanism graph, perturbation prediction (**benchmark vs baselines
-first; never feed readiness decisions**), combination explorer (research-only).
+first; never feed readiness decisions**), combination explorer (research-only). **Status:** not started;
+the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
+(§1.11), which took priority. Revisit if/when requested.
+
+### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **CONCEPT ONLY, blocked on real data**
+The project owner has (a) CellxGene-based gene safety validation results and (b) an internal
+membrane-protein database (motif length, expression, TCGA/GTEx) originally built for ADC target
+discovery. Both are a direct match for the two `readiness_engine.py` domains that are today almost
+entirely `"unknown"`: `safety_window_score` (only ever `0` for essential genes, else unknown) and
+`tractability_modality` (only local druggable-class gene lists, no expression/structural evidence). Full
+design — schema sketches, exactly which function each maps onto, and the open questions that block
+starting (identifier system, raw-matrix-vs-precomputed-verdict, whether TCGA columns are even relevant
+to a non-oncology CD4 platform) — is in `docs/external_overlay_integration_concept.md`. **Not scheduled**
+until the real files/columns are shared; this section exists so the concept isn't lost in the meantime.
+
+### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**
+Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the
+external review flagged as "reasonable but out of this toolkit's current scope" now that the scope is
+platform-grade.
+
+**B1 — Gene identifier resolution (`gene_identifier_resolver.py`, new).** Ensembl gene ID as primary
+key; alias table built entirely from real, already-in-repo data (`sgrna_library_metadata.suppl_table.csv`'s
+`target_gene_name` vs `target_gene_name_from_sgRNA`), not an external HGNC download. **Verified:** 344
+of 12,654 library genes have a real sgRNA-design-time vs curated-symbol difference (e.g. `ICK`→`CILK1`,
+`QARS`→`QARS1`, `HIST1H2BN`→`H2BC15`); 0 alias-symbol collisions with a different gene's canonical
+symbol; Ensembl ID confirmed 1:1 with canonical symbol (0/12,654 violate this).
+
+**B2 — Three-state `result_status` (`gene_identifier_resolver.py::result_status`).** Distinguishes
+`not_in_library` / `not_expressed` / `no_significant_effect` / `has_effect` for any gene query, reusing
+the same 0.001 NTC-expression floor as `kd_status` for the `not_expressed` boundary. Covered by
+`tests/test_empty_states.py`.
+
+**B5 — CRE schema placeholders (`cre_schema.py`, new).** Additive, empty-but-valid data contracts
+(`CisRegulatoryElement`, `VariantCRELink`) reserving the data model without fabricating data — no CRE
+dataset (e.g. a Moonen-style enhancer screen) exists anywhere in this repo (confirmed by search).
+**Verified:** both the honest "not loaded" path (real state: no CRE file present) and correct
+gene-linking logic against a mock CRE table.
+
+**B6 — Lightweight alias-tolerant search (`gene_search.py`, new).** Ranked exact/alias/prefix/fuzzy gene
+search using only the Python standard library (`difflib`) plus B1's real alias table — no new
+infrastructure or dependency, since a ~12,654-gene list doesn't justify the reviewed PostgreSQL
+trigram-search alternative (itself contingent on the multi-user persistence layer the project owner
+deprioritized in §1.8). **Verified:** `"ZAP"`→`ZAP70` (prefix), `"ZAP71"` (typo)→`ZAP70` (fuzzy, ranked
+below any exact/alias/prefix hit), `"ICK"`→`CILK1` (alias, ranked above fuzzy noise), a garbage query→no
+results (never "everything").
+
+**C3 — Automated test suite (`tests/`, new, `pytest.ini`).** 29 tests across 4 files, all passing:
+- `test_golden_file.py` — a small, hand-verified DE/guide-KD fixture (`tests/fixtures/golden_de_stats.csv`,
+  `golden_guide_kd.csv`) covering a clean positive control (`ZAP70`, 2 conditions → grade 4,
+  `kd_status="confirmed"`), a broad-effect gene (`MED12`, real member of `sources/broad_effect_genes.txt`),
+  a below-KD-floor gene (`LOWEXPR1` → `kd_status="not_measurable"`), and a weak-signal gene (`NOEFFECT1`
+  → `kd_status="weak"`) — pins exact grade/kd_status/score_cap_reason values so a future scoring change
+  is a deliberate diff, not a silent drift.
+- `test_join_integrity.py` — guide→target aggregation row counts, DE-row preservation across the
+  guide-KD merge (no drops/duplicates), a target/condition entirely missing from guide-KD degrading to
+  `n_guides=0` rather than crashing, and card→readiness row linkage being exactly 1:1.
+- `test_known_answer.py` — regression-pins the REAL 33,983-row GWT reference build (session-scoped
+  fixture, ~15–20s once): the EDA funnel's exact stage counts (33,983 → 4,182 → 1,102, matching
+  `sources/topic09_eda_report.md`'s independently-computed cascade), the control-panel calibration
+  numbers found during development (20/21 positive controls present, 20% reach grade≥3, 93.1% not
+  deprioritized; 5,084 negative-control rows, 99.37% at grade 1, 0% reach grade≥3 or
+  advance/validate), and the specific bug class caught earlier in this project (`kd_status=="weak"`
+  never reaching `readiness_call=="advance"`, joined correctly on `(target, condition)` — an ad hoc
+  target-only join had produced false positives during manual verification).
+- `test_empty_states.py` — all four B2 `result_status` states, resolver behavior on empty/`None`/garbage
+  queries, `build_cards_frame` on a zero-row DE table, `readiness_summary`'s empty-branch key-set parity
+  fix, `control_panel_calibration`/`cre_schema`/`gene_search` on missing-column and missing-file inputs.
+
+Skips (not fails) the real-data tests gracefully if `metadata/suppl_tables/*.csv` isn't present in a
+given checkout (`real_data_available` fixture in `tests/conftest.py`), so the suite stays green on a
+metadata-less clone.
+
+**C4 — Data dictionary (`docs/data_dictionary.md`, new).** Column-by-column reference for every field
+the toolkit produces (`target_cards.csv`, the readiness frame, resolver/search results, the CRE schema,
+the external-evidence snapshot, module scores, the disease-translator output, and the four-layer
+versioning fields) plus the real raw suppl_table inputs each is derived from — type, meaning, and exact
+derivation formula or explicit reserved/unknown status for every one.
+
+**C5 — Data governance checklist (`docs/data_governance_checklist.md`, new).** Source-by-source
+licensing/terms status (this repo: MIT; the GWT reference dataset's own reuse terms: **not stated
+anywhere in the repo — flagged as the one open item before any external redistribution**); human-subject
+data handling (confirmed by code search: no module under `src/3_DE_analysis/` reads or exposes the
+donor-demographics columns — `age`/`sex`/`ethnicity`/`weight_kg`/`height_cm` — that exist for the 4-donor
+cohort in `sample_metadata.suppl_table.csv`; a governance-review rule is recorded for any future feature
+that would change that); the existing `unknown`-never-`0` and user-upload-namespacing guardrails
+formalized as checklist items with a "before adding a new source" runbook.
+
+**C6 — Cache & version invalidation policy (`docs/cache_and_versioning_policy.md`, new).** Documents,
+against the actual code: `target_cards.csv` builds are immutable per `dataset_id` (a rebuild always
+mints a new UUID; nothing is auto-invalidated in place) with the exact rule for when a rebuild is
+warranted (input-file fingerprint change, `ENGINE_VERSION`/`CARD_SCHEMA_VERSION` bump); the external
+evidence cache's 30-day per-gene TTL and force-refresh path; that static overlay lists carry no
+freshness stamp today (a gap noted, not silently accepted); and the `sources/target_tool_cache/`
+directory lifecycle (which subdirectories are git-tracked vs ignored, and why).
 
 ---
 
@@ -131,15 +399,27 @@ first; never feed readiness decisions**), combination explorer (research-only).
 
 ```
 Wave 1 (DONE):   foundation + C4 batch flag + readiness engine (R1–R3) + upload merge loop + dashboard
-Wave 2 (next):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
-Wave 3:          1.2 Module C external evidence  →  1.4 Target Card dossier  →  1.5 signed modules
-Wave 4:          1.7 disease translator  →  1.8 persistence/multi-user
-Wave 5:          1.9 cell-level (after h5ad)  →  1.10 v2 generators (guarded)
+Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
+Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1.5 descoped, see §1.5]
+Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
+Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (code done, real-data run pending on owner's machine)
+Wave 6 (DONE):    §1.11 platform-grade backlog — B1/B2/B5/B6/C3/C4/C5/C6  [1.10 v2 generators deferred, see §1.10]
 ```
 
-Rationale: Wave 2 is small, offline, and directly raises the credibility of what already ships (fixes the
-`advance`-list confounders, exposes modality, proves biology recovery) before taking on the connector- and
-data-heavy waves.
+**Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,
+just a join against a real Open Targets export already sitting in the repo from prior research. 1.8
+(Supabase/Postgres persistence, auth, multi-user workspaces) was raised for a check-in rather than
+built silently, since it provisions real cloud infrastructure — the project owner confirmed multi-user
+support is not needed for now, so it is deprioritized rather than blocked. Single-user / file-cache
+research use remains the target.
+
+Rationale: Wave 2 was small, offline, and directly raised the credibility of what already ships (fixed the
+`advance`-list confounders, exposed modality, proved biology recovery) before taking on the connector- and
+data-heavy Wave 3. Wave 3 depended on live external connectors (ClinicalTrials.gov, PubMed, Open Targets)
+and was the biggest remaining jump in decision-grade value; it's done, modulo Open Targets genetics (no
+GraphQL-capable fetch tool was available this session — the automated fetcher is wired and ready for a
+deployment with direct network access). Wave 4 is the next largest jump: a disease/indication picker
+(depends on Module C, now available) and moving off the file-cache to a real multi-user backend.
 
 ---
 
