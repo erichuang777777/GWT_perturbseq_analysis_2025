@@ -116,8 +116,9 @@ the real code and data in this repo, since several turned out to be exact, verif
 | C2: validation panel needs BOTH positive and negative controls, calibrated against real thresholds | Already had `positive_control_recovery` (Wave 2); no negative-control check existed | `calibration.py::control_panel_calibration` — 21-gene positive panel (existing `POSITIVE_CONTROLS` + STAT5A/STAT5B/TNFRSF9) + `kd_status=="not_measurable"` as the operational negative-control population |
 
 **Calibration finding, reported honestly rather than tuned away:** negative controls work cleanly —
-99.37% of 5,084 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
-advance/validate readiness call. Positive controls are more nuanced: only 20% of the 21-gene panel
+99.96% of 4,774 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
+advance/validate readiness call. (Row count updated from 5,084 → 4,774 by the `kd_status/v2` fix, §1.13,
+which split the 310 never-measured NaN-baseline rows into the distinct `not_assessed` state.) Positive controls are more nuanced: only 20% of the 21-gene panel
 reach the strict `statistical_evidence_grade>=3` bar (which requires cross-donor AND cross-guide
 robustness with ≥2 guides simultaneously), but 93.1% are *not* deprioritized by the readiness engine.
 This was not "fixed" by loosening thresholds to make the number look better — see
@@ -302,16 +303,48 @@ first; never feed readiness decisions**), combination explorer (research-only). 
 the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
 (§1.11), which took priority. Revisit if/when requested.
 
-### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **CONCEPT ONLY, blocked on real data**
-The project owner has (a) CellxGene-based gene safety validation results and (b) an internal
-membrane-protein database (motif length, expression, TCGA/GTEx) originally built for ADC target
-discovery. Both are a direct match for the two `readiness_engine.py` domains that are today almost
-entirely `"unknown"`: `safety_window_score` (only ever `0` for essential genes, else unknown) and
-`tractability_modality` (only local druggable-class gene lists, no expression/structural evidence). Full
-design — schema sketches, exactly which function each maps onto, and the open questions that block
-starting (identifier system, raw-matrix-vs-precomputed-verdict, whether TCGA columns are even relevant
-to a non-oncology CD4 platform) — is in `docs/external_overlay_integration_concept.md`. **Not scheduled**
-until the real files/columns are shared; this section exists so the concept isn't lost in the meantime.
+### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **DONE (both halves)**
+Original concept (schema sketches, open questions) in `docs/external_overlay_integration_concept.md`.
+Once the real ADC target-discovery database was shared, the open questions were resolved and answered in
+`docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md` (identifier system: both symbol and Ensembl ID
+present; verdict form: pre-computed, not a raw matrix; coverage: ~49% of GWT targets, 5,588 genes).
+
+**Membrane/tractability half — shipped:** `src/3_DE_analysis/safety_overlay.py`.
+`load_membrane_tractability_overlay()` reads the real, checked-in overlap table
+(`docs/mvp-research/adc_overlay_gwt_overlap_full.csv`) and `tractability_from_membrane_overlay()` upgrades
+`readiness_engine.py`'s `tractability_modality`/`tractability_score` beyond the local
+druggable-class-list fallback — wired into `compute_readiness()` as an additive `membrane_overlay`
+parameter and into `GET /api/readiness/{dataset_id}`. **Verified:** CD3E/CD247/LAT (all real surface
+receptor components) upgrade from `unknown` to `antibody (surface)`; MED12 (druggable, not membrane)
+upgrades to `small molecule`; CCNC (neither) gets a real `("none", 0)` verdict, not `unknown`. Confirmed a
+pure upgrade on the real 33,983-row reference build: 267 readiness calls improve, **0 regress**, and every
+domain independent of tractability (biology, translation, biomarker, disease relevance, genetics) is
+byte-identical before/after. This is also a **third independent evidence source** (after Open Targets
+tractability and gnomAD constraint, both proposed in `docs/mvp-research/ENHANCEMENT_連結器加強建議.md`)
+that agrees with the C7 `broad_effect` quarantine: MED12/CCNC are not real membrane targets.
+
+**Safety-window (GTEx) half — shipped once the file arrived.** `gtex_per_tissue.parquet` at
+`sources/target_tool_cache/_overlays/gtex_per_tissue.parquet` is a pre-aggregated, per-gene table
+(`ensembl_id`, `gene_symbol`, `n_tissues_expressed`, `max_expression_outside_cd4_context`), derived from
+public GTEx per-tissue median TPM. Critically, the aggregation **excludes CD4-relevant tissues
+(Blood/Spleen)** from both fields — this directly addresses the context-inversion problem the ingestion
+spec flagged in §1: "CD4 T cell high expression" is an *off-target* risk signal in the ADC/oncology
+context the source database was built for, but is normal, expected biology on this CD4 platform, so it
+must not count against a gene's safety window here. `load_gtex_safety_overlay()` reads this table
+as-is (already aggregated, no further work needed); `safety_window_from_gtex()` wires it into
+`safety_window_score` as an additive `gtex_overlay` parameter, keyed by **Ensembl gene ID** (same
+convention as the membrane overlay). **Verified:** CD3E → 21/30 off-context tissues (real,
+non-`unknown` value); MED12 → 28/30 (near-ubiquitous outside CD4 context — consistent with it being a
+Mediator-complex subunit and, independently, the C7 `broad_effect` quarantine's textbook example); a gene
+absent from the ~9,718-gene overlay (e.g. VAV1) stays `unknown`, never a fabricated `0`. Confirmed
+`safety_window_score` is causally independent of `readiness_call`/`overall_readiness_stage` (`_stage()`
+never takes a safety argument) — the GTEx overlay changes only its own column, verified both alone and
+combined with the membrane overlay. The raw tissue-breadth count is returned as-is rather than collapsed
+into a tight/moderate/wide tier, so the interpretation stays visible and revisable rather than baked into
+a lossy label (see the module docstring for the direction-of-effect reasoning). TCGA columns are still
+deliberately not scored (ADC/oncology concept, not relevant to this CD4 platform, per the ingestion
+spec's own §2d). Requires `pyarrow` (added to setup instructions) to read
+the `.parquet` snapshots.
 
 ### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**
 Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the
@@ -358,7 +391,7 @@ results (never "everything").
   fixture, ~15–20s once): the EDA funnel's exact stage counts (33,983 → 4,182 → 1,102, matching
   `sources/topic09_eda_report.md`'s independently-computed cascade), the control-panel calibration
   numbers found during development (20/21 positive controls present, 20% reach grade≥3, 93.1% not
-  deprioritized; 5,084 negative-control rows, 99.37% at grade 1, 0% reach grade≥3 or
+  deprioritized; 4,774 negative-control rows, 99.96% at grade 1, 0% reach grade≥3 or
   advance/validate), and the specific bug class caught earlier in this project (`kd_status=="weak"`
   never reaching `readiness_call=="advance"`, joined correctly on `(target, condition)` — an ad hoc
   target-only join had produced false positives during manual verification).
@@ -393,6 +426,36 @@ evidence cache's 30-day per-gene TTL and force-refresh path; that static overlay
 freshness stamp today (a gap noted, not silently accepted); and the `sources/target_tool_cache/`
 directory lifecycle (which subdirectories are git-tracked vs ignored, and why).
 
+### 1.13 Upload-path correctness fixes (from a code review of the merged code) — **DONE**
+A structured code review of the merged code flagged two defects on the researcher-upload path (a core
+MVP pillar). Both fixed here, with regression tests.
+
+**Fix 1 — `_kd_status` conflated "never measured" with "measured and failed" (`build_target_cards.py`).**
+A guide-less generic upload has NaN `target_baseline_expression` (there was never an NTC/guide table to
+measure it from). The old code returned `not_measurable` for NaN, so **every uploaded row** got the
+`kd_not_measurable` red flag, was capped at watchlist, and shown a fabricated "NTC expression too low"
+next step — about an upload that never had NTC cells. This violated the `unknown != 0` rule the repo's
+own `data_governance_checklist.md` §3 states. Fix: a fourth state `kd_status = "not_assessed"` for NaN
+baseline (`KD_THRESHOLD_VERSION = "kd_status/v2"`), which is **not** penalized (no red flag, no
+fabricated message). Such uploads are still correctly bounded by the real robustness gates (no guide
+data → grade caps at 2; no cross-donor/guide support → translation 0), so they do not spuriously
+advance. **Verified:** on the reference build, 310 never-measured rows moved from `not_measurable` to
+`not_assessed`; 0 of them reach `advance` (280 deprioritize / 29 watchlist / 1 validate). Negative-control
+metrics improved (99.96% grade-1 on the now-4,774 measured-below-floor `not_measurable` rows).
+
+**Fix 2 — mapped uploads structurally lost `n_total_de_genes` (`build_target_cards.py` + `import_manager.py`).**
+`adapt_generic_de` reads `n_total_de_genes`, but it was not a canonical upload field, so
+`build_mapped_view` (which keeps only mapped canonical columns) dropped it after the column-mapping
+wizard → every mapped upload got `n_total_de_genes = NaN` → degraded grades and a degenerate calibration
+QC funnel (all rows dropped at the `>=50` stage). Fix: added `n_total_de_genes` to
+`GENERIC_TARGET_FIELDS` and `RECOMMENDED_COLUMNS["target_evidence"]`, plus normalize-aliases
+(`n_de_genes`/`num_de_genes`/`total_de_genes`/`n_significant_genes`). **Verified:** a mapped upload whose
+DE-count column is named `num_de_genes` now resolves to `n_total_de_genes` and reaches the built card.
+
+Both fixes covered by new tests in `tests/test_empty_states.py` (guide-less upload → `not_assessed`, no
+fabricated penalty; mapped `n_total_de_genes` passthrough) and an updated assertion in
+`tests/test_join_integrity.py`. Full suite: **31 passing**.
+
 ---
 
 ## 2. Sequencing (recommended)
@@ -404,6 +467,7 @@ Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1
 Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
 Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (code done, real-data run pending on owner's machine)
 Wave 6 (DONE):    §1.11 platform-grade backlog — B1/B2/B5/B6/C3/C4/C5/C6  [1.10 v2 generators deferred, see §1.10]
+Wave 7 (DONE):    §1.13 upload-path correctness fixes (kd_status/v2 not_assessed; mapped n_total_de_genes passthrough)
 ```
 
 **Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,

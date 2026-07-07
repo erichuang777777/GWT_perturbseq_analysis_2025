@@ -63,9 +63,13 @@ layers) and `DE_stats.suppl_table.csv` columns.
   >0.001." This toolkit's `kd_status` field (`build_target_cards.py::_kd_status`,
   `KD_NOT_MEASURABLE_EXPRESSION_FLOOR = 0.001`) reuses this exact, already-documented expression floor
   rather than inventing a new one — a target whose NTC baseline expression (`target_baseline_expression`,
-  i.e. `ntc_mean_expr`) is at or below `0.001` is `kd_status = "not_measurable"`: the causal chain
-  (knockdown -> downstream transcription change) cannot even be evaluated for it, which is a different
-  failure mode from "measurable but not significantly knocked down" (`kd_status = "weak"`).
+  i.e. `ntc_mean_expr`) was **measured** and is at or below `0.001` is `kd_status = "not_measurable"`:
+  the causal chain (knockdown -> downstream transcription change) cannot even be evaluated for it, which
+  is a different failure mode from "measurable but not significantly knocked down" (`kd_status = "weak"`).
+  A **fourth** state, `kd_status = "not_assessed"`, covers the case where baseline expression was never
+  measured at all (NaN — e.g. a guide-less generic upload that had no NTC/guide table): this is
+  genuinely *unknown*, not a measured failure, and is deliberately **not** penalized (the `unknown != 0`
+  rule, `data_governance_checklist.md` §3). `KD_THRESHOLD_VERSION = "kd_status/v2"`.
 
 ## 4. What this toolkit adds on top (and what it doesn't)
 
@@ -73,11 +77,13 @@ This toolkit (`src/3_DE_analysis/*`) does not recompute DE, pseudobulk aggregati
 knockdown t-test — those are upstream, already-validated computations from the GWT dataset release
 (bioRxiv `10.64898/2025.12.23.696273v1`). What it adds:
 
-- `kd_status` (confirmed/weak/not_measurable): a 3-state summary of the guide-level knockdown test
-  above, gating whether downstream DE for that target-condition should be trusted at all (see
-  `readiness_engine.py`'s `kd_not_measurable`/`kd_weak` red-flag overrides, which cap the readiness
+- `kd_status` (confirmed/weak/not_measurable/not_assessed): a 4-state summary of the guide-level
+  knockdown test above, gating whether downstream DE for that target-condition should be trusted at all
+  (see `readiness_engine.py`'s `kd_not_measurable`/`kd_weak` red-flag overrides, which cap the readiness
   call — a target whose own knockdown can't be confirmed cannot be `advance`d regardless of how strong
-  its downstream DE signal looks).
+  its downstream DE signal looks). `not_assessed` (no KD data at all) is not a red flag: it is unknown,
+  not a measured failure, so it is not penalized — such rows are still bounded by the real robustness
+  gates (no guide data caps the grade at 2).
 - `statistical_evidence_grade` (1-4) and `score_cap_reason`: a coarser reproducibility gate on top of
   the upstream `keep_for_DE` flags (minimum cells, cross-donor/cross-guide correlation, off-target
   flag) — see `build_target_cards.py`.
@@ -92,8 +98,11 @@ knockdown t-test — those are upstream, already-validated computations from the
 `src/3_DE_analysis/calibration.py`'s `control_panel_calibration()` checks both directions against the
 above gates on the real reference dataset:
 
-- **Negative controls** (`kd_status == "not_measurable"`, 5,084 rows): **99.37%** correctly land at
+- **Negative controls** (`kd_status == "not_measurable"`, 4,774 rows): **99.96%** correctly land at
   grade 1, **0%** incorrectly reach grade >=3, **0%** reach an `advance`/`validate` readiness call.
+  (Row count is 4,774 rather than the earlier 5,084 because `kd_status/v2` reclassified the 310 rows
+  with a *never-measured* NaN baseline as `not_assessed` — genuinely unknown — instead of lumping them
+  into the measured-below-floor `not_measurable` population.)
 - **Positive controls** (21-gene panel of well-established CD4 phenotypes — CD3D/E/G, CD28, ICOS,
   CTLA4, CD80/86, IL2RA, IL2RB, IL7R, LCK, ZAP70, JAK3, PTPN2, FOXP3, PTGER4, STAT5A/B, TNFRSF9): only
   **20%** reach the strict `statistical_evidence_grade >= 3` bar (which requires cross-donor AND

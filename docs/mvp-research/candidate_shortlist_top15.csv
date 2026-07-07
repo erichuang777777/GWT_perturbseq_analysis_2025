@@ -1,0 +1,16 @@
+target,culture_condition,n_cells_target,n_total_de_genes,n_downstream,ontarget_effect_size,ensembl_id,flag
+CD3E,Stim8hr,234.0,5711,5710,-17.891807119280895,ENSG00000198851,immune_candidate
+LAT,Stim8hr,469.0,5536,5535,-17.262825348106805,ENSG00000213658,immune_candidate
+TADA2B,Stim48hr,1178.0,5260,5259,-17.33454831744466,ENSG00000173011,broad_effect (quarantine→watchlist)
+SENP5,Stim8hr,2188.0,5172,5171,-38.700746284832434,ENSG00000119231,broad_effect (quarantine→watchlist)
+PLCG1,Stim8hr,421.0,5033,5032,-14.101124295570235,ENSG00000124181,immune_candidate
+VAV1,Stim8hr,504.0,4898,4897,-15.097187610756944,ENSG00000141968,immune_candidate
+SGF29,Stim48hr,993.0,4869,4868,-10.869262510845196,ENSG00000176476,broad_effect (quarantine→watchlist)
+UBXN1,Rest,592.0,4440,4439,-6.741071079478915,ENSG00000162191,broad_effect (quarantine→watchlist)
+CD247,Stim8hr,412.0,4330,4329,-11.933472010237974,ENSG00000198821,immune_candidate
+MED12,Stim8hr,219.0,4142,4141,-8.788787110955338,ENSG00000184634,broad_effect (quarantine→watchlist)
+CCNC,Stim48hr,3051.0,4091,4090,-43.159386311488575,ENSG00000112237,broad_effect (quarantine→watchlist)
+SUPT20H,Stim8hr,934.0,3948,3947,-18.60351722439309,ENSG00000102710,broad_effect (quarantine→watchlist)
+TADA1,Stim8hr,510.0,3649,3648,-8.596299314782403,ENSG00000152382,broad_effect (quarantine→watchlist)
+DENR,Stim8hr,806.0,3637,3636,-30.85673328752525,ENSG00000139726,broad_effect (quarantine→watchlist)
+PMVK,Stim48hr,212.0,3528,3527,-10.625338298747694,ENSG00000163344,broad_effect (quarantine→watchlist)

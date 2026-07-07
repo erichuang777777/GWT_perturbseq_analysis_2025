@@ -17,6 +17,8 @@ what's exposed via the API/dashboard, or considering external redistribution/pub
 | Local overlay gene lists (`metadata/gene_lists/*.tsv`: core-essentiality/Hart, druggable-class, ClinVar path/likely-path membership; `sources/broad_effect_genes.txt`) | Static snapshots already committed to the repo | Each source has its own terms (e.g. Hart essentiality screen is a published academic dataset; ClinVar is public domain via NCBI) | These are membership lookups, not redistributed wholesale — low risk. No `fetched_at` stamp exists on these static files; if they are ever refreshed, add one (see §3, "static overlay staleness" below) |
 | `src/6_functional_interaction/results/disease_gene_associations_detailed.csv` (Open Targets export) | Prior-research join table used by `disease_translator.py` | Open Targets platform data is published under their own open-data terms | Re-verify Open Targets' current terms before external redistribution of this specific derived export |
 | Live connectors: ClinicalTrials.gov, PubMed/E-utilities, Open Targets GraphQL (`external_evidence_cache.py`) | Public government/nonprofit registries | NLM/NCBI usage policies (rate limits, no bulk scraping), Open Targets API terms | Already respected by design: fetches happen only in an offline batch job (`build_evidence_for_gene(s)`), never in the request path, and are TTL-cached (30 days, see §3) rather than re-fetched per view |
+| `docs/mvp-research/adc_overlay_gwt_overlap_full.csv` (§1.12 membrane/tractability overlay) | GWT-target join of the project owner's ADC target-discovery database (`candidate_genes.parquet`) | Per `docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md`, the underlying fields (surface-protein/transmembrane-domain calls) derive from public databases (HPA, UniProt, CSPA) — no patient-level or proprietary-cohort data. The join itself (which GWT genes overlap) is derived, not raw redistribution. | Low risk — public-database-derived gene annotations, not patient data. Re-confirm before external redistribution if the source parquet's own terms are ever formalized. |
+| UK Biobank LoF-burden estimates (`src/8_lymphocyte_counts_LoF/input/Backman_*.tsv`, `population_hypothesis.py`) | Backman et al. 2021 exome-wide rare-variant burden effect estimates | Published, de-identified, **population-level** (gene x trait posterior estimates) — not individual UK Biobank participant data | Already gene-level aggregate only; the population-vs-patient distinction is enforced in code (§2 below extends the same principle from donor demographics to this source) |
 
 **Open action:** none of the above are blocking today (nothing in this toolkit re-publishes raw source
 data outside this repo), but the GWT dataset's own license status is the single item to close out before
@@ -65,7 +67,7 @@ any external sharing decision.
 ## 4. User-upload data isolation
 
 - Every dataset build now carries an `origin` field: `"gwt_reference"` vs `"user_upload"` (stamped in
-  `target_card_api.py` and consumed by `target_card_dashboard.py`'s compatibility banner).
+  `target_card_api.py` and consumed by `frontend/dashboard/target_card_dashboard.py`'s compatibility banner).
 - User-uploaded datasets are namespaced (`usr_<uuid>` / import-lineage-tracked) and are **never** blended
   into the GWT reference card set — confirmed in `import_manager.py`/`target_card_api.py`'s merge path,
   which always writes to a new dataset directory rather than appending to the reference build.

@@ -26,6 +26,8 @@ from disease_translator import list_diseases, load_disease_associations, transla
 from gene_identifier_resolver import load_resolver, result_status
 from gene_search import search_genes
 from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
+from population_hypothesis import CAVEAT_TEXT, build_population_hypothesis_card, load_burden_estimates
+from safety_overlay import load_gtex_safety_overlay, load_membrane_tractability_overlay
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -85,6 +87,18 @@ def _gene_resolver():
         _GENE_RESOLVER = load_resolver(DEFAULT_LIB, DEFAULT_GUIDE)
     return _GENE_RESOLVER
 
+
+_BURDEN_ESTIMATES_CACHE: Dict[str, Any] = {}
+
+
+def _burden_estimates(trait: str) -> Dict[str, Any]:
+    # Same caching rationale as _gene_resolver: a deterministic function of a
+    # static local file (module 3, population_hypothesis.py), no reason to
+    # re-parse an 18,543-row TSV on every request.
+    if trait not in _BURDEN_ESTIMATES_CACHE:
+        _BURDEN_ESTIMATES_CACHE[trait] = load_burden_estimates(trait)
+    return _BURDEN_ESTIMATES_CACHE[trait]
+
 # Bump whenever build_target_cards.py, readiness_engine.py, calibration.py, or
 # external_evidence_cache.py change scoring/engine behavior, so every dataset's
 # provenance footer can say exactly which engine produced it.
@@ -123,6 +137,26 @@ def _signature_set_version() -> str:
 
 def _overlays():
     return load_overlays(GENE_LISTS_DIR)
+
+
+_MEMBRANE_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
+_GTEX_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
+
+
+def _membrane_overlay() -> Dict[str, Any]:
+    # Cached like _overlays()/_burden_estimates(): a deterministic function of
+    # a static local file (safety_overlay.py, §1.12 / ADC ingestion spec).
+    global _MEMBRANE_OVERLAY_CACHE
+    if _MEMBRANE_OVERLAY_CACHE is None:
+        _MEMBRANE_OVERLAY_CACHE = load_membrane_tractability_overlay()
+    return _MEMBRANE_OVERLAY_CACHE
+
+
+def _gtex_overlay() -> Dict[str, Any]:
+    global _GTEX_OVERLAY_CACHE
+    if _GTEX_OVERLAY_CACHE is None:
+        _GTEX_OVERLAY_CACHE = load_gtex_safety_overlay()
+    return _GTEX_OVERLAY_CACHE
 
 
 def _essentials():
@@ -579,6 +613,8 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
             essentials=_essentials(),
             broad_effect_genes=_broad_effect_genes(),
             evidence_dir=EVIDENCE_CACHE_DIR,
+            membrane_overlay=_membrane_overlay(),
+            gtex_overlay=_gtex_overlay(),
         )
         readiness.to_csv(readiness_csv, index=False)
     else:
@@ -756,6 +792,48 @@ def get_disease_targets(
 
     result = translate_disease(cards, disease_name, associations, readiness=readiness_df, min_grade=min_grade, top_n=top_n)
     return {"dataset_id": dataset_id, "disease_name": disease_name, **result}
+
+
+@app.get("/api/population-hypothesis/{gene}")
+def get_population_hypothesis(
+    gene: str,
+    trait: str = Query(default="lymphocyte_count"),
+) -> Dict[str, Any]:
+    """Module 3 part A: population LoF-burden hypothesis card for one gene.
+
+    Read-only; joins the cached UK Biobank burden-estimate table (see
+    population_hypothesis.py) against the gene's resolved Ensembl ID. Never a
+    patient-level prediction -- every non-empty result carries the fixed
+    ``caveat`` field verbatim.
+    """
+    resolver = _gene_resolver()
+    resolution = resolver.resolve(gene)
+    burden = _burden_estimates(trait)
+    if not burden["available"]:
+        return {"gene": gene, "trait": trait, "available": False, "reason": burden["reason"], "caveat": CAVEAT_TEXT}
+    if not resolution["matched"]:
+        return {
+            "gene": gene,
+            "trait": trait,
+            "available": True,
+            "matched": False,
+            "reason": "gene not found in the local alias table",
+            "caveat": CAVEAT_TEXT,
+        }
+    fake_cards = pd.DataFrame({"target": [resolution["canonical_symbol"]], "target_id": [resolution["ensembl_gene_id"]]})
+    card = build_population_hypothesis_card(fake_cards, burden["estimates"], trait=trait)
+    if card.empty:
+        return {
+            "gene": gene,
+            "trait": trait,
+            "available": True,
+            "matched": True,
+            "ensembl_gene_id": resolution["ensembl_gene_id"],
+            "found_in_burden_table": False,
+            "reason": f"no {trait} burden estimate for this gene in the local table",
+            "caveat": CAVEAT_TEXT,
+        }
+    return {"available": True, "matched": True, "found_in_burden_table": True, **_json_object(card.iloc[0].to_dict())}
 
 
 @app.post("/api/run/target-card")

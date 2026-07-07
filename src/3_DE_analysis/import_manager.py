@@ -29,7 +29,7 @@ REQUIRED_COLUMNS: Dict[str, List[str]] = {
 }
 
 RECOMMENDED_COLUMNS: Dict[str, List[str]] = {
-    "target_evidence": ["effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides"],
+    "target_evidence": ["effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides", "n_total_de_genes"],
     "guide_evidence": ["kd_score", "guide_id", "sgrna", "fdr", "effect_size"],
     "external_evidence": ["evidence_type", "pmid", "url", "disease", "drug", "clinical_phase"],
     "metadata_manifest": ["species", "cell_type", "condition", "donor", "batch", "source"],
@@ -84,6 +84,10 @@ def normalize_columns(columns: List[str]) -> Dict[str, str]:
         "p_val": "p_value",
         "log_fold_change": "logfc",
         "log2fc": "logfc",
+        "n_de_genes": "n_total_de_genes",
+        "num_de_genes": "n_total_de_genes",
+        "total_de_genes": "n_total_de_genes",
+        "n_significant_genes": "n_total_de_genes",
         "guide_id": "guide",
         "sgrna": "guide",
         "donor_id": "donor",

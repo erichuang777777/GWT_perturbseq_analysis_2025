@@ -34,6 +34,10 @@ from build_target_cards import (
     load_gene_set,
 )
 from external_evidence_cache import load_snapshot as load_evidence_snapshot
+from safety_overlay import (
+    safety_window_from_gtex,
+    tractability_from_membrane_overlay,
+)
 
 UNKNOWN = "unknown"
 
@@ -184,9 +188,18 @@ def _red_flags(
     # CRISPRi's causal chain is target-suppressed -> downstream transcription
     # changes. If the target itself was never confirmed knocked down, the
     # downstream DE is not causally interpretable, regardless of how strong
-    # the DE signal looks. "not_measurable" (baseline expression too low to
-    # ever assess) is worse than "weak" (some signal, just not confirmed),
-    # so it caps more strictly.
+    # the DE signal looks. "not_measurable" (baseline expression MEASURED and
+    # too low to ever assess) is worse than "weak" (some signal, just not
+    # confirmed), so it caps more strictly.
+    #
+    # "not_assessed" (no knockdown data at all, e.g. a guide-less upload) is
+    # deliberately NOT a red flag: it is genuinely unknown, not a measured
+    # failure (unknown != 0). Penalizing it would fabricate an "NTC expression
+    # too low" claim about an upload that never had NTC cells and wrongly cap
+    # the whole dataset. Such uploads are still bounded by the real robustness
+    # gates (no guide data -> grade caps at 2, no cross-donor/guide support ->
+    # translation score 0), so they do not advance on the strength of an
+    # unassessable knockdown.
     kd_status = str(row.get("kd_status", "") or "")
     if kd_status == "not_measurable":
         overrides.append("kd_not_measurable")
@@ -255,6 +268,8 @@ def compute_readiness(
     essentials: Optional[Set[str]] = None,
     broad_effect_genes: Optional[Set[str]] = None,
     evidence_dir: Optional[Path] = None,
+    membrane_overlay: Optional[Dict[str, Any]] = None,
+    gtex_overlay: Optional[Dict[str, Any]] = None,
 ) -> pd.DataFrame:
     """Compute readiness domains, R-stage, call, reasons and next step per card.
 
@@ -264,6 +279,14 @@ def compute_readiness(
     fetched (``source_status == "ok"``), it upgrades ``clinical_feasibility``
     and ``human_genetic_support`` beyond the local-overlay fallback. Genes with
     no snapshot are unaffected -- this never fabricates evidence.
+
+    ``membrane_overlay``/``gtex_overlay``, if given (the dict returned by
+    ``safety_overlay.load_membrane_tractability_overlay`` /
+    ``load_gtex_safety_overlay``), upgrade ``tractability_modality`` and
+    ``safety_window_score`` respectively beyond the local gene-list fallback,
+    same upgrade-not-replace pattern as the evidence snapshot above. Omitted
+    or unavailable overlays leave existing behavior (local overlays /
+    ``unknown``) completely unchanged.
     """
     if cards.empty:
         return cards.copy()
@@ -290,9 +313,14 @@ def compute_readiness(
         biomarker = _biomarker(row)
         disease = _disease_relevance(row)
         clinical = _clinical_feasibility(row, evidence)
-        trac_modality, trac_score = _tractability(gene, overlays)
+        gene_ensembl = str(row.get("target_id", "") or "")
+        trac_modality, trac_score = (
+            tractability_from_membrane_overlay(gene_ensembl, membrane_overlay) if membrane_overlay else (UNKNOWN, UNKNOWN)
+        )
+        if trac_modality == UNKNOWN:
+            trac_modality, trac_score = _tractability(gene, overlays)
         genetics = _human_genetic_from_evidence(evidence) or _human_genetic(gene, overlays)
-        safety = 0 if essential else UNKNOWN
+        safety = 0 if essential else (safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN)
         immune_flags = []
         if bool(row.get("offtarget_flag")):
             immune_flags.append("offtarget")

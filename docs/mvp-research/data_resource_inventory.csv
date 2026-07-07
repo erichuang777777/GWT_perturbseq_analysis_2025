@@ -1,0 +1,21 @@
+system,resource,type,access,size_scale,status,role_in_platform
+Base/Sys1,DE_stats.suppl_table.csv,CSV (perturbation×condition DE),public S3 (no-sign),"4.82 MB / 33,983 rows × 16 cols",verified downloaded,"primary target-card input; 11,526 targets, 3 conditions"
+Base/Sys1,sgrna_library_metadata.suppl_table.csv,CSV (guide design/off-target),public S3,"9.94 MB / 26,504 guides × 31 cols",verified downloaded,off-target & guide QC evidence
+Base/Sys1,sample_metadata.suppl_table.csv,CSV (donor/sample),public S3,12 samples × 19 cols,verified downloaded,"donor demographics (age/sex/ethnicity), batch"
+Sys1(deep),GWCD4i.DE_stats.h5ad,AnnData (DE + layers),public S3,16.8 GB,"listed, cloud-only","full DE w/ logFC/pval/zscore layers, cross-donor/guide corr"
+Sys1(deep),GWCD4i.pseudobulk_merged.h5ad,AnnData pseudobulk,public S3,44.6 GB,"listed, cloud-only",raw-count pseudobulk for mixed-model re-validation
+Sys1(deep),GWCD4i.DE_stats.by_guide.h5mu / by_donors.h5mu,MuData,public S3,29.4 / 16.9 GB,"listed, cloud-only",guide- & donor-split robustness
+Sys2(deep),D*_*.assigned_guide.h5ad (12 files),AnnData cell-level,public S3,~118–173 GB each (~1.7 TB total),"listed, cloud-only",per-cell state / responder-subset analysis
+Sys3,Open Targets (GraphQL),external API,mcp-clinical-genomics,live,"verified (IL2RA:28 tract, 1469 dis)","tractability, genetic assoc, known drugs"
+Sys3,ChEMBL,external API,mcp-chembl,live,verified 200,"bioactivity, mechanism, ADMET"
+Sys3,ClinicalTrials.gov v2,external API,mcp-clinical-trials,live,verified 200,trials by target/indication/phase
+Sys3,GWAS Catalog + eQTL + PheWAS,external API,mcp-human-genetics,live,verified 200,human genetic support domain
+Sys3,gnomAD / ClinVar / dbSNP,external API,mcp-variants,live,available,"constraint, pathogenic variants"
+Sys3,GTEx expression + eQTL,external API,mcp-expression,live,available,tissue expression context
+Sys3,Drugs@FDA / SPL labels,external API,mcp-drug-regulatory,live,available,"approval status, pharm class"
+Sys3,PubMed / PMC,external API,mcp-pubmed,live,available,literature evidence per target
+In-repo,topic05_successful_drug_benchmarks.csv,CSV,GitHub repo,in-repo,present,clinical_axis / nearest_success_drug mapping
+In-repo,metadata/gene_lists/* (druggable classes),TSV,GitHub repo,in-repo,present,kinase/GPCR/enzyme/surface tractability overlay
+In-repo,topic13_clinicaltrials_flat.csv,CSV,GitHub repo,in-repo,present,pre-fetched CD4 trials snapshot
+In-repo,IUIS-IEI-list + immune_effector_genes.csv,CSV,GitHub repo,in-repo,present,immune inborn-error & effector gene overlays
+In-repo,1k1k + lymphocyte-count LoF results,various,GitHub repo,in-repo,present,population genetics evidence (Sys3 4a)

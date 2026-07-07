@@ -63,8 +63,8 @@ Built by `build_target_cards.py::build_cards_frame`. `target_id` here is the raw
 | `nearest_success_drug` | str (may be empty) | First matching drug name from the local clinical-benchmark CSV | regex containment match; empty if no benchmark supplied or no match |
 | `nearest_failure_or_warning` | str | Reserved column, always empty in this build | placeholder, not yet populated by any data source |
 | `target_baseline_expression` | float or NaN | Target's baseline expression in NTC cells for this condition | `ntc_mean_expr`, `"first"` aggregate (confirmed invariant per target/condition group, 0/37,578 groups violate this) |
-| `kd_status` | `"confirmed"` / `"weak"` / `"not_measurable"` | 3-state on-target knockdown status | `not_measurable` if baseline <= 0.001 (or missing); else `confirmed` if `guide_signif_ratio>=0.5 and guide_fdr_min<=0.05`; else `weak` |
-| `kd_threshold_version` | str | Version tag for the kd_status threshold logic | constant `"kd_status/v1"` |
+| `kd_status` | `"confirmed"` / `"weak"` / `"not_measurable"` / `"not_assessed"` | 4-state on-target knockdown status | `not_assessed` if baseline is missing/NaN (no KD data at all — a guide-less upload; genuinely unknown, never penalized); `not_measurable` if baseline was measured and `<= 0.001` (a real failure); else `confirmed` if `guide_signif_ratio>=0.5 and guide_fdr_min<=0.05`; else `weak` |
+| `kd_threshold_version` | str | Version tag for the kd_status threshold logic | constant `"kd_status/v2"` (v2 split NaN baseline into `not_assessed`, distinct from measured-below-floor `not_measurable`) |
 | `statistical_evidence_grade` | int 1-4 | Coarse evidence-strength grade | see `_make_score()`: 4 requires full replication + guide robustness + `n_guides>=2`; 3 requires replication + `n_guides>=2` + `fdr_min<=0.1`; 2 requires cells+significance only; else 1 |
 | `score_cap_reason` | `;`-joined str or `"none"` | Every reason this row didn't reach a higher grade | union of off-target/batch/replicability/direction/guide-count/kd tokens, de-duplicated |
 | `n_donors` | NaN | Reserved column | not available from `DE_stats.suppl_table.csv` alone; always NaN in this build |
@@ -82,9 +82,9 @@ Built by `readiness_engine.py::compute_readiness`. Joins 1:1 onto `target_cards.
 | `biology_causality_score` | 0/3/5 | Grade + known-pathway-membership composite | `_biology_causality()` |
 | `disease_relevance_score` | 3 or `"unknown"` | Has a clinical axis or is a positive control | `_disease_relevance()` |
 | `human_genetic_support` | `"yes"`/`"no"`/`"unknown"` | GWAS/ClinVar overlay membership, upgraded by a fetched Open Targets snapshot if present | `_human_genetic()` / `_human_genetic_from_evidence()` |
-| `tractability_modality` | str or `"unknown"`/`"none"` | Druggable-class overlay match | `_tractability()` |
-| `tractability_score` | 0/3 or `"unknown"` | Companion score to the modality | `_tractability()` |
-| `safety_window_score` | 0 or `"unknown"` | `0` only if the gene is a known essential gene; else `"unknown"` (no safety-margin data source exists) | |
+| `tractability_modality` | str or `"unknown"`/`"none"` | Druggable-class overlay match, upgraded by the real ADC-derived membrane overlay if the gene is covered (§1.12) | `_tractability()`, upgraded by `safety_overlay.tractability_from_membrane_overlay()` when `membrane_overlay` is supplied |
+| `tractability_score` | 0/3 or `"unknown"` | Companion score to the modality | same as above |
+| `safety_window_score` | `0`, an int 0-30 (off-context GTEx tissue-breadth count), or `"unknown"` | `0` if the gene is a known essential gene (always wins); else the count of GTEx tissues (of 30, Blood/Spleen excluded -- see §1.12's context-inversion note) where the gene clears the source database's expression threshold, from `safety_overlay.safety_window_from_gtex()`, if the gene is in the ~9,718-gene GTEx overlay; else `"unknown"`. Higher = more broadly expressed outside CD4 context (not yet collapsed into a tight/moderate/wide tier -- the raw count is kept visible) | `_stage()`/`readiness_call` never depend on this column -- it is descriptive only |
 | `cd4_immune_red_flags` | `,`-joined str or `"none"` | Which immune-specific flags are set (offtarget/batch_sensitive/broad_effect) | |
 | `biomarker_score` | 0/3 | Whether `n_total_de_genes >= 50` | `_biomarker()` |
 | `translation_score` | 0/3/5 | Reproducibility composite | `_translation()` |
