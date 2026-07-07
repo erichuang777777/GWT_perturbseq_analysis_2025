@@ -24,6 +24,8 @@ from calibration import run_calibration
 from external_evidence_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
 from disease_translator import list_diseases, load_disease_associations, translate_disease
 from gene_identifier_resolver import load_resolver, result_status
+from gene_search import search_genes
+from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -57,6 +59,14 @@ DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
 EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
 DISEASE_ASSOCIATIONS_PATH = ROOT / "src" / "6_functional_interaction" / "results" / "disease_gene_associations_detailed.csv"
+
+# B5 schema placeholders: no CRE dataset is present in this repo. These paths
+# intentionally point at files that don't exist yet -- load_cre_elements /
+# load_variant_cre_links report an explicit "not loaded" status rather than
+# fabricating data. Point them at a real file (e.g. a processed Moonen CRE
+# export) when one becomes available; no other code needs to change.
+CRE_ELEMENTS_PATH = ROOT / "sources" / "cre_elements.csv"
+VARIANT_CRE_LINKS_PATH = ROOT / "sources" / "variant_cre_links.csv"
 
 
 def _disease_associations():
@@ -688,6 +698,35 @@ def gene_result_status(
         de_df = pd.DataFrame(columns=["target"])
         source = "unavailable"
     return {"source": source, **result_status(resolver, q, de_df)}
+
+
+@app.get("/api/search")
+def search_genes_endpoint(q: str = Query(..., min_length=1), limit: int = Query(default=10, ge=1, le=50)) -> Dict[str, Any]:
+    resolver = _gene_resolver()
+    return {"query": q, "results": search_genes(resolver, q, limit=limit)}
+
+
+@app.get("/api/cre/{gene_query}")
+def get_cre_for_gene(gene_query: str) -> Dict[str, Any]:
+    """CRE (cis-regulatory element) links for a gene -- schema placeholder (B5).
+
+    Honestly reports 'not loaded' (never fabricates elements) until a real
+    CRE dataset is configured at CRE_ELEMENTS_PATH/VARIANT_CRE_LINKS_PATH.
+    """
+    resolver = _gene_resolver()
+    resolution = resolver.resolve(gene_query)
+    cre_result = load_cre_elements(CRE_ELEMENTS_PATH if CRE_ELEMENTS_PATH.exists() else None)
+    variant_result = load_variant_cre_links(VARIANT_CRE_LINKS_PATH if VARIANT_CRE_LINKS_PATH.exists() else None)
+    elements = cre_for_gene(resolution.get("ensembl_gene_id") or gene_query, cre_result) if resolution.get("matched") else []
+    return {
+        "gene_query": gene_query,
+        "resolution": resolution,
+        "cre_available": cre_result["available"],
+        "cre_reason": cre_result["reason"],
+        "variant_link_available": variant_result["available"],
+        "variant_link_reason": variant_result["reason"],
+        "elements": elements,
+    }
 
 
 @app.get("/api/disease")

@@ -133,6 +133,19 @@ def _disease_targets(disease_name: str, dataset_id: str, min_grade: int, top_n: 
     return _api_get(f"/api/disease/{disease_name}/targets/{dataset_id}", params={"min_grade": min_grade, "top_n": top_n})
 
 
+@st.cache_data(ttl=60)
+def _gene_search(query: str, limit: int = 10) -> Dict[str, Any]:
+    return _api_get("/api/search", params={"q": query, "limit": limit})
+
+
+@st.cache_data(ttl=60)
+def _gene_status(query: str, dataset_id: Optional[str] = None) -> Dict[str, Any]:
+    params = {"q": query}
+    if dataset_id:
+        params["dataset_id"] = dataset_id
+    return _api_get("/api/genes/status", params=params)
+
+
 def _compatibility_banner(dataset_id: str) -> None:
     """Warn when the active dataset is a user upload, keyed on its context tier."""
     status = _dataset_status(dataset_id)
@@ -413,6 +426,22 @@ st.markdown(
 st.title("GWT Target Evidence Browser")
 
 with st.sidebar:
+    with st.expander("Gene lookup", expanded=False):
+        st.caption("Alias-tolerant search (typos/partial/old symbols OK) + three-state result status. Works without a loaded dataset.")
+        lookup_query = st.text_input("gene symbol, alias, or Ensembl ID", key="gene_lookup_query")
+        if lookup_query:
+            try:
+                search_result = _gene_search(lookup_query, limit=5)
+                for hit in search_result.get("results", []):
+                    st.write(f"- **{hit['canonical_symbol']}** ({hit['match_type']}, score {hit['score']}) — `{hit['ensembl_gene_id']}`")
+                if not search_result.get("results"):
+                    st.caption("No matches.")
+                status_dataset = st.session_state.get("dataset_id", "").strip() or None
+                status_result = _gene_status(lookup_query, dataset_id=status_dataset)
+                st.info(f"result_status: **{status_result.get('result_status')}** (source: {status_result.get('source', 'reference DE table')})")
+            except Exception as e:
+                st.error(f"Lookup failed: {e}")
+
     st.subheader("Dataset")
     st.text_input("API base", value=API_BASE, disabled=True)
     try:

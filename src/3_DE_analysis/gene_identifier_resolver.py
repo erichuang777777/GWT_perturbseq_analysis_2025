@@ -92,6 +92,17 @@ class GeneResolver:
     def resolve_many(self, queries: List[str]) -> List[Dict[str, Any]]:
         return [self.resolve(q) for q in queries]
 
+    def canonical_symbols(self) -> Dict[str, str]:
+        """Read-only {canonical_symbol: ensembl_gene_id} map, for search/listing use."""
+        return dict(self._id_by_canonical)
+
+    def alias_symbols(self) -> Dict[str, str]:
+        """Read-only {alias_symbol: ensembl_gene_id} map, for search/listing use."""
+        return dict(self._id_by_alias)
+
+    def canonical_symbol_for(self, gene_id: str) -> Optional[str]:
+        return self._canonical_by_id.get(gene_id)
+
     def alias_count(self) -> int:
         return len(self._id_by_alias)
 
