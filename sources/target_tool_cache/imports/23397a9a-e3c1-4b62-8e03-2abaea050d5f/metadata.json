@@ -1,0 +1,73 @@
+{
+  "import_id": "23397a9a-e3c1-4b62-8e03-2abaea050d5f",
+  "created_at": "2026-07-07T07:43:11.965974+00:00",
+  "source_name": "my_screen",
+  "source_type": "target_evidence",
+  "declared_source_type": "auto",
+  "mode": "strict",
+  "notes": null,
+  "route": "csv_evidence_layer",
+  "merge_status": "staged_low_context_review_required",
+  "filename": "my_screen.csv",
+  "source_path": "/home/user/GWT_perturbseq_analysis_2025/sources/target_tool_cache/imports/23397a9a-e3c1-4b62-8e03-2abaea050d5f/my_screen.csv",
+  "stored_copy": true,
+  "file_size_bytes": 132,
+  "columns": [
+    "Gene.Symbol",
+    "culture_condition",
+    "log2FoldChange",
+    "padj",
+    "n_cells"
+  ],
+  "table_preview_shape": [
+    3,
+    5
+  ],
+  "preview_error": null,
+  "schema_validation": {
+    "status": "warning",
+    "normalized_columns": [
+      "condition",
+      "fdr",
+      "logfc",
+      "n_cells",
+      "target"
+    ],
+    "column_mapping": {
+      "target": "target",
+      "condition": "condition",
+      "logfc": "logfc",
+      "fdr": "fdr",
+      "n_cells": "n_cells"
+    },
+    "duplicate_normalized_columns": {},
+    "missing_required": [],
+    "missing_recommended": [
+      "effect_size",
+      "p_value",
+      "n_guides"
+    ],
+    "blocking_issues": [],
+    "manifest_integration_missing": [],
+    "warnings": [
+      "missing recommended columns: effect_size, p_value, n_guides"
+    ]
+  },
+  "context_match": {
+    "score": 0.0,
+    "tier": "low_or_unknown_context",
+    "reasons": []
+  },
+  "column_mapping_override": {
+    "version": 1,
+    "created_at": "2026-07-07T07:43:11.981498+00:00",
+    "source_type": "target_evidence",
+    "map": {
+      "target": "Gene.Symbol",
+      "condition": "culture_condition",
+      "logfc": "log2FoldChange",
+      "fdr": "padj",
+      "n_cells": "n_cells"
+    }
+  }
+}

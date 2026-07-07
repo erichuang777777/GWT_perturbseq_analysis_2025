@@ -92,6 +92,42 @@ def _import_preview(import_id: str) -> pd.DataFrame:
     return pd.DataFrame(_api_get(f"/api/imports/{import_id}/preview"))
 
 
+@st.cache_data(ttl=20)
+def _mapping_suggestion(import_id: str) -> Dict[str, Any]:
+    return _api_get(f"/api/imports/{import_id}/mapping/suggestion")
+
+
+@st.cache_data(ttl=20)
+def _readiness(dataset_id: str) -> Dict[str, Any]:
+    return _api_get(f"/api/readiness/{dataset_id}")
+
+
+@st.cache_data(ttl=30)
+def _dataset_status(dataset_id: str) -> Dict[str, Any]:
+    try:
+        return _api_get(f"/api/status/{dataset_id}")
+    except Exception:
+        return {}
+
+
+def _compatibility_banner(dataset_id: str) -> None:
+    """Warn when the active dataset is a user upload, keyed on its context tier."""
+    status = _dataset_status(dataset_id)
+    lineage = status.get("lineage") or {}
+    if status.get("origin") != "user_upload" and lineage.get("kind") != "user_merge":
+        return
+    tier = lineage.get("context_tier", "unknown")
+    name = lineage.get("source_name", dataset_id)
+    if tier == "high_direct_context":
+        st.success(f"User dataset '{name}' — CD4 direct context. Pathway/clinical axes apply.")
+    elif tier == "compatible_context":
+        st.info(f"User dataset '{name}' — compatible context. Pathway/clinical axes are advisory.")
+    elif tier == "indirect_context":
+        st.warning(f"User dataset '{name}' — indirect context. Interpret cross-context results with caution.")
+    else:
+        st.error(f"User dataset '{name}' — context unverified. Grades reflect statistics only; axes are advisory.")
+
+
 def _metric_value(summary: Dict[str, Any], key: str) -> str:
     value = summary.get(key, 0)
     if isinstance(value, float):
@@ -276,6 +312,45 @@ def _render_imports_tab() -> None:
         st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
     merge_status = str(selected_row.get("merge_status", ""))
+
+    # Column-mapping wizard: available whenever mapping could unblock/relabel the import.
+    if merge_status in {"blocked_needs_column_mapping", "staged_needs_classification"} or selected_row.get("source_type") in {"unknown_table", "target_evidence", "guide_evidence"}:
+        with st.expander("Map columns", expanded=merge_status == "blocked_needs_column_mapping"):
+            try:
+                suggestion = _mapping_suggestion(selected_import)
+            except Exception as e:
+                suggestion = None
+                st.error(f"Could not load mapping suggestion: {e}")
+            if suggestion:
+                uploaded_cols = suggestion.get("uploaded_columns", [])
+                fields = suggestion.get("canonical_fields", {})
+                suggested = suggestion.get("suggested", {})
+                required = set(fields.get("required", []))
+                st.caption("Map each canonical field to one of your uploaded columns (required fields marked *).")
+                chosen: Dict[str, Any] = {}
+                map_source_type = st.selectbox(
+                    "source type", ["target_evidence", "guide_evidence"],
+                    index=0 if suggestion.get("source_type") != "guide_evidence" else 1,
+                    key=f"map_type_{selected_import}",
+                )
+                for canonical in fields.get("required", []) + fields.get("recommended", []):
+                    label = f"{canonical} *" if canonical in required else canonical
+                    options = ["<none>"] + uploaded_cols
+                    default = suggested.get(canonical)
+                    idx = options.index(default) if default in options else 0
+                    pick = st.selectbox(label, options, index=idx, key=f"map_{selected_import}_{canonical}")
+                    chosen[canonical] = None if pick == "<none>" else pick
+                if st.button("Validate mapping", key=f"validate_map_{selected_import}"):
+                    try:
+                        result = _api_post(f"/api/imports/{selected_import}/mapping", {"map": chosen, "source_type": map_source_type})
+                        st.cache_data.clear()
+                        schema = result.get("schema_validation", {})
+                        st.success(f"Mapping applied — schema {schema.get('status')}, status {result.get('merge_status')}")
+                        for issue in schema.get("blocking_issues", []):
+                            st.error(issue)
+                    except Exception as e:
+                        st.error(f"Mapping failed: {e}")
+
     if merge_status == "staged":
         if st.button("Approve staged table for downstream use"):
             try:
@@ -286,6 +361,17 @@ def _render_imports_tab() -> None:
                 st.error(f"Approval failed: {e}")
     elif merge_status.startswith("approved"):
         st.success("This import is approved for downstream use.")
+        if st.button("Merge into target cards", type="primary", key=f"merge_{selected_import}"):
+            try:
+                with st.spinner("Building cards from your dataset..."):
+                    result = _api_post_timeout(f"/api/imports/{selected_import}/merge", {}, timeout=240)
+                st.session_state["dataset_id"] = result["dataset_id"]
+                st.cache_data.clear()
+                st.success(f"Merged — dataset_id={result['dataset_id']} ({result['rows']} rows). Select it in the sidebar.")
+            except Exception as e:
+                st.error(f"Merge failed: {e}")
+    elif merge_status == "merged_into_cards":
+        st.success(f"Already merged into dataset {selected_row.get('merged_dataset_id', '')}.")
     else:
         st.warning(f"Approval blocked until review is resolved: {merge_status}")
 
@@ -354,6 +440,7 @@ except Exception as e:
     st.stop()
 
 summary = summary_payload.get("summary", {})
+_compatibility_banner(dataset_id)
 tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export"])
 
 with tabs[0]:
@@ -389,6 +476,26 @@ with tabs[0]:
     st.subheader("Watchlist")
     watch_df = pd.DataFrame(summary_payload.get("watchlist", []))
     st.dataframe(watch_df, use_container_width=True, hide_index=True)
+
+    st.subheader("Readiness")
+    try:
+        readiness_payload = _readiness(dataset_id)
+        stage_counts = readiness_payload.get("counts", {})
+        call_counts = readiness_payload.get("call_counts", {})
+        rcols = st.columns(2)
+        with rcols[0]:
+            st.caption("R-stage (R0 deprioritize → R3 advance)")
+            if stage_counts:
+                st.bar_chart(pd.Series(stage_counts).sort_index().rename("n"))
+        with rcols[1]:
+            st.caption("Readiness call")
+            if call_counts:
+                st.bar_chart(pd.Series(call_counts).rename("n"))
+        missing = readiness_payload.get("overlays_missing", [])
+        if missing:
+            st.caption(f"External overlays not yet wired (domains stay 'unknown'): {', '.join(missing)}")
+    except Exception as e:
+        st.info(f"Readiness not available: {e}")
 
 with tabs[1]:
     filter_cols = st.columns([1, 1, 1, 1])
@@ -454,6 +561,31 @@ with tabs[1]:
         numeric_view = rows[[c for c in ["condition", "n_total_de_genes", "n_cells_target", "condition_specificity_score"] if c in rows.columns]].copy()
         if not numeric_view.empty and "condition" in numeric_view.columns:
             st.bar_chart(numeric_view.set_index("condition"))
+
+        st.subheader("Readiness")
+        try:
+            readiness_rows = pd.DataFrame(_readiness(dataset_id).get("readiness", []))
+            target_readiness = readiness_rows[readiness_rows["target"] == selected] if not readiness_rows.empty else pd.DataFrame()
+            if not target_readiness.empty:
+                rr = target_readiness.iloc[0].to_dict()
+                rcols = st.columns(3)
+                rcols[0].metric("R-stage", rr.get("overall_readiness_stage", "NA"))
+                rcols[1].metric("Call", str(rr.get("readiness_call", "NA")))
+                rcols[2].metric("Red flags", str(rr.get("red_flag_override", "none")))
+                with st.expander("Readiness reasons", expanded=True):
+                    for part in str(rr.get("readiness_reasons", "")).split(";"):
+                        if part.strip():
+                            st.write(f"- {part.strip()}")
+                    st.info(f"Next validation step: {rr.get('next_validation_step', '')}")
+                st.dataframe(
+                    target_readiness[[c for c in ["condition", "overall_readiness_stage", "readiness_call", "biology_causality_score", "translation_score", "tractability_score", "red_flag_override"] if c in target_readiness.columns]],
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            else:
+                st.info("No readiness record for this target.")
+        except Exception as e:
+            st.info(f"Readiness not available: {e}")
 
         st.subheader("Evidence graph")
         st.graphviz_chart(_evidence_graph(selected, summary_row))

@@ -1,0 +1,4 @@
+Gene.Symbol,culture_condition,log2FoldChange,padj,n_cells
+IL2RA,Rest,-1.4,0.001,500
+FOXP3,Rest,0.9,0.3,300
+BACH2,Rest,-0.8,0.02,420

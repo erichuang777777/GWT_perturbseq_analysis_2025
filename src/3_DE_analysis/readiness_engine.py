@@ -1,0 +1,311 @@
+"""Deterministic readiness engine for CD4 Perturb-seq target cards.
+
+Turns statistical target cards (grades 1-4) into stage-gated readiness calls
+following the 12-domain schema in ``sources/topic04_drug_readiness_checklist.csv``:
+
+    12 domain scores  ->  R0-R5 stage  ->  advance / validate / watchlist / deprioritize
+
+Design invariants
+-----------------
+* Every domain that depends on an external overlay we have NOT built returns the
+  literal string ``"unknown"`` -- never a silent 0.
+* Red-flag overrides (essential gene, off-target, uncertain direction, batch
+  confound) CAP the final call regardless of how strong the statistics look.
+* The engine is pure and deterministic: same input -> same output, no network,
+  no randomness. This keeps results reproducible and unit-testable.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any, Dict, Optional, Set
+
+import numpy as np
+import pandas as pd
+
+from build_target_cards import (
+    CLINICAL_BENCHMARK_KEYWORDS,
+    PATHWAY_AXIS_HINTS,
+    POSITIVE_CONTROLS,
+    load_gene_set,
+)
+
+UNKNOWN = "unknown"
+
+# Ordered from least to most advanced; used for red-flag capping via min().
+CALL_ORDER = ["deprioritize", "watchlist", "validate", "advance"]
+STAGE_TO_CALL = {"R0": "deprioritize", "R1": "watchlist", "R2": "validate", "R3": "advance"}
+
+# Druggable-class gene lists (metadata/gene_lists/<name>.tsv) -> likely modality.
+DRUGGABLE_CLASS_MODALITY = {
+    "kinases": "small molecule",
+    "gpcr_union": "small molecule",
+    "rhodop_gpcr": "small molecule",
+    "ion_channels": "small molecule",
+    "transporters": "small molecule",
+    "nuclear_receptors": "small molecule",
+    "enzymes": "small molecule",
+    "catalytic_receptors": "small molecule / biologic",
+    "cytokine_receptors": "antibody / biologic",
+    "gpi_anchored": "antibody (surface)",
+}
+
+
+def load_overlays(gene_lists_dir: Path) -> Dict[str, Set[str]]:
+    """Load druggable-class + genetics gene sets from ``metadata/gene_lists``.
+
+    Returns a dict mapping overlay name -> upper-cased gene set. Missing files
+    are simply absent from the dict (their domains stay ``"unknown"``).
+    """
+    gene_lists_dir = Path(gene_lists_dir)
+    overlays: Dict[str, Set[str]] = {}
+    wanted = list(DRUGGABLE_CLASS_MODALITY) + ["gwascatalog", "clinvar_path_likelypath"]
+    for name in wanted:
+        path = gene_lists_dir / f"{name}.tsv"
+        genes = load_gene_set(path)
+        if genes:
+            overlays[name] = genes
+    return overlays
+
+
+def _gene(row: pd.Series) -> str:
+    return str(row.get("target", "") or "").strip().upper()
+
+
+def _num(value: Any) -> float:
+    try:
+        v = float(value)
+        return v
+    except (TypeError, ValueError):
+        return np.nan
+
+
+def _known_pathway(row: pd.Series) -> bool:
+    axis = str(row.get("pathway_axis", "") or "")
+    if axis and axis != "unassigned":
+        return True
+    return _gene(row) in {g for genes in PATHWAY_AXIS_HINTS.values() for g in genes}
+
+
+def _biology_causality(row: pd.Series) -> int:
+    grade = _num(row.get("statistical_evidence_grade"))
+    known = _known_pathway(row)
+    if grade >= 3 and known:
+        return 5
+    if grade >= 2 or known:
+        return 3
+    return 0
+
+
+def _translation(row: pd.Series) -> int:
+    replicate = bool(row.get("replicate_pass_flag"))
+    cd = _num(row.get("crossdonor_correlation_mean"))
+    if replicate and cd >= 0.3:
+        return 5
+    if replicate:
+        return 3
+    return 0
+
+
+def _biomarker(row: pd.Series) -> int:
+    return 3 if _num(row.get("n_total_de_genes")) >= 50 else 0
+
+
+def _disease_relevance(row: pd.Series):
+    clinical = str(row.get("clinical_axis", "") or "")
+    if (clinical and clinical != "unassigned") or bool(row.get("positive_control_similarity")):
+        return 3
+    return UNKNOWN
+
+
+def _clinical_feasibility(row: pd.Series):
+    drug = str(row.get("nearest_success_drug", "") or "").strip()
+    return 3 if drug else UNKNOWN
+
+
+def _tractability(gene: str, overlays: Optional[Dict[str, Set[str]]]):
+    """Return (modality, score) from local druggable-class overlays, else unknown."""
+    if not overlays:
+        return UNKNOWN, UNKNOWN
+    for name, modality in DRUGGABLE_CLASS_MODALITY.items():
+        genes = overlays.get(name)
+        if genes and gene in genes:
+            return modality, 3
+    # Overlays supplied but gene not in any druggable class.
+    if any(name in overlays for name in DRUGGABLE_CLASS_MODALITY):
+        return "none", 0
+    return UNKNOWN, UNKNOWN
+
+
+def _human_genetic(gene: str, overlays: Optional[Dict[str, Set[str]]]):
+    if not overlays:
+        return UNKNOWN
+    sources = [overlays.get("gwascatalog"), overlays.get("clinvar_path_likelypath")]
+    if not any(s for s in sources):
+        return UNKNOWN
+    return "yes" if any(gene in s for s in sources if s) else "no"
+
+
+def _red_flags(row: pd.Series, gene: str, essentials: Optional[Set[str]]):
+    """Return (list of override tokens, capped_call)."""
+    overrides = []
+    cap_idx = len(CALL_ORDER) - 1  # advance
+    if essentials and gene in essentials:
+        overrides.append("essential_gene")
+        cap_idx = min(cap_idx, CALL_ORDER.index("watchlist"))
+    if bool(row.get("offtarget_flag")):
+        overrides.append("high_offtarget")
+        cap_idx = min(cap_idx, CALL_ORDER.index("watchlist"))
+    reason = str(row.get("score_cap_reason", "") or "")
+    if (not bool(row.get("ontarget_significant"))) or "direction_unclear" in reason:
+        overrides.append("uncertain_direction")
+        cap_idx = min(cap_idx, CALL_ORDER.index("validate"))
+    if str(row.get("batch_sensitivity_flag", "")) == "sensitive":
+        overrides.append("batch_confounded")
+        cap_idx = min(cap_idx, CALL_ORDER.index("validate"))
+    return overrides, cap_idx
+
+
+def _stage(biology: int, translation: int, tractability, human_genetic, essential: bool, grade: float) -> str:
+    trac = tractability if isinstance(tractability, (int, float)) else 0
+    if biology == 0 or (essential and grade <= 1):
+        return "R0"
+    if biology >= 3 and translation == 5 and (trac >= 3 or human_genetic == "yes"):
+        return "R3"
+    if biology >= 3 and translation >= 3:
+        return "R2"
+    if biology >= 3:
+        return "R1"
+    return "R0"
+
+
+def _next_step(overrides, tractability, human_genetic, translation: int) -> str:
+    if "essential_gene" in overrides:
+        return "orthogonal viability/essentiality control to separate a specific effect from general fitness"
+    if "high_offtarget" in overrides:
+        return "independent non-overlapping sgRNA / CRISPRi validation to rule out off-target"
+    if "batch_confounded" in overrides:
+        return "replicate Stim48hr in an independent run to break the condition-batch confound"
+    if "uncertain_direction" in overrides:
+        return "confirm knockdown and on-target effect direction"
+    if tractability == UNKNOWN:
+        return "annotate druggability (ChEMBL / Open Targets tractability)"
+    if human_genetic == UNKNOWN:
+        return "check human genetic support (Open Targets Genetics / GWAS)"
+    if translation < 5:
+        return "replicate across additional donors/guides to strengthen robustness"
+    return "advance to functional / protein-level validation assay"
+
+
+def _reasons(row: pd.Series, domains: Dict[str, Any], overrides, stage: str, call: str) -> str:
+    grade = _num(row.get("statistical_evidence_grade"))
+    parts = [
+        f"biology {domains['biology_causality_score']} (grade {int(grade) if grade == grade else 'NA'}, pathway {row.get('pathway_axis', 'NA')})",
+        f"translation {domains['translation_score']} (replicate_pass={bool(row.get('replicate_pass_flag'))}, crossdonor {row.get('crossdonor_correlation_mean')})",
+        f"tractability {domains['tractability_score']} ({domains['tractability_modality']})",
+        f"genetics {domains['human_genetic_support']}",
+        f"biomarker {domains['biomarker_score']}",
+    ]
+    if overrides:
+        parts.append("RED FLAGS " + ",".join(overrides) + f" -> capped {call}")
+    parts.append(f"stage {stage}")
+    return "; ".join(parts)
+
+
+def compute_readiness(
+    cards: pd.DataFrame,
+    overlays: Optional[Dict[str, Set[str]]] = None,
+    essentials: Optional[Set[str]] = None,
+) -> pd.DataFrame:
+    """Compute readiness domains, R-stage, call, reasons and next step per card."""
+    if cards.empty:
+        return cards.copy()
+
+    records = []
+    for _, row in cards.iterrows():
+        gene = _gene(row)
+        grade = _num(row.get("statistical_evidence_grade"))
+        essential = bool(essentials and gene in essentials)
+
+        biology = _biology_causality(row)
+        translation = _translation(row)
+        biomarker = _biomarker(row)
+        disease = _disease_relevance(row)
+        clinical = _clinical_feasibility(row)
+        trac_modality, trac_score = _tractability(gene, overlays)
+        genetics = _human_genetic(gene, overlays)
+        safety = 0 if essential else UNKNOWN
+        immune_flags = []
+        if bool(row.get("offtarget_flag")):
+            immune_flags.append("offtarget")
+        if str(row.get("batch_sensitivity_flag", "")) == "sensitive":
+            immune_flags.append("batch_sensitive")
+
+        overrides, cap_idx = _red_flags(row, gene, essentials)
+        stage = _stage(biology, translation, trac_score, genetics, essential, grade)
+        stage_call_idx = CALL_ORDER.index(STAGE_TO_CALL[stage])
+        call = CALL_ORDER[min(stage_call_idx, cap_idx)]
+
+        domains = {
+            "biology_causality_score": biology,
+            "disease_relevance_score": disease,
+            "human_genetic_support": genetics,
+            "tractability_modality": trac_modality,
+            "tractability_score": trac_score,
+            "safety_window_score": safety,
+            "cd4_immune_red_flags": ",".join(immune_flags) if immune_flags else "none",
+            "biomarker_score": biomarker,
+            "translation_score": translation,
+            "clinical_feasibility_score": clinical,
+        }
+        records.append(
+            {
+                "target": row.get("target"),
+                "condition": row.get("condition"),
+                **domains,
+                "red_flag_override": ";".join(overrides) if overrides else "none",
+                "overall_readiness_stage": stage,
+                "readiness_call": call,
+                "readiness_reasons": _reasons(row, domains, overrides, stage, call),
+                "next_validation_step": _next_step(overrides, trac_score, genetics, translation),
+            }
+        )
+    return pd.DataFrame.from_records(records)
+
+
+def readiness_summary(readiness: pd.DataFrame, overlays: Optional[Dict[str, Set[str]]] = None) -> Dict[str, Any]:
+    """Aggregate counts for the API/dashboard."""
+    if readiness.empty:
+        return {"rows": 0, "counts": {}, "call_counts": {}}
+    overlays_used = []
+    if overlays:
+        if any(name in overlays for name in DRUGGABLE_CLASS_MODALITY):
+            overlays_used.append("druggable_class")
+        if overlays.get("gwascatalog") or overlays.get("clinvar_path_likelypath"):
+            overlays_used.append("genetics")
+    return {
+        "rows": int(len(readiness)),
+        "counts": readiness["overall_readiness_stage"].value_counts().to_dict(),
+        "call_counts": readiness["readiness_call"].value_counts().to_dict(),
+        "overlays_used": overlays_used,
+        "overlays_missing": [o for o in ["chembl", "open_targets", "depmap", "patient_scrna"]],
+    }
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Compute readiness calls from a target-cards CSV.")
+    parser.add_argument("cards", type=Path)
+    parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
+    parser.add_argument("--essentials", type=Path, default=Path("metadata/gene_lists/core_essentials_hart.tsv"))
+    parser.add_argument("--output", type=Path, default=None)
+    args = parser.parse_args()
+
+    cards_df = pd.read_csv(args.cards)
+    ov = load_overlays(args.gene_lists)
+    ess = load_gene_set(args.essentials)
+    result = compute_readiness(cards_df, overlays=ov, essentials=ess)
+    if args.output:
+        result.to_csv(args.output, index=False)
+    print(readiness_summary(result, overlays=ov))
