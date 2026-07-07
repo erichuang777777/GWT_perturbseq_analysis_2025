@@ -63,8 +63,8 @@ Built by `build_target_cards.py::build_cards_frame`. `target_id` here is the raw
 | `nearest_success_drug` | str (may be empty) | First matching drug name from the local clinical-benchmark CSV | regex containment match; empty if no benchmark supplied or no match |
 | `nearest_failure_or_warning` | str | Reserved column, always empty in this build | placeholder, not yet populated by any data source |
 | `target_baseline_expression` | float or NaN | Target's baseline expression in NTC cells for this condition | `ntc_mean_expr`, `"first"` aggregate (confirmed invariant per target/condition group, 0/37,578 groups violate this) |
-| `kd_status` | `"confirmed"` / `"weak"` / `"not_measurable"` | 3-state on-target knockdown status | `not_measurable` if baseline <= 0.001 (or missing); else `confirmed` if `guide_signif_ratio>=0.5 and guide_fdr_min<=0.05`; else `weak` |
-| `kd_threshold_version` | str | Version tag for the kd_status threshold logic | constant `"kd_status/v1"` |
+| `kd_status` | `"confirmed"` / `"weak"` / `"not_measurable"` / `"not_assessed"` | 4-state on-target knockdown status | `not_assessed` if baseline is missing/NaN (no KD data at all — a guide-less upload; genuinely unknown, never penalized); `not_measurable` if baseline was measured and `<= 0.001` (a real failure); else `confirmed` if `guide_signif_ratio>=0.5 and guide_fdr_min<=0.05`; else `weak` |
+| `kd_threshold_version` | str | Version tag for the kd_status threshold logic | constant `"kd_status/v2"` (v2 split NaN baseline into `not_assessed`, distinct from measured-below-floor `not_measurable`) |
 | `statistical_evidence_grade` | int 1-4 | Coarse evidence-strength grade | see `_make_score()`: 4 requires full replication + guide robustness + `n_guides>=2`; 3 requires replication + `n_guides>=2` + `fdr_min<=0.1`; 2 requires cells+significance only; else 1 |
 | `score_cap_reason` | `;`-joined str or `"none"` | Every reason this row didn't reach a higher grade | union of off-target/batch/replicability/direction/guide-count/kd tokens, de-duplicated |
 | `n_donors` | NaN | Reserved column | not available from `DE_stats.suppl_table.csv` alone; always NaN in this build |

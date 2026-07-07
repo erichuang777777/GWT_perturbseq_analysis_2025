@@ -85,6 +85,59 @@ def test_readiness_summary_empty_branch_matches_populated_key_set(golden_cards):
     assert empty_summary["rows"] == 0
 
 
+def test_guideless_upload_is_not_assessed_not_fabricated_not_measurable():
+    """A guide-less generic upload has NaN baseline expression (there was never
+    an NTC/guide table to measure it from). kd_status must be 'not_assessed'
+    (genuinely unknown), NOT 'not_measurable' (which fabricates an 'NTC
+    expression too low' claim about an upload that had no NTC cells). This is
+    the unknown != 0 rule (docs/data_governance_checklist.md §3).
+    """
+    from build_target_cards import adapt_generic_de, build_cards_frame
+    from readiness_engine import compute_readiness
+
+    up = pd.DataFrame({
+        "target": ["MYGENE1", "MYGENE2"],
+        "condition": ["Rest", "Rest"],
+        "effect_size": [-2.0, -1.5],
+        "fdr": [0.001, 0.02],
+        "n_cells": [500, 400],
+        "n_total_de_genes": [120, 80],
+    })
+    cards = build_cards_frame(adapt_generic_de(up), guide_df=None, lib_map=None, benchmark=None, schema="generic", sample_meta=None)
+    assert set(cards["kd_status"]) == {"not_assessed"}
+    assert not cards["score_cap_reason"].str.contains("kd_not_measurable").any()
+
+    readiness = compute_readiness(cards, overlays=None, essentials=None, broad_effect_genes=None)
+    # No fabricated red flag, and none of the "NTC expression too low" next-step text.
+    assert not readiness["red_flag_override"].str.contains("kd_not_measurable").any()
+    assert not readiness["next_validation_step"].str.contains("NTC").any()
+
+
+def test_mapped_upload_preserves_n_total_de_genes():
+    """n_total_de_genes must survive the column-mapping wizard: it is canonical
+    (adapt_generic_de reads it and grading/calibration gate on it), so
+    build_mapped_view must not drop it. Regression for the mapped-upload
+    degeneration bug where every mapped card got n_total_de_genes=NaN.
+    """
+    from build_target_cards import adapt_generic_de
+    from import_manager import build_mapped_view, canonical_fields, suggested_mapping
+
+    fields = canonical_fields("target_evidence")
+    assert "n_total_de_genes" in (fields["required"] + fields["recommended"])
+
+    raw = pd.DataFrame({
+        "gene": ["MYGENE1"], "culture_condition": ["Rest"],
+        "log2fc": [-2.0], "padj": [0.001], "n_cells": [500],
+        "num_de_genes": [120],  # non-canonical name -> alias -> n_total_de_genes
+    })
+    mapping = suggested_mapping("target_evidence", list(raw.columns))
+    assert mapping.get("n_total_de_genes") == "num_de_genes"
+    view = build_mapped_view(raw, mapping)
+    assert "n_total_de_genes" in view.columns
+    adapted = adapt_generic_de(view)
+    assert adapted["n_total_de_genes"].iloc[0] == 120
+
+
 def test_control_panel_calibration_on_dataset_without_kd_status_column_is_explicit():
     from calibration import control_panel_calibration
 

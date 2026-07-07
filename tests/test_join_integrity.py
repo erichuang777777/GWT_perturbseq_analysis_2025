@@ -48,7 +48,10 @@ def test_guide_kd_row_missing_for_a_target_condition_degrades_not_crashes(golden
     row = cards[(cards["target"] == "NOEFFECT1") & (cards["condition"] == "Rest")]
     assert len(row) == 1
     assert row.iloc[0]["n_guides"] == 0
-    assert row.iloc[0]["kd_status"] == "not_measurable"  # NaN baseline expression -> not_measurable, not a crash
+    # No guide-KD row -> baseline expression was never measured (NaN) -> kd_status
+    # is "not_assessed" (genuinely unknown), NOT "not_measurable" (which means
+    # measured-and-below-floor, a real failure). unknown != a measured failure.
+    assert row.iloc[0]["kd_status"] == "not_assessed"
 
 
 def test_cards_to_readiness_row_linkage_is_one_to_one(golden_cards):

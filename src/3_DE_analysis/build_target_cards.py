@@ -66,7 +66,10 @@ CLINICAL_BENCHMARK_KEYWORDS = {
 BENCHMARK_CSV_DEFAULT = Path("sources/topic05_successful_drug_benchmarks.csv")
 
 # Canonical target-evidence contract used by generic (uploaded) DE tables.
-GENERIC_TARGET_FIELDS = ("target", "condition", "effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides")
+# n_total_de_genes is canonical: adapt_generic_de reads it and _make_score /
+# the calibration QC funnel gate on it, so it must survive the upload
+# column-mapping step (build_mapped_view keeps only mapped canonical columns).
+GENERIC_TARGET_FIELDS = ("target", "condition", "effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides", "n_total_de_genes")
 
 # Local druggable-class gene lists (metadata/gene_lists/<name>.tsv) -> likely modality.
 # Shared with readiness_engine.py so tractability inference stays in one place.
@@ -335,20 +338,37 @@ def _build_guide_summary(
 # repo's own stated floor for whether knockdown is assessable at all. Reused
 # here rather than inventing a new threshold.
 KD_NOT_MEASURABLE_EXPRESSION_FLOOR = 0.001
-KD_THRESHOLD_VERSION = "kd_status/v1"
+KD_THRESHOLD_VERSION = "kd_status/v2"
 
 
 def _kd_status(row: pd.Series) -> str:
-    """Three-state on-target knockdown status: confirmed / weak / not_measurable.
+    """Four-state on-target knockdown status: confirmed / weak / not_measurable / not_assessed.
 
     CRISPRi's causal chain is target-suppressed -> downstream transcription
     changes; if the target itself was never knocked down, downstream DE is
-    not causally interpretable. Separately, low target_baseline_expression
-    means knockdown cannot be reliably assessed at all -- a different failure
-    mode from "measurable but not significantly knocked down."
+    not causally interpretable.
+
+    Two genuinely different "cannot confirm knockdown" cases are kept distinct,
+    per the ``unknown != 0`` principle (docs/data_governance_checklist.md §3):
+
+        not_measurable -- target baseline expression was MEASURED and sits at
+                          or below the 0.001 NTC floor, so knockdown cannot be
+                          assessed. A real, evidence-backed failure mode that
+                          justifies a red flag downstream.
+        not_assessed   -- no knockdown data exists at all (e.g. a guide-less
+                          generic upload, where target_baseline_expression is
+                          NaN because there was never an NTC/guide table to
+                          measure it from). This is genuinely UNKNOWN, not a
+                          measured failure, so it must NOT be penalized as if
+                          the target failed knockdown -- doing so would both
+                          fabricate an "NTC expression too low" claim about an
+                          upload that never had NTC cells, and wrongly cap the
+                          whole upload at watchlist.
     """
     baseline = row.get("target_baseline_expression")
-    if pd.isna(baseline) or baseline <= KD_NOT_MEASURABLE_EXPRESSION_FLOOR:
+    if pd.isna(baseline):
+        return "not_assessed"
+    if baseline <= KD_NOT_MEASURABLE_EXPRESSION_FLOOR:
         return "not_measurable"
     ratio = row.get("guide_signif_ratio")
     fdr = row.get("guide_fdr_min")

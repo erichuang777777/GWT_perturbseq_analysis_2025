@@ -184,9 +184,18 @@ def _red_flags(
     # CRISPRi's causal chain is target-suppressed -> downstream transcription
     # changes. If the target itself was never confirmed knocked down, the
     # downstream DE is not causally interpretable, regardless of how strong
-    # the DE signal looks. "not_measurable" (baseline expression too low to
-    # ever assess) is worse than "weak" (some signal, just not confirmed),
-    # so it caps more strictly.
+    # the DE signal looks. "not_measurable" (baseline expression MEASURED and
+    # too low to ever assess) is worse than "weak" (some signal, just not
+    # confirmed), so it caps more strictly.
+    #
+    # "not_assessed" (no knockdown data at all, e.g. a guide-less upload) is
+    # deliberately NOT a red flag: it is genuinely unknown, not a measured
+    # failure (unknown != 0). Penalizing it would fabricate an "NTC expression
+    # too low" claim about an upload that never had NTC cells and wrongly cap
+    # the whole dataset. Such uploads are still bounded by the real robustness
+    # gates (no guide data -> grade caps at 2, no cross-donor/guide support ->
+    # translation score 0), so they do not advance on the strength of an
+    # unassessable knockdown.
     kd_status = str(row.get("kd_status", "") or "")
     if kd_status == "not_measurable":
         overrides.append("kd_not_measurable")

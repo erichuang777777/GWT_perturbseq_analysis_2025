@@ -116,8 +116,9 @@ the real code and data in this repo, since several turned out to be exact, verif
 | C2: validation panel needs BOTH positive and negative controls, calibrated against real thresholds | Already had `positive_control_recovery` (Wave 2); no negative-control check existed | `calibration.py::control_panel_calibration` — 21-gene positive panel (existing `POSITIVE_CONTROLS` + STAT5A/STAT5B/TNFRSF9) + `kd_status=="not_measurable"` as the operational negative-control population |
 
 **Calibration finding, reported honestly rather than tuned away:** negative controls work cleanly —
-99.37% of 5,084 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
-advance/validate readiness call. Positive controls are more nuanced: only 20% of the 21-gene panel
+99.96% of 4,774 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
+advance/validate readiness call. (Row count updated from 5,084 → 4,774 by the `kd_status/v2` fix, §1.13,
+which split the 310 never-measured NaN-baseline rows into the distinct `not_assessed` state.) Positive controls are more nuanced: only 20% of the 21-gene panel
 reach the strict `statistical_evidence_grade>=3` bar (which requires cross-donor AND cross-guide
 robustness with ≥2 guides simultaneously), but 93.1% are *not* deprioritized by the readiness engine.
 This was not "fixed" by loosening thresholds to make the number look better — see
@@ -358,7 +359,7 @@ results (never "everything").
   fixture, ~15–20s once): the EDA funnel's exact stage counts (33,983 → 4,182 → 1,102, matching
   `sources/topic09_eda_report.md`'s independently-computed cascade), the control-panel calibration
   numbers found during development (20/21 positive controls present, 20% reach grade≥3, 93.1% not
-  deprioritized; 5,084 negative-control rows, 99.37% at grade 1, 0% reach grade≥3 or
+  deprioritized; 4,774 negative-control rows, 99.96% at grade 1, 0% reach grade≥3 or
   advance/validate), and the specific bug class caught earlier in this project (`kd_status=="weak"`
   never reaching `readiness_call=="advance"`, joined correctly on `(target, condition)` — an ad hoc
   target-only join had produced false positives during manual verification).
@@ -393,6 +394,36 @@ evidence cache's 30-day per-gene TTL and force-refresh path; that static overlay
 freshness stamp today (a gap noted, not silently accepted); and the `sources/target_tool_cache/`
 directory lifecycle (which subdirectories are git-tracked vs ignored, and why).
 
+### 1.13 Upload-path correctness fixes (from a code review of the merged code) — **DONE**
+A structured code review of the merged code flagged two defects on the researcher-upload path (a core
+MVP pillar). Both fixed here, with regression tests.
+
+**Fix 1 — `_kd_status` conflated "never measured" with "measured and failed" (`build_target_cards.py`).**
+A guide-less generic upload has NaN `target_baseline_expression` (there was never an NTC/guide table to
+measure it from). The old code returned `not_measurable` for NaN, so **every uploaded row** got the
+`kd_not_measurable` red flag, was capped at watchlist, and shown a fabricated "NTC expression too low"
+next step — about an upload that never had NTC cells. This violated the `unknown != 0` rule the repo's
+own `data_governance_checklist.md` §3 states. Fix: a fourth state `kd_status = "not_assessed"` for NaN
+baseline (`KD_THRESHOLD_VERSION = "kd_status/v2"`), which is **not** penalized (no red flag, no
+fabricated message). Such uploads are still correctly bounded by the real robustness gates (no guide
+data → grade caps at 2; no cross-donor/guide support → translation 0), so they do not spuriously
+advance. **Verified:** on the reference build, 310 never-measured rows moved from `not_measurable` to
+`not_assessed`; 0 of them reach `advance` (280 deprioritize / 29 watchlist / 1 validate). Negative-control
+metrics improved (99.96% grade-1 on the now-4,774 measured-below-floor `not_measurable` rows).
+
+**Fix 2 — mapped uploads structurally lost `n_total_de_genes` (`build_target_cards.py` + `import_manager.py`).**
+`adapt_generic_de` reads `n_total_de_genes`, but it was not a canonical upload field, so
+`build_mapped_view` (which keeps only mapped canonical columns) dropped it after the column-mapping
+wizard → every mapped upload got `n_total_de_genes = NaN` → degraded grades and a degenerate calibration
+QC funnel (all rows dropped at the `>=50` stage). Fix: added `n_total_de_genes` to
+`GENERIC_TARGET_FIELDS` and `RECOMMENDED_COLUMNS["target_evidence"]`, plus normalize-aliases
+(`n_de_genes`/`num_de_genes`/`total_de_genes`/`n_significant_genes`). **Verified:** a mapped upload whose
+DE-count column is named `num_de_genes` now resolves to `n_total_de_genes` and reaches the built card.
+
+Both fixes covered by new tests in `tests/test_empty_states.py` (guide-less upload → `not_assessed`, no
+fabricated penalty; mapped `n_total_de_genes` passthrough) and an updated assertion in
+`tests/test_join_integrity.py`. Full suite: **31 passing**.
+
 ---
 
 ## 2. Sequencing (recommended)
@@ -404,6 +435,7 @@ Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1
 Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
 Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (code done, real-data run pending on owner's machine)
 Wave 6 (DONE):    §1.11 platform-grade backlog — B1/B2/B5/B6/C3/C4/C5/C6  [1.10 v2 generators deferred, see §1.10]
+Wave 7 (DONE):    §1.13 upload-path correctness fixes (kd_status/v2 not_assessed; mapped n_total_de_genes passthrough)
 ```
 
 **Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,
