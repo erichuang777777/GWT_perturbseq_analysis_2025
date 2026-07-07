@@ -539,8 +539,32 @@ with tabs[0]:
                 f"{stability.get('top_n_overlap', 'NA')}/{stability.get('top_n', 'NA')} "
                 f"(Spearman r={stability.get('spearman_rank_correlation', 'NA')})"
             )
+
+        st.subheader("QC funnel")
+        st.caption("Row count surviving each successive robustness gate (the EDA's strict actionable filter).")
+        funnel = calibration_payload.get("qc_funnel", {})
+        stages = funnel.get("stages", [])
+        if stages:
+            funnel_df = pd.DataFrame(stages).set_index("stage")[["n"]]
+            st.bar_chart(funnel_df)
+            st.caption(f"High-confidence rows after all gates: {funnel.get('high_confidence_rows', 'NA')}")
     except Exception as e:
         st.info(f"Calibration not available: {e}")
+
+    st.subheader("Cross-guide vs cross-donor robustness")
+    st.caption("Every target-condition row in this dataset (up to 2,000 sampled). Robustness gates used elsewhere in this tool sit at 0.2 (candidate) and 0.3 (strong).")
+    try:
+        robustness_df = _targets(dataset_id, {"max_rows": 2000})
+        scatter_cols = [c for c in ["crossguide_correlation", "crossdonor_correlation_mean"] if c in robustness_df.columns]
+        if len(scatter_cols) == 2 and not robustness_df.empty:
+            try:
+                st.scatter_chart(robustness_df, x="crossguide_correlation", y="crossdonor_correlation_mean")
+            except Exception:
+                st.dataframe(robustness_df[["target", "condition"] + scatter_cols], use_container_width=True, hide_index=True)
+        else:
+            st.info("Robustness columns not available in this dataset.")
+    except Exception as e:
+        st.info(f"Robustness scatter not available: {e}")
 
 with tabs[1]:
     filter_cols = st.columns([1, 1, 1, 1])
@@ -633,6 +657,26 @@ with tabs[1]:
                     use_container_width=True,
                     hide_index=True,
                 )
+
+                st.caption("Evidence components for this condition (not a summed total -- domains combine via rules, not addition).")
+                domain_cols = [
+                    "biology_causality_score",
+                    "translation_score",
+                    "tractability_score",
+                    "biomarker_score",
+                    "disease_relevance_score",
+                    "clinical_feasibility_score",
+                ]
+                domain_values = {}
+                for col in domain_cols:
+                    val = rr.get(col)
+                    domain_values[col] = pd.to_numeric(pd.Series([val]), errors="coerce").iloc[0]
+                waterfall_series = pd.Series(domain_values, name="score").dropna()
+                if not waterfall_series.empty:
+                    st.bar_chart(waterfall_series)
+                unknown_domains = [c for c in domain_cols if pd.isna(domain_values.get(c))]
+                if unknown_domains:
+                    st.caption(f"Not chartable (unknown -- no overlay/evidence yet): {', '.join(unknown_domains)}")
             else:
                 st.info("No readiness record for this target.")
         except Exception as e:

@@ -129,6 +129,42 @@ def rank_stability(cards: pd.DataFrame, top_n: int = 50, rank_col: str = "n_tota
     }
 
 
+def qc_funnel(cards: pd.DataFrame, min_de_genes: int = 50, min_cells: int = 200) -> Dict[str, Any]:
+    """Row counts through the EDA's strict actionable filter, stage by stage.
+
+    Mirrors sources/topic09_eda_report.md's "Minimal actionable filter" cascade
+    (34k raw rows -> ~4.2k high-DE -> ~1.2k high-confidence on the full GWT
+    reference set). Reused as-is on any dataset this tool builds cards for.
+    """
+    stages: List[Dict[str, Any]] = []
+    current = cards
+    stages.append({"stage": "all_rows", "n": int(len(current))})
+
+    if "n_total_de_genes" in current.columns:
+        current = current[pd.to_numeric(current["n_total_de_genes"], errors="coerce").fillna(0) >= min_de_genes]
+        stages.append({"stage": f"n_total_de_genes>={min_de_genes}", "n": int(len(current))})
+
+    mask = pd.Series(True, index=current.index)
+    if "ontarget_significant" in current.columns:
+        mask &= current["ontarget_significant"].astype(bool)
+    if "offtarget_flag" in current.columns:
+        mask &= ~current["offtarget_flag"].astype(bool)
+    if "n_cells_target" in current.columns:
+        mask &= pd.to_numeric(current["n_cells_target"], errors="coerce").fillna(0) >= min_cells
+    current = current[mask]
+    stages.append({"stage": "on_target_significant & not off_target & n_cells>=200", "n": int(len(current))})
+
+    if "crossdonor_correlation_mean" in current.columns:
+        current = current[pd.to_numeric(current["crossdonor_correlation_mean"], errors="coerce").fillna(-1) >= 0.2]
+        stages.append({"stage": "crossdonor_correlation_mean>=0.2", "n": int(len(current))})
+
+    if "crossguide_correlation" in current.columns:
+        current = current[pd.to_numeric(current["crossguide_correlation"], errors="coerce").fillna(-1) >= 0.2]
+        stages.append({"stage": "crossguide_correlation>=0.2", "n": int(len(current))})
+
+    return {"stages": stages, "high_confidence_rows": int(len(current))}
+
+
 def run_calibration(cards: pd.DataFrame) -> Dict[str, Any]:
     """Run the full calibration suite and return a JSON-serializable report."""
     report: Dict[str, Any] = {
@@ -137,6 +173,7 @@ def run_calibration(cards: pd.DataFrame) -> Dict[str, Any]:
         "positive_control_recovery": positive_control_recovery(cards, TCR_PROXIMAL_GENES),
         "known_drug_axis_enrichment": drug_axis_enrichment(cards),
         "rank_stability": rank_stability(cards),
+        "qc_funnel": qc_funnel(cards),
     }
     pc = report["positive_control_recovery"]
     frac = pc.get("fraction_in_top_2_deciles")

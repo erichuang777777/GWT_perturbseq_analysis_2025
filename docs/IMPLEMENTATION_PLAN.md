@@ -117,18 +117,27 @@ Verified: `ZAP70`→kinases/small molecule, `IL2RA`→catalytic_receptors/small 
 
 ### 1.4 Module D+ — Target Card dossier  *(medium)* — **PARTIALLY DONE**
 **Why:** the deep per-`target × condition` view ties everything together with provenance.
-**Shipped so far:** rather than a separate query-param page (which would duplicate a lot of the
-existing Target Explorer detail block), the 10 dossier sections were folded directly into that
-existing view as each module landed: GWT evidence + robustness (existing), druggability/safety
-metrics (§1.3), readiness call + reasons + next step (wave 1), external evidence panel (§1.2), and a
-**provenance footer** (`dataset_id`, `origin`, `engine_version`, `built_at`, `data_version`, and —
-for user uploads — `import_id`/`source_name`). `ENGINE_VERSION` is a single constant in
-`target_card_api.py`, auto-stamped onto every dataset's `metadata.json` by `_persist_metadata`, bump
-it whenever `build_target_cards.py`/`readiness_engine.py`/`calibration.py`/`external_evidence_cache.py`
-change scoring behavior. **Remaining:** signed CD4 module scores (blocked, see §1.5) and a real
-`crossguide_vs_crossdonor_scatter`/`target_card_waterfall` chart (still just a raw table + graphviz
-node graph). **Acceptance (met so far):** provenance footer verified via TestClient
-(`engine_version=1.3.0`, real `built_at`/`data_version` on both GWT and user-merged datasets).
+**Shipped:** rather than a separate query-param page (which would duplicate a lot of the existing
+Target Explorer detail block), the 10 dossier sections were folded directly into that existing view
+as each module landed: GWT evidence + robustness (existing), druggability/safety metrics (§1.3),
+readiness call + reasons + next step (wave 1), external evidence panel (§1.2), a **provenance footer**
+(`dataset_id`, `origin`, `engine_version`, `built_at`, `data_version`, and — for user uploads —
+`import_id`/`source_name`), a **QC funnel** chart (Overview tab; `calibration.qc_funnel()` reproduces
+the EDA's exact cascade — `n_total_de_genes>=50` stage matches the EDA's stated 4,182 rows exactly), a
+**dataset-wide cross-guide vs cross-donor scatter** (Overview tab, up to 2,000 sampled rows, with a
+defensive fallback to a plain table if the installed Streamlit lacks `st.scatter_chart`), and a
+**per-target evidence-components chart** (Target Explorer detail; explicitly labeled as components-at-
+a-glance, not a summed total, since the readiness domains combine via rules, not addition). `ENGINE_VERSION`
+is a single constant in `target_card_api.py`, auto-stamped onto every dataset's `metadata.json` by
+`_persist_metadata`; bump it whenever `build_target_cards.py`/`readiness_engine.py`/`calibration.py`/
+`external_evidence_cache.py` change scoring behavior. **Remaining:** signed CD4 module scores (blocked,
+see §1.5); the graphviz evidence-graph could still be extended into a richer mechanism graph (§V2,
+guarded/optional).
+**Verification caveat:** the Streamlit runtime is not installed in this sandbox (`environment.yaml` is
+the analysis-pipeline env, not the dashboard's), so the new charts are `py_compile`/AST-verified and
+logic-tested (numeric coercion for the waterfall chart, the funnel/scatter data paths via TestClient)
+but not visually rendered in this session -- a manual `streamlit run` smoke test is still recommended
+before merge (already flagged in the PR test plan).
 
 ### 1.5 Signed CD4 module scoring upgrade (C8)  *(medium; offline)* — **DESCOPED (data gap, see Wave 3 notes above)*
 **Why:** current `/api/modules` is binary membership; the original idea was to upgrade to signed
@@ -178,9 +187,12 @@ established IL-17-pathway psoriasis gene) — real, clinically recognizable biol
 from joining the tool's own perturbation evidence with real external genetics. TestClient covers both
 the disease list and per-dataset ranking, plus the unmatched-disease path.
 
-### 1.8 Persistence + multi-user (governance)  *(large)*
+### 1.8 Persistence + multi-user (governance)  *(large)* — **DEPRIORITIZED (user decision, 2026-07-07)**
 Move from file-cache to Supabase/Postgres (datasets, imports, users, provenance, merge lineage) + auth +
 per-user workspaces. Keep the file cache as an export target. Add server/proxy request-body limits.
+**Status:** not needed for now, per explicit project-owner decision — single-user / file-cache research
+use is the current target, not a multi-user platform. Revisit if/when multiple concurrent researchers
+need isolated workspaces. No infrastructure was provisioned.
 
 ### 1.9 Cell-level (h5ad) extension  *(large; needs S3 download)*
 H1–H6: loaders, per-cell QC, Mixscape, SCEPTRE, pertpy/UCell, state-specific effects bridged back to the
@@ -198,16 +210,16 @@ first; never feed readiness decisions**), combination explorer (research-only).
 Wave 1 (DONE):   foundation + C4 batch flag + readiness engine (R1–R3) + upload merge loop + dashboard
 Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
 Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1.5 descoped, see §1.5]
-Wave 4 (partial): 1.7 disease translator (DONE)  →  1.8 persistence/multi-user (not started)
-Wave 5:          1.9 cell-level (after h5ad)  →  1.10 v2 generators (guarded)
+Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
+Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (needs h5ad download, not started)  →  1.10 v2 generators (guarded, not started)
 ```
 
 **Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,
 just a join against a real Open Targets export already sitting in the repo from prior research. 1.8
-(Supabase/Postgres persistence, auth, multi-user workspaces) is the one remaining Wave-4 item and is
-**intentionally not started without a check-in**: standing up a Supabase project provisions real cloud
-infrastructure (cost, credentials, ownership) — a harder-to-reverse action than anything else in this
-plan, and worth confirming with the project owner before creating it, rather than assuming.
+(Supabase/Postgres persistence, auth, multi-user workspaces) was raised for a check-in rather than
+built silently, since it provisions real cloud infrastructure — the project owner confirmed multi-user
+support is not needed for now, so it is deprioritized rather than blocked. Single-user / file-cache
+research use remains the target.
 
 Rationale: Wave 2 was small, offline, and directly raised the credibility of what already ships (fixed the
 `advance`-list confounders, exposed modality, proved biology recovery) before taking on the connector- and
