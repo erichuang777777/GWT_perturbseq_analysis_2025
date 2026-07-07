@@ -74,9 +74,17 @@ from typing import Any, Dict, Optional, Tuple
 import pandas as pd
 
 from common import degrade
+from common.overlay_lookup import (
+    LOEUF_LOSS_INTOLERANT_THRESHOLD,
+    MODALITY_ANTIBODY_BIOLOGIC,
+    MODALITY_ANTIBODY_SURFACE,
+    MODALITY_SMALL_MOLECULE,
+    UNKNOWN,
+    gnomad_flag_from_constraint,
+    safety_window_from_gtex,
+    tractability_from_membrane_overlay,
+)
 from config import settings
-
-UNKNOWN = "unknown"
 
 MEMBRANE_OVERLAY_PATH_DEFAULT = (
     settings.REPO_ROOT / "docs" / "mvp-research" / "adc_overlay_gwt_overlap_full.csv"
@@ -89,12 +97,6 @@ GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT = (
 GTEX_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_tissues_expressed", "max_expression_outside_cd4_context"]
 GNOMAD_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "loeuf", "pli"]
 
-# Per the connector-recommendation doc's conservative rule (§2 of
-# ENHANCEMENT_連結器加強建議.md): LOEUF below this bar flags loss-of-function
-# intolerance. This is the ONLY threshold used by gnomad_flag_from_constraint;
-# it does not vary by gene.
-LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.35
-
 MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "gene_symbol",
     "ensembl_id",
@@ -105,12 +107,11 @@ MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "druggable_pathway",
 ]
 
-# Same modality vocabulary as build_target_cards.DRUGGABLE_CLASS_MODALITY, so
-# this overlay's output is a drop-in for readiness_engine._tractability's
-# return shape (modality, score).
-MODALITY_ANTIBODY_SURFACE = "antibody (surface)"
-MODALITY_ANTIBODY_BIOLOGIC = "antibody / biologic"
-MODALITY_SMALL_MOLECULE = "small molecule"
+# LOEUF_LOSS_INTOLERANT_THRESHOLD, MODALITY_ANTIBODY_SURFACE,
+# MODALITY_ANTIBODY_BIOLOGIC, MODALITY_SMALL_MOLECULE are imported above from
+# common.overlay_lookup (architecture refactor Phase 3 -- the pure
+# interpretation half of this module moved there so core/readiness.py can
+# use it without importing evidence/; see that module's docstring).
 
 
 def empty_membrane_overlay_table() -> pd.DataFrame:
@@ -166,62 +167,6 @@ def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
     return {"available": True, "reason": None, "table": df}
 
 
-def tractability_from_membrane_overlay(gene_ensembl: str, overlay: Dict[str, Any]) -> Tuple[str, Any]:
-    """(modality, score) from the real membrane/tractability overlay, else ``(unknown, unknown)``.
-
-    Mirrors readiness_engine._tractability's three-state contract:
-    gene absent from the overlay -> unknown (not checked, not "undruggable");
-    gene present but no membrane/druggability signal -> ("none", 0);
-    gene present with a signal -> a real modality + score 3.
-    """
-    if not overlay.get("available") or not gene_ensembl:
-        return UNKNOWN, UNKNOWN
-    table = overlay["table"]
-    row = table[table["ensembl_id"] == gene_ensembl]
-    if row.empty:
-        return UNKNOWN, UNKNOWN
-    r = row.iloc[0]
-    is_surface = bool(r["is_surface_protein"])
-    has_extracellular = bool(r["has_extracellular_domain"])
-    has_transmembrane = bool(r["has_transmembrane_domain"])
-    is_druggable = bool(r["is_druggable"])
-
-    if is_surface and has_extracellular:
-        return MODALITY_ANTIBODY_SURFACE, 3
-    if is_surface or has_transmembrane:
-        return MODALITY_ANTIBODY_BIOLOGIC, 3
-    if is_druggable:
-        return MODALITY_SMALL_MOLECULE, 3
-    return "none", 0
-
-
-def safety_window_from_gtex(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
-    """Count of off-context GTEx tissues (Blood/Spleen excluded) where this
-    gene clears the expression threshold, else ``unknown``. Keyed by Ensembl
-    gene ID, same convention as ``tractability_from_membrane_overlay``.
-
-    Higher = more broadly expressed across normal, non-CD4-context tissues =
-    plausibly a narrower safety window for systemic inhibition; lower =
-    narrower off-context expression = plausibly wider. This module does not
-    collapse that into a categorical tier (tight/moderate/wide) -- the raw
-    count is returned so the interpretation stays visible and revisable, not
-    baked into a lossy label; ``readiness_engine.py`` currently surfaces it
-    as-is, not as a red-flag trigger (soft signal, not a cap -- see
-    docs/mvp-research/ENHANCEMENT_連結器加強建議.md's guardrail note on this
-    exact point for the analogous gnomAD-constraint signal).
-
-    Coverage is ~9,718 genes; a gene absent from the overlay is unchecked,
-    not "safe" -- returns ``unknown``, never `0`.
-    """
-    if not overlay.get("available") or not gene_ensembl:
-        return UNKNOWN
-    table = overlay["table"]
-    row = table[table["ensembl_id"] == gene_ensembl]
-    if row.empty:
-        return UNKNOWN
-    return int(row.iloc[0]["n_tissues_expressed"])
-
-
 def _empty_gnomad_summary() -> pd.DataFrame:
     return pd.DataFrame(columns=GNOMAD_REQUIRED_COLUMNS)
 
@@ -257,29 +202,8 @@ def load_gnomad_constraint_overlay(path: Optional[Path] = None) -> Dict[str, Any
     return {"available": True, "reason": None, "table": df}
 
 
-def gnomad_flag_from_constraint(gene_ensembl: str, overlay: Dict[str, Any]) -> str:
-    """Soft LoF-constraint flag from gnomAD LOEUF, keyed by Ensembl gene ID.
-
-    Returns ``"loss_intolerant"`` if LOEUF < ``LOEUF_LOSS_INTOLERANT_THRESHOLD``
-    (0.35, per the connector recommendation doc's conservative rule);
-    ``"none"`` if the gene is in the overlay but does not meet that bar;
-    ``"unknown"`` if the overlay is unavailable or the gene is absent
-    (unchecked, not "safe" -- same ``unknown != 0`` contract as
-    ``safety_window_from_gtex``/``tractability_from_membrane_overlay``).
-
-    This is a purely descriptive annotation: LoF intolerance in the human
-    population is not the same claim as pharmacological (small-molecule /
-    antibody) intolerance to inhibition, so this flag must never cap
-    ``readiness_call``/``overall_readiness_stage`` -- ``readiness_engine.py``
-    surfaces it alongside, not inside, ``_stage()``.
-    """
-    if not overlay.get("available") or not gene_ensembl:
-        return UNKNOWN
-    table = overlay["table"]
-    row = table[table["ensembl_id"] == gene_ensembl]
-    if row.empty:
-        return UNKNOWN
-    loeuf = row.iloc[0]["loeuf"]
-    if pd.isna(loeuf):
-        return UNKNOWN
-    return "loss_intolerant" if float(loeuf) < LOEUF_LOSS_INTOLERANT_THRESHOLD else "none"
+# tractability_from_membrane_overlay, safety_window_from_gtex, and
+# gnomad_flag_from_constraint (the pure overlay-interpretation functions)
+# are imported above from common.overlay_lookup and re-exported under their
+# original names here -- see this module's docstring and
+# common/overlay_lookup.py's docstring (architecture refactor Phase 3).

@@ -638,7 +638,11 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
             overlays=overlays,
             essentials=_essentials(),
             broad_effect_genes=_broad_effect_genes(),
-            evidence_dir=EVIDENCE_CACHE_DIR,
+            # architecture refactor Phase 3: core/readiness.py no longer
+            # imports evidence.external_cache itself -- this API layer (which
+            # already imports it for /api/evidence/*) builds the lookup
+            # closure and injects it instead.
+            evidence_lookup=lambda gene: load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene),
             membrane_overlay=_membrane_overlay(),
             gtex_overlay=_gtex_overlay(),
             gnomad_overlay=_gnomad_overlay(),

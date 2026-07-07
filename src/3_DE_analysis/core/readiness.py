@@ -13,15 +13,42 @@ Design invariants
   confound) CAP the final call regardless of how strong the statistics look.
 * The engine is pure and deterministic: same input -> same output, no randomness,
   and no LIVE network calls at compute time. It may read pre-fetched external
-  evidence snapshots from disk (see ``external_evidence_cache.py``) exactly
-  like it reads local gene-list overlays -- both are static file inputs, so
-  determinism is preserved.
+  evidence snapshots -- but only ones already loaded and handed to it by the
+  caller (see ``evidence_lookup`` on ``compute_readiness`` below), never by
+  importing the evidence layer itself.
+
+Dependency boundary (architecture refactor Phase 3, §4.3⑤)
+------------------------------------------------------------
+This module imports nothing from ``evidence/``, ``api/``, or any
+network-touching package -- every piece of external/fragile data
+(druggable-class overlays aside, which are local static gene-list files via
+``data.loaders``) is received as an already-loaded value or an injected
+lookup callable:
+
+* ``membrane_overlay``/``gtex_overlay``/``gnomad_overlay`` -- already-loaded
+  overlay dicts (the caller calls ``evidence.safety_overlay.load_*``  and
+  passes the result in); this module only *interprets* them, via the pure
+  functions in ``common.overlay_lookup`` (also used natively by
+  ``evidence/safety_overlay.py``, so there is exactly one implementation).
+* ``evidence_lookup`` -- an optional ``gene -> snapshot|None`` callable the
+  caller builds by closing over ``evidence.external_cache.load_snapshot``
+  and a cache directory. Before this refactor, ``compute_readiness`` took an
+  ``evidence_dir: Path`` and imported ``evidence.external_cache`` itself to
+  do the lookup -- exactly the "core imports a fragile edge" anti-pattern
+  flagged in ``docs/architecture_refactor_plan.md`` §1 ("危險的依賴方向").
+  The caller (``api/app.py``) is unaffected by this change other than
+  passing a small lambda instead of a path.
+
+This means disabling/breaking the evidence layer entirely (missing file,
+network outage, provider removed) cannot break ``build``/``readiness``/
+``calibration`` -- the worst case is every evidence-dependent domain reads
+``"unknown"``, never an exception.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, Optional, Set
+from typing import Any, Callable, Dict, Optional, Set
 
 import numpy as np
 import pandas as pd
@@ -34,8 +61,7 @@ from core.cards import (
     load_gene_set,
 )
 from common import coerce
-from evidence.external_cache import load_snapshot as load_evidence_snapshot
-from evidence.safety_overlay import (
+from common.overlay_lookup import (
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
     tractability_from_membrane_overlay,
@@ -289,22 +315,28 @@ def compute_readiness(
     overlays: Optional[Dict[str, Set[str]]] = None,
     essentials: Optional[Set[str]] = None,
     broad_effect_genes: Optional[Set[str]] = None,
-    evidence_dir: Optional[Path] = None,
+    evidence_lookup: Optional[Callable[[str], Optional[Dict[str, Any]]]] = None,
     membrane_overlay: Optional[Dict[str, Any]] = None,
     gtex_overlay: Optional[Dict[str, Any]] = None,
     gnomad_overlay: Optional[Dict[str, Any]] = None,
 ) -> pd.DataFrame:
     """Compute readiness domains, R-stage, call, reasons and next step per card.
 
-    ``evidence_dir``, if given, points at a directory of pre-fetched external
-    evidence snapshots (``external_evidence_cache.py``'s cache format, one
-    JSON file per gene). When a snapshot exists and a source was actually
-    fetched (``source_status == "ok"``), it upgrades ``clinical_feasibility``
-    and ``human_genetic_support`` beyond the local-overlay fallback. Genes with
-    no snapshot are unaffected -- this never fabricates evidence.
+    ``evidence_lookup``, if given, is a ``gene_symbol -> snapshot|None``
+    callable (see ``contracts.interfaces.EvidenceProvider`` for the Protocol
+    shape) -- typically a small closure the caller builds over
+    ``evidence.external_cache.load_snapshot`` and a fixed cache directory,
+    e.g. ``lambda gene: load_snapshot(EVIDENCE_CACHE_DIR, gene)``. This
+    module never imports the evidence layer itself (architecture refactor
+    Phase 3, §4.3⑤) -- the caller is responsible for supplying pre-fetched
+    snapshots. When a snapshot exists and a source was actually fetched
+    (``source_status == "ok"``), it upgrades ``clinical_feasibility`` and
+    ``human_genetic_support`` beyond the local-overlay fallback. Genes with
+    no snapshot (or no ``evidence_lookup`` at all) are unaffected -- this
+    never fabricates evidence.
 
     ``membrane_overlay``/``gtex_overlay``, if given (the dict returned by
-    ``safety_overlay.load_membrane_tractability_overlay`` /
+    ``evidence.safety_overlay.load_membrane_tractability_overlay`` /
     ``load_gtex_safety_overlay``), upgrade ``tractability_modality`` and
     ``safety_window_score`` respectively beyond the local gene-list fallback,
     same upgrade-not-replace pattern as the evidence snapshot above. Omitted
@@ -312,8 +344,8 @@ def compute_readiness(
     ``unknown``) completely unchanged.
 
     ``gnomad_overlay``, if given (the dict returned by
-    ``safety_overlay.load_gnomad_constraint_overlay``), adds three new,
-    purely additive output columns -- ``gnomad_constraint_flag``,
+    ``evidence.safety_overlay.load_gnomad_constraint_overlay``), adds three
+    new, purely additive output columns -- ``gnomad_constraint_flag``,
     ``gnomad_loeuf``, ``gnomad_pli`` -- a second, independent safety signal
     alongside ``safety_window_score`` (§C of ``docs/next_phases_plan.md``).
     It is never read by ``_stage()`` or ``_red_flags()`` and therefore can
@@ -326,10 +358,10 @@ def compute_readiness(
     evidence_cache: Dict[str, Any] = {}
 
     def _evidence_for(gene: str) -> Optional[Dict[str, Any]]:
-        if not evidence_dir:
+        if evidence_lookup is None:
             return None
         if gene not in evidence_cache:
-            evidence_cache[gene] = load_evidence_snapshot(evidence_dir, gene)
+            evidence_cache[gene] = evidence_lookup(gene)
         return evidence_cache[gene]
 
     records = []
@@ -435,6 +467,16 @@ def readiness_summary(readiness: pd.DataFrame, overlays: Optional[Dict[str, Set[
 if __name__ == "__main__":
     import argparse
 
+    # Composition-root import: this is the CLI script entrypoint, not
+    # importable library code (it only runs under `if __name__ ==
+    # "__main__"`), so it plays the same role as api/app.py -- loading the
+    # evidence layer and injecting it into compute_readiness -- without
+    # making core/readiness.py itself import evidence/ at module scope (see
+    # this module's "Dependency boundary" docstring section above; `grep -n
+    # "^import\|^from" core/*.py` finds no evidence import because this line
+    # is indented, i.e. not reachable by simply importing this module).
+    from evidence.external_cache import load_snapshot as _load_evidence_snapshot
+
     parser = argparse.ArgumentParser(description="Compute readiness calls from a target-cards CSV.")
     parser.add_argument("cards", type=Path)
     parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
@@ -448,7 +490,14 @@ if __name__ == "__main__":
     ov = load_overlays(args.gene_lists)
     ess = load_gene_set(args.essentials)
     broad = load_gene_set(args.broad_effect)
-    result = compute_readiness(cards_df, overlays=ov, essentials=ess, broad_effect_genes=broad, evidence_dir=args.evidence_dir)
+    evidence_dir = args.evidence_dir
+    result = compute_readiness(
+        cards_df,
+        overlays=ov,
+        essentials=ess,
+        broad_effect_genes=broad,
+        evidence_lookup=lambda gene: _load_evidence_snapshot(evidence_dir, gene),
+    )
     if args.output:
         result.to_csv(args.output, index=False)
     print(readiness_summary(result, overlays=ov))
