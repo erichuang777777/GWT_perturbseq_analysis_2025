@@ -11,6 +11,6 @@ the API, the dashboard) needing to change. See
 
 from __future__ import annotations
 
-from . import card_schema
+from . import card_schema, interfaces
 
-__all__ = ["card_schema"]
+__all__ = ["card_schema", "interfaces"]
