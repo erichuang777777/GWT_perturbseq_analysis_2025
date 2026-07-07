@@ -137,21 +137,83 @@ def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results:
     return {"source_status": "ok", "items": items}
 
 
-def fetch_open_targets(gene: str) -> Dict[str, Any]:
-    """Query the Open Targets Platform GraphQL API for tractability/genetics/safety."""
-    if requests is None:
-        return _unavailable("requests library not installed")
+def _open_targets_resolve_ensembl_id(gene: str) -> Optional[str]:
+    """Resolve a gene symbol to its Ensembl target id via Open Targets search.
+
+    Returns None (not an exception) when no target hit is found -- callers
+    treat that as "gene not found in Open Targets", distinct from a network
+    failure.
+    """
     query = """
-    query TargetEvidence($sym: String!) {
+    query SearchGene($sym: String!) {
       search(queryString: $sym, entityNames: ["target"]) {
         hits { id name }
+      }
+    }
+    """
+    resp = requests.post(
+        OPEN_TARGETS_GRAPHQL_API,
+        json={"query": query, "variables": {"sym": gene}},
+        timeout=DEFAULT_TIMEOUT,
+    )
+    resp.raise_for_status()
+    hits = (resp.json().get("data", {}) or {}).get("search", {}).get("hits", [])
+    for hit in hits:
+        if hit.get("name", "").upper() == gene.upper():
+            return hit.get("id")
+    return hits[0].get("id") if hits else None
+
+
+def fetch_open_targets(gene: str) -> Dict[str, Any]:
+    """Query the Open Targets Platform GraphQL API for tractability/genetics/safety.
+
+    Fixed 2026-07: the previous implementation only ran the ``search`` query
+    (entity lookup by name) and never followed up with a ``target(...)``
+    query, so despite the docstring, no tractability/genetics/safety field
+    was ever actually fetched -- every snapshot silently carried empty
+    evidence. This version resolves the gene to its Ensembl id, then pulls:
+
+    - ``tractability``: small-molecule / antibody / PROTAC / other-modality
+      buckets (feeds ``readiness_engine``'s ``tractability_score``, currently
+      stuck at "unknown" for most genes).
+    - ``associatedDiseases``: genetic-association evidence per disease,
+      including the ``genetic_association`` datatype score (feeds
+      ``human_genetic_support``).
+    - ``safetyLiabilities``: known safety-liability events with affected
+      tissues, when Open Targets has curated any for this target.
+    """
+    if requests is None:
+        return _unavailable("requests library not installed")
+
+    try:
+        ensembl_id = _open_targets_resolve_ensembl_id(gene)
+    except Exception as exc:
+        return _unavailable(f"{type(exc).__name__}: {exc}")
+
+    if ensembl_id is None:
+        return {"source_status": "ok", "items": [], "tractability": [], "associated_diseases": [], "safety_liabilities": []}
+
+    full_query = """
+    query TargetEvidence($id: String!) {
+      target(ensemblId: $id) {
+        approvedSymbol
+        tractability { label modality value }
+        safetyLiabilities { event eventId biosamples { tissueLabel } }
+        associatedDiseases(page: {index: 0, size: 15}) {
+          count
+          rows {
+            disease { id name }
+            score
+            datatypeScores { id score }
+          }
+        }
       }
     }
     """
     try:
         resp = requests.post(
             OPEN_TARGETS_GRAPHQL_API,
-            json={"query": query, "variables": {"sym": gene}},
+            json={"query": full_query, "variables": {"id": ensembl_id}},
             timeout=DEFAULT_TIMEOUT,
         )
         resp.raise_for_status()
@@ -159,8 +221,41 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
     except Exception as exc:
         return _unavailable(f"{type(exc).__name__}: {exc}")
 
-    hits = (data.get("data", {}) or {}).get("search", {}).get("hits", [])
-    return {"source_status": "ok", "items": hits}
+    target = (data.get("data", {}) or {}).get("target") or {}
+    if not target:
+        errors = data.get("errors")
+        return _unavailable(f"GraphQL error or unknown ensembl id {ensembl_id}: {errors}")
+
+    tractability = target.get("tractability") or []
+    diseases_block = target.get("associatedDiseases") or {}
+    associated_diseases = [
+        {
+            "disease": (row.get("disease") or {}).get("name"),
+            "disease_id": (row.get("disease") or {}).get("id"),
+            "overall_score": row.get("score"),
+            "genetic_association_score": next(
+                (d.get("score") for d in (row.get("datatypeScores") or []) if d.get("id") == "genetic_association"),
+                None,
+            ),
+        }
+        for row in (diseases_block.get("rows") or [])
+    ]
+    safety_liabilities = [
+        {
+            "event": item.get("event"),
+            "event_id": item.get("eventId"),
+            "tissues": [b.get("tissueLabel") for b in (item.get("biosamples") or [])],
+        }
+        for item in (target.get("safetyLiabilities") or [])
+    ]
+
+    return {
+        "source_status": "ok",
+        "items": [{"id": ensembl_id, "name": target.get("approvedSymbol")}],
+        "tractability": tractability,
+        "associated_diseases": associated_diseases,
+        "safety_liabilities": safety_liabilities,
+    }
 
 
 def _cache_path(cache_dir: Path, gene: str) -> Path:
