@@ -1,9 +1,11 @@
 """Membrane/tractability + safety-window overlays (§1.12 / ADC ingestion spec).
 
 Regression-pins the real, checked-in ADC-derived membrane overlay
-(docs/mvp-research/adc_overlay_gwt_overlap_full.csv) and confirms the GTEx
-safety-window half honestly degrades until that file is supplied (it is not
-yet present in this checkout).
+(docs/mvp-research/adc_overlay_gwt_overlap_full.csv) and the real GTEx
+per-tissue expression overlay
+(sources/target_tool_cache/_overlays/gtex_per_tissue.parquet) -- both are now
+present in this checkout, so both halves of §1.12 are covered with live data,
+not honest-fallback placeholders.
 """
 from __future__ import annotations
 
@@ -28,16 +30,21 @@ def test_load_membrane_overlay_missing_file_is_honest(tmp_path):
     assert result["table"].empty
 
 
-def test_load_gtex_safety_overlay_is_honestly_unavailable_in_this_checkout():
-    """gtex_per_tissue.parquet has not been supplied yet (lives only on the
-    project owner's machine) -- this must degrade honestly, not fabricate a
-    safety score. Regression guard: if this ever flips to True, the wiring
-    that assumed 'always unavailable today' should be revisited."""
+def test_load_gtex_safety_overlay_real_file():
     from safety_overlay import load_gtex_safety_overlay
 
     result = load_gtex_safety_overlay()
+    assert result["available"] is True
+    assert len(result["table"]) == 9727
+    assert set(["gene_symbol", "n_tissues_total", "n_tissues_expressed"]).issubset(result["table"].columns)
+
+
+def test_load_gtex_safety_overlay_missing_file_is_honest(tmp_path):
+    from safety_overlay import load_gtex_safety_overlay
+
+    result = load_gtex_safety_overlay(path=tmp_path / "does_not_exist.parquet")
     assert result["available"] is False
-    assert "not yet" in result["reason"] or "not found" in result["reason"]
+    assert result["table"].empty
 
 
 def test_tractability_from_membrane_overlay_matches_real_verified_values():
@@ -76,18 +83,43 @@ def test_tractability_from_membrane_overlay_unavailable_overlay_is_unknown():
 
 
 def test_safety_window_from_gtex_is_unknown_when_overlay_unavailable():
+    from safety_overlay import UNKNOWN, safety_window_from_gtex
+
+    unavailable = {"available": False, "reason": "x", "table": pd.DataFrame()}
+    assert safety_window_from_gtex("CD3E", unavailable) == UNKNOWN
+
+
+def test_safety_window_from_gtex_matches_real_verified_values():
+    """Regression-pins the real, independently spot-checked aggregation:
+    CD3E is expressed (TPM>1) in 23/30 GTEx tissues; MED12 (a Mediator-complex
+    subunit, plausibly housekeeping) is expressed in all 30/30 -- consistent
+    with MED12 also being the C7 broad_effect quarantine's textbook example.
+    """
+    from safety_overlay import load_gtex_safety_overlay, safety_window_from_gtex
+
+    overlay = load_gtex_safety_overlay()
+    assert safety_window_from_gtex("CD3E", overlay) == 23
+    assert safety_window_from_gtex("MED12", overlay) == 30
+
+
+def test_safety_window_from_gtex_gene_absent_is_unknown():
+    """VAV1 is confirmed absent from this ~9,727-gene GTEx overlay -- must be
+    unknown (unchecked), never a fabricated breadth count."""
     from safety_overlay import UNKNOWN, load_gtex_safety_overlay, safety_window_from_gtex
 
     overlay = load_gtex_safety_overlay()
-    assert safety_window_from_gtex("ENSG00000198851", overlay) == UNKNOWN
+    assert safety_window_from_gtex("VAV1", overlay) == UNKNOWN
 
 
-def test_readiness_engine_membrane_overlay_is_a_pure_upgrade_never_a_regression(real_cards, real_data_available):
-    """The membrane overlay must only ever help, never hurt: domains causally
-    independent of tractability (biology, translation, biomarker, disease
-    relevance, genetics, safety) stay byte-identical, and readiness_call may
-    only move toward MORE advanced (R2->R3 etc.) for genes whose tractability
-    improved from unknown to a real modality -- never the reverse.
+def test_readiness_engine_overlays_are_a_pure_upgrade_never_a_regression(real_cards, real_data_available):
+    """Both overlays together must only ever help, never hurt: domains
+    causally independent of BOTH tractability and safety (biology,
+    translation, biomarker, disease relevance, genetics) stay byte-identical.
+    readiness_call/overall_readiness_stage are not a function of
+    safety_window_score at all (see readiness_engine._stage's signature --
+    it never takes a safety argument), so they may only move toward MORE
+    advanced due to the membrane overlay's tractability upgrade, never the
+    reverse, and are otherwise unaffected by the GTEx overlay.
     """
     if not real_data_available:
         pytest.skip("real data not present in this checkout")
@@ -108,21 +140,45 @@ def test_readiness_engine_membrane_overlay_is_a_pure_upgrade_never_a_regression(
         "biomarker_score",
         "disease_relevance_score",
         "human_genetic_support",
-        "safety_window_score",
     ]
     for col in independent_cols:
-        assert (baseline[col].astype(str) == upgraded[col].astype(str)).all(), f"{col} must be unaffected by the membrane overlay"
+        assert (baseline[col].astype(str) == upgraded[col].astype(str)).all(), f"{col} must be unaffected by either overlay"
 
     call_rank = {c: i for i, c in enumerate(CALL_ORDER)}
     b_rank = baseline["readiness_call"].map(call_rank)
     u_rank = upgraded["readiness_call"].map(call_rank)
-    assert (u_rank >= b_rank).all(), "membrane overlay must never make a readiness_call less advanced"
+    assert (u_rank >= b_rank).all(), "overlays must never make a readiness_call less advanced"
     assert (u_rank > b_rank).any(), "membrane overlay should improve at least one real gene's call (sanity check the overlay is wired up)"
 
     cd3e_before = baseline[baseline["target"] == "CD3E"].iloc[0]
     cd3e_after = upgraded[upgraded["target"] == "CD3E"].iloc[0]
     assert cd3e_before["tractability_modality"] == "unknown"
     assert cd3e_after["tractability_modality"] == "antibody (surface)"
+    # safety_window_score is a real, non-essential-gated value now that both
+    # overlays have real data -- confirms the GTEx wiring is actually live.
+    assert cd3e_before["safety_window_score"] == "unknown"
+    assert cd3e_after["safety_window_score"] == 23
+
+
+def test_readiness_engine_gtex_overlay_alone_does_not_change_tractability(real_cards, real_data_available):
+    """Passing only gtex_overlay (no membrane_overlay) must leave
+    tractability_modality/score completely untouched -- the two overlays are
+    independent upgrade paths, not coupled."""
+    if not real_data_available:
+        pytest.skip("real data not present in this checkout")
+    from readiness_engine import compute_readiness
+    from safety_overlay import load_gtex_safety_overlay
+
+    baseline = compute_readiness(real_cards, overlays=None, essentials=None, broad_effect_genes=None)
+    gtex = load_gtex_safety_overlay()
+    gtex_only = compute_readiness(
+        real_cards, overlays=None, essentials=None, broad_effect_genes=None, gtex_overlay=gtex
+    )
+    for col in ["tractability_modality", "tractability_score", "readiness_call", "overall_readiness_stage"]:
+        assert (baseline[col].astype(str) == gtex_only[col].astype(str)).all(), f"{col} must be unaffected by gtex_overlay alone"
+
+    cd3e = gtex_only[gtex_only["target"] == "CD3E"].iloc[0]
+    assert cd3e["safety_window_score"] == 23
 
 
 def test_readiness_engine_without_overlays_is_unchanged_regression():

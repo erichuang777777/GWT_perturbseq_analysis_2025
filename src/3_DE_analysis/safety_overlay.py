@@ -10,16 +10,17 @@ genes, ~49% coverage; see
 ``docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md`` for the full data
 audit). This module reads that real, checked-in overlap table.
 
-The safety-window half (GTEx off-context expression breadth,
-``gtex_per_tissue.parquet``) is NOT yet available in this checkout -- the raw
-file lives only on the project owner's machine
-(``~/Downloads/adc_web_data/``) and has not been placed under
-``sources/target_tool_cache/_overlays/`` yet. ``load_gtex_safety_overlay``
-follows the exact same honest-fallback contract as ``cre_schema.py``: until
-that file is supplied, it returns an explicit ``available: False`` rather
-than fabricating a safety score. Point ``settings.GTEX_PER_TISSUE_PATH`` at
-the real file once it's added and this starts working with no other code
-change.
+The safety-window half is now also real: ``gtex_per_tissue.parquet``
+(public GTEx-derived, 9,727 genes x 30 tissues, median TPM per
+gene-tissue pair) has been placed at
+``sources/target_tool_cache/_overlays/gtex_per_tissue.parquet``.
+``load_gtex_safety_overlay`` aggregates it to one row per gene
+(``n_tissues_expressed`` = count of the 30 tissues where median TPM clears
+``GTEX_EXPRESSED_TPM_THRESHOLD``), keyed by **gene symbol** (this file has no
+Ensembl ID column, unlike the membrane overlay). If the file is ever removed
+or replaced with a differently-shaped one, this follows the exact same
+honest-fallback contract as ``cre_schema.py`` -- an explicit
+``available: False`` rather than a fabricated safety score.
 
 Coverage is intentionally partial (~49% of GWT targets) -- a gene absent
 from the overlay is genuinely unchecked, not "not druggable"/"not safe";
@@ -41,9 +42,13 @@ UNKNOWN = "unknown"
 MEMBRANE_OVERLAY_PATH_DEFAULT = (
     settings.REPO_ROOT / "docs" / "mvp-research" / "adc_overlay_gwt_overlap_full.csv"
 )
-# Not yet supplied in this checkout -- see module docstring. Placeholder path
-# only; load_gtex_safety_overlay degrades honestly until this file exists.
 GTEX_PER_TISSUE_PATH_DEFAULT = settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gtex_per_tissue.parquet"
+
+GTEX_REQUIRED_COLUMNS = ["gene_symbol", "tissue", "median_tpm"]
+# Standard minimal-detectable-expression cutoff (TPM > 1 is the common GTEx
+# convention for "expressed"). A tuning value, not a hard biological fact --
+# revisit if the breadth counts prove too permissive/strict in practice.
+GTEX_EXPRESSED_TPM_THRESHOLD = 1.0
 
 MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "gene_symbol",
@@ -92,23 +97,45 @@ def load_membrane_tractability_overlay(path: Optional[Path] = None) -> Dict[str,
     return {"available": True, "reason": None, "table": df}
 
 
-def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
-    """Load per-gene GTEx off-context expression breadth for safety_window_score.
+def _empty_gtex_summary() -> pd.DataFrame:
+    return pd.DataFrame(columns=["gene_symbol", "n_tissues_total", "n_tissues_expressed", "max_median_tpm"])
 
-    Not yet available in this checkout (see module docstring) -- returns an
-    honest ``available: False`` until ``gtex_per_tissue.parquet`` is supplied
-    at ``GTEX_PER_TISSUE_PATH_DEFAULT`` (or an explicit ``path``).
+
+def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
+    """Load and aggregate GTEx per-tissue expression to one row per gene.
+
+    Returns ``{"available": bool, "reason": str|None, "table": DataFrame}``
+    with columns ``gene_symbol``/``n_tissues_total``/``n_tissues_expressed``/
+    ``max_median_tpm``. Never raises; a missing or malformed file produces an
+    explicit ``available: False`` with an empty table -- never a fabricated
+    breadth count.
     """
     resolved = Path(path) if path is not None else GTEX_PER_TISSUE_PATH_DEFAULT
     if not resolved.exists():
         return {
             "available": False,
-            "reason": f"GTEx per-tissue expression file not found: {resolved} "
-            "(not yet placed in this checkout -- see docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md §3)",
-            "table": pd.DataFrame(columns=["ensembl_id", "n_tissues_expressed", "max_expression_outside_cd4_context"]),
+            "reason": f"GTEx per-tissue expression file not found: {resolved}",
+            "table": _empty_gtex_summary(),
         }
     df = pd.read_parquet(resolved)
-    return {"available": True, "reason": None, "table": df}
+    missing = [c for c in GTEX_REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        return {
+            "available": False,
+            "reason": f"GTEx overlay file missing required columns: {missing}",
+            "table": _empty_gtex_summary(),
+        }
+    summary = (
+        df.assign(expressed=df["median_tpm"] > GTEX_EXPRESSED_TPM_THRESHOLD)
+        .groupby("gene_symbol")
+        .agg(
+            n_tissues_total=("tissue", "nunique"),
+            n_tissues_expressed=("expressed", "sum"),
+            max_median_tpm=("median_tpm", "max"),
+        )
+        .reset_index()
+    )
+    return {"available": True, "reason": None, "table": summary}
 
 
 def tractability_from_membrane_overlay(gene_ensembl: str, overlay: Dict[str, Any]) -> Tuple[str, Any]:
@@ -140,17 +167,29 @@ def tractability_from_membrane_overlay(gene_ensembl: str, overlay: Dict[str, Any
     return "none", 0
 
 
-def safety_window_from_gtex(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
-    """Off-context expression-breadth-derived safety signal, else ``unknown``.
+def safety_window_from_gtex(gene_symbol: str, overlay: Dict[str, Any]) -> Any:
+    """Count of (up to 30) GTEx tissues where this gene clears the expression
+    threshold, else ``unknown``. Keyed by gene SYMBOL (this overlay has no
+    Ensembl ID column) -- unlike ``tractability_from_membrane_overlay``.
 
-    Always returns ``unknown`` until ``load_gtex_safety_overlay`` has real
-    data (see that function's docstring) -- this is the honest, current
-    behavior in this checkout, not a bug.
+    Higher = more broadly expressed across normal tissues = plausibly a
+    narrower safety window for systemic inhibition (more tissues at risk of
+    on-target-in-the-wrong-place effects); lower = narrower normal-tissue
+    expression = plausibly wider. This module does not yet collapse that into
+    a categorical tier (tight/moderate/wide) -- the raw count is returned so
+    the interpretation stays visible and revisable, not baked into a lossy
+    label; ``readiness_engine.py`` currently surfaces it as-is, not as a
+    red-flag trigger (soft signal, not a cap -- see
+    docs/mvp-research/ENHANCEMENT_連結器加強建議.md's guardrail note on this
+    exact point for the analogous gnomAD-constraint signal).
+
+    Coverage is ~9,727 genes (GTEx-tissue-panel-derived); a gene absent from
+    the overlay is unchecked, not "safe" -- returns ``unknown``, never `0`.
     """
-    if not overlay.get("available") or not gene_ensembl:
+    if not overlay.get("available") or not gene_symbol:
         return UNKNOWN
     table = overlay["table"]
-    row = table[table["ensembl_id"] == gene_ensembl]
+    row = table[table["gene_symbol"] == str(gene_symbol).upper()]
     if row.empty:
         return UNKNOWN
     return int(row.iloc[0]["n_tissues_expressed"])

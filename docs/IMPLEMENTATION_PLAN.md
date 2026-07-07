@@ -303,34 +303,43 @@ first; never feed readiness decisions**), combination explorer (research-only). 
 the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
 (§1.11), which took priority. Revisit if/when requested.
 
-### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **MEMBRANE HALF DONE; SAFETY HALF STILL BLOCKED**
+### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **DONE (both halves)**
 Original concept (schema sketches, open questions) in `docs/external_overlay_integration_concept.md`.
 Once the real ADC target-discovery database was shared, the open questions were resolved and answered in
 `docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md` (identifier system: both symbol and Ensembl ID
 present; verdict form: pre-computed, not a raw matrix; coverage: ~49% of GWT targets, 5,588 genes).
 
-**Shipped:** `src/3_DE_analysis/safety_overlay.py`. `load_membrane_tractability_overlay()` reads the real,
-checked-in overlap table (`docs/mvp-research/adc_overlay_gwt_overlap_full.csv`) and
-`tractability_from_membrane_overlay()` upgrades `readiness_engine.py`'s `tractability_modality`/
-`tractability_score` beyond the local druggable-class-list fallback — wired into `compute_readiness()` as
-an additive `membrane_overlay` parameter and into `GET /api/readiness/{dataset_id}`. **Verified:**
-CD3E/CD247/LAT (all real surface receptor components) upgrade from `unknown` to `antibody (surface)`;
-MED12 (druggable, not membrane) upgrades to `small molecule`; CCNC (neither) gets a real `("none", 0)`
-verdict, not `unknown`. Confirmed a pure upgrade on the real 33,983-row reference build: 267 readiness
-calls improve, **0 regress**, and every domain independent of tractability (biology, translation,
-biomarker, disease relevance, genetics, safety) is byte-identical before/after. This is also a **third
-independent evidence source** (after Open Targets tractability and gnomAD constraint, both proposed in
-`docs/mvp-research/ENHANCEMENT_連結器加強建議.md`) that agrees with the C7 `broad_effect` quarantine:
-MED12/CCNC are not real membrane targets.
+**Membrane/tractability half — shipped:** `src/3_DE_analysis/safety_overlay.py`.
+`load_membrane_tractability_overlay()` reads the real, checked-in overlap table
+(`docs/mvp-research/adc_overlay_gwt_overlap_full.csv`) and `tractability_from_membrane_overlay()` upgrades
+`readiness_engine.py`'s `tractability_modality`/`tractability_score` beyond the local
+druggable-class-list fallback — wired into `compute_readiness()` as an additive `membrane_overlay`
+parameter and into `GET /api/readiness/{dataset_id}`. **Verified:** CD3E/CD247/LAT (all real surface
+receptor components) upgrade from `unknown` to `antibody (surface)`; MED12 (druggable, not membrane)
+upgrades to `small molecule`; CCNC (neither) gets a real `("none", 0)` verdict, not `unknown`. Confirmed a
+pure upgrade on the real 33,983-row reference build: 267 readiness calls improve, **0 regress**, and every
+domain independent of tractability (biology, translation, biomarker, disease relevance, genetics) is
+byte-identical before/after. This is also a **third independent evidence source** (after Open Targets
+tractability and gnomAD constraint, both proposed in `docs/mvp-research/ENHANCEMENT_連結器加強建議.md`)
+that agrees with the C7 `broad_effect` quarantine: MED12/CCNC are not real membrane targets.
 
-**Still blocked:** the safety-window (GTEx) half. `load_gtex_safety_overlay()` has the correct
-honest-fallback contract wired in (`safety_window_score` upgrade path exists in `compute_readiness()`)
-but `gtex_per_tissue.parquet` has not yet been placed in this checkout (it lives only on the project
-owner's machine per the ingestion spec's "next step" §3) — confirmed via a passing regression test that
-this path is currently a no-op. Drop the file at
-`sources/target_tool_cache/_overlays/gtex_per_tissue.parquet` and it activates with no other code change.
-TCGA columns are still deliberately not scored (ADC/oncology concept, not relevant to this CD4 platform,
-per the ingestion spec's own §2d).
+**Safety-window (GTEx) half — shipped once the file arrived.** `gtex_per_tissue.parquet` (public
+GTEx-derived, 9,727 genes x 30 tissues, median TPM per gene-tissue pair) was placed at
+`sources/target_tool_cache/_overlays/gtex_per_tissue.parquet`. `load_gtex_safety_overlay()` aggregates it
+to one row per gene (`n_tissues_expressed` = count of tissues clearing a TPM>1 detectable-expression
+threshold), keyed by gene **symbol** (this file has no Ensembl ID column, unlike the membrane overlay) —
+`safety_window_from_gtex()` wires it into `safety_window_score` as an additive `gtex_overlay` parameter.
+**Verified:** CD3E → 23/30 tissues (real, non-`unknown` value); MED12 → 30/30 (fully ubiquitous —
+consistent with it being a Mediator-complex subunit and, independently, the C7 `broad_effect` quarantine's
+textbook example); a gene absent from the ~9,727-gene overlay (e.g. VAV1) stays `unknown`, never a
+fabricated `0`. Confirmed `safety_window_score` is causally independent of `readiness_call`/
+`overall_readiness_stage` (`_stage()` never takes a safety argument) — the GTEx overlay changes only its
+own column, verified both alone and combined with the membrane overlay. The raw tissue-breadth count is
+returned as-is rather than collapsed into a tight/moderate/wide tier, so the interpretation stays visible
+and revisable rather than baked into a lossy label (see the module docstring for the direction-of-effect
+reasoning). TCGA columns are still deliberately not scored (ADC/oncology concept, not relevant to this
+CD4 platform, per the ingestion spec's own §2d). Requires `pyarrow` (added to setup instructions) to read
+the `.parquet` snapshots.
 
 ### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**
 Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the

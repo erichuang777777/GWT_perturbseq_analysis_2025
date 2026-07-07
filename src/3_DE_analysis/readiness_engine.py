@@ -320,7 +320,9 @@ def compute_readiness(
         if trac_modality == UNKNOWN:
             trac_modality, trac_score = _tractability(gene, overlays)
         genetics = _human_genetic_from_evidence(evidence) or _human_genetic(gene, overlays)
-        safety = 0 if essential else (safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN)
+        # safety_window_from_gtex is keyed by gene SYMBOL (the GTEx overlay has
+        # no Ensembl ID column), unlike the membrane overlay above.
+        safety = 0 if essential else (safety_window_from_gtex(gene, gtex_overlay) if gtex_overlay else UNKNOWN)
         immune_flags = []
         if bool(row.get("offtarget_flag")):
             immune_flags.append("offtarget")

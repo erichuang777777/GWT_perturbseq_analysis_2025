@@ -82,7 +82,7 @@ Use these commands from repo root:
 
 ```bash
 conda activate gwt-env
-python -m pip install fastapi uvicorn
+python -m pip install fastapi uvicorn pyarrow  # pyarrow: reads the §1.12 overlay .parquet snapshots
 
 # run API
 uvicorn target_card_api:app --app-dir src/3_DE_analysis --reload --port 8000
