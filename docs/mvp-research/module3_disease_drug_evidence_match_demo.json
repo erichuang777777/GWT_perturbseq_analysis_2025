@@ -1,0 +1,38 @@
+[
+  {
+    "disease": "rheumatoid arthritis",
+    "gene": "IL2RA",
+    "known_drugs_count": 7,
+    "known_drugs_sample": [
+      "DENILEUKIN DIFTITOX (stage APPROVAL, Protein)",
+      "INOLIMOMAB (stage PHASE_3, Antibody)",
+      "LMB-2 (stage PHASE_2, Unknown)",
+      "BASILIXIMAB (stage APPROVAL, Antibody)",
+      "ALDESLEUKIN (stage APPROVAL, Protein)"
+    ],
+    "top_diseases": [
+      "immunodeficiency due to CD25 deficiency (0.79)",
+      "multiple sclerosis (0.63)",
+      "type 1 diabetes mellitus (0.57)",
+      "primary cutaneous T-cell non-Hodgkin lymphoma (0.56)",
+      "kidney transplant (0.53)"
+    ],
+    "n_trials_total": 0,
+    "trials_sample": []
+  },
+  {
+    "disease": "systemic lupus erythematosus",
+    "gene": "PLCG1",
+    "known_drugs_count": 0,
+    "known_drugs_sample": [],
+    "top_diseases": [
+      "cancer (0.60)",
+      "bone development disease (0.55)",
+      "cutaneous leishmaniasis (0.50)",
+      "angiosarcoma (0.46)",
+      "immune dysregulation, autoimmunity, and autoinflammation (0.45)"
+    ],
+    "n_trials_total": 0,
+    "trials_sample": []
+  }
+]

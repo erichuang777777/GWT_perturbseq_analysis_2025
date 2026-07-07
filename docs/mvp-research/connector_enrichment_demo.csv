@@ -1,0 +1,9 @@
+gene,flag,tractable_SM,tractable_AB,OT_genetic_assoc,OT_n_assoc_diseases,gnomAD_LOEUF,gnomAD_pLI,safety_window
+CD3E,immune_candidate,True,True,0.915,403,0.701,0.048,wider
+LAT,immune_candidate,False,True,0.744,1182,0.497,0.985,moderate
+TADA2B,broad_effect,False,False,0.421,37,0.599,0.65,moderate
+SENP5,broad_effect,False,False,0.393,76,0.407,1.0,moderate
+PLCG1,immune_candidate,True,True,0.661,429,0.487,0.721,moderate
+VAV1,immune_candidate,True,True,0.0,389,0.344,1.0,tight
+SGF29,broad_effect,True,False,0.362,245,0.606,0.49,wider
+UBXN1,broad_effect,False,False,0.042,56,0.719,0.004,wider
