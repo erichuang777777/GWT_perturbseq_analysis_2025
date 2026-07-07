@@ -49,6 +49,7 @@ DEFAULT_BUILD_SCRIPT = SRC / "build_target_cards.py"
 DEFAULT_SAMPLE_META = ROOT / "metadata" / "suppl_tables" / "sample_metadata.suppl_table.csv"
 GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
+DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
 
 
 def _overlays():
@@ -57,6 +58,10 @@ def _overlays():
 
 def _essentials():
     return load_gene_set(DEFAULT_ESSENTIALS)
+
+
+def _broad_effect_genes():
+    return load_gene_set(DEFAULT_BROAD_EFFECT)
 
 
 def _import_allowed_roots() -> List[Path]:
@@ -471,7 +476,9 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
     overlays = _overlays()
     if refresh or not readiness_csv.exists() or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime:
         cards = _normalize_cell_values(_load_cards(out_csv))
-        readiness = compute_readiness(cards, overlays=overlays, essentials=_essentials())
+        readiness = compute_readiness(
+            cards, overlays=overlays, essentials=_essentials(), broad_effect_genes=_broad_effect_genes()
+        )
         readiness.to_csv(readiness_csv, index=False)
     else:
         readiness = pd.read_csv(readiness_csv)

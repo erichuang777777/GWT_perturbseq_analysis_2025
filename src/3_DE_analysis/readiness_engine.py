@@ -146,12 +146,23 @@ def _human_genetic(gene: str, overlays: Optional[Dict[str, Set[str]]]):
     return "yes" if any(gene in s for s in sources if s) else "no"
 
 
-def _red_flags(row: pd.Series, gene: str, essentials: Optional[Set[str]]):
+def _red_flags(
+    row: pd.Series,
+    gene: str,
+    essentials: Optional[Set[str]],
+    broad_effect_genes: Optional[Set[str]] = None,
+):
     """Return (list of override tokens, capped_call)."""
     overrides = []
     cap_idx = len(CALL_ORDER) - 1  # advance
     if essentials and gene in essentials:
         overrides.append("essential_gene")
+        cap_idx = min(cap_idx, CALL_ORDER.index("watchlist"))
+    # Broad/pleiotropic chromatin-transcription-machinery genes (Mediator, SAGA,
+    # HAT/HDAC, SWI/SNF, etc.) can dominate high-DE rankings without being a
+    # narrow immune-pathway hit. Distinct from core essentiality (Hart screen).
+    if broad_effect_genes and gene in broad_effect_genes and "essential_gene" not in overrides:
+        overrides.append("broad_effect")
         cap_idx = min(cap_idx, CALL_ORDER.index("watchlist"))
     if bool(row.get("offtarget_flag")):
         overrides.append("high_offtarget")
@@ -182,6 +193,8 @@ def _stage(biology: int, translation: int, tractability, human_genetic, essentia
 def _next_step(overrides, tractability, human_genetic, translation: int) -> str:
     if "essential_gene" in overrides:
         return "orthogonal viability/essentiality control to separate a specific effect from general fitness"
+    if "broad_effect" in overrides:
+        return "check essentiality/viability and pathway specificity before treating this as a narrow immune hit"
     if "high_offtarget" in overrides:
         return "independent non-overlapping sgRNA / CRISPRi validation to rule out off-target"
     if "batch_confounded" in overrides:
@@ -216,6 +229,7 @@ def compute_readiness(
     cards: pd.DataFrame,
     overlays: Optional[Dict[str, Set[str]]] = None,
     essentials: Optional[Set[str]] = None,
+    broad_effect_genes: Optional[Set[str]] = None,
 ) -> pd.DataFrame:
     """Compute readiness domains, R-stage, call, reasons and next step per card."""
     if cards.empty:
@@ -226,6 +240,7 @@ def compute_readiness(
         gene = _gene(row)
         grade = _num(row.get("statistical_evidence_grade"))
         essential = bool(essentials and gene in essentials)
+        broad_effect = bool(broad_effect_genes and gene in broad_effect_genes)
 
         biology = _biology_causality(row)
         translation = _translation(row)
@@ -240,8 +255,10 @@ def compute_readiness(
             immune_flags.append("offtarget")
         if str(row.get("batch_sensitivity_flag", "")) == "sensitive":
             immune_flags.append("batch_sensitive")
+        if broad_effect:
+            immune_flags.append("broad_effect")
 
-        overrides, cap_idx = _red_flags(row, gene, essentials)
+        overrides, cap_idx = _red_flags(row, gene, essentials, broad_effect_genes)
         stage = _stage(biology, translation, trac_score, genetics, essential, grade)
         stage_call_idx = CALL_ORDER.index(STAGE_TO_CALL[stage])
         call = CALL_ORDER[min(stage_call_idx, cap_idx)]
@@ -299,13 +316,15 @@ if __name__ == "__main__":
     parser.add_argument("cards", type=Path)
     parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
     parser.add_argument("--essentials", type=Path, default=Path("metadata/gene_lists/core_essentials_hart.tsv"))
+    parser.add_argument("--broad-effect", type=Path, default=Path("sources/broad_effect_genes.txt"))
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
     cards_df = pd.read_csv(args.cards)
     ov = load_overlays(args.gene_lists)
     ess = load_gene_set(args.essentials)
-    result = compute_readiness(cards_df, overlays=ov, essentials=ess)
+    broad = load_gene_set(args.broad_effect)
+    result = compute_readiness(cards_df, overlays=ov, essentials=ess, broad_effect_genes=broad)
     if args.output:
         result.to_csv(args.output, index=False)
     print(readiness_summary(result, overlays=ov))
