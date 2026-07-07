@@ -95,11 +95,16 @@ src/3_DE_analysis/
     deps.py           # DI:快取 resolver、settings、evidence provider
     routers/
       build.py cards.py readiness.py calibration.py evidence.py disease.py genes.py imports.py
-  ui/
-    dashboard.py      # streamlit(已 HTTP 隔離,保留)
+
+frontend/                        # 獨立頂層資料夾(已完成,見 §5 Phase 0.5),不在 src/3_DE_analysis 之下
+  README.md           # 隔離規則:只能透過 API 的 HTTP/JSON 溝通,不 import 任何 src/3_DE_analysis 模組
+  dashboard/
+    target_card_dashboard.py   # streamlit(已 HTTP 隔離),含自己的 requirements.txt
 ```
 
 `src/9_cell_integration/` 已是獨立目錄,沿用同原則(它本來就 backed-mode、無框架依賴)。
+
+**為何 `frontend/` 是頂層資料夾而非 `src/3_DE_analysis/ui/`:** 前端與後端本質上是「可能用不同語言/框架、可能不同人開發、可能獨立部署」的兩個系統,只靠 HTTP/JSON 契約溝通——這比 §2 的「依賴往內」原則更進一步,是**完全的行程邊界隔離**。放在 `src/3_DE_analysis/` 底下會誤導成「這是 Python 套件的一部分」,實際上它連 import 都不能有。
 
 ---
 
@@ -136,6 +141,7 @@ src/3_DE_analysis/
 
 | 階段 | 內容 | 風險 |
 |---|---|---|
+| **Phase 0.5**(已完成) | 把 `target_card_dashboard.py` 從 `src/3_DE_analysis/` 搬到頂層 `frontend/dashboard/`,附獨立 `requirements.txt` + `frontend/README.md`。搬移前已實測確認零 Python import 耦合(只用 stdlib/pandas/requests/streamlit,只靠 `GWT_API_BASE` 走 HTTP),故為零風險搬移。 | 已完成,見對應 commit |
 | **Phase 0** | 新增 `config/`(settings/thresholds/versions)與 `contracts/card_schema.py`;**只集中常數 + 加 validator**,不搬檔。既有模組改 import 它們。 | 低。純新增 + 改引用點 |
 | **Phase 1** | 抽 `common/`(coerce/timeutil/io/degrade),合併 code review 找到的重複函式;各模組改用 common。 | 低 |
 | **Phase 2** | 引入 package + `__init__.py` **re-export shim**,讓舊 `from build_target_cards import X` 仍可用;再逐檔遷移 import。同步更新 `tests/conftest.py` 的 sys.path。 | 中(動最多檔,但有 shim 過渡 + 測試逐檔驗證) |

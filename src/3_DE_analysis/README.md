@@ -82,13 +82,15 @@ Use these commands from repo root:
 
 ```bash
 conda activate gwt-env
-python -m pip install fastapi uvicorn streamlit requests
+python -m pip install fastapi uvicorn
 
 # run API
 uvicorn target_card_api:app --app-dir src/3_DE_analysis --reload --port 8000
 
-# open another terminal and run dashboard
-streamlit run src/3_DE_analysis/target_card_dashboard.py
+# open another terminal and run the dashboard (now an independent frontend package,
+# see frontend/README.md — it talks to the API above purely over HTTP)
+pip install -r frontend/dashboard/requirements.txt
+streamlit run frontend/dashboard/target_card_dashboard.py
 ```
 
 The dashboard expects API at `http://127.0.0.1:8000`.

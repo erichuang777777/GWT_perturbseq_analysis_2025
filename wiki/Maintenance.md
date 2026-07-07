@@ -15,9 +15,11 @@
 # API(FastAPI)
 uvicorn target_card_api:app --app-dir src/3_DE_analysis
 
-# 儀表板(Streamlit)— 注意:本沙盒未安裝 Streamlit,
-# 儀表板變更僅經 py_compile / AST 驗證,未實際視覺渲染
-streamlit run src/3_DE_analysis/target_card_dashboard.py
+# 儀表板(Streamlit)— 現在是獨立的前端套件(frontend/),
+# 只透過 HTTP/JSON 跟上面的 API 溝通,可獨立開發/部署,見 frontend/README.md
+# 注意:本沙盒未安裝 Streamlit,儀表板變更僅經 py_compile / AST 驗證,未實際視覺渲染
+pip install -r frontend/dashboard/requirements.txt
+streamlit run frontend/dashboard/target_card_dashboard.py
 ```
 
 ## 3. 重建 GWT 參考標靶卡片

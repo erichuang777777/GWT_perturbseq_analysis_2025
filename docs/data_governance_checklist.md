@@ -65,7 +65,7 @@ any external sharing decision.
 ## 4. User-upload data isolation
 
 - Every dataset build now carries an `origin` field: `"gwt_reference"` vs `"user_upload"` (stamped in
-  `target_card_api.py` and consumed by `target_card_dashboard.py`'s compatibility banner).
+  `target_card_api.py` and consumed by `frontend/dashboard/target_card_dashboard.py`'s compatibility banner).
 - User-uploaded datasets are namespaced (`usr_<uuid>` / import-lineage-tracked) and are **never** blended
   into the GWT reference card set — confirmed in `import_manager.py`/`target_card_api.py`'s merge path,
   which always writes to a new dataset directory rather than appending to the reference build.

@@ -62,7 +62,7 @@ This is not a greenfield build. A working MVP and a deep research corpus already
 |---|---|---|---|
 | Card builder | `src/3_DE_analysis/build_target_cards.py` | Joins DE stats + guide KD + library metadata into a 30-column target-card CSV; assigns `statistical_evidence_grade` 1–4, `pathway_axis`, `clinical_axis`, `condition_specificity_score`, `score_cap_reason`, nearest-success-drug mapping | Working, CSV-first |
 | API | `src/3_DE_analysis/target_card_api.py` | FastAPI service: build job, list/filter targets, per-target detail, summary, options, module scores, exports (CSV/JSON), reports (HTML/MD/JSON), import staging endpoints | Working (local) |
-| Dashboard | `src/3_DE_analysis/target_card_dashboard.py` | Streamlit app, 5 tabs: Overview, Target Explorer, Pathway+Clinical, Imports, Export; evidence graph per target | Working (local) |
+| Dashboard | `frontend/dashboard/target_card_dashboard.py` | Streamlit app, 5 tabs: Overview, Target Explorer, Pathway+Clinical, Imports, Export; evidence graph per target. Moved into `frontend/` as an independent, HTTP-only frontend package (see `frontend/README.md`) | Working (local) |
 | Upload/import | `src/3_DE_analysis/import_manager.py` | Staging-first upload: source-type inference, schema validation, context-match scoring, preview, explicit approval gate, provenance metadata | Shipped as "M3.5" |
 | Report generator | `src/3_DE_analysis/generate_target_report.py` | Builds report payloads and HTML/MD reports | Working |
 | Research corpus | `sources/topic01..15_*` | Prior scoping: toolkit architecture, EDA, drug benchmarks, readiness schema, upstream/downstream modules, limitations audit | Complete |
