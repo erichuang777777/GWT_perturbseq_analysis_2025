@@ -259,6 +259,36 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
 
 
 
+
+KNOWN_T_CELL_ENGAGER_DRUGS = {
+    "BLINATUMOMAB", "MOSUNETUZUMAB", "GLOFITAMAB", "TECLISTAMAB", "ELRANATAMAB",
+    "TALQUETAMAB", "EPCORITAMAB", "ODRONEXTAMAB", "TARLATAMAB", "SOLITOMAB",
+    "FLOTETUZUMAB", "CATUMAXOMAB", "ERTUMAXOMAB", "MEDI-565", "FBT-A05",
+}  # curated from real Open Targets CD3E query results, not inferred from naming
+
+
+def _drug_class(drug_name: Optional[str], drug_type: Optional[str]) -> str:
+    """Classify a drug for CAR-T/immuno relevance -- honest, not exhaustive.
+
+    Bispecific T-cell engagers (BiTE-class) share a mechanism with CAR-T's
+    CD3-activation domain, so genes whose known drugs fall in this bucket
+    are naturally CAR-T-adjacent targets. Membership is checked against a
+    curated list (drugType alone can't distinguish a T-cell engager from an
+    ordinary antibody), not guessed from name patterns.
+    """
+    if not drug_name:
+        return "unknown"
+    if drug_name.upper() in KNOWN_T_CELL_ENGAGER_DRUGS:
+        return "bispecific_T_cell_engager"
+    dt = (drug_type or "").lower()
+    if dt == "antibody":
+        return "monoclonal_antibody"
+    if dt == "small molecule":
+        return "small_molecule"
+    if dt in ("protein", "enzyme"):
+        return "protein_therapeutic"
+    return "other_or_unknown"
+
 def _open_targets_known_drugs(ensembl_id: str) -> List[Dict[str, Any]]:
     """Known/investigational drugs directly targeting this gene (Open Targets)."""
     query = """
@@ -279,14 +309,19 @@ def _open_targets_known_drugs(ensembl_id: str) -> List[Dict[str, Any]]:
     resp.raise_for_status()
     target = (resp.json().get("data", {}) or {}).get("target") or {}
     rows = ((target.get("drugAndClinicalCandidates") or {}).get("rows")) or []
-    return [
-        {
-            "drug_name": (r.get("drug") or {}).get("name"),
-            "drug_type": (r.get("drug") or {}).get("drugType"),
-            "max_clinical_stage": r.get("maxClinicalStage"),
-        }
-        for r in rows
-    ]
+    out = []
+    for r in rows:
+        name = (r.get("drug") or {}).get("name")
+        dtype = (r.get("drug") or {}).get("drugType")
+        out.append(
+            {
+                "drug_name": name,
+                "drug_type": dtype,
+                "drug_class": _drug_class(name, dtype),
+                "max_clinical_stage": r.get("maxClinicalStage"),
+            }
+        )
+    return out
 
 
 def _clinicaltrials_count_for_drug(drug_name: str, disease_name: str) -> Dict[str, Any]:
