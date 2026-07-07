@@ -302,7 +302,7 @@ first; never feed readiness decisions**), combination explorer (research-only). 
 the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
 (§1.11), which took priority. Revisit if/when requested.
 
-### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3) — **DONE** (C4/C5/C6 pending)
+### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**
 Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the
 external review flagged as "reasonable but out of this toolkit's current scope" now that the scope is
 platform-grade.
@@ -359,8 +359,28 @@ Skips (not fails) the real-data tests gracefully if `metadata/suppl_tables/*.csv
 given checkout (`real_data_available` fixture in `tests/conftest.py`), so the suite stays green on a
 metadata-less clone.
 
-**C4/C5/C6 — pending:** data dictionary document, data governance checklist, cache/version invalidation
-policy doc. Tracked as the next item in this wave.
+**C4 — Data dictionary (`docs/data_dictionary.md`, new).** Column-by-column reference for every field
+the toolkit produces (`target_cards.csv`, the readiness frame, resolver/search results, the CRE schema,
+the external-evidence snapshot, module scores, the disease-translator output, and the four-layer
+versioning fields) plus the real raw suppl_table inputs each is derived from — type, meaning, and exact
+derivation formula or explicit reserved/unknown status for every one.
+
+**C5 — Data governance checklist (`docs/data_governance_checklist.md`, new).** Source-by-source
+licensing/terms status (this repo: MIT; the GWT reference dataset's own reuse terms: **not stated
+anywhere in the repo — flagged as the one open item before any external redistribution**); human-subject
+data handling (confirmed by code search: no module under `src/3_DE_analysis/` reads or exposes the
+donor-demographics columns — `age`/`sex`/`ethnicity`/`weight_kg`/`height_cm` — that exist for the 4-donor
+cohort in `sample_metadata.suppl_table.csv`; a governance-review rule is recorded for any future feature
+that would change that); the existing `unknown`-never-`0` and user-upload-namespacing guardrails
+formalized as checklist items with a "before adding a new source" runbook.
+
+**C6 — Cache & version invalidation policy (`docs/cache_and_versioning_policy.md`, new).** Documents,
+against the actual code: `target_cards.csv` builds are immutable per `dataset_id` (a rebuild always
+mints a new UUID; nothing is auto-invalidated in place) with the exact rule for when a rebuild is
+warranted (input-file fingerprint change, `ENGINE_VERSION`/`CARD_SCHEMA_VERSION` bump); the external
+evidence cache's 30-day per-gene TTL and force-refresh path; that static overlay lists carry no
+freshness stamp today (a gap noted, not silently accepted); and the `sources/target_tool_cache/`
+directory lifecycle (which subdirectories are git-tracked vs ignored, and why).
 
 ---
 
@@ -372,7 +392,7 @@ Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibratio
 Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1.5 descoped, see §1.5]
 Wave 4 (DONE):   1.7 disease translator   [1.8 persistence/multi-user deprioritized, see §1.8]
 Wave 5 (partial): §1.4 remaining dashboard visualizations (DONE)  →  1.9 cell-level (code done, real-data run pending on owner's machine)
-Wave 6 (partial): §1.11 platform-grade backlog — B1/B2/B5/B6/C3 (DONE)  →  C4/C5/C6 (pending)  [1.10 v2 generators deferred, see §1.10]
+Wave 6 (DONE):    §1.11 platform-grade backlog — B1/B2/B5/B6/C3/C4/C5/C6  [1.10 v2 generators deferred, see §1.10]
 ```
 
 **Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,

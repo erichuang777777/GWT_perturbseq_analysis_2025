@@ -1,0 +1,92 @@
+# Data Governance Checklist (C5)
+
+**Status:** living checklist · **Last updated:** 2026-07-07
+
+Scope: every data source this toolkit reads, writes, or fetches, and the handling rules that apply to
+each. This is a checklist to run through before any of the following: adding a new data source, changing
+what's exposed via the API/dashboard, or considering external redistribution/publication of an output.
+
+---
+
+## 1. Source inventory and licensing status
+
+| Source | What it is | License / terms | Action needed |
+|---|---|---|---|
+| This repo's own code (`src/`, `docs/`) | Toolkit implementation | MIT (`LICENSE`) | None — freely reusable |
+| GWT reference dataset (`metadata/suppl_tables/*.csv`, bioRxiv `10.64898/2025.12.23.696273v1`) | Marson-lab CD4 Perturb-seq screen | **Not stated** anywhere in this repo (`metadata/data_sharing_readme.md` documents schema, not reuse terms) | **Verify before any external redistribution or publication use.** Treat as internal-research-use-only until the dataset's own license/DUA is confirmed. This toolkit only *reads* it locally — it never re-publishes the raw tables. |
+| Local overlay gene lists (`metadata/gene_lists/*.tsv`: core-essentiality/Hart, druggable-class, ClinVar path/likely-path membership; `sources/broad_effect_genes.txt`) | Static snapshots already committed to the repo | Each source has its own terms (e.g. Hart essentiality screen is a published academic dataset; ClinVar is public domain via NCBI) | These are membership lookups, not redistributed wholesale — low risk. No `fetched_at` stamp exists on these static files; if they are ever refreshed, add one (see §3, "static overlay staleness" below) |
+| `src/6_functional_interaction/results/disease_gene_associations_detailed.csv` (Open Targets export) | Prior-research join table used by `disease_translator.py` | Open Targets platform data is published under their own open-data terms | Re-verify Open Targets' current terms before external redistribution of this specific derived export |
+| Live connectors: ClinicalTrials.gov, PubMed/E-utilities, Open Targets GraphQL (`external_evidence_cache.py`) | Public government/nonprofit registries | NLM/NCBI usage policies (rate limits, no bulk scraping), Open Targets API terms | Already respected by design: fetches happen only in an offline batch job (`build_evidence_for_gene(s)`), never in the request path, and are TTL-cached (30 days, see §3) rather than re-fetched per view |
+
+**Open action:** none of the above are blocking today (nothing in this toolkit re-publishes raw source
+data outside this repo), but the GWT dataset's own license status is the single item to close out before
+any external sharing decision.
+
+---
+
+## 2. Human-subject data handling
+
+- `sample_metadata.suppl_table.csv` carries per-donor demographics for a **small cohort (D1–D4, 4
+  donors)**: `age`, `sex`, `ethnicity`, `weight_kg`, `height_cm`. No name/MRN/direct identifier is
+  present, but with only 4 donors, a full demographic combination is potentially quasi-identifying if
+  ever cross-referenced against another dataset describing the same cohort.
+- **Confirmed by code search:** no module under `src/3_DE_analysis/` reads or exposes `age`, `sex`,
+  `ethnicity`, `weight_kg`, or `height_cm` anywhere — the only sample-metadata field this toolkit
+  actually uses is `culture_condition` + run/lane ID, for the batch-confound check
+  (`confounded_conditions()`). This is a real, verified property of the current code, not an assumption.
+- **Rule going forward:** any future feature that would summarize or expose donor demographics (e.g. "do
+  responders skew by donor age/sex") needs a governance review before shipping — don't add a per-donor
+  demographic breakdown to the API or dashboard without one, precisely because n=4 is too small to
+  aggregate away re-identification risk.
+- Cell-level and pseudobulk data (`donor_id` — an internal `D1`–`D4`-style code, not the demographics
+  table) is not itself sensitive; the demographics table above is the one file this rule targets.
+
+---
+
+## 3. Freshness / staleness disclosure
+
+- **Static overlay lists** (essentiality, druggable-class, ClinVar, broad-effect genes) have no
+  `fetched_at` stamp today — they are whatever was committed to the repo at whatever time that was. If
+  any of these is ever regenerated from a live source, stamp it the same way `external_evidence_cache.py`
+  does (`fetched_at` + a source-version string), so a consumer can tell how current a given membership
+  check is.
+- **Live-connector evidence** already self-discloses freshness via `fetched_at` per gene and a 30-day TTL
+  (see `docs/cache_and_versioning_policy.md` §2) — no action needed here, just keep using the existing
+  pattern for any new connector.
+- **`unknown` vs `0` discipline**: every domain this toolkit cannot currently answer (safety window,
+  genetics without a fetched Open Targets snapshot, tractability without a local overlay hit) returns the
+  literal string `"unknown"`, never a numeric `0` — this is enforced by convention across
+  `readiness_engine.py`, not by a runtime check. **Governance rule:** any new domain/score added later
+  must follow the same convention; a reviewer should reject a PR that silently defaults an unmeasured
+  domain to `0`.
+
+---
+
+## 4. User-upload data isolation
+
+- Every dataset build now carries an `origin` field: `"gwt_reference"` vs `"user_upload"` (stamped in
+  `target_card_api.py` and consumed by `target_card_dashboard.py`'s compatibility banner).
+- User-uploaded datasets are namespaced (`usr_<uuid>` / import-lineage-tracked) and are **never** blended
+  into the GWT reference card set — confirmed in `import_manager.py`/`target_card_api.py`'s merge path,
+  which always writes to a new dataset directory rather than appending to the reference build.
+- Runtime caches for user uploads (`sources/target_tool_cache/usr_*/`, `sources/target_tool_cache/imports/*/`)
+  are `.gitignore`d — they never get committed. Only the GWT reference build and the one intentional demo
+  dataset (`sources/target_tool_cache/e7ecd8d5-.../`) are tracked in git.
+- No authentication/multi-user isolation exists yet (`docs/IMPLEMENTATION_PLAN.md` §1.8, explicitly
+  deprioritized by the project owner) — this is single-user/file-cache research use, not a
+  multi-tenant platform. **Do not treat the current per-dataset-directory namespacing as access control**
+  — it prevents accidental data blending, not unauthorized access, since there is no auth layer.
+
+---
+
+## 5. Before adding a new external data source — checklist
+
+1. Does it require network access? If yes, does it go through the same offline-batch-job +
+   TTL-cache-snapshot pattern as `external_evidence_cache.py` (never a live fetch in a request path)?
+2. Does it degrade honestly (`source_status: "unavailable"`, not a crash or a fabricated value) when
+   unreachable — confirmed against this sandbox's actual outbound-proxy policy, not assumed?
+3. What's its license/terms, and are they compatible with this repo's stated use (internal research
+   tooling, not redistribution)? Record it in the §1 table above.
+4. Does it carry any human-subject or otherwise sensitive fields? If yes, apply the same rule as §2:
+   don't expose per-individual breakdowns without a review, especially at small n.
+5. Does every domain it can't answer land on an explicit `"unknown"`, never a silent `0`?
