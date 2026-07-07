@@ -37,6 +37,8 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
+from common import degrade
+
 CRE_COLUMNS = ["cre_id", "dataset_id", "genome_build", "chrom", "start", "end", "linked_gene_ids"]
 VARIANT_CRE_LINK_COLUMNS = ["variant_id", "cre_id", "gwas_trait", "source"]
 
@@ -54,21 +56,33 @@ def load_cre_elements(path: Optional[Path] = None) -> Dict[str, Any]:
     an explicit, empty-but-valid "not loaded" result -- never fabricated rows.
     """
     if path is None or not Path(path).exists():
-        return {"available": False, "reason": "no CRE dataset file configured/found", "elements": empty_cre_table()}
+        return degrade.unavailable_available(
+            "no CRE dataset file configured/found", data_key="elements", empty=empty_cre_table()
+        )
     df = pd.read_csv(path)
     missing = [c for c in CRE_COLUMNS if c not in df.columns]
     if missing:
-        return {"available": False, "reason": f"CRE file missing required columns: {missing}", "elements": empty_cre_table()}
+        return degrade.unavailable_available(
+            f"CRE file missing required columns: {missing}", data_key="elements", empty=empty_cre_table()
+        )
     return {"available": True, "reason": None, "elements": df}
 
 
 def load_variant_cre_links(path: Optional[Path] = None) -> Dict[str, Any]:
     if path is None or not Path(path).exists():
-        return {"available": False, "reason": "no variant-CRE-link dataset file configured/found", "links": empty_variant_cre_link_table()}
+        return degrade.unavailable_available(
+            "no variant-CRE-link dataset file configured/found",
+            data_key="links",
+            empty=empty_variant_cre_link_table(),
+        )
     df = pd.read_csv(path)
     missing = [c for c in VARIANT_CRE_LINK_COLUMNS if c not in df.columns]
     if missing:
-        return {"available": False, "reason": f"variant-CRE-link file missing required columns: {missing}", "links": empty_variant_cre_link_table()}
+        return degrade.unavailable_available(
+            f"variant-CRE-link file missing required columns: {missing}",
+            data_key="links",
+            empty=empty_variant_cre_link_table(),
+        )
     return {"available": True, "reason": None, "links": df}
 
 

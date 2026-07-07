@@ -29,6 +29,8 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
+from common import coerce
+
 DEFAULT_LIBRARY_PATH = Path("metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv")
 
 
@@ -157,7 +159,10 @@ def result_status(resolver: GeneResolver, query: str, de_df: pd.DataFrame, targe
             "note": "gene is in the library and expressed, but has no row in this DE/card table (filtered out or not tested here)",
         }
     if "ontarget_significant" in gene_rows.columns:
-        has_effect = bool(gene_rows["ontarget_significant"].astype(str).str.lower().isin({"true", "1"}).any())
+        # Uses common.coerce.as_bool (the stricter Series-safe coercion; see
+        # that module's docstring) rather than the narrower isin({"true","1"})
+        # this used to inline directly.
+        has_effect = bool(coerce.as_bool(gene_rows["ontarget_significant"]).any())
     else:
         has_effect = bool(pd.to_numeric(gene_rows.get("n_total_de_genes", 0), errors="coerce").fillna(0).gt(0).any())
     return {

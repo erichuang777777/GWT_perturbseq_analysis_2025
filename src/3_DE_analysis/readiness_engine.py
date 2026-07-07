@@ -33,8 +33,10 @@ from build_target_cards import (
     POSITIVE_CONTROLS,
     load_gene_set,
 )
+from common import coerce
 from external_evidence_cache import load_snapshot as load_evidence_snapshot
 from safety_overlay import (
+    gnomad_flag_from_constraint,
     safety_window_from_gtex,
     tractability_from_membrane_overlay,
 )
@@ -67,12 +69,13 @@ def _gene(row: pd.Series) -> str:
     return str(row.get("target", "") or "").strip().upper()
 
 
-def _num(value: Any) -> float:
-    try:
-        v = float(value)
-        return v
-    except (TypeError, ValueError):
-        return np.nan
+# Re-export for backward compatibility -- canonical implementation now lives
+# in common/coerce.py (architecture refactor Phase 1). Note this now follows
+# common.coerce.to_float's stringify-then-parse behavior rather than calling
+# float(value) directly; see common/coerce.py's module docstring for why
+# that's the safer canonical choice, and confirmation that no call site here
+# ever passes a literal bool (the only case where the two differ).
+_num = coerce.to_float
 
 
 def _known_pathway(row: pd.Series) -> bool:
@@ -210,6 +213,26 @@ def _red_flags(
     return overrides, cap_idx
 
 
+def _gnomad_loeuf_pli(gene_ensembl: str, overlay: Optional[Dict[str, Any]]):
+    """Raw (loeuf, pli) passthrough values from the gnomAD overlay, else (unknown, unknown).
+
+    Purely descriptive passthrough alongside ``gnomad_flag_from_constraint`` --
+    never read by ``_stage()``/``_red_flags()``.
+    """
+    if not overlay or not overlay.get("available") or not gene_ensembl:
+        return UNKNOWN, UNKNOWN
+    table = overlay["table"]
+    row = table[table["ensembl_id"] == gene_ensembl]
+    if row.empty:
+        return UNKNOWN, UNKNOWN
+    r = row.iloc[0]
+    loeuf = r["loeuf"]
+    pli = r["pli"]
+    loeuf_out = UNKNOWN if pd.isna(loeuf) else float(loeuf)
+    pli_out = UNKNOWN if pd.isna(pli) else float(pli)
+    return loeuf_out, pli_out
+
+
 def _stage(biology: int, translation: int, tractability, human_genetic, essential: bool, grade: float) -> str:
     trac = tractability if isinstance(tractability, (int, float)) else 0
     if biology == 0 or (essential and grade <= 1):
@@ -270,6 +293,7 @@ def compute_readiness(
     evidence_dir: Optional[Path] = None,
     membrane_overlay: Optional[Dict[str, Any]] = None,
     gtex_overlay: Optional[Dict[str, Any]] = None,
+    gnomad_overlay: Optional[Dict[str, Any]] = None,
 ) -> pd.DataFrame:
     """Compute readiness domains, R-stage, call, reasons and next step per card.
 
@@ -287,6 +311,15 @@ def compute_readiness(
     same upgrade-not-replace pattern as the evidence snapshot above. Omitted
     or unavailable overlays leave existing behavior (local overlays /
     ``unknown``) completely unchanged.
+
+    ``gnomad_overlay``, if given (the dict returned by
+    ``safety_overlay.load_gnomad_constraint_overlay``), adds three new,
+    purely additive output columns -- ``gnomad_constraint_flag``,
+    ``gnomad_loeuf``, ``gnomad_pli`` -- a second, independent safety signal
+    alongside ``safety_window_score`` (§C of ``docs/next_phases_plan.md``).
+    It is never read by ``_stage()`` or ``_red_flags()`` and therefore can
+    never change ``readiness_call``/``overall_readiness_stage``; omitting it
+    leaves every existing column completely unchanged.
     """
     if cards.empty:
         return cards.copy()
@@ -321,6 +354,8 @@ def compute_readiness(
             trac_modality, trac_score = _tractability(gene, overlays)
         genetics = _human_genetic_from_evidence(evidence) or _human_genetic(gene, overlays)
         safety = 0 if essential else (safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN)
+        gnomad_flag = gnomad_flag_from_constraint(gene_ensembl, gnomad_overlay) if gnomad_overlay else UNKNOWN
+        gnomad_loeuf, gnomad_pli = _gnomad_loeuf_pli(gene_ensembl, gnomad_overlay)
         immune_flags = []
         if bool(row.get("offtarget_flag")):
             immune_flags.append("offtarget")
@@ -341,6 +376,9 @@ def compute_readiness(
             "tractability_modality": trac_modality,
             "tractability_score": trac_score,
             "safety_window_score": safety,
+            "gnomad_constraint_flag": gnomad_flag,
+            "gnomad_loeuf": gnomad_loeuf,
+            "gnomad_pli": gnomad_pli,
             "cd4_immune_red_flags": ",".join(immune_flags) if immune_flags else "none",
             "biomarker_score": biomarker,
             "translation_score": translation,

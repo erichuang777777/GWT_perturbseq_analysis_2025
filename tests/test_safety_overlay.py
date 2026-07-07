@@ -6,6 +6,12 @@ per-tissue expression overlay
 (sources/target_tool_cache/_overlays/gtex_per_tissue.parquet) -- both are now
 present in this checkout, so both halves of §1.12 are covered with live data,
 not honest-fallback placeholders.
+
+Also covers the gnomAD LOEUF/pLI constraint overlay (§C of
+docs/next_phases_plan.md): an 8-gene seed
+(sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv) derived from
+the real, independently-verified values in
+docs/mvp-research/connector_enrichment_demo.csv.
 """
 from __future__ import annotations
 
@@ -212,3 +218,148 @@ def test_readiness_engine_without_overlays_is_unchanged_regression():
     result = compute_readiness(cards, overlays=None, essentials=None, broad_effect_genes=None)
     assert result.iloc[0]["tractability_modality"] == "unknown"
     assert result.iloc[0]["tractability_score"] == "unknown"
+
+
+# --- gnomAD LOEUF/pLI constraint overlay (§C of docs/next_phases_plan.md) ---
+
+
+def test_load_gnomad_constraint_overlay_real_seed_file():
+    """The 8-gene seed, derived from the real values in
+    docs/mvp-research/connector_enrichment_demo.csv, loads with all 8 genes
+    and the exact required columns."""
+    from safety_overlay import load_gnomad_constraint_overlay
+
+    result = load_gnomad_constraint_overlay()
+    assert result["available"] is True
+    table = result["table"]
+    assert len(table) == 8
+    assert set(["ensembl_id", "gene_symbol", "loeuf", "pli"]).issubset(table.columns)
+
+
+def test_gnomad_constraint_seed_matches_connector_enrichment_demo_csv():
+    """Regression-pins the seed values against the real source CSV so a
+    future edit to the seed can't silently drift from the verified numbers."""
+    from pathlib import Path
+
+    import pandas as pd
+
+    from safety_overlay import load_gnomad_constraint_overlay
+
+    repo_root = Path(__file__).resolve().parent.parent
+    demo = pd.read_csv(repo_root / "docs" / "mvp-research" / "connector_enrichment_demo.csv")
+    seed = load_gnomad_constraint_overlay()["table"]
+    merged = demo.merge(seed, left_on="gene", right_on="gene_symbol", how="inner")
+    assert len(merged) == 8
+    assert (merged["gnomAD_LOEUF"].astype(float) == merged["loeuf"].astype(float)).all()
+    assert (merged["gnomAD_pLI"].astype(float) == merged["pli"].astype(float)).all()
+
+
+def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
+    from safety_overlay import load_gnomad_constraint_overlay
+
+    result = load_gnomad_constraint_overlay(path=tmp_path / "does_not_exist.csv")
+    assert result["available"] is False
+    assert result["table"].empty
+
+
+def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
+    """VAV1: LOEUF 0.344 < 0.35 threshold -> loss_intolerant."""
+    from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
+
+    overlay = load_gnomad_constraint_overlay()
+    assert gnomad_flag_from_constraint("ENSG00000141968", overlay) == "loss_intolerant"  # VAV1
+
+
+def test_gnomad_flag_from_constraint_cd3e_is_none():
+    """CD3E: LOEUF 0.701 >= 0.35 threshold -> present but not flagged ('none')."""
+    from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
+
+    overlay = load_gnomad_constraint_overlay()
+    assert gnomad_flag_from_constraint("ENSG00000198851", overlay) == "none"  # CD3E
+
+
+def test_gnomad_flag_from_constraint_absent_gene_is_unknown():
+    """A gene absent from the 8-gene seed is unchecked, not 'safe' -- unknown, never 0/'none'."""
+    from safety_overlay import UNKNOWN, gnomad_flag_from_constraint, load_gnomad_constraint_overlay
+
+    overlay = load_gnomad_constraint_overlay()
+    assert gnomad_flag_from_constraint("ENSG00000184634", overlay) == UNKNOWN  # MED12, not in seed
+
+
+def test_gnomad_flag_from_constraint_unavailable_overlay_is_unknown():
+    from safety_overlay import UNKNOWN, gnomad_flag_from_constraint
+
+    unavailable = {"available": False, "reason": "x", "table": pd.DataFrame()}
+    assert gnomad_flag_from_constraint("ENSG00000141968", unavailable) == UNKNOWN
+
+
+def test_readiness_engine_gnomad_overlay_alone_does_not_change_readiness_call(real_cards, real_data_available):
+    """Passing gnomad_overlay must not move readiness_call/overall_readiness_stage
+    by even one row -- it is a purely descriptive, causally-independent signal
+    (same property as safety_window_score/gtex_overlay). Every other domain
+    stays untouched too; only the new gnomad_* columns differ."""
+    if not real_data_available:
+        pytest.skip("real data not present in this checkout")
+    from readiness_engine import compute_readiness
+    from safety_overlay import load_gnomad_constraint_overlay
+
+    baseline = compute_readiness(real_cards, overlays=None, essentials=None, broad_effect_genes=None)
+    gnomad = load_gnomad_constraint_overlay()
+    gnomad_only = compute_readiness(
+        real_cards, overlays=None, essentials=None, broad_effect_genes=None, gnomad_overlay=gnomad
+    )
+    assert len(baseline) == len(gnomad_only)
+
+    shared_cols = [
+        "biology_causality_score",
+        "translation_score",
+        "biomarker_score",
+        "disease_relevance_score",
+        "human_genetic_support",
+        "tractability_modality",
+        "tractability_score",
+        "safety_window_score",
+        "overall_readiness_stage",
+        "readiness_call",
+    ]
+    for col in shared_cols:
+        assert (baseline[col].astype(str) == gnomad_only[col].astype(str)).all(), f"{col} must be unaffected by gnomad_overlay"
+
+    # Sanity-check the overlay is actually wired up: VAV1 is a real target in
+    # this dataset and should pick up the loss_intolerant flag + passthrough values.
+    vav1_rows = gnomad_only[gnomad_only["target"] == "VAV1"]
+    if not vav1_rows.empty:
+        vav1 = vav1_rows.iloc[0]
+        assert vav1["gnomad_constraint_flag"] == "loss_intolerant"
+        assert vav1["gnomad_loeuf"] == pytest.approx(0.344)
+        assert vav1["gnomad_pli"] == pytest.approx(1.0)
+
+
+def test_readiness_engine_without_gnomad_overlay_columns_are_unknown_regression():
+    """Omitting gnomad_overlay entirely still populates the new columns with
+    the honest 'unknown' default -- never a silent 0 or missing column."""
+    from readiness_engine import compute_readiness
+
+    cards = pd.DataFrame(
+        {
+            "target": ["CD3E"],
+            "condition": ["Rest"],
+            "target_id": ["ENSG00000198851"],
+            "statistical_evidence_grade": [4],
+            "pathway_axis": ["unassigned"],
+            "replicate_pass_flag": [True],
+            "crossdonor_correlation_mean": [0.5],
+            "n_total_de_genes": [60],
+            "clinical_axis": ["unassigned"],
+            "positive_control_similarity": [0],
+            "offtarget_flag": [False],
+            "batch_sensitivity_flag": ["not_flagged"],
+            "score_cap_reason": ["none"],
+            "ontarget_significant": [True],
+            "kd_status": ["confirmed"],
+        }
+    )
+    result = compute_readiness(cards, overlays=None, essentials=None, broad_effect_genes=None)
+    assert result.iloc[0]["gnomad_constraint_flag"] == "unknown"
+    assert result.iloc[0]["gnomad_loeuf"] == "unknown"
+    assert result.iloc[0]["gnomad_pli"] == "unknown"

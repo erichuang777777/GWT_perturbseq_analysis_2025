@@ -9,11 +9,12 @@ import re
 import shutil
 import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+
+from common import timeutil
 
 
 TABLE_EXTENSIONS = {".csv", ".tsv", ".txt", ".json", ".jsonl"}
@@ -57,8 +58,10 @@ class ImportPayload:
     notes: Optional[str] = None
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+# Re-export for backward compatibility -- canonical implementation now lives
+# in common/timeutil.py (architecture refactor Phase 1; see that module's
+# docstring for the three-copy duplication this consolidates).
+utc_now = timeutil.utc_now
 
 
 def safe_name(filename: str) -> str:
