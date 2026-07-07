@@ -102,6 +102,11 @@ def _readiness(dataset_id: str) -> Dict[str, Any]:
     return _api_get(f"/api/readiness/{dataset_id}")
 
 
+@st.cache_data(ttl=60)
+def _calibration(dataset_id: str) -> Dict[str, Any]:
+    return _api_get(f"/api/calibration/{dataset_id}")
+
+
 @st.cache_data(ttl=30)
 def _dataset_status(dataset_id: str) -> Dict[str, Any]:
     try:
@@ -496,6 +501,28 @@ with tabs[0]:
             st.caption(f"External overlays not yet wired (domains stay 'unknown'): {', '.join(missing)}")
     except Exception as e:
         st.info(f"Readiness not available: {e}")
+
+    st.subheader("Calibration — does this ranking recover known biology?")
+    st.caption("Deterministic, reproducible checks: positive-control recovery, known drug-axis enrichment, and rank stability under strict robustness filtering.")
+    try:
+        calibration_payload = _calibration(dataset_id)
+        for line in calibration_payload.get("narrative", []):
+            st.write(f"- {line}")
+        with st.expander("Calibration details", expanded=False):
+            pc = calibration_payload.get("positive_control_recovery", {})
+            st.write(f"Positive-control gene set size: {pc.get('gene_set_size', 'NA')} | fraction in top-2 deciles: {pc.get('fraction_in_top_2_deciles', 'NA')}")
+            axis = calibration_payload.get("known_drug_axis_enrichment", {})
+            if axis.get("available"):
+                st.write(f"Known drug axes recovered: {axis.get('known_axes_recovered', [])}")
+                st.write(f"Known drug axes missing: {axis.get('known_axes_missing', [])}")
+            stability = calibration_payload.get("rank_stability", {})
+            st.write(
+                f"Top-{stability.get('top_n', 'NA')} overlap after strict filtering: "
+                f"{stability.get('top_n_overlap', 'NA')}/{stability.get('top_n', 'NA')} "
+                f"(Spearman r={stability.get('spearman_rank_correlation', 'NA')})"
+            )
+    except Exception as e:
+        st.info(f"Calibration not available: {e}")
 
 with tabs[1]:
     filter_cols = st.columns([1, 1, 1, 1])

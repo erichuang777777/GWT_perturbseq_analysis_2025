@@ -20,6 +20,7 @@ from generate_target_report import build_report_payload, write_report
 from build_target_cards import adapt_generic_de, build_cards_frame
 from readiness_engine import compute_readiness, load_overlays, readiness_summary
 from build_target_cards import load_gene_set
+from calibration import run_calibration
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -487,6 +488,21 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
         **readiness_summary(readiness, overlays=overlays),
         "readiness": _json_records(readiness),
     }
+
+
+@app.get("/api/calibration/{dataset_id}")
+def get_calibration(dataset_id: str, refresh: bool = Query(default=False)) -> Dict[str, Any]:
+    out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    calib_json = _dataset_path(dataset_id) / "calibration.json"
+    if refresh or not calib_json.exists() or calib_json.stat().st_mtime < out_csv.stat().st_mtime:
+        cards = _normalize_cell_values(_load_cards(out_csv))
+        report = run_calibration(cards)
+        calib_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    else:
+        report = json.loads(calib_json.read_text(encoding="utf-8"))
+    return {"dataset_id": dataset_id, **report}
 
 
 @app.post("/api/run/target-card")
