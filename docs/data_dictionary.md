@@ -82,9 +82,9 @@ Built by `readiness_engine.py::compute_readiness`. Joins 1:1 onto `target_cards.
 | `biology_causality_score` | 0/3/5 | Grade + known-pathway-membership composite | `_biology_causality()` |
 | `disease_relevance_score` | 3 or `"unknown"` | Has a clinical axis or is a positive control | `_disease_relevance()` |
 | `human_genetic_support` | `"yes"`/`"no"`/`"unknown"` | GWAS/ClinVar overlay membership, upgraded by a fetched Open Targets snapshot if present | `_human_genetic()` / `_human_genetic_from_evidence()` |
-| `tractability_modality` | str or `"unknown"`/`"none"` | Druggable-class overlay match | `_tractability()` |
-| `tractability_score` | 0/3 or `"unknown"` | Companion score to the modality | `_tractability()` |
-| `safety_window_score` | 0 or `"unknown"` | `0` only if the gene is a known essential gene; else `"unknown"` (no safety-margin data source exists) | |
+| `tractability_modality` | str or `"unknown"`/`"none"` | Druggable-class overlay match, upgraded by the real ADC-derived membrane overlay if the gene is covered (§1.12) | `_tractability()`, upgraded by `safety_overlay.tractability_from_membrane_overlay()` when `membrane_overlay` is supplied |
+| `tractability_score` | 0/3 or `"unknown"` | Companion score to the modality | same as above |
+| `safety_window_score` | 0 or `"unknown"`, reserved for a real gnomAD/GTEx-derived value | `0` only if the gene is a known essential gene; else `"unknown"` today -- the GTEx overlay (`safety_overlay.safety_window_from_gtex()`) is wired in but has no data file in this checkout yet (§1.12), so this column is currently unaffected by it | |
 | `cd4_immune_red_flags` | `,`-joined str or `"none"` | Which immune-specific flags are set (offtarget/batch_sensitive/broad_effect) | |
 | `biomarker_score` | 0/3 | Whether `n_total_de_genes >= 50` | `_biomarker()` |
 | `translation_score` | 0/3/5 | Reproducibility composite | `_translation()` |

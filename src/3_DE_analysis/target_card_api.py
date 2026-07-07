@@ -27,6 +27,7 @@ from gene_identifier_resolver import load_resolver, result_status
 from gene_search import search_genes
 from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
 from population_hypothesis import CAVEAT_TEXT, build_population_hypothesis_card, load_burden_estimates
+from safety_overlay import load_gtex_safety_overlay, load_membrane_tractability_overlay
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -136,6 +137,26 @@ def _signature_set_version() -> str:
 
 def _overlays():
     return load_overlays(GENE_LISTS_DIR)
+
+
+_MEMBRANE_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
+_GTEX_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
+
+
+def _membrane_overlay() -> Dict[str, Any]:
+    # Cached like _overlays()/_burden_estimates(): a deterministic function of
+    # a static local file (safety_overlay.py, §1.12 / ADC ingestion spec).
+    global _MEMBRANE_OVERLAY_CACHE
+    if _MEMBRANE_OVERLAY_CACHE is None:
+        _MEMBRANE_OVERLAY_CACHE = load_membrane_tractability_overlay()
+    return _MEMBRANE_OVERLAY_CACHE
+
+
+def _gtex_overlay() -> Dict[str, Any]:
+    global _GTEX_OVERLAY_CACHE
+    if _GTEX_OVERLAY_CACHE is None:
+        _GTEX_OVERLAY_CACHE = load_gtex_safety_overlay()
+    return _GTEX_OVERLAY_CACHE
 
 
 def _essentials():
@@ -592,6 +613,8 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
             essentials=_essentials(),
             broad_effect_genes=_broad_effect_genes(),
             evidence_dir=EVIDENCE_CACHE_DIR,
+            membrane_overlay=_membrane_overlay(),
+            gtex_overlay=_gtex_overlay(),
         )
         readiness.to_csv(readiness_csv, index=False)
     else:
