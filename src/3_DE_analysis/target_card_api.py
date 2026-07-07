@@ -1,22 +1,25 @@
-"""Backward-compatibility shim (architecture refactor Phase 2).
+"""Backward-compatibility shim (architecture refactor Phase 2, updated Phase 4).
 
-The real FastAPI app implementation moved to ``api/app.py`` (see
-``docs/architecture_refactor_plan.md`` §3/§5). This module re-exports it
-under the original flat import path (``from target_card_api import X`` /
-``import target_card_api as api``) so existing callers -- notably
-``tests/test_mechanism_graph.py``, which builds a ``TestClient(api.app)`` --
-keep working unchanged. Prefer importing from ``api.app`` directly in new
-code.
+The real FastAPI app assembly moved to ``api/app.py``, which now mounts one
+router per resource area from ``api/routers/`` (see
+``docs/architecture_refactor_plan.md`` §3/§5). This module re-exports the
+assembled app under the original flat import path (``from target_card_api
+import X`` / ``import target_card_api as api``) so existing callers --
+notably ``tests/test_mechanism_graph.py``, which builds a
+``TestClient(api.app)`` -- keep working unchanged. Prefer importing from
+``api.app``/``api.deps``/``api.routers.*`` directly in new code.
 
 Caveat (module-attribute mutation): a handful of module-level "constant"
 attributes (e.g. ``PATHWAY_CACHE_DIR``) are only *read* correctly through
-this shim -- they are NOT live-linked back to ``api.app``, so
+this shim -- they are NOT live-linked back to their true home,
+``api.deps`` (``api/app.py`` itself only re-exports a snapshot import of
+them for this shim's benefit), so
 ``monkeypatch.setattr(target_card_api, "PATHWAY_CACHE_DIR", ...)`` would
-silently have no effect on request handling (Python resolves a function's
-bare global names against the module it was *defined* in, i.e. ``api.app``,
-not wherever it's re-exported to). Test code that needs to override such a
-value for one request must monkeypatch ``api.app`` (or the router's own
-module once Phase 4 splits it out) directly, not this shim -- see
+silently have no effect on request handling. Each router reads such values
+via ``deps.PATHWAY_CACHE_DIR`` module-attribute access (not a bare imported
+name), so Python resolves it against ``api.deps``'s own namespace at call
+time -- test code that needs to override such a value for one request must
+monkeypatch ``api.deps`` directly, not this shim or ``api.app`` -- see
 ``tests/test_mechanism_graph.py::test_mechanism_graph_api_endpoint_reads_real_cache_dir``.
 """
 

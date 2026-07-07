@@ -244,16 +244,18 @@ def test_mechanism_graph_api_endpoint_reads_real_cache_dir(tmp_path, cd3e_snapsh
     endpoint plumbs a real cached snapshot through end to end."""
     from fastapi.testclient import TestClient
     import target_card_api as api
-    # architecture refactor Phase 2: the FastAPI app + its route handlers now
-    # live in api/app.py; target_card_api.py is a re-export shim. Python
-    # resolves a function's bare global names against the module it was
-    # *defined* in, so PATHWAY_CACHE_DIR must be monkeypatched on api.app
-    # itself (a plain attribute set on the shim would not be seen by the
-    # running handler) -- see target_card_api.py's module docstring.
-    import api.app as api_app
+    # architecture refactor Phase 4: the mechanism-graph route handler now
+    # lives in api/routers/mechanism.py and reads PATHWAY_CACHE_DIR via
+    # `deps.PATHWAY_CACHE_DIR` module-attribute access, so the value must be
+    # monkeypatched on api.deps (its true home) -- a plain attribute set on
+    # target_card_api.py's shim or on api.app (both of which only hold a
+    # separate re-exported snapshot import) would not be seen by the running
+    # handler. See target_card_api.py's module docstring and
+    # api/deps.py's module docstring for why.
+    from api import deps as api_deps
 
     _write_snapshot(tmp_path, cd3e_snapshot)
-    monkeypatch.setattr(api_app, "PATHWAY_CACHE_DIR", tmp_path)
+    monkeypatch.setattr(api_deps, "PATHWAY_CACHE_DIR", tmp_path)
 
     client = TestClient(api.app)
     resp = client.get("/api/mechanism-graph/CD3E")
