@@ -555,6 +555,12 @@ with tabs[1]:
         detail_cols[3].metric("Guides", summary_row.get("n_guides", "NA"))
         detail_cols[4].metric("Replicate pass", str(summary_row.get("replicate_pass_flag", "NA")))
 
+        modality_cols = st.columns(3)
+        modality_cols[0].metric("Druggable class", str(summary_row.get("druggable_class") or "none"))
+        modality_cols[1].metric("Likely modality", str(summary_row.get("tractability_modality") or "unknown"))
+        safety_note = str(summary_row.get("safety_note") or "")
+        modality_cols[2].metric("Safety notes", safety_note.replace(";", ", ") if safety_note else "none")
+
         st.subheader(f"{selected} across conditions")
         st.dataframe(rows, use_container_width=True, hide_index=True)
 

@@ -68,6 +68,98 @@ BENCHMARK_CSV_DEFAULT = Path("sources/topic05_successful_drug_benchmarks.csv")
 # Canonical target-evidence contract used by generic (uploaded) DE tables.
 GENERIC_TARGET_FIELDS = ("target", "condition", "effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides")
 
+# Local druggable-class gene lists (metadata/gene_lists/<name>.tsv) -> likely modality.
+# Shared with readiness_engine.py so tractability inference stays in one place.
+DRUGGABLE_CLASS_MODALITY: Dict[str, str] = {
+    "kinases": "small molecule",
+    "gpcr_union": "small molecule",
+    "rhodop_gpcr": "small molecule",
+    "ion_channels": "small molecule",
+    "transporters": "small molecule",
+    "nuclear_receptors": "small molecule",
+    "enzymes": "small molecule",
+    "catalytic_receptors": "small molecule / biologic",
+    "cytokine_receptors": "antibody / biologic",
+    "gpi_anchored": "antibody (surface)",
+}
+
+GENE_LISTS_DIR_DEFAULT = Path("metadata/gene_lists")
+IMMUNE_EFFECTOR_CSV_DEFAULT = Path("metadata/immune_effector_genes.csv")
+
+
+def load_druggable_overlays(gene_lists_dir: Path) -> Dict[str, set]:
+    """Load druggable-class + genetics gene sets from ``metadata/gene_lists``."""
+    gene_lists_dir = Path(gene_lists_dir)
+    overlays: Dict[str, set] = {}
+    for name in list(DRUGGABLE_CLASS_MODALITY) + ["gwascatalog", "clinvar_path_likelypath"]:
+        genes = load_gene_set(gene_lists_dir / f"{name}.tsv")
+        if genes:
+            overlays[name] = genes
+    return overlays
+
+
+def load_immune_effector_map(path: Path) -> Dict[str, str]:
+    """Load ``gene_name,Category`` immune-effector annotations into an upper-cased dict."""
+    path = Path(path)
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    cols = {c.lower(): c for c in df.columns}
+    gene_col = cols.get("gene_name") or cols.get("gene")
+    cat_col = cols.get("category")
+    if not gene_col or not cat_col:
+        return {}
+    out: Dict[str, str] = {}
+    for _, row in df.iterrows():
+        gene = str(row[gene_col]).strip().upper()
+        if gene:
+            out[gene] = str(row[cat_col]).strip()
+    return out
+
+
+def _druggable_class_for(gene: str, overlays: Dict[str, set]) -> tuple:
+    for name, modality in DRUGGABLE_CLASS_MODALITY.items():
+        genes = overlays.get(name)
+        if genes and gene in genes:
+            return name, modality
+    return "", ""
+
+
+def annotate_local_overlays(
+    card_df: pd.DataFrame,
+    gene_lists_dir: Path = GENE_LISTS_DIR_DEFAULT,
+    immune_effector_csv: Path = IMMUNE_EFFECTOR_CSV_DEFAULT,
+) -> pd.DataFrame:
+    """Add ``druggable_class``, ``tractability_modality``, and ``safety_note`` columns.
+
+    Purely local, offline overlays (no external calls): druggable-gene-class lists,
+    ClinVar pathogenic/likely-pathogenic membership, and immune-effector-gene
+    category membership. A target absent from every local list gets empty strings,
+    never a fabricated value.
+    """
+    overlays = load_druggable_overlays(gene_lists_dir)
+    clinvar = overlays.get("clinvar_path_likelypath", set())
+    immune_map = load_immune_effector_map(immune_effector_csv)
+
+    genes = card_df["target"].astype(str).str.strip().str.upper()
+    classes, modalities, notes = [], [], []
+    for gene in genes:
+        cls, modality = _druggable_class_for(gene, overlays)
+        classes.append(cls)
+        modalities.append(modality)
+        note_parts = []
+        if gene in clinvar:
+            note_parts.append("clinvar_pathogenic_or_likely_pathogenic")
+        if gene in immune_map:
+            note_parts.append(f"immune_effector:{immune_map[gene]}")
+        notes.append(";".join(note_parts))
+
+    out = card_df.copy()
+    out["druggable_class"] = classes
+    out["tractability_modality"] = modalities
+    out["safety_note"] = notes
+    return out
+
 
 def load_gene_set(path: Path) -> set:
     """Load a newline-delimited gene-symbol list (no header) into an upper-cased set."""
@@ -490,6 +582,7 @@ def build_cards_frame(
     card_out = card_out.rename(columns={"culture_condition": "condition", "target_contrast": "target_id"})
     # Keep a stable alias for score_cap_reason string.
     card_out = card_out.reset_index(drop=True)
+    card_out = annotate_local_overlays(card_out)
     return card_out
 
 

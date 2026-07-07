@@ -25,6 +25,7 @@ import pandas as pd
 
 from build_target_cards import (
     CLINICAL_BENCHMARK_KEYWORDS,
+    DRUGGABLE_CLASS_MODALITY,
     PATHWAY_AXIS_HINTS,
     POSITIVE_CONTROLS,
     load_gene_set,
@@ -35,20 +36,6 @@ UNKNOWN = "unknown"
 # Ordered from least to most advanced; used for red-flag capping via min().
 CALL_ORDER = ["deprioritize", "watchlist", "validate", "advance"]
 STAGE_TO_CALL = {"R0": "deprioritize", "R1": "watchlist", "R2": "validate", "R3": "advance"}
-
-# Druggable-class gene lists (metadata/gene_lists/<name>.tsv) -> likely modality.
-DRUGGABLE_CLASS_MODALITY = {
-    "kinases": "small molecule",
-    "gpcr_union": "small molecule",
-    "rhodop_gpcr": "small molecule",
-    "ion_channels": "small molecule",
-    "transporters": "small molecule",
-    "nuclear_receptors": "small molecule",
-    "enzymes": "small molecule",
-    "catalytic_receptors": "small molecule / biologic",
-    "cytokine_receptors": "antibody / biologic",
-    "gpi_anchored": "antibody (surface)",
-}
 
 
 def load_overlays(gene_lists_dir: Path) -> Dict[str, Set[str]]:
