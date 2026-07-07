@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import base64
 import os
-from typing import Any, Dict, Iterable
+from typing import Any, Dict, Iterable, Optional
 
 import pandas as pd
 import requests
@@ -105,6 +105,14 @@ def _readiness(dataset_id: str) -> Dict[str, Any]:
 @st.cache_data(ttl=60)
 def _calibration(dataset_id: str) -> Dict[str, Any]:
     return _api_get(f"/api/calibration/{dataset_id}")
+
+
+@st.cache_data(ttl=300)
+def _evidence(gene: str) -> Optional[Dict[str, Any]]:
+    try:
+        return _api_get(f"/api/evidence/{gene}")
+    except Exception:
+        return None
 
 
 @st.cache_data(ttl=30)
@@ -619,6 +627,42 @@ with tabs[1]:
                 st.info("No readiness record for this target.")
         except Exception as e:
             st.info(f"Readiness not available: {e}")
+
+        st.subheader("External evidence")
+        snapshot = _evidence(selected)
+        if snapshot is None:
+            st.info(f"No external evidence fetched yet for {selected}. Use the API to build it: POST /api/evidence/build {{\"genes\": [\"{selected}\"]}}")
+        else:
+            st.caption(f"Fetched {snapshot.get('fetched_at', 'NA')} · source_version {snapshot.get('source_version', 'NA')}")
+            ev_cols = st.columns(3)
+            sources = snapshot.get("sources", {})
+            with ev_cols[0]:
+                st.markdown("**Clinical trials**")
+                trials = sources.get("clinical_trials", {})
+                if trials.get("source_status") == "ok":
+                    for t in trials.get("items", [])[:5]:
+                        st.write(f"- [{t.get('nct_id', '')}]({t.get('url', '')}) {t.get('title', '')} ({t.get('phase') or 'NA'}, {t.get('status', 'NA')})")
+                    if not trials.get("items"):
+                        st.caption("No trials found.")
+                else:
+                    st.caption(f"unavailable: {trials.get('reason', 'not fetched')}")
+            with ev_cols[1]:
+                st.markdown("**Literature**")
+                lit = sources.get("literature", {})
+                if lit.get("source_status") == "ok":
+                    for item in lit.get("items", [])[:5]:
+                        st.write(f"- [{item.get('pmid', '')}]({item.get('url', '')}) {item.get('title', '')} ({item.get('year', 'NA')})")
+                    if not lit.get("items"):
+                        st.caption("No literature found.")
+                else:
+                    st.caption(f"unavailable: {lit.get('reason', 'not fetched')}")
+            with ev_cols[2]:
+                st.markdown("**Open Targets (tractability/genetics)**")
+                ot = sources.get("open_targets", {})
+                if ot.get("source_status") == "ok":
+                    st.write(ot.get("items", []))
+                else:
+                    st.caption(f"unavailable: {ot.get('reason', 'not fetched')}")
 
         st.subheader("Evidence graph")
         st.graphviz_chart(_evidence_graph(selected, summary_row))

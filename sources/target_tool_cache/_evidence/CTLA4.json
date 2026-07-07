@@ -1,0 +1,58 @@
+{
+  "gene": "CTLA4",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": [
+        {
+          "nct_id": "NCT01557374",
+          "title": "Tapering Abatacept or Tocilizumab in Rheumatoid Arthritis in Remission",
+          "phase": "PHASE4",
+          "status": "COMPLETED",
+          "conditions": [
+            "Rheumatoid Arthritis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT01557374"
+        },
+        {
+          "nct_id": "NCT05428488",
+          "title": "Efficacy of a Sequential Treatment Strategy in Rheumatoid Arthritis (Abatacept vs TNF Inhibitor)",
+          "phase": "PHASE3",
+          "status": "RECRUITING",
+          "conditions": [
+            "Rheumatoid Arthritis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT05428488"
+        }
+      ]
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "38807592",
+          "title": "Regulation of Treg cells by cytokine signaling and co-stimulatory molecules.",
+          "year": "2024",
+          "journal": "Front Immunol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38807592/",
+          "doi": "10.3389/fimmu.2024.1387975"
+        },
+        {
+          "pmid": "34301886",
+          "title": "Treg-expressed CTLA-4 depletes CD80/CD86 by trogocytosis, releasing free PD-L1 on antigen-presenting cells.",
+          "year": "2021",
+          "journal": "PNAS",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34301886/",
+          "doi": "10.1073/pnas.2023739118"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

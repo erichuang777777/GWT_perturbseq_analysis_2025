@@ -1,0 +1,45 @@
+{
+  "gene": "ITK",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "37992572",
+          "title": "Targeting kinase ITK treats autoimmune arthritis via orchestrating T cell differentiation and function.",
+          "year": "2023",
+          "journal": null,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37992572/",
+          "doi": "10.1016/j.biopha.2023.115886"
+        },
+        {
+          "pmid": "39042726",
+          "title": "The kinase ITK controls a Ca-mediated switch that balances Th17 and T cell differentiation.",
+          "year": "2024",
+          "journal": "Sci Signal",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39042726/",
+          "doi": "10.1126/scisignal.adh2381"
+        },
+        {
+          "pmid": "38652761",
+          "title": "TNF-alpha signals through ITK-Akt-mTOR to drive CD4 T cell metabolic reprogramming, which is dysregulated in rheumatoid arthritis.",
+          "year": "2024",
+          "journal": "Sci Signal",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38652761/",
+          "doi": "10.1126/scisignal.adg5678"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

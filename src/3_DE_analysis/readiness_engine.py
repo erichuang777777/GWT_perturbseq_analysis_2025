@@ -11,8 +11,11 @@ Design invariants
   literal string ``"unknown"`` -- never a silent 0.
 * Red-flag overrides (essential gene, off-target, uncertain direction, batch
   confound) CAP the final call regardless of how strong the statistics look.
-* The engine is pure and deterministic: same input -> same output, no network,
-  no randomness. This keeps results reproducible and unit-testable.
+* The engine is pure and deterministic: same input -> same output, no randomness,
+  and no LIVE network calls at compute time. It may read pre-fetched external
+  evidence snapshots from disk (see ``external_evidence_cache.py``) exactly
+  like it reads local gene-list overlays -- both are static file inputs, so
+  determinism is preserved.
 """
 
 from __future__ import annotations
@@ -30,6 +33,7 @@ from build_target_cards import (
     POSITIVE_CONTROLS,
     load_gene_set,
 )
+from external_evidence_cache import load_snapshot as load_evidence_snapshot
 
 UNKNOWN = "unknown"
 
@@ -105,9 +109,25 @@ def _disease_relevance(row: pd.Series):
     return UNKNOWN
 
 
-def _clinical_feasibility(row: pd.Series):
+def _clinical_feasibility(row: pd.Series, evidence: Optional[Dict[str, Any]] = None):
+    """Prefer real trial evidence (if fetched) over the local benchmark-drug fallback."""
+    if evidence:
+        trials = evidence.get("sources", {}).get("clinical_trials", {})
+        if trials.get("source_status") == "ok" and trials.get("items"):
+            phases = {str(t.get("phase") or "").upper() for t in trials["items"]}
+            return 5 if phases & {"PHASE3", "PHASE4"} else 3
     drug = str(row.get("nearest_success_drug", "") or "").strip()
     return 3 if drug else UNKNOWN
+
+
+def _human_genetic_from_evidence(evidence: Optional[Dict[str, Any]]):
+    """Return 'yes'/'no' if an Open Targets snapshot was actually fetched, else None."""
+    if not evidence:
+        return None
+    ot = evidence.get("sources", {}).get("open_targets", {})
+    if ot.get("source_status") != "ok":
+        return None
+    return "yes" if ot.get("items") else "no"
 
 
 def _tractability(gene: str, overlays: Optional[Dict[str, Set[str]]]):
@@ -217,10 +237,28 @@ def compute_readiness(
     overlays: Optional[Dict[str, Set[str]]] = None,
     essentials: Optional[Set[str]] = None,
     broad_effect_genes: Optional[Set[str]] = None,
+    evidence_dir: Optional[Path] = None,
 ) -> pd.DataFrame:
-    """Compute readiness domains, R-stage, call, reasons and next step per card."""
+    """Compute readiness domains, R-stage, call, reasons and next step per card.
+
+    ``evidence_dir``, if given, points at a directory of pre-fetched external
+    evidence snapshots (``external_evidence_cache.py``'s cache format, one
+    JSON file per gene). When a snapshot exists and a source was actually
+    fetched (``source_status == "ok"``), it upgrades ``clinical_feasibility``
+    and ``human_genetic_support`` beyond the local-overlay fallback. Genes with
+    no snapshot are unaffected -- this never fabricates evidence.
+    """
     if cards.empty:
         return cards.copy()
+
+    evidence_cache: Dict[str, Any] = {}
+
+    def _evidence_for(gene: str) -> Optional[Dict[str, Any]]:
+        if not evidence_dir:
+            return None
+        if gene not in evidence_cache:
+            evidence_cache[gene] = load_evidence_snapshot(evidence_dir, gene)
+        return evidence_cache[gene]
 
     records = []
     for _, row in cards.iterrows():
@@ -228,14 +266,15 @@ def compute_readiness(
         grade = _num(row.get("statistical_evidence_grade"))
         essential = bool(essentials and gene in essentials)
         broad_effect = bool(broad_effect_genes and gene in broad_effect_genes)
+        evidence = _evidence_for(gene)
 
         biology = _biology_causality(row)
         translation = _translation(row)
         biomarker = _biomarker(row)
         disease = _disease_relevance(row)
-        clinical = _clinical_feasibility(row)
+        clinical = _clinical_feasibility(row, evidence)
         trac_modality, trac_score = _tractability(gene, overlays)
-        genetics = _human_genetic(gene, overlays)
+        genetics = _human_genetic_from_evidence(evidence) or _human_genetic(gene, overlays)
         safety = 0 if essential else UNKNOWN
         immune_flags = []
         if bool(row.get("offtarget_flag")):
@@ -272,6 +311,7 @@ def compute_readiness(
                 "readiness_call": call,
                 "readiness_reasons": _reasons(row, domains, overrides, stage, call),
                 "next_validation_step": _next_step(overrides, trac_score, genetics, translation),
+                "has_external_evidence": bool(evidence),
             }
         )
     return pd.DataFrame.from_records(records)
@@ -287,12 +327,17 @@ def readiness_summary(readiness: pd.DataFrame, overlays: Optional[Dict[str, Set[
             overlays_used.append("druggable_class")
         if overlays.get("gwascatalog") or overlays.get("clinvar_path_likelypath"):
             overlays_used.append("genetics")
+    overlays_missing = ["chembl", "open_targets_genetics", "depmap", "patient_scrna"]
+    n_with_evidence = int(readiness["has_external_evidence"].sum()) if "has_external_evidence" in readiness.columns else 0
+    if n_with_evidence:
+        overlays_used.append("external_evidence(clinical_trials,literature)")
     return {
         "rows": int(len(readiness)),
         "counts": readiness["overall_readiness_stage"].value_counts().to_dict(),
         "call_counts": readiness["readiness_call"].value_counts().to_dict(),
         "overlays_used": overlays_used,
-        "overlays_missing": [o for o in ["chembl", "open_targets", "depmap", "patient_scrna"]],
+        "overlays_missing": overlays_missing,
+        "unique_targets_with_external_evidence": int(readiness.loc[readiness["has_external_evidence"], "target"].nunique()) if n_with_evidence else 0,
     }
 
 
@@ -304,6 +349,7 @@ if __name__ == "__main__":
     parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
     parser.add_argument("--essentials", type=Path, default=Path("metadata/gene_lists/core_essentials_hart.tsv"))
     parser.add_argument("--broad-effect", type=Path, default=Path("sources/broad_effect_genes.txt"))
+    parser.add_argument("--evidence-dir", type=Path, default=Path("sources/target_tool_cache/_evidence"))
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
@@ -311,7 +357,7 @@ if __name__ == "__main__":
     ov = load_overlays(args.gene_lists)
     ess = load_gene_set(args.essentials)
     broad = load_gene_set(args.broad_effect)
-    result = compute_readiness(cards_df, overlays=ov, essentials=ess, broad_effect_genes=broad)
+    result = compute_readiness(cards_df, overlays=ov, essentials=ess, broad_effect_genes=broad, evidence_dir=args.evidence_dir)
     if args.output:
         result.to_csv(args.output, index=False)
     print(readiness_summary(result, overlays=ov))

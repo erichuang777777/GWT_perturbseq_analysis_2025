@@ -21,6 +21,7 @@ from build_target_cards import adapt_generic_de, build_cards_frame
 from readiness_engine import compute_readiness, load_overlays, readiness_summary
 from build_target_cards import load_gene_set
 from calibration import run_calibration
+from external_evidence_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -51,6 +52,7 @@ DEFAULT_SAMPLE_META = ROOT / "metadata" / "suppl_tables" / "sample_metadata.supp
 GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
+EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
 
 
 def _overlays():
@@ -132,6 +134,13 @@ class MappingRequest(BaseModel):
 class MergeRequest(BaseModel):
     min_cells: int = 200
     min_de_genes: int = 50
+    force: bool = False
+
+
+class EvidenceBuildRequest(BaseModel):
+    dataset_id: Optional[str] = None
+    genes: Optional[List[str]] = None
+    top_n: int = 20
     force: bool = False
 
 
@@ -468,6 +477,13 @@ def merge_import(import_id: str, req: MergeRequest) -> Dict[str, Any]:
     return {"dataset_id": dataset_id, "status": "completed", "rows": int(cards.shape[0]), "preview": preview}
 
 
+def _evidence_dir_mtime() -> float:
+    if not EVIDENCE_CACHE_DIR.exists():
+        return 0.0
+    mtimes = [p.stat().st_mtime for p in EVIDENCE_CACHE_DIR.glob("*.json")]
+    return max(mtimes, default=0.0)
+
+
 @app.get("/api/readiness/{dataset_id}")
 def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict[str, Any]:
     out_csv = _dataset_path(dataset_id) / "target_cards.csv"
@@ -475,10 +491,20 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
         raise HTTPException(status_code=404, detail="dataset_id not found")
     readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
     overlays = _overlays()
-    if refresh or not readiness_csv.exists() or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime:
+    stale = (
+        refresh
+        or not readiness_csv.exists()
+        or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime
+        or readiness_csv.stat().st_mtime < _evidence_dir_mtime()
+    )
+    if stale:
         cards = _normalize_cell_values(_load_cards(out_csv))
         readiness = compute_readiness(
-            cards, overlays=overlays, essentials=_essentials(), broad_effect_genes=_broad_effect_genes()
+            cards,
+            overlays=overlays,
+            essentials=_essentials(),
+            broad_effect_genes=_broad_effect_genes(),
+            evidence_dir=EVIDENCE_CACHE_DIR,
         )
         readiness.to_csv(readiness_csv, index=False)
     else:
@@ -488,6 +514,39 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
         **readiness_summary(readiness, overlays=overlays),
         "readiness": _json_records(readiness),
     }
+
+
+@app.get("/api/evidence/{gene}")
+def get_evidence(gene: str) -> Dict[str, Any]:
+    snapshot = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene)
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail=f"no evidence snapshot fetched yet for {gene}")
+    return snapshot
+
+
+@app.post("/api/evidence/build")
+def build_evidence(req: EvidenceBuildRequest) -> Dict[str, Any]:
+    genes = list(req.genes or [])
+    if req.dataset_id:
+        out_csv = _dataset_path(req.dataset_id) / "target_cards.csv"
+        if not out_csv.exists():
+            raise HTTPException(status_code=404, detail="dataset_id not found")
+        df = _load_cards(out_csv)
+        df = df.sort_values(
+            by=[c for c in ["statistical_evidence_grade", "n_total_de_genes"] if c in df.columns],
+            ascending=False,
+        )
+        genes.extend(df["target"].dropna().astype(str).str.upper().unique().tolist()[: req.top_n])
+    genes = list(dict.fromkeys(g.upper() for g in genes if g))
+    if not genes:
+        raise HTTPException(status_code=400, detail="no genes to build evidence for (pass dataset_id or genes)")
+
+    build_evidence_for_genes(genes, EVIDENCE_CACHE_DIR, force=req.force)
+    statuses = {}
+    for gene in genes:
+        snap = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene) or {}
+        statuses[gene] = {name: src.get("source_status") for name, src in snap.get("sources", {}).items()}
+    return {"genes": genes, "cache_dir": str(EVIDENCE_CACHE_DIR), "statuses": statuses}
 
 
 @app.get("/api/calibration/{dataset_id}")

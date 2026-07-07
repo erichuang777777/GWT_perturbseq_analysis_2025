@@ -1,0 +1,56 @@
+{
+  "gene": "CD28",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": [
+        {
+          "nct_id": "NCT01557374",
+          "title": "Tapering Abatacept or Tocilizumab in Rheumatoid Arthritis in Remission",
+          "phase": "PHASE4",
+          "status": "COMPLETED",
+          "conditions": [
+            "Rheumatoid Arthritis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT01557374"
+        }
+      ]
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "25939063",
+          "title": "4-1BB costimulation ameliorates T cell exhaustion induced by tonic signaling of chimeric antigen receptors.",
+          "year": "2015",
+          "journal": "Nat Med",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25939063/",
+          "doi": "10.1038/nm.3838"
+        },
+        {
+          "pmid": "11753365",
+          "title": "Human T-lymphocyte cytotoxicity and proliferation directed by a single chimeric TCRzeta/CD28 receptor.",
+          "year": "2002",
+          "journal": "Nat Biotechnol",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11753365/",
+          "doi": "10.1038/nbt0102-70"
+        },
+        {
+          "pmid": "34157301",
+          "title": "A local regulatory T cell feedback circuit maintains immune homeostasis by pruning self-activated T cells.",
+          "year": "2021",
+          "journal": "Cell",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34157301/",
+          "doi": "10.1016/j.cell.2021.05.028"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}

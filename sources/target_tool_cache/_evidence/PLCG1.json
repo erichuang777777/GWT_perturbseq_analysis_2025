@@ -1,0 +1,29 @@
+{
+  "gene": "PLCG1",
+  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
+  "source_version": "seeded_via_mcp_session/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "40447319",
+          "title": "Cbl-b inhibitor NX-1607 activates MAPK/ERK signaling pathway and enhances T-cell activation.",
+          "year": "2025",
+          "journal": "J Immunother Cancer",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40447319/",
+          "doi": "10.1136/jitc-2024-011180"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "unavailable",
+      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
+      "items": []
+    }
+  }
+}
