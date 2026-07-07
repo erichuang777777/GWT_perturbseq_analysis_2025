@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
@@ -552,8 +552,13 @@ def get_evidence(gene: str) -> Dict[str, Any]:
     return snapshot
 
 
+# Hard cap on how many genes one build request may schedule, so a single call
+# can never fan out into an unbounded number of external HTTP fetches.
+MAX_EVIDENCE_GENES = 50
+
+
 @app.post("/api/evidence/build")
-def build_evidence(req: EvidenceBuildRequest) -> Dict[str, Any]:
+def build_evidence(req: EvidenceBuildRequest, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     genes = list(req.genes or [])
     if req.dataset_id:
         out_csv = _dataset_path(req.dataset_id) / "target_cards.csv"
@@ -565,16 +570,33 @@ def build_evidence(req: EvidenceBuildRequest) -> Dict[str, Any]:
             ascending=False,
         )
         genes.extend(df["target"].dropna().astype(str).str.upper().unique().tolist()[: req.top_n])
-    genes = list(dict.fromkeys(g.upper() for g in genes if g))
+    genes = list(dict.fromkeys(g.upper() for g in genes if g))[:MAX_EVIDENCE_GENES]
     if not genes:
         raise HTTPException(status_code=400, detail="no genes to build evidence for (pass dataset_id or genes)")
 
-    build_evidence_for_genes(genes, EVIDENCE_CACHE_DIR, force=req.force)
-    statuses = {}
+    # Report what is already cached synchronously (no network); schedule only the
+    # missing/forced genes as a BACKGROUND task so the request returns promptly
+    # and external fetches never block the HTTP response (external_evidence_cache
+    # is designed as an offline batch job, not a request-path call).
+    cached: Dict[str, Any] = {}
+    to_fetch = []
     for gene in genes:
-        snap = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene) or {}
-        statuses[gene] = {name: src.get("source_status") for name, src in snap.get("sources", {}).items()}
-    return {"genes": genes, "cache_dir": str(EVIDENCE_CACHE_DIR), "statuses": statuses}
+        snap = load_evidence_snapshot(EVIDENCE_CACHE_DIR, gene)
+        if snap is not None and not req.force:
+            cached[gene] = {name: src.get("source_status") for name, src in snap.get("sources", {}).items()}
+        else:
+            to_fetch.append(gene)
+
+    if to_fetch:
+        background_tasks.add_task(build_evidence_for_genes, to_fetch, EVIDENCE_CACHE_DIR, force=req.force)
+
+    return {
+        "genes": genes,
+        "cache_dir": str(EVIDENCE_CACHE_DIR),
+        "cached": cached,
+        "scheduled": to_fetch,
+        "note": "scheduled genes are fetched in the background; poll GET /api/evidence/{gene} for results",
+    }
 
 
 @app.get("/api/calibration/{dataset_id}")

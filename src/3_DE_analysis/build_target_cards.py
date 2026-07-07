@@ -390,7 +390,9 @@ def _score_cap_reasons(
     if row.get("batch_sensitivity_flag") == "sensitive":
         reasons.append("batch_sensitive")
     if row["n_guides"] < 2:
-        reasons.append("single_donor_dominance")
+        reasons.append("single_guide")
+    # De-duplicate while preserving first-seen order.
+    reasons = list(dict.fromkeys(reasons))
     return ";".join(reasons) if reasons else "none"
 
 
@@ -472,9 +474,9 @@ def build_cards_frame(
     card_df["guide_t_abs_median"] = card_df["guide_t_abs_median"].astype(float)
     card_df["fdr_min"] = card_df["guide_fdr_min"]
 
-    # Replace missing numeric correlations with low confidence values.
-    for c in ["crossdonor_correlation_mean", "crossdonor_correlation_min", "crossguide_correlation"]:
-        card_df[c] = card_df[c].fillna(np.nan)
+    # Missing correlations stay NaN on purpose: every downstream comparison
+    # (_make_score, replicate_pass_flag, _score_cap_reasons) already treats NaN
+    # as failing/weak, so no sentinel substitution is needed.
 
     # target-condition score enrichment
     total_by_target = card_df.groupby("target_contrast")["n_total_de_genes"].transform("sum")
@@ -523,15 +525,17 @@ def build_cards_frame(
     )
 
     def _cap_reason(row: pd.Series) -> str:
-        if row["n_cells_target"] < min_cells:
-            reasons = ["low_cells"]
-        else:
-            reasons = []
-        if row["n_total_de_genes"] < min_de_genes:
-            reasons.append("low_signal")
+        # Always compute the full reason set (off-target, batch, replicability,
+        # direction, guide flags) and union in the low-cell/low-signal/hint tokens.
+        # A previous early-return here suppressed every other reason on any
+        # low-cell or low-signal row, hiding off-target and batch-confound
+        # signals on ~1,100 rows of the reference dataset.
+        full = _score_cap_reasons(row, min_cells=min_cells, min_de_genes=min_de_genes)
+        reasons = [] if full == "none" else full.split(";")
         if row.get("single_donor_dominance_hint", False):
             reasons.append("single_donor_dominance")
-        return ";".join(reasons) if reasons else _score_cap_reasons(row, min_cells=min_cells, min_de_genes=min_de_genes)
+        reasons = list(dict.fromkeys(reasons))
+        return ";".join(reasons) if reasons else "none"
 
     card_df["score_cap_reason"] = card_df.apply(_cap_reason, axis=1)
 

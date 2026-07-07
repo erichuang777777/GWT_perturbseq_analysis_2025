@@ -37,6 +37,16 @@ KNOWN_DRUG_AXES = {
 }
 
 
+def _as_bool(series: pd.Series) -> pd.Series:
+    """Robust string/int/bool -> bool, independent of pandas dtype inference.
+
+    A bare ``series.astype(bool)`` coerces the *strings* ``"True"``/``"False"``
+    (which appear when a bool column is object-dtype, e.g. mixed with a NaN) both
+    to ``True``, silently inverting the strict filter. This normalizes explicitly.
+    """
+    return series.astype(str).str.strip().str.lower().isin({"true", "1", "yes", "y", "t"})
+
+
 def _decile(rank_pct: float) -> int:
     """1 = top decile (best), 10 = bottom decile."""
     return max(1, min(10, int(rank_pct * 10) + 1))
@@ -98,7 +108,7 @@ def rank_stability(cards: pd.DataFrame, top_n: int = 50, rank_col: str = "n_tota
 
     strict = cards.copy()
     if "offtarget_flag" in strict.columns:
-        strict = strict[~strict["offtarget_flag"].astype(bool)]
+        strict = strict[~_as_bool(strict["offtarget_flag"])]
     if "n_cells_target" in strict.columns:
         strict = strict[strict["n_cells_target"].fillna(0) >= 200]
     if "crossdonor_correlation_mean" in strict.columns:
@@ -146,9 +156,9 @@ def qc_funnel(cards: pd.DataFrame, min_de_genes: int = 50, min_cells: int = 200)
 
     mask = pd.Series(True, index=current.index)
     if "ontarget_significant" in current.columns:
-        mask &= current["ontarget_significant"].astype(bool)
+        mask &= _as_bool(current["ontarget_significant"])
     if "offtarget_flag" in current.columns:
-        mask &= ~current["offtarget_flag"].astype(bool)
+        mask &= ~_as_bool(current["offtarget_flag"])
     if "n_cells_target" in current.columns:
         mask &= pd.to_numeric(current["n_cells_target"], errors="coerce").fillna(0) >= min_cells
     current = current[mask]

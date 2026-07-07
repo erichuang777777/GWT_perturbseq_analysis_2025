@@ -39,6 +39,32 @@ Wave 2 closed the scientific gap noted below (superseded, kept for history): the
 used to contain broad chromatin/essential-like genes (`MED12`, `CREBBP`, `KDM1A`, `ELOB`) because
 `core_essentials_hart.tsv` (283 genes) alone did not cover them.
 
+### Hardening pass — full pipeline review (this update)
+
+A whole-pipeline correctness/robustness audit (all 7 modules, verified against the real CSVs) found and
+fixed six issues; the end-to-end flow had no crash-level defect. Fixed:
+
+1. **(was producing wrong output)** `score_cap_reason` suppressed off-target / batch / replicability
+   flags on any low-cell or low-signal row — an early `return` skipped the full reason set. On the real
+   reference data this hid `high_offtarget` on 211 rows and `batch_sensitive` on 890 low-cell rows.
+   Now the full reason set is always computed and unioned with the low-cell/low-signal tokens
+   (verified: 211/211 and 890/890 now surface correctly; readiness calls were already correct because
+   red flags re-derive from raw columns).
+2. `/api/evidence/build` fetched synchronously in the request handler (up to 60 sequential HTTP calls).
+   Now returns already-cached statuses immediately and schedules only missing/forced genes via a
+   FastAPI `BackgroundTasks`, hard-capped at 50 genes.
+3. `readiness_summary` returned a different key set for empty vs non-empty datasets (KeyError risk on
+   empty uploads). Empty branch now returns the full key set.
+4. Removed a dead `fillna(np.nan)` no-op that contradicted its own comment.
+5. De-duplicated `score_cap_reason` tokens and renamed the guide-count reason `single_donor_dominance`
+   → `single_guide` (it was neither about donors nor a duplicate of the DE-share flag).
+6. Calibration bool coercion now uses an explicit string→bool normalizer (`_as_bool`) instead of
+   `.astype(bool)`, so the strict filter can't invert on object-dtype `"True"`/`"False"` strings via
+   the CLI path.
+
+Also added `.gitignore` rules for transient runtime dataset/import caches under
+`sources/target_tool_cache/` (keeping the intentional `_evidence` seeds and demo data tracked).
+
 ### Wave 3 — landed and verified (this update)
 
 | Piece | Module | State | Evidence of verification |

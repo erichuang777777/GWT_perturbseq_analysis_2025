@@ -320,7 +320,16 @@ def compute_readiness(
 def readiness_summary(readiness: pd.DataFrame, overlays: Optional[Dict[str, Set[str]]] = None) -> Dict[str, Any]:
     """Aggregate counts for the API/dashboard."""
     if readiness.empty:
-        return {"rows": 0, "counts": {}, "call_counts": {}}
+        # Keep the same key set as the populated branch so clients never hit a
+        # KeyError on empty datasets.
+        return {
+            "rows": 0,
+            "counts": {},
+            "call_counts": {},
+            "overlays_used": [],
+            "overlays_missing": ["chembl", "open_targets_genetics", "depmap", "patient_scrna"],
+            "unique_targets_with_external_evidence": 0,
+        }
     overlays_used = []
     if overlays:
         if any(name in overlays for name in DRUGGABLE_CLASS_MODALITY):
