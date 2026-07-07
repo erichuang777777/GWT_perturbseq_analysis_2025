@@ -123,6 +123,16 @@ def _dataset_status(dataset_id: str) -> Dict[str, Any]:
         return {}
 
 
+@st.cache_data(ttl=300)
+def _diseases() -> Dict[str, Any]:
+    return _api_get("/api/disease")
+
+
+@st.cache_data(ttl=60)
+def _disease_targets(disease_name: str, dataset_id: str, min_grade: int, top_n: int) -> Dict[str, Any]:
+    return _api_get(f"/api/disease/{disease_name}/targets/{dataset_id}", params={"min_grade": min_grade, "top_n": top_n})
+
+
 def _compatibility_banner(dataset_id: str) -> None:
     """Warn when the active dataset is a user upload, keyed on its context tier."""
     status = _dataset_status(dataset_id)
@@ -454,7 +464,7 @@ except Exception as e:
 
 summary = summary_payload.get("summary", {})
 _compatibility_banner(dataset_id)
-tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export"])
+tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export", "Disease Translator"])
 
 with tabs[0]:
     cols = st.columns(6)
@@ -737,3 +747,44 @@ with tabs[4]:
             file_name="target_report.md",
             mime="text/markdown",
         )
+
+with tabs[5]:
+    st.subheader("Disease Translator")
+    st.caption(
+        "Ranks target cards by real Open Targets genetic-association evidence for a chosen indication. "
+        "Coverage is restricted to diseases already present in the local association table -- "
+        "no free-text disease is guessed or fabricated."
+    )
+    try:
+        disease_payload = _diseases()
+        disease_options = [d["disease_name"] for d in disease_payload.get("diseases", [])]
+    except Exception as e:
+        disease_options = []
+        st.error(f"Could not load disease list: {e}")
+
+    if not disease_options:
+        st.info("No local disease-association table available.")
+    else:
+        disease_cols = st.columns([2, 1, 1])
+        with disease_cols[0]:
+            selected_disease = st.selectbox("Indication", disease_options)
+        with disease_cols[1]:
+            disease_min_grade = st.slider("min grade", min_value=1, max_value=4, value=2, key="disease_min_grade")
+        with disease_cols[2]:
+            disease_top_n = st.number_input("top N", min_value=5, max_value=200, value=30, step=5, key="disease_top_n")
+
+        try:
+            result = _disease_targets(selected_disease, dataset_id, int(disease_min_grade), int(disease_top_n))
+        except Exception as e:
+            result = {"matched": False, "reason": str(e), "targets": []}
+
+        if not result.get("matched"):
+            st.warning(result.get("reason", "No match."))
+        elif not result.get("targets"):
+            st.info(result.get("reason") or "No target-condition rows matched this indication at the current filters.")
+        else:
+            disease_df = pd.DataFrame(result["targets"])
+            st.dataframe(disease_df, use_container_width=True, hide_index=True)
+            if "disease_association_score" in disease_df.columns and "target" in disease_df.columns:
+                chart_df = disease_df.drop_duplicates("target").set_index("target")[["disease_association_score"]]
+                st.bar_chart(chart_df)

@@ -155,9 +155,28 @@ finding that Stim8hr has the strongest acute-activation signal); 75% land in top
 known drug axes recovered among grade≥3 rows; naive top-50 only 13/50-overlaps the strict-filtered top-50
 (Spearman r=0.943) — a real, honest finding that the naive ranking alone is not robustness-safe.
 
-### 1.7 Disease translator (T8)  *(large)*
-Indication picker (RA/IBD/MS/SLE/psoriasis/cancer-TME via ICD-10 normalization) → targets whose CD4
-programs + genetics + trials align. Depends on Module C. New page + `GET /api/disease`.
+### 1.7 Disease translator (T8)  *(large → shipped small)* — **DONE**
+**Why:** connect CD4 target cards to disease genetics so a researcher can pick an indication and see
+which targets have both perturbation evidence and human genetic support.
+**Finding that shrank the scope:** the plan assumed this needed live ICD-10 normalization plus new
+GWAS/eQTL fetches. It didn't — `src/6_functional_interaction/results/disease_gene_associations_detailed.csv`
+already existed in the repo from prior research: a real, local Open Targets genetic-association export,
+7,528 rows across 13 autoimmune/inflammatory indications (RA, IBD, Crohn's, UC, MS, SLE, psoriasis,
+T1D, asthma, ankylosing spondylitis, Hashimoto's, celiac, and a general "autoimmune disease" bucket),
+with `association_score` and `genetic_evidence_score` per gene. `disease_translator.py` (new) just
+joins that table against a built `target_cards.csv` — no new fetch needed.
+**Shipped:** `disease_translator.py` (`load_disease_associations`, `list_diseases`, `translate_disease`);
+`GET /api/disease` (list the 13 available indications) and `GET /api/disease/{name}/targets/{dataset_id}`
+(ranked targets, joined with readiness call when available); a new **Disease Translator** dashboard tab
+(indication picker, min-grade/top-N filters, ranked table + bar chart). Coverage is intentionally
+restricted to the 13 diseases actually in the table — an unmatched indication returns an explicit
+reason, never a guessed match.
+**Verified:** rheumatoid arthritis surfaces `TYK2` (top-ranked; deucravacitinib is an approved TYK2
+inhibitor, for psoriasis) and `TNF` (the largest anti-TNF biologic drug class in RA) at the top;
+psoriasis surfaces `TYK2`, `IL17RA` (targeted by brodalumab), and `TRAF3IP2`/Act1 (a genetically
+established IL-17-pathway psoriasis gene) — real, clinically recognizable biology recovered purely
+from joining the tool's own perturbation evidence with real external genetics. TestClient covers both
+the disease list and per-dataset ranking, plus the unmatched-disease path.
 
 ### 1.8 Persistence + multi-user (governance)  *(large)*
 Move from file-cache to Supabase/Postgres (datasets, imports, users, provenance, merge lineage) + auth +
@@ -179,9 +198,16 @@ first; never feed readiness decisions**), combination explorer (research-only).
 Wave 1 (DONE):   foundation + C4 batch flag + readiness engine (R1–R3) + upload merge loop + dashboard
 Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
 Wave 3 (DONE):   1.2 Module C external evidence  →  1.4 provenance footer   [1.5 descoped, see §1.5]
-Wave 4 (next):   1.7 disease translator  →  1.8 persistence/multi-user
+Wave 4 (partial): 1.7 disease translator (DONE)  →  1.8 persistence/multi-user (not started)
 Wave 5:          1.9 cell-level (after h5ad)  →  1.10 v2 generators (guarded)
 ```
+
+**Wave 4 status:** 1.7 shipped small — the disease translator turned out to need no new fetch at all,
+just a join against a real Open Targets export already sitting in the repo from prior research. 1.8
+(Supabase/Postgres persistence, auth, multi-user workspaces) is the one remaining Wave-4 item and is
+**intentionally not started without a check-in**: standing up a Supabase project provisions real cloud
+infrastructure (cost, credentials, ownership) — a harder-to-reverse action than anything else in this
+plan, and worth confirming with the project owner before creating it, rather than assuming.
 
 Rationale: Wave 2 was small, offline, and directly raised the credibility of what already ships (fixed the
 `advance`-list confounders, exposed modality, proved biology recovery) before taking on the connector- and

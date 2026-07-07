@@ -22,6 +22,7 @@ from readiness_engine import compute_readiness, load_overlays, readiness_summary
 from build_target_cards import load_gene_set
 from calibration import run_calibration
 from external_evidence_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
+from disease_translator import list_diseases, load_disease_associations, translate_disease
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -54,6 +55,11 @@ GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
 EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
+DISEASE_ASSOCIATIONS_PATH = ROOT / "src" / "6_functional_interaction" / "results" / "disease_gene_associations_detailed.csv"
+
+
+def _disease_associations():
+    return load_disease_associations(DISEASE_ASSOCIATIONS_PATH)
 
 # Bump whenever build_target_cards.py, readiness_engine.py, calibration.py, or
 # external_evidence_cache.py change scoring/engine behavior, so every dataset's
@@ -584,6 +590,35 @@ def get_calibration(dataset_id: str, refresh: bool = Query(default=False)) -> Di
     else:
         report = json.loads(calib_json.read_text(encoding="utf-8"))
     return {"dataset_id": dataset_id, **report}
+
+
+@app.get("/api/disease")
+def get_diseases() -> Dict[str, Any]:
+    associations = _disease_associations()
+    return {
+        "source": str(DISEASE_ASSOCIATIONS_PATH.relative_to(ROOT)) if DISEASE_ASSOCIATIONS_PATH.exists() else None,
+        "diseases": list_diseases(associations),
+    }
+
+
+@app.get("/api/disease/{disease_name}/targets/{dataset_id}")
+def get_disease_targets(
+    disease_name: str,
+    dataset_id: str,
+    min_grade: int = Query(default=2, ge=1, le=4),
+    top_n: int = Query(default=50, ge=1, le=500),
+) -> Dict[str, Any]:
+    out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    cards = _normalize_cell_values(_load_cards(out_csv))
+    associations = _disease_associations()
+
+    readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+    readiness_df = pd.read_csv(readiness_csv) if readiness_csv.exists() else None
+
+    result = translate_disease(cards, disease_name, associations, readiness=readiness_df, min_grade=min_grade, top_n=top_n)
+    return {"dataset_id": dataset_id, "disease_name": disease_name, **result}
 
 
 @app.post("/api/run/target-card")
