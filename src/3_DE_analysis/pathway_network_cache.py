@@ -33,6 +33,8 @@ try:
 except ImportError:  # pragma: no cover
     requests = None  # type: ignore
 
+from common import degrade, timeutil
+
 REACTOME_MAPPING_API = "https://reactome.org/ContentService/data/mapping/ENSEMBL/{ensembl_id}/pathways"
 STRING_NETWORK_API = "https://string-db.org/api/json/network"
 
@@ -41,12 +43,14 @@ DEFAULT_TIMEOUT = 15
 TTL_SECONDS_DEFAULT = 30 * 24 * 3600  # 30 days; pathway/network annotations change slowly
 
 
-def _now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+# Re-export for backward compatibility -- canonical implementations now live
+# in common/timeutil.py and common/degrade.py (architecture refactor Phase 1;
+# see those modules' docstrings for the duplication this consolidates).
+_now = timeutil.utc_now
 
 
 def _unavailable(reason: str) -> Dict[str, Any]:
-    return {"source_status": "unavailable", "reason": reason, "items": []}
+    return degrade.unavailable_source(reason)
 
 
 def fetch_reactome_pathways(ensembl_id: str, species: str = "9606") -> Dict[str, Any]:

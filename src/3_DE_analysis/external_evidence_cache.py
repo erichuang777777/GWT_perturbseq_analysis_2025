@@ -32,6 +32,8 @@ try:
 except ImportError:  # pragma: no cover - requests is a project dependency
     requests = None  # type: ignore
 
+from common import degrade, timeutil
+
 CLINICALTRIALS_API = "https://clinicaltrials.gov/api/v2/studies"
 PUBMED_ESEARCH_API = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
 PUBMED_ESUMMARY_API = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -46,12 +48,14 @@ TTL_SECONDS_DEFAULT = 30 * 24 * 3600  # 30 days; external evidence changes slowl
 IMMUNE_CONDITIONS = ["autoimmune", "rheumatoid arthritis", "lupus", "inflammatory bowel disease", "psoriasis"]
 
 
-def _now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+# Re-export for backward compatibility -- canonical implementations now live
+# in common/timeutil.py and common/degrade.py (architecture refactor Phase 1;
+# see those modules' docstrings for the duplication this consolidates).
+_now = timeutil.utc_now
 
 
 def _unavailable(reason: str) -> Dict[str, Any]:
-    return {"source_status": "unavailable", "reason": reason, "items": []}
+    return degrade.unavailable_source(reason)
 
 
 def fetch_trials(gene: str, conditions: Optional[List[str]] = None, max_results: int = 10) -> Dict[str, Any]:
