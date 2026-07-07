@@ -18,6 +18,7 @@ from typing import Dict, Iterable, List, Optional, Sequence
 import numpy as np
 import pandas as pd
 
+from config import settings, thresholds, versions
 
 POSITIVE_CONTROLS = {
     "CD3D",
@@ -63,7 +64,7 @@ CLINICAL_BENCHMARK_KEYWORDS = {
     "S1P trafficking": ("CCR7", "S1PR1", "S1PR2", "S1PR3", "S1PR4", "S1PR5"),
 }
 
-BENCHMARK_CSV_DEFAULT = Path("sources/topic05_successful_drug_benchmarks.csv")
+BENCHMARK_CSV_DEFAULT = settings.BENCHMARK_CSV_PATH
 
 # Canonical target-evidence contract used by generic (uploaded) DE tables.
 # n_total_de_genes is canonical: adapt_generic_de reads it and _make_score /
@@ -86,8 +87,8 @@ DRUGGABLE_CLASS_MODALITY: Dict[str, str] = {
     "gpi_anchored": "antibody (surface)",
 }
 
-GENE_LISTS_DIR_DEFAULT = Path("metadata/gene_lists")
-IMMUNE_EFFECTOR_CSV_DEFAULT = Path("metadata/immune_effector_genes.csv")
+GENE_LISTS_DIR_DEFAULT = settings.GENE_LISTS_DIR
+IMMUNE_EFFECTOR_CSV_DEFAULT = settings.IMMUNE_EFFECTOR_CSV_PATH
 
 
 def load_druggable_overlays(gene_lists_dir: Path) -> Dict[str, set]:
@@ -333,12 +334,12 @@ def _build_guide_summary(
     return agg
 
 
-# Per metadata/data_sharing_readme.md's documented definition of
-# high_confidence_no_effect_guides: "target expression in NTCs > 0.001" is the
-# repo's own stated floor for whether knockdown is assessable at all. Reused
-# here rather than inventing a new threshold.
-KD_NOT_MEASURABLE_EXPRESSION_FLOOR = 0.001
-KD_THRESHOLD_VERSION = "kd_status/v2"
+# Re-exported from config.thresholds/config.versions (the single source of
+# truth, see docs/architecture_refactor_plan.md §5 Phase 0) so existing
+# `from build_target_cards import KD_NOT_MEASURABLE_EXPRESSION_FLOOR` callers
+# keep working unchanged.
+KD_NOT_MEASURABLE_EXPRESSION_FLOOR = thresholds.KD_NOT_MEASURABLE_EXPRESSION_FLOOR
+KD_THRESHOLD_VERSION = versions.KD_THRESHOLD_VERSION
 
 
 def _kd_status(row: pd.Series) -> str:
@@ -372,7 +373,12 @@ def _kd_status(row: pd.Series) -> str:
         return "not_measurable"
     ratio = row.get("guide_signif_ratio")
     fdr = row.get("guide_fdr_min")
-    if pd.notna(ratio) and pd.notna(fdr) and ratio >= 0.5 and fdr <= 0.05:
+    if (
+        pd.notna(ratio)
+        and pd.notna(fdr)
+        and ratio >= thresholds.GUIDE_SIGNIF_RATIO_MIN
+        and fdr <= thresholds.GUIDE_FDR_MAX_CONFIRMED
+    ):
         return "confirmed"
     return "weak"
 
@@ -387,27 +393,27 @@ def _load_benchmark(path: Optional[Path]) -> Optional[pd.DataFrame]:
 
 def _make_score(
     row: pd.Series,
-    min_cells: int = 200,
-    min_de_genes: int = 50,
+    min_cells: int = thresholds.MIN_CELLS_DEFAULT,
+    min_de_genes: int = thresholds.MIN_DE_GENES_DEFAULT,
 ) -> int:
     replicate = (
         (row["n_cells_target"] >= min_cells)
         and (row["n_total_de_genes"] >= min_de_genes)
         and bool(row["ontarget_significant"])
         and not bool(row["offtarget_flag"])
-        and (row["crossdonor_correlation_mean"] >= 0.2)
-        and (row["crossguide_correlation"] >= 0.2)
+        and (row["crossdonor_correlation_mean"] >= thresholds.CROSSDONOR_MIN)
+        and (row["crossguide_correlation"] >= thresholds.CROSSGUIDE_MIN)
     )
     if (
         replicate
-        and row["guide_signif_ratio"] >= 0.5
-        and row["guide_fdr_min"] <= 0.05
-        and row["crossdonor_correlation_mean"] >= 0.3
-        and row["crossguide_correlation"] >= 0.3
-        and row["n_guides"] >= 2
+        and row["guide_signif_ratio"] >= thresholds.GUIDE_SIGNIF_RATIO_MIN
+        and row["guide_fdr_min"] <= thresholds.GUIDE_FDR_MAX_CONFIRMED
+        and row["crossdonor_correlation_mean"] >= thresholds.CROSSDONOR_ROBUST
+        and row["crossguide_correlation"] >= thresholds.CROSSGUIDE_ROBUST
+        and row["n_guides"] >= thresholds.N_GUIDES_MIN_HIGH_GRADE
     ):
         return 4
-    if replicate and row["n_guides"] >= 2 and row["fdr_min"] <= 0.1:
+    if replicate and row["n_guides"] >= thresholds.N_GUIDES_MIN_HIGH_GRADE and row["fdr_min"] <= thresholds.GUIDE_FDR_MAX_GRADE3:
         return 3
     if (row["n_cells_target"] >= min_cells) and row["ontarget_significant"]:
         return 2
@@ -416,8 +422,8 @@ def _make_score(
 
 def _score_cap_reasons(
     row: pd.Series,
-    min_cells: int = 200,
-    min_de_genes: int = 50,
+    min_cells: int = thresholds.MIN_CELLS_DEFAULT,
+    min_de_genes: int = thresholds.MIN_DE_GENES_DEFAULT,
 ) -> str:
     reasons = []
     if row["n_cells_target"] < min_cells:
@@ -432,17 +438,17 @@ def _score_cap_reasons(
     cg = row["crossguide_correlation"]
     # Missing (NaN) robustness is treated as weak, matching the EDA caveat that
     # rows lacking cross-donor/cross-guide support are not highest-confidence.
-    if pd.isna(cd) or pd.isna(cg) or cd < 0.2 or cg < 0.2:
+    if pd.isna(cd) or pd.isna(cg) or cd < thresholds.CROSSDONOR_MIN or cg < thresholds.CROSSGUIDE_MIN:
         reasons.append("weak_replicability")
-    if pd.isna(row["fdr_min"]) or row["fdr_min"] > 0.1:
+    if pd.isna(row["fdr_min"]) or row["fdr_min"] > thresholds.GUIDE_FDR_MAX_GRADE3:
         reasons.append("guide_limit")
     if pd.isna(row["condition_specificity_score"]):
         reasons.append("single_donor_dominance")
-    if row["guide_signif_ratio"] < 0.5:
+    if row["guide_signif_ratio"] < thresholds.GUIDE_SIGNIF_RATIO_MIN:
         reasons.append("guides_inconsistent")
     if row.get("batch_sensitivity_flag") == "sensitive":
         reasons.append("batch_sensitive")
-    if row["n_guides"] < 2:
+    if row["n_guides"] < thresholds.N_GUIDES_MIN_HIGH_GRADE:
         reasons.append("single_guide")
     kd_status = row.get("kd_status")
     if kd_status == "not_measurable":
@@ -459,8 +465,8 @@ def build_cards_frame(
     guide_df: Optional[pd.DataFrame],
     lib_map: Optional[pd.DataFrame],
     benchmark: Optional[pd.DataFrame],
-    min_cells: int = 200,
-    min_de_genes: int = 50,
+    min_cells: int = thresholds.MIN_CELLS_DEFAULT,
+    min_de_genes: int = thresholds.MIN_DE_GENES_DEFAULT,
     schema: str = "gwt",
     sample_meta: Optional[pd.DataFrame] = None,
 ) -> pd.DataFrame:
@@ -575,16 +581,16 @@ def build_cards_frame(
                                      (card_df["n_total_de_genes"] >= min_de_genes) &
                                      card_df["ontarget_significant"] &
                                      (~card_df["offtarget_flag"]) &
-                                     (card_df["crossdonor_correlation_mean"].fillna(-1) >= 0.2) &
-                                     (card_df["crossguide_correlation"].fillna(-1) >= 0.2)
+                                     (card_df["crossdonor_correlation_mean"].fillna(-1) >= thresholds.CROSSDONOR_MIN) &
+                                     (card_df["crossguide_correlation"].fillna(-1) >= thresholds.CROSSGUIDE_MIN)
                                     ).astype(bool)
 
     confounded = confounded_conditions(sample_meta)
     if confounded:
         cond = card_df["culture_condition"].astype(str)
         is_conf = cond.isin(confounded)
-        robust = (card_df["crossdonor_correlation_mean"].fillna(-1) >= 0.3) | (
-            card_df["crossguide_correlation"].fillna(-1) >= 0.3
+        robust = (card_df["crossdonor_correlation_mean"].fillna(-1) >= thresholds.CROSSDONOR_ROBUST) | (
+            card_df["crossguide_correlation"].fillna(-1) >= thresholds.CROSSGUIDE_ROBUST
         )
         card_df["batch_sensitivity_flag"] = np.select(
             [is_conf & ~robust, is_conf & robust],
@@ -687,8 +693,8 @@ def _build_cards(
     lib_map: Optional[pd.DataFrame],
     out_path: Path,
     benchmark: Optional[pd.DataFrame],
-    min_cells: int = 200,
-    min_de_genes: int = 50,
+    min_cells: int = thresholds.MIN_CELLS_DEFAULT,
+    min_de_genes: int = thresholds.MIN_DE_GENES_DEFAULT,
     schema: str = "gwt",
     sample_meta: Optional[pd.DataFrame] = None,
 ) -> None:
@@ -708,15 +714,15 @@ def _build_cards(
 
 def build_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build CSV-first target-condition cards.")
-    parser.add_argument("--de-stats", type=Path, default=Path("metadata/suppl_tables/DE_stats.suppl_table.csv"))
-    parser.add_argument("--guide-kd", type=Path, default=Path("metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv"))
-    parser.add_argument("--library-metadata", type=Path, default=Path("metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv"))
+    parser.add_argument("--de-stats", type=Path, default=settings.DE_STATS_PATH)
+    parser.add_argument("--guide-kd", type=Path, default=settings.GUIDE_KD_PATH)
+    parser.add_argument("--library-metadata", type=Path, default=settings.LIBRARY_METADATA_PATH)
     parser.add_argument("--clinical-benchmark", type=Path, default=BENCHMARK_CSV_DEFAULT)
-    parser.add_argument("--sample-metadata", type=Path, default=Path("metadata/suppl_tables/sample_metadata.suppl_table.csv"))
-    parser.add_argument("--output", type=Path, default=Path("sources/topic14_target_cards.csv"))
+    parser.add_argument("--sample-metadata", type=Path, default=settings.SAMPLE_METADATA_PATH)
+    parser.add_argument("--output", type=Path, default=settings.REPO_ROOT / "sources" / "topic14_target_cards.csv")
     parser.add_argument("--skip-benchmark", action="store_true")
-    parser.add_argument("--min-cells", type=int, default=200)
-    parser.add_argument("--min-de", type=int, default=50)
+    parser.add_argument("--min-cells", type=int, default=thresholds.MIN_CELLS_DEFAULT)
+    parser.add_argument("--min-de", type=int, default=thresholds.MIN_DE_GENES_DEFAULT)
     return parser.parse_args()
 
 
