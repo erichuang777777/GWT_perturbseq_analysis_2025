@@ -302,6 +302,17 @@ first; never feed readiness decisions**), combination explorer (research-only). 
 the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
 (§1.11), which took priority. Revisit if/when requested.
 
+### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **CONCEPT ONLY, blocked on real data**
+The project owner has (a) CellxGene-based gene safety validation results and (b) an internal
+membrane-protein database (motif length, expression, TCGA/GTEx) originally built for ADC target
+discovery. Both are a direct match for the two `readiness_engine.py` domains that are today almost
+entirely `"unknown"`: `safety_window_score` (only ever `0` for essential genes, else unknown) and
+`tractability_modality` (only local druggable-class gene lists, no expression/structural evidence). Full
+design — schema sketches, exactly which function each maps onto, and the open questions that block
+starting (identifier system, raw-matrix-vs-precomputed-verdict, whether TCGA columns are even relevant
+to a non-oncology CD4 platform) — is in `docs/external_overlay_integration_concept.md`. **Not scheduled**
+until the real files/columns are shared; this section exists so the concept isn't lost in the meantime.
+
 ### 1.11 Platform-grade backlog (B1/B2/B5/B6/C3/C4/C5/C6) — **DONE**
 Requested explicitly: "我想要打造成平台級工具 請你幫我把上述的功能也都一併開發" — build every item the
 external review flagged as "reasonable but out of this toolkit's current scope" now that the scope is
