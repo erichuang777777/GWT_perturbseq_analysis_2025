@@ -191,6 +191,52 @@ def test_readiness_engine_gtex_overlay_alone_does_not_change_tractability(real_c
     assert cd3e["safety_window_score"] == 21
 
 
+def test_readiness_engine_essential_gene_still_gets_real_gtex_safety_window_score(real_data_available):
+    """Regression pin for a confirmed bug: safety_window_score used to
+    hard-code 0 for any essential gene, discarding real GTEx off-context
+    data and showing the *safest-looking* value (0 on this metric's own
+    higher-is-riskier scale) for exactly the gene class that most needs
+    honest reporting. Essentiality is already fully handled by the separate
+    essential_gene red-flag/watchlist cap below -- safety_window_score must
+    report the real overlay value (or honest "unknown") unconditionally,
+    per this repo's unknown != 0 invariant."""
+    if not real_data_available:
+        pytest.skip("real data not present in this checkout")
+    from readiness_engine import compute_readiness
+    from safety_overlay import load_gtex_safety_overlay
+
+    cards = pd.DataFrame(
+        {
+            "target": ["CD3E"],
+            "condition": ["Rest"],
+            "target_id": ["ENSG00000198851"],
+            "statistical_evidence_grade": [4],
+            "pathway_axis": ["unassigned"],
+            "replicate_pass_flag": [True],
+            "crossdonor_correlation_mean": [0.5],
+            "n_total_de_genes": [60],
+            "clinical_axis": ["unassigned"],
+            "positive_control_similarity": [0],
+            "offtarget_flag": [False],
+            "batch_sensitivity_flag": ["not_flagged"],
+            "score_cap_reason": ["none"],
+            "ontarget_significant": [True],
+            "kd_status": ["confirmed"],
+        }
+    )
+    gtex = load_gtex_safety_overlay()
+    result = compute_readiness(cards, overlays=None, essentials={"CD3E"}, broad_effect_genes=None, gtex_overlay=gtex)
+    row = result.iloc[0]
+
+    # The real, non-fabricated GTEx value for CD3E (21/30 off-context tissues)
+    # must flow through even though CD3E is marked essential here.
+    assert row["safety_window_score"] == 21
+    # Essentiality is still fully enforced -- just via the dedicated red-flag
+    # mechanism, not by corrupting safety_window_score.
+    assert "essential_gene" in row["red_flag_override"]
+    assert row["readiness_call"] in ("watchlist", "deprioritize")
+
+
 def test_readiness_engine_without_overlays_is_unchanged_regression():
     """Omitting membrane_overlay/gtex_overlay entirely (the pre-existing call
     signature) must behave exactly as before this feature was added."""

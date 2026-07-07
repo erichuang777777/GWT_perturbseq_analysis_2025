@@ -353,7 +353,14 @@ def compute_readiness(
         if trac_modality == UNKNOWN:
             trac_modality, trac_score = _tractability(gene, overlays)
         genetics = _human_genetic_from_evidence(evidence) or _human_genetic(gene, overlays)
-        safety = 0 if essential else (safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN)
+        # Essentiality is already fully captured by the separate "essential_gene"
+        # red-flag override and _stage()'s grade cap below -- safety_window_score
+        # must not also special-case it, or real GTEx off-context-expression data
+        # gets silently discarded and replaced by a fabricated 0, which reads as
+        # the *safest* possible value on this metric's own documented scale
+        # (higher = broader off-context expression = narrower safety window) for
+        # exactly the gene class that most needs honest reporting here.
+        safety = safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN
         gnomad_flag = gnomad_flag_from_constraint(gene_ensembl, gnomad_overlay) if gnomad_overlay else UNKNOWN
         gnomad_loeuf, gnomad_pli = _gnomad_loeuf_pli(gene_ensembl, gnomad_overlay)
         immune_flags = []
