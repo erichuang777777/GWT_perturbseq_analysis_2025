@@ -1,6 +1,7 @@
 # Implementation Plan — CD4 Perturb-seq Target-Discovery Toolkit
 
-**Status:** living plan · **Last updated:** 2026-07-07 · **Branch:** `claude/drug-discovery-tool-plan-258jof` (PR #1)
+**Status:** living plan · **Last updated:** 2026-07-07 · **Branch:** `claude/drug-discovery-tool-plan-258jof`
+(PR #1 merged wave 1; this branch was rebuilt from `main` post-merge for wave 2 per repo workflow rules)
 
 This is the executable companion to `docs/DRUG_DISCOVERY_TOOL_DEVELOPMENT_PLAN.md` (the strategy).
 It tracks what is **built and verified**, what is **next**, and gives each remaining piece a concrete
@@ -26,10 +27,17 @@ The first implementation wave is landed and tested end-to-end against the real i
 **Files changed:** `src/3_DE_analysis/build_target_cards.py`, `readiness_engine.py` (new),
 `import_manager.py`, `target_card_api.py`, `target_card_dashboard.py`.
 
-### Known scientific gap surfaced during verification
-The `advance` set still contains broad chromatin/essential-like genes (`MED12`, `CREBBP`, `KDM1A`,
-`ELOB`) because `core_essentials_hart.tsv` (283 genes) does not cover them. This is the planned
-**C7 confounder quarantine** — see §1.1. It is flagged, not ignored.
+### Wave 2 — landed and verified (this update)
+
+| Piece | Module | State | Evidence of verification |
+|---|---|---|---|
+| Broad-effect/chromatin confounder quarantine | C7 (§1.1) | **done** | `sources/broad_effect_genes.txt` (239 genes: EDA-named offenders ∪ CORUM chromatin/transcription complexes); `MED12/CREBBP/KDM1A/SGF29` no longer reach `advance` (319→302 unique targets), `PLCG1/CD247/ITK` unaffected, 513 rows carry the reason |
+| Local druggability/safety overlay columns | T1/T9 (§1.3) | **done** | `druggable_class`, `tractability_modality`, `safety_note` columns on every card; `DRUGGABLE_CLASS_MODALITY` is a single source of truth shared by the builder and the readiness engine; verified via TestClient on `/api/targets/{id}/{target}` |
+| Calibration harness | §1.6 | **done** | `calibration.py` + `GET /api/calibration/{id}` + Overview-tab section; on the real GWT cards, Stim8hr recovers **all 8** TCR/proximal positive controls in the top decile; naive top-50 by DE breadth only 13/50-overlaps the strict-filtered top-50 (Spearman r=0.943) — an honest finding that the naive ranking alone is not robustness-safe |
+
+Wave 2 closed the scientific gap noted below (superseded, kept for history): the `advance` set
+used to contain broad chromatin/essential-like genes (`MED12`, `CREBBP`, `KDM1A`, `ELOB`) because
+`core_essentials_hart.tsv` (283 genes) alone did not cover them.
 
 ---
 
@@ -37,21 +45,14 @@ The `advance` set still contains broad chromatin/essential-like genes (`MED12`, 
 
 Ordered by ROI and dependency. Each item is independently shippable.
 
-### 1.1 C7 — Broad/essential-confounder quarantine  *(small, offline-verifiable)*
+### 1.1 C7 — Broad/essential-confounder quarantine  *(small, offline-verifiable)* — **DONE**
 **Why:** raises trust in the existing readiness list immediately; the EDA explicitly warns that
 broad chromatin/essential hits dominate high-DE rankings and must not read as narrow immune pathway hits.
-**Design:**
-- Build a combined "broad-effect" gene set from local resources: `metadata/gene_lists/core_essentials_hart.tsv`
-  + CORUM complexes (`metadata/enrichment_database/corum_humanComplexes.txt`, extract chromatin/transcription
-  complexes) + a curated chromatin/basal-transcription list (the EDA already names the offenders:
-  `TADA2B, SGF29, SUPT20H, TADA1, CCNC, TAF13, KDM1A, NFRKB, MED12, CREBBP, LEO1, ELOB, DENR, TFAM, ARNT, ATP2A2`).
-- In `readiness_engine.py`, add a `broad_effect` red flag (distinct from `essential_gene`) that caps the
-  call at **watchlist** and adds `cd4_immune_red_flags += "broad_effect"`, with a reason string.
-- Keep it a *separate, named* flag so users see "broad/pleiotropic effect" vs "core essential."
-**Files:** `readiness_engine.py`, plus a small `sources/broad_effect_genes.txt` curation.
-**Acceptance:** `MED12`, `CREBBP`, `KDM1A` no longer appear in `advance`; genuine immune genes (`PLCG1`,
-`CD247`, `ITK`) still can; every quarantined row carries a `broad_effect` reason. Verify offline:
-`python readiness_engine.py /tmp/gwt_cards.csv` and assert the set difference.
+**Shipped:** `sources/broad_effect_genes.txt` (239 genes: EDA-named offenders ∪ CORUM chromatin/
+transcription complexes matched by keyword); `readiness_engine.py` `broad_effect` red flag (distinct
+from `essential_gene`) caps the call at watchlist and surfaces in `cd4_immune_red_flags` /
+`next_validation_step`. Verified: `MED12/CREBBP/KDM1A/SGF29` no longer reach `advance`; `PLCG1/CD247/ITK`
+unaffected; 513 rows carry the reason; deterministic.
 
 ### 1.2 Module C — External-evidence layer  *(medium; uses live connectors)*
 **Why:** fills the readiness domains currently stuck at `unknown` (tractability, genetics, clinical) and
@@ -74,15 +75,16 @@ gives each card trials + literature. This is the biggest jump in decision-grade 
 citation where they exist; readiness for those genes shows non-`unknown` tractability; connector-absent
 runs degrade to `source_status: "unavailable"` without crashing.
 
-### 1.3 Local translational overlays  *(small; offline)*
+### 1.3 Local translational overlays  *(small; offline)* — **DONE**
 **Why:** cheap, local, no external calls — strengthens tractability before Module C lands.
-**Design:** T1 druggable-class overlay (kinase/GPCR/enzyme/surface/cytokine-R/NR from
-`metadata/gene_lists/*`) is already loaded by `readiness_engine.load_overlays`. Expose it as a card
-column (`druggable_class`, `tractability_modality`) in `build_cards_frame` output and in the dashboard
-Target Card so users see modality without opening readiness. T9 safety overlay: add
-`clinvar_path_likelypath` + IUIS-IEI immune-effector membership as a `safety_note`.
-**Files:** `build_target_cards.py`, dashboard. **Acceptance:** kinases show "small molecule", cytokine
-receptors show "antibody/biologic"; genes in no class show "none".
+**Shipped:** every card now carries `druggable_class`, `tractability_modality` (from
+`metadata/gene_lists/*` druggable-class files; `DRUGGABLE_CLASS_MODALITY` lives once in
+`build_target_cards.py` and is imported by `readiness_engine.py` so the two never drift), and
+`safety_note` (ClinVar pathogenic/likely-pathogenic ∪ `metadata/immune_effector_genes.csv` category
+membership — substituted for the originally planned IUIS-IEI table, which is disease-level, not a
+clean gene list, so using it would have meant fabricating a parser over messy free-text fields).
+Verified: `ZAP70`→kinases/small molecule, `IL2RA`→catalytic_receptors/small molecule-biologic,
+`CTLA4`→no druggable-class match but carries ClinVar + immune-effector notes; 4,592/33,983 rows matched.
 
 ### 1.4 Module D+ — Target Card dossier page  *(medium)*
 **Why:** the deep per-`target × condition` view ties everything together with provenance.
@@ -101,13 +103,20 @@ modules in `sources/topic15_cd4_tcell_upstream_downstream_seed_modules.csv`; emi
 **Files:** `target_card_api.py` `_module_scores`, dashboard. **Acceptance:** Treg/Th1/Th2 modules score with
 sign; positive controls land in expected modules.
 
-### 1.6 Calibration harness  *(medium; offline)*
+### 1.6 Calibration harness  *(medium; offline)* — **DONE**
 **Why:** trust is demonstrated, not asserted — recover known biology on demand.
-**Design:** `src/3_DE_analysis/calibration.py`: positive-control recovery (TCR/proximal genes in top
-deciles), known drug-axis recovery, rank stability after dropping off-target/low-cell/low-robustness rows,
-donor/guide-holdout concordance (inputs exist under `donor_robustness/`, `guide_robustness/`). Emit a
-`calibration_report` the dashboard renders. **Acceptance:** `CD3E/LAT/ZAP70/PLCG1` in top deciles; report
-reproducible.
+**Shipped:** `src/3_DE_analysis/calibration.py` computes positive-control recovery (8 TCR/proximal genes,
+per-condition decile rank), known drug-axis enrichment (`clinical_axis` assignment rate in grade≥3 rows
+vs overall, plus which of the 6 named axes are actually recovered), and rank stability (Spearman
+correlation + top-50 churn between the naive DE-breadth ranking and the same ranking after the EDA's
+strict off-target/low-cell/low-robustness filter) — built directly on `target_cards.csv`'s existing
+`crossdonor_correlation_mean`/`crossguide_correlation` columns rather than recomputing pairwise donor/guide
+holdout correlations from the raw per-guide/per-donor result files, since those are already summarized
+into the card. `GET /api/calibration/{dataset_id}` (cached alongside `readiness.csv`) + an Overview-tab
+section. **Verified:** Stim8hr recovers all 8 positive controls in the top decile (matching the EDA's own
+finding that Stim8hr has the strongest acute-activation signal); 75% land in top-2-deciles overall; 2/6
+known drug axes recovered among grade≥3 rows; naive top-50 only 13/50-overlaps the strict-filtered top-50
+(Spearman r=0.943) — a real, honest finding that the naive ranking alone is not robustness-safe.
 
 ### 1.7 Disease translator (T8)  *(large)*
 Indication picker (RA/IBD/MS/SLE/psoriasis/cancer-TME via ICD-10 normalization) → targets whose CD4
@@ -131,15 +140,16 @@ first; never feed readiness decisions**), combination explorer (research-only).
 
 ```
 Wave 1 (DONE):   foundation + C4 batch flag + readiness engine (R1–R3) + upload merge loop + dashboard
-Wave 2 (next):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
-Wave 3:          1.2 Module C external evidence  →  1.4 Target Card dossier  →  1.5 signed modules
+Wave 2 (DONE):   1.1 C7 quarantine  →  1.3 local overlays  →  1.6 calibration harness   [all offline, high trust]
+Wave 3 (next):   1.2 Module C external evidence  →  1.4 Target Card dossier  →  1.5 signed modules
 Wave 4:          1.7 disease translator  →  1.8 persistence/multi-user
 Wave 5:          1.9 cell-level (after h5ad)  →  1.10 v2 generators (guarded)
 ```
 
-Rationale: Wave 2 is small, offline, and directly raises the credibility of what already ships (fixes the
-`advance`-list confounders, exposes modality, proves biology recovery) before taking on the connector- and
-data-heavy waves.
+Rationale: Wave 2 was small, offline, and directly raised the credibility of what already ships (fixed the
+`advance`-list confounders, exposed modality, proved biology recovery) before taking on the connector- and
+data-heavy Wave 3. Wave 3 is the first wave that depends on live external connectors (ClinicalTrials.gov,
+PubMed, bioRxiv, Open Targets) and is the biggest remaining jump in decision-grade value.
 
 ---
 
