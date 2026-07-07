@@ -30,6 +30,40 @@ Coverage is intentionally partial (~49% of GWT targets) -- a gene absent
 from the overlay is genuinely unchecked, not "not druggable"/"not safe";
 every lookup function here follows the same ``unknown`` contract as
 ``readiness_engine.py``'s existing ``_tractability``/``_human_genetic``.
+
+A third, independent safety signal (§C of ``docs/next_phases_plan.md``,
+"gnomAD LOEUF/pLI 安全性補強") is gnomAD's loss-of-function constraint:
+LOEUF (a low value = strongly LoF-intolerant) and pLI are complementary to
+the GTEx expression-breadth signal above -- GTEx says *where* a gene is
+expressed outside CD4 context, gnomAD says *how tolerant the human
+population is* to losing a copy of it. Low LOEUF is a soft risk flag for a
+narrower pharmacological safety window under systemic inhibition; it is
+NOT the same claim as pharmacological (small-molecule/antibody) LoF
+intolerance, so (exactly like ``safety_window_from_gtex``) this stays a
+descriptive annotation and never caps ``readiness_call``/
+``overall_readiness_stage``.
+
+The sandbox this module was developed in has no network egress to gnomAD
+(policy-blocked, same as Open Targets -- see
+``external_evidence_cache.py``'s docstring), so there is no full-genome
+gnomAD snapshot checked in yet. What IS real and checked in is
+``docs/mvp-research/connector_enrichment_demo.csv``, which carries
+independently-verified gnomAD LOEUF/pLI values for 8 genes (CD3E, LAT,
+TADA2B, SENP5, PLCG1, VAV1, SGF29, UBXN1). ``load_gnomad_constraint_overlay``
+reads a small derived seed file built from those 8 real rows --
+``sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv``
+(columns ``ensembl_id``, ``gene_symbol``, ``loeuf``, ``pli``) -- with each
+gene symbol resolved to its real Ensembl gene ID via
+``gene_identifier_resolver.load_resolver()`` (no invented IDs). This is
+explicitly an 8-gene seed for testing/demo, exactly analogous to how
+``docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md`` documents the GTEx
+file's provenance: a full-genome gnomAD download (via gnomAD's GraphQL API
+or the ``mcp-variants`` connector's ``gene_constraint`` tool, per
+``docs/mvp-research/ENHANCEMENT_連結器加強建議.md`` §2) is deployment-time
+work the project owner supplies later by dropping a wider file at the same
+path -- the loader's honest-fallback contract (below) is what makes that
+swap safe: a missing/malformed file degrades to ``available: False``, never
+a fabricated LOEUF/pLI value.
 """
 
 from __future__ import annotations
@@ -47,8 +81,18 @@ MEMBRANE_OVERLAY_PATH_DEFAULT = (
     settings.REPO_ROOT / "docs" / "mvp-research" / "adc_overlay_gwt_overlap_full.csv"
 )
 GTEX_PER_TISSUE_PATH_DEFAULT = settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gtex_per_tissue.parquet"
+GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT = (
+    settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
+)
 
 GTEX_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_tissues_expressed", "max_expression_outside_cd4_context"]
+GNOMAD_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "loeuf", "pli"]
+
+# Per the connector-recommendation doc's conservative rule (§2 of
+# ENHANCEMENT_連結器加強建議.md): LOEUF below this bar flags loss-of-function
+# intolerance. This is the ONLY threshold used by gnomad_flag_from_constraint;
+# it does not vary by gene.
+LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.35
 
 MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "gene_symbol",
@@ -181,3 +225,66 @@ def safety_window_from_gtex(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
     if row.empty:
         return UNKNOWN
     return int(row.iloc[0]["n_tissues_expressed"])
+
+
+def _empty_gnomad_summary() -> pd.DataFrame:
+    return pd.DataFrame(columns=GNOMAD_REQUIRED_COLUMNS)
+
+
+def load_gnomad_constraint_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
+    """Load the gnomAD LOEUF/pLI constraint overlay (join key: Ensembl gene ID).
+
+    Returns ``{"available": bool, "reason": str|None, "table": DataFrame}``.
+    Never raises; a missing or malformed file produces an explicit
+    ``available: False`` with an empty table -- never a fabricated
+    constraint value.
+
+    Defaults to the 8-gene seed file derived from
+    ``docs/mvp-research/connector_enrichment_demo.csv`` (see module
+    docstring); a full-genome gnomAD snapshot can be dropped in at the same
+    path later with no code change required.
+    """
+    resolved = Path(path) if path is not None else GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT
+    if not resolved.exists():
+        return {
+            "available": False,
+            "reason": f"gnomAD constraint overlay file not found: {resolved}",
+            "table": _empty_gnomad_summary(),
+        }
+    df = pd.read_csv(resolved)
+    missing = [c for c in GNOMAD_REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        return {
+            "available": False,
+            "reason": f"gnomAD constraint overlay file missing required columns: {missing}",
+            "table": _empty_gnomad_summary(),
+        }
+    return {"available": True, "reason": None, "table": df}
+
+
+def gnomad_flag_from_constraint(gene_ensembl: str, overlay: Dict[str, Any]) -> str:
+    """Soft LoF-constraint flag from gnomAD LOEUF, keyed by Ensembl gene ID.
+
+    Returns ``"loss_intolerant"`` if LOEUF < ``LOEUF_LOSS_INTOLERANT_THRESHOLD``
+    (0.35, per the connector recommendation doc's conservative rule);
+    ``"none"`` if the gene is in the overlay but does not meet that bar;
+    ``"unknown"`` if the overlay is unavailable or the gene is absent
+    (unchecked, not "safe" -- same ``unknown != 0`` contract as
+    ``safety_window_from_gtex``/``tractability_from_membrane_overlay``).
+
+    This is a purely descriptive annotation: LoF intolerance in the human
+    population is not the same claim as pharmacological (small-molecule /
+    antibody) intolerance to inhibition, so this flag must never cap
+    ``readiness_call``/``overall_readiness_stage`` -- ``readiness_engine.py``
+    surfaces it alongside, not inside, ``_stage()``.
+    """
+    if not overlay.get("available") or not gene_ensembl:
+        return UNKNOWN
+    table = overlay["table"]
+    row = table[table["ensembl_id"] == gene_ensembl]
+    if row.empty:
+        return UNKNOWN
+    loeuf = row.iloc[0]["loeuf"]
+    if pd.isna(loeuf):
+        return UNKNOWN
+    return "loss_intolerant" if float(loeuf) < LOEUF_LOSS_INTOLERANT_THRESHOLD else "none"

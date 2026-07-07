@@ -27,7 +27,7 @@ from gene_identifier_resolver import load_resolver, result_status
 from gene_search import search_genes
 from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
 from population_hypothesis import CAVEAT_TEXT, build_population_hypothesis_card, load_burden_estimates
-from safety_overlay import load_gtex_safety_overlay, load_membrane_tractability_overlay
+from safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay, load_membrane_tractability_overlay
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -141,6 +141,7 @@ def _overlays():
 
 _MEMBRANE_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
 _GTEX_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
+_GNOMAD_OVERLAY_CACHE: Optional[Dict[str, Any]] = None
 
 
 def _membrane_overlay() -> Dict[str, Any]:
@@ -157,6 +158,15 @@ def _gtex_overlay() -> Dict[str, Any]:
     if _GTEX_OVERLAY_CACHE is None:
         _GTEX_OVERLAY_CACHE = load_gtex_safety_overlay()
     return _GTEX_OVERLAY_CACHE
+
+
+def _gnomad_overlay() -> Dict[str, Any]:
+    # Cached like _gtex_overlay(): a deterministic function of a static local
+    # file (safety_overlay.py, §C of docs/next_phases_plan.md).
+    global _GNOMAD_OVERLAY_CACHE
+    if _GNOMAD_OVERLAY_CACHE is None:
+        _GNOMAD_OVERLAY_CACHE = load_gnomad_constraint_overlay()
+    return _GNOMAD_OVERLAY_CACHE
 
 
 def _essentials():
@@ -615,6 +625,7 @@ def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict
             evidence_dir=EVIDENCE_CACHE_DIR,
             membrane_overlay=_membrane_overlay(),
             gtex_overlay=_gtex_overlay(),
+            gnomad_overlay=_gnomad_overlay(),
         )
         readiness.to_csv(readiness_csv, index=False)
     else:
