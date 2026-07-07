@@ -190,3 +190,65 @@ Stamped on every built dataset's `metadata.json` and every API response's `prove
 | `signature_set_version` | Fingerprint of the seed-module gene sets used for module scoring |
 | `kd_threshold_version` | Per-row, see §2 above |
 | `built_at` | Timestamp the dataset was built |
+
+---
+
+## 10. Mechanism graph (A2, `/api/mechanism-graph/{gene}`)
+
+`mechanism_graph.py::build_mechanism_graph`, served by `target_card_api.py::get_mechanism_graph`.
+**Purely descriptive** — a target-centered network view combining `pathway_network_cache.py`'s cached
+Reactome pathway membership + STRING interaction partners with this platform's own evidence (cards/
+readiness), for human interpretation only. Never feeds `readiness_call`/`overall_readiness_stage`/
+`statistical_evidence_grade`. Read-only: it reads whatever `pathway_network_cache.py` has already
+batch-fetched to `sources/target_tool_cache/_pathway/<gene>.json` — it never fetches Reactome/STRING
+live, so a gene with no snapshot yet returns an honest `available: False`, not a live-fetch stall or a
+fabricated graph.
+
+Response shape:
+
+```
+{ "gene_query": str,                 # the raw query string
+  "resolution": {...},               # gene_identifier_resolver.py's resolve() result
+  "dataset_id": str|None,            # echoed back; None if no evidence overlay was requested
+  "gene": str,                       # resolved canonical symbol (center node id)
+  "available": bool,
+  "reason": str|None,                # non-None on total or partial source failure (e.g. Reactome unavailable but STRING ok)
+  "fetched_at": ISO-8601 str|None,   # from the underlying pathway_network_cache snapshot
+  "source_version": str|None,
+  "reactome_status": "ok"|"unavailable"|None,
+  "string_status": "ok"|"unavailable"|None,
+  "nodes": [
+    { "id": str, "type": "gene", "role": "query"|"string_partner",
+      "evidence_available": bool,
+      "evidence": [ { "condition": str, "readiness_call": str, "overall_readiness_stage": str,
+                       "red_flag_override": str, "broad_effect_flag": bool, "kd_status": str,
+                       "tractability_modality": str }, ... ]   # only present when evidence_available
+    },
+    { "id": "pathway:<pathway_id>", "type": "pathway", "pathway_id": str, "pathway_name": str,
+      "is_in_disease": bool|None }
+  ],
+  "edges": [
+    { "source": str, "target": str, "relationship": "string_interaction", "score": int|None },
+    { "source": str, "target": "pathway:<pathway_id>", "relationship": "reactome_pathway_comembership",
+      "pathway_id": str, "pathway_name": str }
+  ]
+}
+```
+
+Notes:
+- A Reactome pathway is modeled as its **own graph node** (not expanded into a list of co-member
+  genes) — `fetch_reactome_pathways` only returns which pathways contain the query gene, not which
+  other genes belong to each pathway, so claiming gene-level co-member nodes would fabricate data the
+  cache does not hold.
+- `evidence_available: False` (and `"evidence"` key omitted) for any gene absent from the supplied
+  `cards`/`readiness` tables — including STRING neighbor genes not in the built dataset. Never a
+  guessed/default value.
+- Without `?dataset_id=...`, the endpoint returns the bare pathway/network graph with no evidence
+  overlay (every gene node's `evidence_available` is `False`). With `?dataset_id=...`, cards/readiness
+  are loaded from that dataset's `target_cards.csv`/`readiness.csv`, same lookup as
+  `GET /api/disease/{disease_name}/targets/{dataset_id}`.
+- **Verified** (`tests/test_mechanism_graph.py`, using the real gene/pathway/partner identities already
+  pinned by `tests/test_pathway_network_cache.py`): a CD3E snapshot graph correctly includes CD247/
+  CD3D/CD3G as STRING-partner nodes and a TCR-signaling Reactome pathway node; a MED12 snapshot graph's
+  STRING partners are dominated by other real Mediator-complex subunits (`MED*`); a gene with no cached
+  snapshot returns `available: False` without crashing.

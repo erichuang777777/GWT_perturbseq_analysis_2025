@@ -299,9 +299,45 @@ only the first is true as of this entry.
 
 ### 1.10 v2 hypothesis generators (guarded)  *(optional)*
 Signature-to-compound (LINCS/CMap), mechanism graph, perturbation prediction (**benchmark vs baselines
-first; never feed readiness decisions**), combination explorer (research-only). **Status:** not started;
-the project owner's explicit request after §1.9 was redirected to the platform-grade backlog below
-(§1.11), which took priority. Revisit if/when requested.
+first; never feed readiness decisions**), combination explorer (research-only). **Status:** mechanism
+graph (A2) shipped, see below; signature-to-compound/perturbation-prediction/combination-explorer not
+started. Revisit if/when requested.
+
+#### A2. Mechanism graph — **DONE**
+Design in `docs/next_phases_plan.md` §A2. `src/3_DE_analysis/mechanism_graph.py::build_mechanism_graph`
+assembles a target-centered node/edge graph purely by reading `pathway_network_cache.py`'s already-cached
+Reactome pathway membership + STRING interaction partners for a gene (never a live fetch — same
+offline-batch, never-in-request-path pattern as the rest of the evidence layer), optionally overlaid with
+this platform's own evidence (per-condition `readiness_call`/`overall_readiness_stage`/`red_flag_override`/
+`broad_effect_flag`/`kd_status`/`tractability_modality`, pulled only from real `cards`/`readiness` columns,
+never fabricated for a gene absent from those tables). Wired into
+`GET /api/mechanism-graph/{gene}` (`target_card_api.py`), following the exact resolve-then-lookup pattern
+as `GET /api/population-hypothesis/{gene}`; `?dataset_id=` is optional and adds the evidence overlay.
+Documented in `docs/data_dictionary.md` §10. **Guardrail respected:** purely descriptive — nothing in this
+module or endpoint writes into `readiness_call`/`overall_readiness_stage`/`statistical_evidence_grade`.
+
+A Reactome pathway is modeled as its own graph node rather than expanded into "co-member genes," because
+`fetch_reactome_pathways` only returns which pathways contain the query gene, not the full membership list
+of each pathway — expanding it would fabricate data the cache doesn't hold.
+
+**Verified** (`tests/test_mechanism_graph.py`, 9 new tests, all passing; full suite `python3 -m pytest
+tests/ -q` → 61 passed, 8 skipped [network-dependent Reactome/STRING tests in
+`test_pathway_network_cache.py`, skipped because this sandbox's egress proxy blocks reactome.org/
+string-db.org — pre-existing, unrelated to this change], 0 failed): using the real, already-verified
+gene/pathway/partner identities pinned by `tests/test_pathway_network_cache.py` (this sandbox cannot make
+a live Reactome/STRING call, so a cached-snapshot fixture with those real identities stands in for a live
+fetch — only the numeric STRING scores in the fixture are synthetic placeholders, called out explicitly in
+the test file, since no live call could confirm the real score values here) —
+- CD3E: 8 graph nodes (1 center + 2 real Reactome pathway nodes incl. TCR signaling + 5 real STRING
+  partner nodes CD247/CD3D/CD3G/CD4/SYK), 7 edges (2 `reactome_pathway_comembership` + 5
+  `string_interaction`).
+- MED12: Reactome honestly `unavailable` (no Ensembl id in this fixture) surfaced via `reason`, not
+  silently dropped; 5 graph nodes (1 center + 4 STRING partner nodes MED1/MED13/MED23/CDK8, ≥3 of which
+  are real Mediator-complex subunits), 4 `string_interaction` edges, 0 pathway nodes.
+- Gene with no cached snapshot → `available: False`, empty nodes/edges, explicit reason, no crash.
+- `GET /api/mechanism-graph/{gene}` TestClient checks: honest `available: False` against this checkout's
+  real (empty) pathway cache dir, `404` for an unknown `dataset_id`, and an end-to-end pass reading a
+  fixture cache dir via `monkeypatch` confirming the real CD247/CD3D/CD3G partners flow through the API.
 
 ### 1.12 Safety + membrane/tractability overlays (CellxGene + TCGA/GTEx membrane-protein DB) — **DONE (both halves)**
 Original concept (schema sketches, open questions) in `docs/external_overlay_integration_concept.md`.
