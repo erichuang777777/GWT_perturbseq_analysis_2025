@@ -73,6 +73,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 
+from common import degrade
 from config import settings
 
 UNKNOWN = "unknown"
@@ -125,19 +126,17 @@ def load_membrane_tractability_overlay(path: Optional[Path] = None) -> Dict[str,
     """
     resolved = Path(path) if path is not None else MEMBRANE_OVERLAY_PATH_DEFAULT
     if not resolved.exists():
-        return {
-            "available": False,
-            "reason": f"membrane overlay file not found: {resolved}",
-            "table": empty_membrane_overlay_table(),
-        }
+        return degrade.unavailable_available(
+            f"membrane overlay file not found: {resolved}", data_key="table", empty=empty_membrane_overlay_table()
+        )
     df = pd.read_csv(resolved)
     missing = [c for c in MEMBRANE_OVERLAY_REQUIRED_COLUMNS if c not in df.columns]
     if missing:
-        return {
-            "available": False,
-            "reason": f"membrane overlay file missing required columns: {missing}",
-            "table": empty_membrane_overlay_table(),
-        }
+        return degrade.unavailable_available(
+            f"membrane overlay file missing required columns: {missing}",
+            data_key="table",
+            empty=empty_membrane_overlay_table(),
+        )
     return {"available": True, "reason": None, "table": df}
 
 
@@ -155,19 +154,15 @@ def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
     """
     resolved = Path(path) if path is not None else GTEX_PER_TISSUE_PATH_DEFAULT
     if not resolved.exists():
-        return {
-            "available": False,
-            "reason": f"GTEx per-tissue expression file not found: {resolved}",
-            "table": _empty_gtex_summary(),
-        }
+        return degrade.unavailable_available(
+            f"GTEx per-tissue expression file not found: {resolved}", data_key="table", empty=_empty_gtex_summary()
+        )
     df = pd.read_parquet(resolved)
     missing = [c for c in GTEX_REQUIRED_COLUMNS if c not in df.columns]
     if missing:
-        return {
-            "available": False,
-            "reason": f"GTEx overlay file missing required columns: {missing}",
-            "table": _empty_gtex_summary(),
-        }
+        return degrade.unavailable_available(
+            f"GTEx overlay file missing required columns: {missing}", data_key="table", empty=_empty_gtex_summary()
+        )
     return {"available": True, "reason": None, "table": df}
 
 

@@ -20,6 +20,7 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 from build_target_cards import POSITIVE_CONTROLS
+from common import coerce
 
 # TCR/proximal-activation genes used as the primary recovery benchmark
 # (sources/topic11_breakthrough_directions_toolkit_opportunities.md, "Validation metrics").
@@ -42,14 +43,12 @@ KNOWN_DRUG_AXES = {
 }
 
 
-def _as_bool(series: pd.Series) -> pd.Series:
-    """Robust string/int/bool -> bool, independent of pandas dtype inference.
-
-    A bare ``series.astype(bool)`` coerces the *strings* ``"True"``/``"False"``
-    (which appear when a bool column is object-dtype, e.g. mixed with a NaN) both
-    to ``True``, silently inverting the strict filter. This normalizes explicitly.
-    """
-    return series.astype(str).str.strip().str.lower().isin({"true", "1", "yes", "y", "t"})
+# Re-export for backward compatibility -- canonical implementation now lives
+# in common/coerce.py (architecture refactor Phase 1). The bug this guards
+# against (a bare ``series.astype(bool)`` silently coercing the *strings*
+# "True"/"False" both to True on an object-dtype column) is documented in
+# ``common/coerce.py``'s module docstring, which this is the origin of.
+_as_bool = coerce.as_bool
 
 
 def _decile(rank_pct: float) -> int:
