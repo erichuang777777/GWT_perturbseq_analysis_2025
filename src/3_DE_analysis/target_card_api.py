@@ -28,6 +28,7 @@ from gene_search import search_genes
 from cre_schema import cre_for_gene, load_cre_elements, load_variant_cre_links
 from population_hypothesis import CAVEAT_TEXT, build_population_hypothesis_card, load_burden_estimates
 from safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay, load_membrane_tractability_overlay
+from mechanism_graph import build_mechanism_graph
 from import_manager import (
     ImportPayload,
     apply_and_validate_mapping,
@@ -60,6 +61,10 @@ GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
 EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
+# A2: pathway_network_cache.py's snapshot directory -- mechanism_graph.py only
+# ever reads what's already been batch-fetched here, same offline-batch,
+# never-live-in-request-path pattern as EVIDENCE_CACHE_DIR above.
+PATHWAY_CACHE_DIR = CACHE_ROOT / "_pathway"
 DISEASE_ASSOCIATIONS_PATH = ROOT / "src" / "6_functional_interaction" / "results" / "disease_gene_associations_detailed.csv"
 
 # B5 schema placeholders: no CRE dataset is present in this repo. These paths
@@ -845,6 +850,40 @@ def get_population_hypothesis(
             "caveat": CAVEAT_TEXT,
         }
     return {"available": True, "matched": True, "found_in_burden_table": True, **_json_object(card.iloc[0].to_dict())}
+
+
+@app.get("/api/mechanism-graph/{gene}")
+def get_mechanism_graph(
+    gene: str,
+    dataset_id: Optional[str] = Query(
+        default=None,
+        description="built dataset to overlay cards/readiness evidence from; omit for the bare pathway/network graph",
+    ),
+) -> Dict[str, Any]:
+    """A2: target-centered mechanism graph (Reactome pathway membership + STRING
+    interaction partners), optionally overlaid with this platform's own evidence.
+
+    Read-only; reads pathway_network_cache.py's cached snapshot (mechanism_graph.py
+    never fetches live) and, if ``dataset_id`` is supplied, that dataset's built
+    ``target_cards.csv``/``readiness.csv`` to enrich each gene node. Purely
+    descriptive -- never feeds ``readiness_call``/``overall_readiness_stage``.
+    """
+    resolver = _gene_resolver()
+    resolution = resolver.resolve(gene)
+    lookup_gene = resolution["canonical_symbol"] if resolution.get("matched") else gene
+
+    cards_df = None
+    readiness_df = None
+    if dataset_id:
+        out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+        if not out_csv.exists():
+            raise HTTPException(status_code=404, detail="dataset_id not found")
+        cards_df = _normalize_cell_values(_load_cards(out_csv))
+        readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+        readiness_df = pd.read_csv(readiness_csv) if readiness_csv.exists() else None
+
+    graph = build_mechanism_graph(lookup_gene, PATHWAY_CACHE_DIR, cards=cards_df, readiness=readiness_df)
+    return {"gene_query": gene, "resolution": resolution, "dataset_id": dataset_id, **graph}
 
 
 @app.post("/api/run/target-card")
