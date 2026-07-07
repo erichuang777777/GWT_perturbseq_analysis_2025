@@ -36,6 +36,7 @@ from import_manager import (
     read_table_preview,
     register_import,
     suggested_mapping,
+    utc_now,
 )
 
 
@@ -53,6 +54,21 @@ GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
 DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 DEFAULT_BROAD_EFFECT = ROOT / "sources" / "broad_effect_genes.txt"
 EVIDENCE_CACHE_DIR = CACHE_ROOT / "_evidence"
+
+# Bump whenever build_target_cards.py, readiness_engine.py, calibration.py, or
+# external_evidence_cache.py change scoring/engine behavior, so every dataset's
+# provenance footer can say exactly which engine produced it.
+ENGINE_VERSION = "1.3.0"  # wave 3: readiness engine + real batch flag + upload merge loop (1.0-1.2) + external evidence (1.3)
+
+
+def _data_version_fingerprint(paths: List[Path]) -> str:
+    """Deterministic fingerprint of input file identity: name + mtime + size, joined."""
+    parts = []
+    for path in paths:
+        if path and Path(path).exists():
+            stat = Path(path).stat()
+            parts.append(f"{Path(path).name}@{int(stat.st_mtime)}:{stat.st_size}")
+    return ";".join(parts) if parts else "unknown"
 
 
 def _overlays():
@@ -261,8 +277,13 @@ def _module_scores(df: pd.DataFrame) -> pd.DataFrame:
 
 def _persist_metadata(dataset_id: str, status: str, payload: Dict[str, Any]) -> None:
     path = _dataset_path(dataset_id) / "metadata.json"
-    data = {"dataset_id": dataset_id, "status": status}
-    data.update(payload)
+    data = {
+        "dataset_id": dataset_id,
+        "status": status,
+        "engine_version": ENGINE_VERSION,
+        "built_at": utc_now(),
+    }
+    data.update(payload)  # payload may override engine_version/built_at/data_version if the caller sets them explicitly
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
@@ -459,6 +480,7 @@ def merge_import(import_id: str, req: MergeRequest) -> Dict[str, Any]:
             "origin": "user_upload",
             "rows": int(cards.shape[0]),
             "output": str(out_csv),
+            "data_version": _data_version_fingerprint([source_path]),
             "lineage": {
                 "kind": "user_merge",
                 "import_id": import_id,
@@ -614,11 +636,13 @@ def run_target_card(req: RunRequest) -> Dict[str, Any]:
     preview_limit = int(req.max_rows) if req.max_rows and req.max_rows > 0 else 20
     metadata = {
         "dataset_id": dataset_id,
+        "origin": "gwt_reference",
         "params": req.dict(),
         "rows": int(cards.shape[0]),
         "output": str(out_csv),
         "module_scores_enabled": bool(req.include_module_scores),
         "preview_limit": preview_limit,
+        "data_version": _data_version_fingerprint([de_stats, guide_kd, library_metadata, bench, DEFAULT_SAMPLE_META]),
     }
     preview = cards.head(preview_limit).to_dict(orient="records")
     _persist_metadata(dataset_id, status="completed", payload=metadata)

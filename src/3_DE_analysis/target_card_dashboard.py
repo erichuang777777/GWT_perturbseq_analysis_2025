@@ -667,6 +667,20 @@ with tabs[1]:
         st.subheader("Evidence graph")
         st.graphviz_chart(_evidence_graph(selected, summary_row))
 
+        status = _dataset_status(dataset_id)
+        lineage = status.get("lineage") or {}
+        footer_bits = [
+            f"dataset_id={dataset_id}",
+            f"origin={status.get('origin', 'gwt_reference')}",
+            f"engine_version={status.get('engine_version', 'NA')}",
+            f"built_at={status.get('built_at', 'NA')}",
+            f"data_version={status.get('data_version', 'NA')}",
+        ]
+        if lineage:
+            footer_bits.append(f"import_id={lineage.get('import_id', 'NA')}")
+            footer_bits.append(f"source_name={lineage.get('source_name', 'NA')}")
+        st.caption(" · ".join(footer_bits))
+
 with tabs[2]:
     module_df = _modules(dataset_id)
     clinical_chart = _count_chart(summary_payload.get("clinical_counts", []), "clinical_axis")
