@@ -66,6 +66,12 @@ def _disease_associations():
 # provenance footer can say exactly which engine produced it.
 ENGINE_VERSION = "1.3.0"  # wave 3: readiness engine + real batch flag + upload merge loop (1.0-1.2) + external evidence (1.3)
 
+# Which upstream GWT dataset release this toolkit's local CSVs correspond to.
+# Distinct from ENGINE_VERSION (this toolkit's own scoring logic) -- bump only
+# when the underlying DE_stats/guide_kd/sgrna_library upstream release changes,
+# per docs/de_and_baseline_spec.md and the manuscript DOI in README.md.
+DATASET_VERSION = "gwt_marson2025/bioRxiv-10.64898-2025.12.23.696273v1"
+
 
 def _data_version_fingerprint(paths: List[Path]) -> str:
     """Deterministic fingerprint of input file identity: name + mtime + size, joined."""
@@ -607,7 +613,9 @@ def get_calibration(dataset_id: str, refresh: bool = Query(default=False)) -> Di
     calib_json = _dataset_path(dataset_id) / "calibration.json"
     if refresh or not calib_json.exists() or calib_json.stat().st_mtime < out_csv.stat().st_mtime:
         cards = _normalize_cell_values(_load_cards(out_csv))
-        report = run_calibration(cards)
+        readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+        readiness_df = pd.read_csv(readiness_csv) if readiness_csv.exists() else None
+        report = run_calibration(cards, readiness=readiness_df)
         calib_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
     else:
         report = json.loads(calib_json.read_text(encoding="utf-8"))
@@ -700,6 +708,7 @@ def run_target_card(req: RunRequest) -> Dict[str, Any]:
         "module_scores_enabled": bool(req.include_module_scores),
         "preview_limit": preview_limit,
         "data_version": _data_version_fingerprint([de_stats, guide_kd, library_metadata, bench, DEFAULT_SAMPLE_META]),
+        "dataset_version": DATASET_VERSION,
     }
     preview = cards.head(preview_limit).to_dict(orient="records")
     _persist_metadata(dataset_id, status="completed", payload=metadata)

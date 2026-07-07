@@ -99,6 +99,42 @@ mechanistic but isn't backed by the data, this item is descoped until per-gene d
 are available (would require the h5ad extension, §1.9, or a new pseudobulk export). The existing
 binary-membership module score (`/api/modules`) is left as-is.
 
+### Response to an external technical review (this update)
+
+An independent technical review of a related "CD4 Perturb-seq Explorer" planning document (a document
+this repo does not have and could not locate — see the review's own reference,
+`CD4_Perturbseq_Explorer_Development_Plan.md v1.0`) was received. Rather than fabricate that referenced
+document, its concretely-actionable, high-value critiques were checked against and applied directly to
+the real code and data in this repo, since several turned out to be exact, verifiable gaps:
+
+| Review item | Finding in this repo | Fix shipped |
+|---|---|---|
+| A1: KD status must be a first-class 3-state field (confirmed/weak/not_measurable), not a diluted confidence weight | Confirmed real: `ntc_mean_expr` (target baseline expression in NTC cells) exists in `guide_kd_efficiency.suppl_table.csv` and is invariant per target-condition (0/37,578 groups have >1 value); 13.9% of guide-level rows have `ntc_mean_expr <= 0.001` — a real, large "can't even assess" population | `build_target_cards.py::_kd_status` (confirmed/weak/not_measurable, reusing the dataset's own documented 0.001 expression floor for `high_confidence_no_effect_guides`); wired into `score_cap_reason` and as `readiness_engine.py` red-flag overrides (`kd_not_measurable` caps at watchlist, `kd_weak` caps at validate) |
+| A4: NTC baseline / DE methodology must be documented, not implicit | Confirmed: `metadata/data_sharing_readme.md` already states the pseudobulk unit (guide x donor x condition), the 10% FDR threshold, and the KD t-test definition — it just wasn't written up as a citable spec | `docs/de_and_baseline_spec.md` (new) |
+| A5: `condition_specificity_score` (CSI) is a naive share-of-total ratio: noise-insensitive, direction-blind, cross-condition-scale-biased | Confirmed real: `condition_specificity_score = n_total_de_genes / total_by_target` is exactly this formula | Added `condition_specificity_zscore` (within-condition standardization) and `effect_direction_flip_flag` (736/34k rows have a sign-flipping on-target effect across conditions) alongside the original score, which is now code-commented as a heuristic; a rigorous condition x perturbation interaction test is out of scope (needs per-guide/per-cell modeling this toolkit doesn't have) |
+| B4: every export/response should carry dataset/engine version layers | Already had `engine_version`/`built_at`/`data_version` (Wave 3) | Added `DATASET_VERSION` (references the GWT bioRxiv DOI), stamped on GWT-reference builds only (not user uploads, which are a different dataset) |
+| C2: validation panel needs BOTH positive and negative controls, calibrated against real thresholds | Already had `positive_control_recovery` (Wave 2); no negative-control check existed | `calibration.py::control_panel_calibration` — 21-gene positive panel (existing `POSITIVE_CONTROLS` + STAT5A/STAT5B/TNFRSF9) + `kd_status=="not_measurable"` as the operational negative-control population |
+
+**Calibration finding, reported honestly rather than tuned away:** negative controls work cleanly —
+99.37% of 5,084 `kd_status=="not_measurable"` rows land at grade 1, 0% reach grade≥3 or an
+advance/validate readiness call. Positive controls are more nuanced: only 20% of the 21-gene panel
+reach the strict `statistical_evidence_grade>=3` bar (which requires cross-donor AND cross-guide
+robustness with ≥2 guides simultaneously), but 93.1% are *not* deprioritized by the readiness engine.
+This was not "fixed" by loosening thresholds to make the number look better — see
+`docs/de_and_baseline_spec.md` §5 for why that would be calibrating the metric to the answer rather
+than validating it, and what the finding actually means (grade and readiness answer different
+questions).
+
+**Not carried forward from the review, with reasons:** A2's confidence-score calibration was already
+substantially addressed pre-review (discrete `statistical_evidence_grade` + `score_cap_reason` +
+`readiness_reasons`, not a single opaque float); A3 (signature scoring method) mirrors the already-
+descoped §1.5 gap (no per-gene downstream direction data); B1 (Ensembl-primary-key gene resolution),
+B3 (cell-level access pattern — see §1.9, already backed-mode), B5 (CRE schema placeholders), B6
+(search infra), and the C-series process/testing recommendations (golden-file tests, data dictionary,
+licensing checklist) are reasonable but apply to build-out this repo hasn't reached yet or to a
+platform-scale rewrite beyond this toolkit's current CSV-first scope; they're noted here rather than
+silently dropped, in case they matter to a future document that does exist.
+
 ---
 
 ## 1. Remaining work — specs, sequencing, acceptance

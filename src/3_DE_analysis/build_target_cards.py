@@ -310,18 +310,51 @@ def _build_guide_summary(
     g = guide_df.copy()
     g["signif_knockdown"] = g["signif_knockdown"].apply(_to_bool)
     g["guide_id"] = g.get("guide_id", g.index.astype(str))
+    agg_kwargs = dict(
+        n_guides=("guide_id", "nunique"),
+        guide_signif_ratio=("signif_knockdown", "mean"),
+        guide_fdr_min=("adj_p_value", lambda s: pd.to_numeric(s, errors="coerce").min()),
+        guide_t_abs_median=("t_statistic", lambda s: pd.to_numeric(s, errors="coerce").abs().median()),
+    )
+    if "ntc_mean_expr" in g.columns:
+        # Invariant across guides within a target x condition (confirmed against the
+        # real guide_kd_efficiency.suppl_table.csv: 0/37,578 groups show >1 unique
+        # value), so "first" is exact, not an approximation.
+        agg_kwargs["target_baseline_expression"] = ("ntc_mean_expr", "first")
     agg = (
         g.groupby(["perturbed_gene_id", "culture_condition"], dropna=False)
-        .agg(
-            n_guides=("guide_id", "nunique"),
-            guide_signif_ratio=("signif_knockdown", "mean"),
-            guide_fdr_min=("adj_p_value", lambda s: pd.to_numeric(s, errors="coerce").min()),
-            guide_t_abs_median=("t_statistic", lambda s: pd.to_numeric(s, errors="coerce").abs().median()),
-        )
+        .agg(**agg_kwargs)
         .reset_index()
         .rename(columns={"perturbed_gene_id": "target_id"})
     )
     return agg
+
+
+# Per metadata/data_sharing_readme.md's documented definition of
+# high_confidence_no_effect_guides: "target expression in NTCs > 0.001" is the
+# repo's own stated floor for whether knockdown is assessable at all. Reused
+# here rather than inventing a new threshold.
+KD_NOT_MEASURABLE_EXPRESSION_FLOOR = 0.001
+KD_THRESHOLD_VERSION = "kd_status/v1"
+
+
+def _kd_status(row: pd.Series) -> str:
+    """Three-state on-target knockdown status: confirmed / weak / not_measurable.
+
+    CRISPRi's causal chain is target-suppressed -> downstream transcription
+    changes; if the target itself was never knocked down, downstream DE is
+    not causally interpretable. Separately, low target_baseline_expression
+    means knockdown cannot be reliably assessed at all -- a different failure
+    mode from "measurable but not significantly knocked down."
+    """
+    baseline = row.get("target_baseline_expression")
+    if pd.isna(baseline) or baseline <= KD_NOT_MEASURABLE_EXPRESSION_FLOOR:
+        return "not_measurable"
+    ratio = row.get("guide_signif_ratio")
+    fdr = row.get("guide_fdr_min")
+    if pd.notna(ratio) and pd.notna(fdr) and ratio >= 0.5 and fdr <= 0.05:
+        return "confirmed"
+    return "weak"
 
 
 def _load_benchmark(path: Optional[Path]) -> Optional[pd.DataFrame]:
@@ -391,6 +424,11 @@ def _score_cap_reasons(
         reasons.append("batch_sensitive")
     if row["n_guides"] < 2:
         reasons.append("single_guide")
+    kd_status = row.get("kd_status")
+    if kd_status == "not_measurable":
+        reasons.append("kd_not_measurable")
+    elif kd_status == "weak":
+        reasons.append("kd_weak")
     # De-duplicate while preserving first-seen order.
     reasons = list(dict.fromkeys(reasons))
     return ";".join(reasons) if reasons else "none"
@@ -468,6 +506,11 @@ def build_cards_frame(
         card_df["guide_fdr_min"] = card_df.get("_generic_fdr_min", np.nan)
         card_df["guide_t_abs_median"] = np.nan
 
+    if "target_baseline_expression" not in card_df.columns:
+        card_df["target_baseline_expression"] = np.nan
+    card_df["kd_status"] = card_df.apply(_kd_status, axis=1)
+    card_df["kd_threshold_version"] = KD_THRESHOLD_VERSION
+
     card_df["n_guides"] = card_df["n_guides"].fillna(0).astype(int)
     card_df["guide_signif_ratio"] = card_df["guide_signif_ratio"].fillna(0.0)
     card_df["guide_fdr_min"] = card_df["guide_fdr_min"].astype(float)
@@ -479,11 +522,34 @@ def build_cards_frame(
     # as failing/weak, so no sentinel substitution is needed.
 
     # target-condition score enrichment
+    # NOTE (condition_specificity_score is a HEURISTIC, not a statistical test):
+    # a raw share-of-total-DE-count ratio is noise-insensitive (a single
+    # low-power condition can dominate a small total), direction-blind (an
+    # activation-dependent sign flip in the target's own on-target effect is
+    # invisible to it), and not comparable across conditions with different
+    # typical DE-count scales (per the EDA: Rest/Stim48hr/Stim8hr have
+    # different mean DE-gene counts). A rigorous replacement would be a
+    # condition x perturbation interaction test against the underlying
+    # DESeq2 contrasts, which needs per-guide/per-cell modeling not
+    # computable from this summary CSV -- out of scope here, same as the
+    # signed-module-scoring descope (see docs/IMPLEMENTATION_PLAN.md).
+    # Two additive, buildable fixes ship instead: (a) a within-condition
+    # z-score version of the same signal, so a target-condition's DE count
+    # is judged relative to that condition's own typical scale rather than
+    # an absolute cross-condition-incomparable count; (b) an explicit
+    # direction-flip flag from the target's own on-target effect sign.
     total_by_target = card_df.groupby("target_contrast")["n_total_de_genes"].transform("sum")
     card_df["condition_specificity_score"] = np.where(
         total_by_target > 0,
         card_df["n_total_de_genes"] / total_by_target,
         0.0,
+    )
+    condition_mean = card_df.groupby("culture_condition")["n_total_de_genes"].transform("mean")
+    condition_std = card_df.groupby("culture_condition")["n_total_de_genes"].transform("std").replace(0, np.nan)
+    card_df["condition_specificity_zscore"] = (card_df["n_total_de_genes"] - condition_mean) / condition_std
+
+    card_df["effect_direction_flip_flag"] = card_df.groupby("target_contrast")["ontarget_effect_size"].transform(
+        lambda s: bool((s.dropna() > 0).any() and (s.dropna() < 0).any())
     )
     card_df["replicate_pass_flag"] = ((card_df["n_cells_target"] >= min_cells) &
                                      (card_df["n_total_de_genes"] >= min_de_genes) &
@@ -565,9 +631,14 @@ def build_cards_frame(
         "positive_control_similarity",
         "pathway_axis",
         "condition_specificity_score",
+        "condition_specificity_zscore",
+        "effect_direction_flip_flag",
         "clinical_axis",
         "nearest_success_drug",
         "nearest_failure_or_warning",
+        "target_baseline_expression",
+        "kd_status",
+        "kd_threshold_version",
         "statistical_evidence_grade",
         "score_cap_reason",
     ]

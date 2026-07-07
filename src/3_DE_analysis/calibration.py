@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -24,6 +24,11 @@ from build_target_cards import POSITIVE_CONTROLS
 # TCR/proximal-activation genes used as the primary recovery benchmark
 # (sources/topic11_breakthrough_directions_toolkit_opportunities.md, "Validation metrics").
 TCR_PROXIMAL_GENES = {"CD3E", "LAT", "PLCG1", "ZAP70", "LCP2", "VAV1", "CD247", "ITK"}
+
+# Positive-control panel with well-established CD4 phenotypes, expected to land
+# in high grades/advance calls. Extends the existing POSITIVE_CONTROLS set
+# (build_target_cards.py) with the 3 genes it didn't already cover.
+CONTROL_PANEL_POSITIVE_GENES = POSITIVE_CONTROLS | {"STAT5A", "STAT5B", "TNFRSF9"}
 
 # Known immune drug axes that a credible ranking should enrich for
 # (sources/topic05_successful_drug_benchmarks.csv axis vocabulary).
@@ -175,8 +180,71 @@ def qc_funnel(cards: pd.DataFrame, min_de_genes: int = 50, min_cells: int = 200)
     return {"stages": stages, "high_confidence_rows": int(len(current))}
 
 
-def run_calibration(cards: pd.DataFrame) -> Dict[str, Any]:
-    """Run the full calibration suite and return a JSON-serializable report."""
+def control_panel_calibration(cards: pd.DataFrame, readiness: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
+    """Positive- AND negative-control calibration check.
+
+    Positive controls: genes with well-established CD4 phenotypes
+    (CONTROL_PANEL_POSITIVE_GENES) are expected to land in high statistical
+    grades (and, when a readiness frame is supplied, non-deprioritize calls).
+    Negative controls: rows with kd_status == "not_measurable" (baseline
+    expression too low in NTC cells to ever assess knockdown -- the real,
+    already-computed operational equivalent of "non-expressed gene" controls)
+    are expected to land in low grades / deprioritize, since the CRISPRi
+    causal chain cannot even be evaluated for them.
+
+    Both directions use the SAME thresholds the rest of the tool uses --
+    this checks that one boundary works for both "let the real signal
+    through" and "keep the true negatives out," rather than calibrating
+    against positive examples alone.
+    """
+    result: Dict[str, Any] = {}
+
+    if "target" not in cards.columns or "statistical_evidence_grade" not in cards.columns:
+        return {"available": False}
+
+    positive_rows = cards[cards["target"].isin(CONTROL_PANEL_POSITIVE_GENES)]
+    best_grade_by_gene = positive_rows.groupby("target")["statistical_evidence_grade"].max()
+    result["positive_controls"] = {
+        "panel_size": len(CONTROL_PANEL_POSITIVE_GENES),
+        "n_found_in_cards": int(best_grade_by_gene.shape[0]),
+        "fraction_reaching_grade_3_or_4": round(float((best_grade_by_gene >= 3).mean()), 3) if len(best_grade_by_gene) else None,
+        "genes_not_reaching_grade_3": sorted(best_grade_by_gene[best_grade_by_gene < 3].index.tolist()),
+    }
+
+    if "kd_status" in cards.columns:
+        negative_rows = cards[cards["kd_status"] == "not_measurable"]
+        result["negative_controls"] = {
+            "definition": "kd_status == 'not_measurable' (target baseline expression <= 0.001 in NTC cells)",
+            "n_rows": int(len(negative_rows)),
+            "fraction_grade_1": round(float((negative_rows["statistical_evidence_grade"] <= 1).mean()), 4) if len(negative_rows) else None,
+            "fraction_reaching_grade_3_or_4": round(float((negative_rows["statistical_evidence_grade"] >= 3).mean()), 4) if len(negative_rows) else None,
+        }
+    else:
+        result["negative_controls"] = {"available": False, "reason": "no kd_status column in cards"}
+
+    if readiness is not None and not readiness.empty and "target" in readiness.columns:
+        pos_readiness = readiness[readiness["target"].isin(CONTROL_PANEL_POSITIVE_GENES)]
+        result["positive_controls"]["fraction_not_deprioritized"] = (
+            round(float((pos_readiness["readiness_call"] != "deprioritize").mean()), 3) if len(pos_readiness) else None
+        )
+        if "kd_status" in cards.columns:
+            neg_targets = cards.loc[cards["kd_status"] == "not_measurable", "target"].unique()
+            neg_readiness = readiness[readiness["target"].isin(neg_targets)]
+            result["negative_controls"]["fraction_advance_or_validate"] = (
+                round(float(neg_readiness["readiness_call"].isin(["advance", "validate"]).mean()), 4) if len(neg_readiness) else None
+            )
+
+    return result
+
+
+def run_calibration(cards: pd.DataFrame, readiness: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
+    """Run the full calibration suite and return a JSON-serializable report.
+
+    ``readiness``, if supplied (the output of readiness_engine.compute_readiness),
+    additionally checks that positive controls are not deprioritized and that
+    kd-not-measurable negative controls are not advanced/validated by the
+    readiness layer, not just the raw statistical grade.
+    """
     report: Dict[str, Any] = {
         "n_rows": int(len(cards)),
         "n_unique_targets": int(cards["target"].nunique()) if "target" in cards.columns else None,
@@ -184,6 +252,7 @@ def run_calibration(cards: pd.DataFrame) -> Dict[str, Any]:
         "known_drug_axis_enrichment": drug_axis_enrichment(cards),
         "rank_stability": rank_stability(cards),
         "qc_funnel": qc_funnel(cards),
+        "control_panel_calibration": control_panel_calibration(cards, readiness=readiness),
     }
     pc = report["positive_control_recovery"]
     frac = pc.get("fraction_in_top_2_deciles")
@@ -206,6 +275,20 @@ def run_calibration(cards: pd.DataFrame) -> Dict[str, Any]:
             f"{stability['top_n_overlap']}/{stability['top_n']} "
             f"(rank Spearman r={stability['spearman_rank_correlation']})."
         )
+    panel = report["control_panel_calibration"]
+    pos = panel.get("positive_controls", {})
+    neg = panel.get("negative_controls", {})
+    if pos.get("n_found_in_cards"):
+        narrative.append(
+            f"Control panel: {pos['n_found_in_cards']}/{pos['panel_size']} positive-control genes found; "
+            f"{round((pos.get('fraction_reaching_grade_3_or_4') or 0) * 100)}% reach grade>=3."
+        )
+    if neg.get("n_rows"):
+        narrative.append(
+            f"{neg['n_rows']} kd-not-measurable negative-control rows: "
+            f"{round((neg.get('fraction_grade_1') or 0) * 100)}% correctly land at grade 1, "
+            f"{round((neg.get('fraction_reaching_grade_3_or_4') or 0) * 100)}% incorrectly reach grade>=3."
+        )
     report["narrative"] = narrative
     return report
 
@@ -219,11 +302,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Run the calibration harness against a target-cards CSV.")
     parser.add_argument("cards", type=Path)
+    parser.add_argument("--readiness", type=Path, default=None, help="optional readiness.csv from readiness_engine.py")
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
     cards_df = pd.read_csv(args.cards)
-    result = run_calibration(cards_df)
+    readiness_df = pd.read_csv(args.readiness) if args.readiness and args.readiness.exists() else None
+    result = run_calibration(cards_df, readiness=readiness_df)
     if args.output:
         write_report(result, args.output)
     for line in result["narrative"]:

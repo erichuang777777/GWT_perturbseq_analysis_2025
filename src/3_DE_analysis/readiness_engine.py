@@ -181,6 +181,19 @@ def _red_flags(
     if str(row.get("batch_sensitivity_flag", "")) == "sensitive":
         overrides.append("batch_confounded")
         cap_idx = min(cap_idx, CALL_ORDER.index("validate"))
+    # CRISPRi's causal chain is target-suppressed -> downstream transcription
+    # changes. If the target itself was never confirmed knocked down, the
+    # downstream DE is not causally interpretable, regardless of how strong
+    # the DE signal looks. "not_measurable" (baseline expression too low to
+    # ever assess) is worse than "weak" (some signal, just not confirmed),
+    # so it caps more strictly.
+    kd_status = str(row.get("kd_status", "") or "")
+    if kd_status == "not_measurable":
+        overrides.append("kd_not_measurable")
+        cap_idx = min(cap_idx, CALL_ORDER.index("watchlist"))
+    elif kd_status == "weak":
+        overrides.append("kd_weak")
+        cap_idx = min(cap_idx, CALL_ORDER.index("validate"))
     return overrides, cap_idx
 
 
@@ -198,6 +211,10 @@ def _stage(biology: int, translation: int, tractability, human_genetic, essentia
 
 
 def _next_step(overrides, tractability, human_genetic, translation: int) -> str:
+    if "kd_not_measurable" in overrides:
+        return "target expression too low in NTC cells to assess knockdown; downstream DE is not causally interpretable as-is"
+    if "kd_weak" in overrides:
+        return "confirm on-target knockdown (independent guide or protein-level assay) before trusting downstream DE"
     if "essential_gene" in overrides:
         return "orthogonal viability/essentiality control to separate a specific effect from general fitness"
     if "broad_effect" in overrides:
