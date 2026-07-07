@@ -125,9 +125,31 @@ Use raw-count or pseudobulk models for target-effect inference.
 
 ## Next Extensions
 
-- backed/Zarr mode for very large data
-- guide assignment QC report
-- Mixscape / pertpy perturbation-response detection
-- SCEPTRE / pseudobulk validation for top targets
-- UCell/AUCell CD4 module scoring
-- bridge integrated cell-state evidence back into target cards
+- ~~backed/Zarr mode for very large data~~ -- **done**: every function in
+  `perturbation_response_analysis.py` works against a backed AnnData
+  (`anndata.read_h5ad(path, backed="r")`) and materializes only small,
+  explicitly bounded slices.
+- ~~guide assignment QC report~~ -- **done**: `guide_assignment_qc()`.
+- ~~Mixscape / pertpy perturbation-response detection~~ -- **done, without
+  pertpy** (it failed to install; see below): `classify_perturbation_response()`
+  reimplements Mixscape's core idea directly (PCA + difference-of-means axis
+  + 2-component GMM). Verified at 81.8% accuracy against a known synthetic
+  ground truth.
+- SCEPTRE / pseudobulk validation for top targets -- **integration point
+  built, not reimplemented**: `run_sceptre_external()` shells out to an R
+  driver script if present; degrades to an honest "unavailable" status
+  otherwise. SCEPTRE's calibration is genuinely nontrivial (conditional
+  resampling) and reimplementing it from scratch risks reproducing exactly
+  the miscalibration it exists to fix.
+- ~~UCell/AUCell CD4 module scoring~~ -- **done, via `scanpy.tl.score_genes`**
+  (a standard alternative, not a reimplementation of UCell's specific
+  rank-based algorithm): `score_cd4_programs()`.
+- ~~bridge integrated cell-state evidence back into target cards~~ -- **done**:
+  `summarize_state_specific_effects()` + `merge_donor_condition_summaries()`
+  + `bridge_to_card_columns()` produce `n_cells_classified`,
+  `responder_fraction`, `n_donors_classified` columns, additively joined onto
+  an existing `target_cards.csv` by `(target, condition)`.
+
+See `perturbation_response_analysis.py` for the implementation and
+**`RUN_ON_REAL_DATA.md`** for exact commands to run once real `.h5ad` files
+are downloaded (they are not present in this repo -- see that file for why).

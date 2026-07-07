@@ -220,9 +220,46 @@ per-user workspaces. Keep the file cache as an export target. Add server/proxy r
 use is the current target, not a multi-user platform. Revisit if/when multiple concurrent researchers
 need isolated workspaces. No infrastructure was provisioned.
 
-### 1.9 Cell-level (h5ad) extension  *(large; needs S3 download)*
-H1–H6: loaders, per-cell QC, Mixscape, SCEPTRE, pertpy/UCell, state-specific effects bridged back to the
-card schema; U6 raw-cell manifest builder + on-demand jobs. Opt-in per analysis (1.6+ TiB, never auto-download).
+### 1.9 Cell-level (h5ad) extension  *(large; needs S3 download)* — **CODE DONE, REAL-DATA RUN PENDING**
+**Why:** per-cell QC, responder/escaper calling, and CD4 program scores strengthen or cap a card's
+grade exactly like the CSV-first robustness fields already do.
+**Hard constraint confirmed, not assumed:** `data/marson2025_data/manifest.csv` lists 32 files totaling
+1.68 TiB; the *smallest* single per-donor-condition file is ~131 GiB. This session's sandbox had 29 GiB
+free disk — even the S3 bucket being reachable (confirmed: `HEAD` returns 200) doesn't help when a
+single file exceeds available storage by 4x. Downloading and processing the real dataset was therefore
+delegated to the project owner's own machine, per their explicit instruction.
+**Shipped (in `src/9_cell_integration/`, the repo's own pre-existing scaffold directory for this work,
+whose "Next Extensions" list already named exactly these items):**
+- `perturbation_response_analysis.py`: H1 loader (`load_donor_condition_h5ad`, backed-mode, parses
+  donor/condition from the `D{n}_{condition}.assigned_guide.h5ad` filename convention since they are
+  not obs columns in the real file — confirmed against `metadata/data_sharing_readme.md`'s documented
+  schema), H2 `guide_assignment_qc` (matches the `QC_summaries_per_sample_lane.csv` categories), H3
+  `classify_perturbation_response` (Mixscape-style responder/escaper calling via PCA
+  difference-of-means + 2-component GMM — reimplemented directly with scikit-learn because `pertpy`
+  failed to install in this sandbox on an unrelated transitive dependency, `blitzgsea`'s build), H4
+  `run_sceptre_external` (an honest external-hook, not a reimplementation — SCEPTRE's calibration is a
+  nontrivial conditional-resampling procedure; a naive Python reimplementation risks reproducing
+  exactly the miscalibration SCEPTRE exists to fix), H5 `score_cd4_programs` (via
+  `scanpy.tl.score_genes`, documented as a standard alternative to UCell/AUCell's specific rank-based
+  algorithm, not a reimplementation of it), H6 `summarize_state_specific_effects` +
+  `merge_donor_condition_summaries` + `bridge_to_card_columns` (additive join onto `target_cards.csv`
+  by `(target, condition)`, producing `n_cells_classified`/`responder_fraction`/`n_donors_classified`).
+- Every function is written backed-mode-safe (works against `anndata.read_h5ad(path, backed="r")`,
+  materializing only small explicit slices — per-target cell subsets for classification, an explicit
+  `max_cells` cap for program scoring) so it scales to a 130+ GiB file without loading it fully into
+  memory.
+- `RUN_ON_REAL_DATA.md` (new): the exact commands to run once real files are downloaded, with storage/
+  memory/network sizing, environment setup, and a bridge-back-to-cards walkthrough.
+**Verified:** built and tested against `build_synthetic_adata()`, a fixture matching the *exact* real
+schema (not a loosely-approximated one) documented in `metadata/data_sharing_readme.md`. The classifier
+recovers a known injected responder/escaper ground truth at **81.8% accuracy** (consistent 80–83.5%
+across 3 simulated targets); cross-donor merge correctly cell-count-weights; program scoring correctly
+skips modules with <2 genes present rather than fabricating a score; the SCEPTRE hook degrades honestly
+when R/a driver script are absent.
+**Explicitly not claimed:** this has NOT been run against the real 1.68 TiB dataset — that is the
+project owner's task on their own machine, per `RUN_ON_REAL_DATA.md`. "Code is correct and tested
+against a schema-faithful synthetic fixture" and "has processed the real dataset" are different claims;
+only the first is true as of this entry.
 
 ### 1.10 v2 hypothesis generators (guarded)  *(optional)*
 Signature-to-compound (LINCS/CMap), mechanism graph, perturbation prediction (**benchmark vs baselines
