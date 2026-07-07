@@ -65,6 +65,88 @@ CLINICAL_BENCHMARK_KEYWORDS = {
 
 BENCHMARK_CSV_DEFAULT = Path("sources/topic05_successful_drug_benchmarks.csv")
 
+# Canonical target-evidence contract used by generic (uploaded) DE tables.
+GENERIC_TARGET_FIELDS = ("target", "condition", "effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides")
+
+
+def load_gene_set(path: Path) -> set:
+    """Load a newline-delimited gene-symbol list (no header) into an upper-cased set."""
+    if not Path(path).exists():
+        return set()
+    genes: set = set()
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        token = line.strip().split("\t")[0].strip()
+        if token and not token.lower().startswith("gene"):
+            genes.add(token.upper())
+    return genes
+
+
+def confounded_conditions(sample_meta: Optional[pd.DataFrame]) -> set:
+    """Return culture conditions confounded with a single 10x run (condition-run confound).
+
+    A condition whose samples all fall in one run cannot be separated from batch, so
+    condition-specific claims for it are batch-sensitive unless donor/guide-robust.
+    """
+    if sample_meta is None or sample_meta.empty:
+        return set()
+    cols = {c.lower(): c for c in sample_meta.columns}
+    cond_col = cols.get("culture_condition")
+    run_col = cols.get("10xrun_id") or cols.get("run_id")
+    if not cond_col or not run_col:
+        return set()
+    runs_per_cond = sample_meta.groupby(cond_col)[run_col].nunique()
+    return set(runs_per_cond[runs_per_cond <= 1].index.astype(str))
+
+
+def adapt_generic_de(df: pd.DataFrame) -> pd.DataFrame:
+    """Map a generic canonical DE table onto the builder's internal GWT column names.
+
+    Missing robustness fields are left as NaN so grading degrades gracefully
+    (a guide-less generic upload caps at grade 2).
+    """
+    g = _normalize_cols(df.copy())
+    lower = {str(c).strip().lower(): c for c in g.columns}
+
+    def col(name: str) -> Optional[str]:
+        return lower.get(name)
+
+    out = pd.DataFrame(index=g.index)
+    target_col = col("target") or col("gene") or col("target_gene")
+    out["target_contrast_gene_name"] = g[target_col].astype(str) if target_col else ""
+    out["target_contrast"] = out["target_contrast_gene_name"]
+    cond_col = col("condition") or col("culture_condition")
+    out["culture_condition"] = g[cond_col].astype(str) if cond_col else "unspecified"
+
+    eff_col = col("effect_size") or col("logfc") or col("log2fc")
+    out["ontarget_effect_size"] = pd.to_numeric(g[eff_col], errors="coerce") if eff_col else np.nan
+
+    fdr_col = col("fdr") or col("padj") or col("adj_p_value")
+    p_col = col("p_value") or col("pvalue") or col("p_val")
+    if fdr_col:
+        fdr = pd.to_numeric(g[fdr_col], errors="coerce")
+        out["ontarget_significant"] = fdr <= 0.05
+    elif p_col:
+        pval = pd.to_numeric(g[p_col], errors="coerce")
+        out["ontarget_significant"] = pval <= 0.05
+    else:
+        out["ontarget_significant"] = False
+    out["_generic_fdr_min"] = pd.to_numeric(g[fdr_col], errors="coerce") if fdr_col else np.nan
+
+    ncell_col = col("n_cells") or col("n_cells_target")
+    out["n_cells_target"] = pd.to_numeric(g[ncell_col], errors="coerce") if ncell_col else np.nan
+    nguide_col = col("n_guides")
+    out["_generic_n_guides"] = pd.to_numeric(g[nguide_col], errors="coerce") if nguide_col else np.nan
+
+    ntot_col = col("n_total_de_genes")
+    out["n_total_de_genes"] = pd.to_numeric(g[ntot_col], errors="coerce") if ntot_col else np.nan
+    out["n_up_genes"] = np.nan
+    out["n_down_genes"] = np.nan
+    out["offtarget_flag"] = False
+    out["crossdonor_correlation_mean"] = np.nan
+    out["crossdonor_correlation_min"] = np.nan
+    out["crossguide_correlation"] = np.nan
+    return out
+
 
 def _to_bool(v: object) -> bool:
     if isinstance(v, bool):
@@ -201,7 +283,11 @@ def _score_cap_reasons(
         reasons.append("direction_unclear")
     if bool(row["offtarget_flag"]):
         reasons.append("high_offtarget")
-    if row["crossdonor_correlation_mean"] < 0.2 or row["crossguide_correlation"] < 0.2:
+    cd = row["crossdonor_correlation_mean"]
+    cg = row["crossguide_correlation"]
+    # Missing (NaN) robustness is treated as weak, matching the EDA caveat that
+    # rows lacking cross-donor/cross-guide support are not highest-confidence.
+    if pd.isna(cd) or pd.isna(cg) or cd < 0.2 or cg < 0.2:
         reasons.append("weak_replicability")
     if pd.isna(row["fdr_min"]) or row["fdr_min"] > 0.1:
         reasons.append("guide_limit")
@@ -216,15 +302,22 @@ def _score_cap_reasons(
     return ";".join(reasons) if reasons else "none"
 
 
-def _build_cards(
+def build_cards_frame(
     de_df: pd.DataFrame,
-    guide_df: pd.DataFrame,
+    guide_df: Optional[pd.DataFrame],
     lib_map: Optional[pd.DataFrame],
-    out_path: Path,
     benchmark: Optional[pd.DataFrame],
     min_cells: int = 200,
     min_de_genes: int = 50,
-) -> None:
+    schema: str = "gwt",
+    sample_meta: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
+    """Assemble the target-condition card table and return it as a DataFrame.
+
+    ``schema="generic"`` accepts an already-adapted uploaded DE table (see
+    ``adapt_generic_de``) and tolerates a missing guide table, in which case
+    guide-dependent grades (3/4) are unreachable and cards cap at grade 2.
+    """
     de = de_df.copy()
     # Keep only usable numeric rows.
     numeric_cols = [
@@ -258,13 +351,28 @@ def _build_cards(
             axis=1,
         )
 
-    guide_summary = _build_guide_summary(guide_df)
-    card_df = de.merge(
-        guide_summary,
-        left_on=["target_contrast", "culture_condition"],
-        right_on=["target_id", "culture_condition"],
-        how="left",
+    has_guides = (
+        guide_df is not None
+        and not guide_df.empty
+        and "signif_knockdown" in guide_df.columns
     )
+    if has_guides:
+        guide_summary = _build_guide_summary(guide_df)
+        card_df = de.merge(
+            guide_summary,
+            left_on=["target_contrast", "culture_condition"],
+            right_on=["target_id", "culture_condition"],
+            how="left",
+        )
+    else:
+        # Generic / guide-less path: synthesize guide fields (NaN-heavy) so grading
+        # degrades gracefully instead of crashing on the missing merge.
+        card_df = de.copy()
+        card_df["target_id"] = card_df["target_contrast"]
+        card_df["n_guides"] = card_df.get("_generic_n_guides", np.nan)
+        card_df["guide_signif_ratio"] = np.nan
+        card_df["guide_fdr_min"] = card_df.get("_generic_fdr_min", np.nan)
+        card_df["guide_t_abs_median"] = np.nan
 
     card_df["n_guides"] = card_df["n_guides"].fillna(0).astype(int)
     card_df["guide_signif_ratio"] = card_df["guide_signif_ratio"].fillna(0.0)
@@ -291,7 +399,20 @@ def _build_cards(
                                      (card_df["crossguide_correlation"].fillna(-1) >= 0.2)
                                     ).astype(bool)
 
-    card_df["batch_sensitivity_flag"] = "unknown"
+    confounded = confounded_conditions(sample_meta)
+    if confounded:
+        cond = card_df["culture_condition"].astype(str)
+        is_conf = cond.isin(confounded)
+        robust = (card_df["crossdonor_correlation_mean"].fillna(-1) >= 0.3) | (
+            card_df["crossguide_correlation"].fillna(-1) >= 0.3
+        )
+        card_df["batch_sensitivity_flag"] = np.select(
+            [is_conf & ~robust, is_conf & robust],
+            ["sensitive", "confounded_but_robust"],
+            default="not_flagged",
+        )
+    else:
+        card_df["batch_sensitivity_flag"] = "unknown"
     card_df["pathway_axis"] = card_df["target"].apply(_pathway_axis)
     card_df["clinical_axis"] = card_df["target"].apply(_clinical_axis)
     card_df["positive_control_similarity"] = card_df["target"].apply(
@@ -369,7 +490,32 @@ def _build_cards(
     card_out = card_out.rename(columns={"culture_condition": "condition", "target_contrast": "target_id"})
     # Keep a stable alias for score_cap_reason string.
     card_out = card_out.reset_index(drop=True)
-    card_out.to_csv(out_path, index=False)
+    return card_out
+
+
+def _build_cards(
+    de_df: pd.DataFrame,
+    guide_df: Optional[pd.DataFrame],
+    lib_map: Optional[pd.DataFrame],
+    out_path: Path,
+    benchmark: Optional[pd.DataFrame],
+    min_cells: int = 200,
+    min_de_genes: int = 50,
+    schema: str = "gwt",
+    sample_meta: Optional[pd.DataFrame] = None,
+) -> None:
+    """IO wrapper: assemble cards and write them to ``out_path``."""
+    frame = build_cards_frame(
+        de_df,
+        guide_df,
+        lib_map,
+        benchmark,
+        min_cells=min_cells,
+        min_de_genes=min_de_genes,
+        schema=schema,
+        sample_meta=sample_meta,
+    )
+    frame.to_csv(out_path, index=False)
 
 
 def build_parser() -> argparse.Namespace:
@@ -378,6 +524,7 @@ def build_parser() -> argparse.Namespace:
     parser.add_argument("--guide-kd", type=Path, default=Path("metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv"))
     parser.add_argument("--library-metadata", type=Path, default=Path("metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv"))
     parser.add_argument("--clinical-benchmark", type=Path, default=BENCHMARK_CSV_DEFAULT)
+    parser.add_argument("--sample-metadata", type=Path, default=Path("metadata/suppl_tables/sample_metadata.suppl_table.csv"))
     parser.add_argument("--output", type=Path, default=Path("sources/topic14_target_cards.csv"))
     parser.add_argument("--skip-benchmark", action="store_true")
     parser.add_argument("--min-cells", type=int, default=200)
@@ -390,6 +537,7 @@ def main() -> None:
     de = _normalize_cols(pd.read_csv(args.de_stats))
     guide = _normalize_cols(pd.read_csv(args.guide_kd))
     lib = _normalize_cols(pd.read_csv(args.library_metadata)) if args.library_metadata.exists() else None
+    sample_meta = pd.read_csv(args.sample_metadata) if args.sample_metadata and Path(args.sample_metadata).exists() else None
 
     benchmark: Optional[pd.DataFrame]
     if args.skip_benchmark:
@@ -399,7 +547,7 @@ def main() -> None:
         if benchmark is None:
             print(f"Clinical benchmark not found, continue without mapping: {args.clinical_benchmark}")
 
-    _build_cards(de, guide, lib, args.output, benchmark, min_cells=args.min_cells, min_de_genes=args.min_de)
+    _build_cards(de, guide, lib, args.output, benchmark, min_cells=args.min_cells, min_de_genes=args.min_de, sample_meta=sample_meta)
     print(f"Wrote target cards -> {args.output.resolve()}")
 
 

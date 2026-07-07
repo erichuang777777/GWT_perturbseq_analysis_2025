@@ -17,7 +17,24 @@ from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from generate_target_report import build_report_payload, write_report
-from import_manager import ImportPayload, approve_import, list_imports, read_import, read_preview, register_import
+from build_target_cards import adapt_generic_de, build_cards_frame
+from readiness_engine import compute_readiness, load_overlays, readiness_summary
+from build_target_cards import load_gene_set
+from import_manager import (
+    ImportPayload,
+    apply_and_validate_mapping,
+    approve_import,
+    build_mapped_view,
+    canonical_fields,
+    duplicate_normalized_columns,
+    list_imports,
+    mark_merged,
+    read_import,
+    read_preview,
+    read_table_preview,
+    register_import,
+    suggested_mapping,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +46,17 @@ DEFAULT_BENCH = ROOT / "sources" / "topic05_successful_drug_benchmarks.csv"
 SEED_MODULES = ROOT / "sources" / "topic15_cd4_tcell_upstream_downstream_seed_modules.csv"
 CACHE_ROOT = ROOT / "sources" / "target_tool_cache"
 DEFAULT_BUILD_SCRIPT = SRC / "build_target_cards.py"
+DEFAULT_SAMPLE_META = ROOT / "metadata" / "suppl_tables" / "sample_metadata.suppl_table.csv"
+GENE_LISTS_DIR = ROOT / "metadata" / "gene_lists"
+DEFAULT_ESSENTIALS = GENE_LISTS_DIR / "core_essentials_hart.tsv"
+
+
+def _overlays():
+    return load_overlays(GENE_LISTS_DIR)
+
+
+def _essentials():
+    return load_gene_set(DEFAULT_ESSENTIALS)
 
 
 def _import_allowed_roots() -> List[Path]:
@@ -90,6 +118,17 @@ class ImportApprovalRequest(BaseModel):
     approved_by: str = "local_user"
 
 
+class MappingRequest(BaseModel):
+    map: Dict[str, Optional[str]]
+    source_type: Optional[str] = None
+
+
+class MergeRequest(BaseModel):
+    min_cells: int = 200
+    min_de_genes: int = 50
+    force: bool = False
+
+
 app = FastAPI(title="GWT Target Card API", version="0.1.0")
 
 
@@ -116,6 +155,8 @@ def _run_script(config: TargetCardRunConfig, out_csv: Path) -> None:
         "--min-de",
         str(config.min_de),
     ]
+    if DEFAULT_SAMPLE_META.exists():
+        args.extend(["--sample-metadata", str(DEFAULT_SAMPLE_META)])
     if config.skip_benchmark or config.clinical_benchmark is None:
         args.append("--skip-benchmark")
     else:
@@ -323,6 +364,122 @@ def approve_staged_import(import_id: str, req: ImportApprovalRequest) -> Dict[st
         raise HTTPException(status_code=404, detail=str(exc))
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
+
+
+@app.get("/api/imports/{import_id}/mapping/suggestion")
+def get_mapping_suggestion(import_id: str) -> Dict[str, Any]:
+    meta = read_import(CACHE_ROOT, import_id)
+    source_type = meta.get("source_type", "unknown_table")
+    if source_type in {"unknown_table", "unknown_file"}:
+        source_type = "target_evidence"
+    columns = meta.get("columns", [])
+    return {
+        "import_id": import_id,
+        "source_type": source_type,
+        "canonical_fields": canonical_fields(source_type),
+        "uploaded_columns": columns,
+        "suggested": suggested_mapping(source_type, columns),
+        "duplicates": duplicate_normalized_columns(columns),
+    }
+
+
+@app.post("/api/imports/{import_id}/mapping")
+def apply_mapping(import_id: str, req: MappingRequest) -> Dict[str, Any]:
+    try:
+        return apply_and_validate_mapping(CACHE_ROOT, import_id, req.map, source_type=req.source_type)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+
+@app.post("/api/imports/{import_id}/merge")
+def merge_import(import_id: str, req: MergeRequest) -> Dict[str, Any]:
+    meta = read_import(CACHE_ROOT, import_id)
+    status = str(meta.get("merge_status", ""))
+    if status == "merged_into_cards" and meta.get("merged_dataset_id") and not req.force:
+        return {"dataset_id": meta["merged_dataset_id"], "status": "already_merged", "rows": meta.get("rows", 0)}
+    if not status.startswith("approved"):
+        raise HTTPException(status_code=400, detail=f"import must be approved before merge (status={status})")
+    source_type = meta.get("source_type")
+    if source_type not in {"target_evidence", "guide_evidence"}:
+        raise HTTPException(status_code=400, detail=f"only target/guide evidence can be merged into cards (got {source_type})")
+
+    source_path = Path(meta["source_path"])
+    if not source_path.exists():
+        raise HTTPException(status_code=400, detail=f"source file missing: {source_path}")
+    _assert_allowed_input_path(source_path)
+    try:
+        full_df = read_table_preview(source_path, max_rows=1_000_000)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"could not read uploaded table: {exc}")
+
+    mapping = (meta.get("column_mapping_override") or {}).get("map")
+    if mapping:
+        full_df = build_mapped_view(full_df, mapping)
+    adapted = adapt_generic_de(full_df)
+    try:
+        cards = build_cards_frame(
+            adapted,
+            guide_df=None,
+            lib_map=None,
+            benchmark=None,
+            min_cells=int(req.min_cells),
+            min_de_genes=int(req.min_de_genes),
+            schema="generic",
+            sample_meta=None,
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"card build failed: {exc}")
+
+    dataset_id = f"usr_{import_id[:8]}_{uuid.uuid4().hex[:8]}"
+    job_dir = _dataset_path(dataset_id)
+    out_csv = job_dir / "target_cards.csv"
+    cards.to_csv(out_csv, index=False)
+    _persist_metadata(
+        dataset_id,
+        status="completed",
+        payload={
+            "dataset_id": dataset_id,
+            "origin": "user_upload",
+            "rows": int(cards.shape[0]),
+            "output": str(out_csv),
+            "lineage": {
+                "kind": "user_merge",
+                "import_id": import_id,
+                "source_name": meta.get("source_name"),
+                "source_type": source_type,
+                "context_tier": (meta.get("context_match") or {}).get("tier"),
+                "column_mapping_override": meta.get("column_mapping_override"),
+                "builder_schema": "generic",
+                "min_cells": int(req.min_cells),
+                "min_de_genes": int(req.min_de_genes),
+            },
+        },
+    )
+    mark_merged(CACHE_ROOT, import_id, dataset_id)
+    preview = cards.head(20).to_dict(orient="records")
+    return {"dataset_id": dataset_id, "status": "completed", "rows": int(cards.shape[0]), "preview": preview}
+
+
+@app.get("/api/readiness/{dataset_id}")
+def get_readiness(dataset_id: str, refresh: bool = Query(default=False)) -> Dict[str, Any]:
+    out_csv = _dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    readiness_csv = _dataset_path(dataset_id) / "readiness.csv"
+    overlays = _overlays()
+    if refresh or not readiness_csv.exists() or readiness_csv.stat().st_mtime < out_csv.stat().st_mtime:
+        cards = _normalize_cell_values(_load_cards(out_csv))
+        readiness = compute_readiness(cards, overlays=overlays, essentials=_essentials())
+        readiness.to_csv(readiness_csv, index=False)
+    else:
+        readiness = pd.read_csv(readiness_csv)
+    return {
+        "dataset_id": dataset_id,
+        **readiness_summary(readiness, overlays=overlays),
+        "readiness": _json_records(readiness),
+    }
 
 
 @app.post("/api/run/target-card")

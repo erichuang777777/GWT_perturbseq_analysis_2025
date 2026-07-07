@@ -1,0 +1,23 @@
+[
+  {
+    "Gene.Symbol": "IL2RA",
+    "culture_condition": "Rest",
+    "log2FoldChange": -1.4,
+    "padj": 0.001,
+    "n_cells": 500
+  },
+  {
+    "Gene.Symbol": "FOXP3",
+    "culture_condition": "Rest",
+    "log2FoldChange": 0.9,
+    "padj": 0.3,
+    "n_cells": 300
+  },
+  {
+    "Gene.Symbol": "BACH2",
+    "culture_condition": "Rest",
+    "log2FoldChange": -0.8,
+    "padj": 0.02,
+    "n_cells": 420
+  }
+]

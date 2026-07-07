@@ -285,6 +285,90 @@ def validate_schema(source_type: str, columns: List[str], mode: str, df: Optiona
     }
 
 
+def canonical_fields(source_type: str) -> Dict[str, List[str]]:
+    """Return required + recommended canonical fields for a source type."""
+    return {
+        "required": list(REQUIRED_COLUMNS.get(source_type, [])),
+        "recommended": list(RECOMMENDED_COLUMNS.get(source_type, [])),
+    }
+
+
+def suggested_mapping(source_type: str, columns: List[str]) -> Dict[str, Optional[str]]:
+    """Auto-suggest canonical<-uploaded mapping using normalize_columns aliases.
+
+    Returns {canonical: uploaded_column_or_None} for every canonical field of the type.
+    """
+    norm = normalize_columns(columns)  # {normalized_or_alias: original_column}
+    fields = canonical_fields(source_type)
+    out: Dict[str, Optional[str]] = {}
+    for canonical in fields["required"] + fields["recommended"]:
+        out[canonical] = norm.get(canonical)
+    return out
+
+
+def build_mapped_view(df: pd.DataFrame, mapping: Dict[str, Optional[str]]) -> pd.DataFrame:
+    """Rename uploaded columns to canonical names, keeping only mapped columns.
+
+    ``mapping`` is {canonical: uploaded_column|None}. Canonical fields mapped to
+    None are simply absent (they become NaN downstream, never fabricated).
+    """
+    rename = {up: canon for canon, up in mapping.items() if up}
+    present = [up for up in rename if up in df.columns]
+    view = df[present].rename(columns={c: rename[c] for c in present}).copy()
+    return view
+
+
+def apply_and_validate_mapping(
+    cache_root: Path,
+    import_id: str,
+    mapping: Dict[str, Optional[str]],
+    source_type: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Persist a column mapping, re-validate the mapped view, recompute merge_status."""
+    metadata = read_import(cache_root, import_id)
+    import_dir = cache_root / "imports" / import_id
+    resolved_type = source_type or metadata.get("source_type", "unknown_table")
+    if resolved_type in {"unknown_table", "unknown_file"}:
+        resolved_type = "target_evidence"
+
+    # Validate that every mapped uploaded column actually exists.
+    uploaded_cols = set(metadata.get("columns", []))
+    for canonical, up in mapping.items():
+        if up and up not in uploaded_cols:
+            raise ValueError(f"mapping references unknown uploaded column: {up}")
+
+    source_path = Path(metadata["source_path"])
+    if source_path.exists() and source_path.suffix.lower() in TABLE_EXTENSIONS:
+        full_df = read_table_preview(source_path, max_rows=200)
+    else:
+        full_df = pd.DataFrame(read_preview(cache_root, import_id))
+    mapped_df = build_mapped_view(full_df, mapping)
+
+    schema = validate_schema(resolved_type, list(mapped_df.columns), metadata.get("mode", "strict"), df=mapped_df)
+    context = metadata.get("context_match", {})
+
+    merge_status = "staged"
+    if schema["status"] == "blocked":
+        merge_status = "blocked_needs_column_mapping"
+    elif metadata.get("mode") == "exploratory":
+        merge_status = "staged_exploratory_review_required"
+    elif context.get("tier") == "low_or_unknown_context" and metadata.get("mode") == "strict":
+        merge_status = "staged_low_context_review_required"
+
+    metadata["source_type"] = resolved_type
+    metadata["route"] = ROUTES.get(resolved_type, "staging_only")
+    metadata["column_mapping_override"] = {
+        "version": 1,
+        "created_at": utc_now(),
+        "source_type": resolved_type,
+        "map": {k: v for k, v in mapping.items()},
+    }
+    metadata["schema_validation"] = schema
+    metadata["merge_status"] = merge_status
+    (import_dir / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return metadata
+
+
 def is_within_allowed_roots(path: Path, allowed_roots: List[Path]) -> bool:
     resolved = path.resolve()
     for root in allowed_roots:
@@ -444,6 +528,17 @@ def approve_import(cache_root: Path, import_id: str, approved_by: str = "local_u
     metadata["merge_status"] = "approved_for_downstream_use"
     metadata["approved_at"] = utc_now()
     metadata["approved_by"] = approved_by
+    meta_path = cache_root / "imports" / import_id / "metadata.json"
+    meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return metadata
+
+
+def mark_merged(cache_root: Path, import_id: str, dataset_id: str) -> Dict[str, Any]:
+    """Stamp the merged dataset id back onto the import so the loop is closed/traceable."""
+    metadata = read_import(cache_root, import_id)
+    metadata["merge_status"] = "merged_into_cards"
+    metadata["merged_dataset_id"] = dataset_id
+    metadata["merged_at"] = utc_now()
     meta_path = cache_root / "imports" / import_id / "metadata.json"
     meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return metadata
