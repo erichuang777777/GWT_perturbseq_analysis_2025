@@ -131,8 +131,17 @@ def export_dataset(dataset_id: str, fmt: str = Query(default="csv")) -> Any:
     if fmt != "json":
         raise HTTPException(status_code=400, detail="fmt must be csv or json")
     df = deps._load_cards(out_csv)
-    payload = df.to_dict(orient="records")
-    return JSONResponse(content={"dataset_id": dataset_id, "targets": payload})
+    # _json_records converts NaN/inf -> null (JSON-compliant); plain
+    # df.to_dict(orient="records") leaves NaN floats that json.dumps rejects
+    # (a pre-existing crash on any dataset with missing cells -- fixed here).
+    payload = deps._json_records(df)
+    # Stamp the provenance/version block on the bulk JSON export so a downloaded
+    # snapshot is self-describing (north-star 支柱二 資料明確): a consumer can tell
+    # which engine/schema/dataset release the records came from. Additive -- the
+    # pre-existing dataset_id/targets keys are unchanged.
+    return JSONResponse(
+        content={"dataset_id": dataset_id, "provenance": deps._provenance_block(dataset_id), "targets": payload}
+    )
 
 
 @router.get("/api/reports/{dataset_id}")
