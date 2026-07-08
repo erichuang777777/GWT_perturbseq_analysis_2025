@@ -45,6 +45,60 @@ MODALITY_SMALL_MOLECULE = "small molecule"
 # it does not vary by gene.
 LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.6
 
+# Off-context GTEx breadth (``safety_window_from_gtex``'s count) at or above
+# this bar counts as "broad" (low tissue specificity) for the composite
+# liability view below. 26 is the real median of the committed ~9,718-gene GTEx
+# overlay (max off-context breadth in that panel is 28), so this is a coarse,
+# data-derived top-half split, disclosed as such -- not a biological absolute.
+BREADTH_BROAD_THRESHOLD = 26
+
+
+def composite_safety_liability(gnomad_flag: Any, safety_window: Any) -> str:
+    """Compose gnomAD constraint + GTEx off-context breadth into ONE disclosed
+    on-target safety-**liability** tier: ``high`` / ``moderate`` / ``low`` /
+    ``"unknown"``.
+
+    CRITICAL framing (get this right or it is wrong): human genetic constraint
+    predicts on-target safety LIABILITIES, not de-risking. So this is a LIABILITY
+    FLAG -- higher genetic constraint (loss-intolerant) PLUS broader off-context
+    expression (low tissue specificity) = MORE concern, never a "this target is
+    safe" signal (Duffy et al., *Sci Adv* 2020,
+    https://www.science.org/doi/10.1126/sciadv.abb6242; Nat Rev Genet 2025,
+    https://www.nature.com/articles/s41576-025-00904-4 -- safety-failed targets
+    skew toward low tissue specificity + high constraint).
+
+    Inputs are the two existing real, descriptive overlay signals (never
+    re-derived here, so there is one implementation each):
+      * ``gnomad_flag`` -- ``gnomad_flag_from_constraint`` output
+        (``"loss_intolerant"`` / ``"none"`` / ``"unknown"``).
+      * ``safety_window`` -- ``safety_window_from_gtex`` output (int off-context
+        tissue count, or ``"unknown"``).
+
+    Availability propagation (``unknown != 0``): if EITHER component is
+    ``"unknown"`` (gene absent from that overlay, unchecked), the composite is
+    ``"unknown"`` -- it never silently treats an unmeasured component as
+    "no risk". The two component columns remain independently visible in the
+    readiness output, so a reader always sees which half was missing.
+
+    Tiering when both are available:
+      * ``high``     -- loss-intolerant AND broadly expressed (both risk signals).
+      * ``moderate`` -- exactly one of the two risk signals.
+      * ``low``      -- neither (constraint ``"none"`` AND narrow off-context breadth).
+
+    Purely descriptive: this is never read by ``core/readiness._stage()`` /
+    ``_red_flags()`` and cannot move ``readiness_call``/
+    ``overall_readiness_stage``.
+    """
+    if gnomad_flag == UNKNOWN or safety_window == UNKNOWN:
+        return UNKNOWN
+    try:
+        breadth_risk = int(safety_window) >= BREADTH_BROAD_THRESHOLD
+    except (TypeError, ValueError):
+        return UNKNOWN
+    constraint_risk = gnomad_flag == "loss_intolerant"
+    n_risks = int(constraint_risk) + int(breadth_risk)
+    return {2: "high", 1: "moderate", 0: "low"}[n_risks]
+
 
 def tractability_from_membrane_overlay(gene_ensembl: str, overlay: Dict[str, Any]) -> Tuple[str, Any]:
     """(modality, score) from the real membrane/tractability overlay, else ``(unknown, unknown)``.
