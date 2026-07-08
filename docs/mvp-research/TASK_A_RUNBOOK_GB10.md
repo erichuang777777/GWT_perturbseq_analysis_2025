@@ -27,7 +27,14 @@ python make_pseudobulk.py aggregate <h5ad_file> \
     --sample_metadata_csv metadata/sample_metadata.csv \
     --condition_col culture_condition --sgrna_col guide_id
 ```
-對 12 個 h5ad 各跑一次（可平行）。輸出 <experiment>_merged.DE_pseudobulk.h5ad（~44.6GB）。
+對 12 個 h5ad 各跑一次 `aggregate`（可平行），產出各 sample 的 pseudobulk。
+**接著必須跑 make_pseudobulk.py 的第二個子命令 `merge`**（CLI 有兩個 subparser：
+`aggregate` 與 `merge`——別跟 Step 3 的 merge_DE_results.py 搞混，那是合併 DE *結果*）：
+```bash
+# 把各 sample 的 pseudobulk 合併成 DE 輸入
+python make_pseudobulk.py merge <sample_id> --DE_config DE_config_full.yaml
+```
+合併後才得到 Step 2 需要的 <experiment>_merged.DE_pseudobulk.h5ad（~44.6GB）。
 
 ### Step 2 — run_DE_chunk（CPU 主導，最貴的部分）
 pertpy/PyDESeq2，design: `~ log10_n_cells + donor_id + target`。chunk_size=50。
