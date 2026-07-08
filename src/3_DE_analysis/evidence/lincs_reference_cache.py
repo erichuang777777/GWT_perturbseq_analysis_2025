@@ -38,7 +38,8 @@ HONEST COVERAGE LIMITS (verified 2026-07-08, not assumed) -- READ BEFORE USE:
    vector, so this does not block scoring, but lowers resolution vs full-tx.)
 
 => RECOMMENDATION: LINCS is a supporting, hypothesis-generating cross-reference
-   for the 4 covered non-immune genes only. (PLCG1 being the one covered immune target.) The primary query signatures must
+   for the 4 covered genes only (PLCG1 = immune; SENP5/CCNC/PMVK = broad-effect).
+   The primary query signatures must
    come from Task A (per-target gene-level DE in the ACTUAL CD4+ T context).
    LINCS does NOT substitute for A.
 """
