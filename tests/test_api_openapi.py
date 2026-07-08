@@ -50,3 +50,18 @@ def test_key_resource_groups_are_present():
 def test_tag_groups_all_have_descriptions():
     for t in _schema().get("tags", []):
         assert t.get("description"), f"tag group {t['name']!r} missing a description"
+
+
+def test_health_surfaces_versions_additively():
+    """/api/health keeps its pre-existing status + capabilities keys (existing
+    callers unaffected) and additively surfaces engine/dataset/schema versions
+    so an API consumer can tell what release they are querying."""
+    from fastapi.testclient import TestClient
+    import target_card_api as api
+
+    body = TestClient(api.app).get("/api/health").json()
+    assert "status" in body and "capabilities" in body  # unchanged, additive
+    v = body["versions"]
+    assert v["api"] == "0.2.0"
+    for key in ("engine_version", "dataset_version", "schema_version"):
+        assert v.get(key)  # non-empty real provenance value

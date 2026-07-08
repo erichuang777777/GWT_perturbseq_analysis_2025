@@ -150,13 +150,29 @@ for _name, _module_path in _ROUTER_MODULES.items():
     _load_router(_name, _module_path)
 
 
-@app.get("/api/health", tags=["System"], summary="Overall + per-capability (per-router) availability")
+@app.get("/api/health", tags=["System"], summary="Overall status, per-capability availability, and engine/schema versions")
 def health() -> Dict[str, Any]:
-    """Overall + per-capability (per-router) availability.
+    """Overall + per-capability (per-router) availability, plus API/engine versions.
 
     ``status`` stays ``"ok"`` (the pre-Phase-4 response shape) when every
     router loaded cleanly, so existing callers checking only ``status``
-    are unaffected; ``capabilities`` is new and purely additive.
+    are unaffected; ``capabilities`` and ``versions`` are purely additive.
+
+    ``versions`` surfaces the same provenance fields stamped on every built
+    dataset -- so an API consumer can tell which engine/schema/dataset release
+    they are querying against without building a dataset first (north-star
+    支柱二 資料明確 / 支柱三 API 可查, ``docs/server_northstar.md``). These are
+    server-wide defaults; a specific dataset's ``metadata.json`` remains the
+    authoritative per-build record.
     """
     overall = "ok" if all(v == "available" for v in _CAPABILITY_STATUS.values()) else "degraded"
-    return {"status": overall, "capabilities": dict(_CAPABILITY_STATUS)}
+    return {
+        "status": overall,
+        "capabilities": dict(_CAPABILITY_STATUS),
+        "versions": {
+            "api": app.version,
+            "engine_version": ENGINE_VERSION,
+            "dataset_version": DATASET_VERSION,
+            "schema_version": CARD_SCHEMA_VERSION,
+        },
+    }
