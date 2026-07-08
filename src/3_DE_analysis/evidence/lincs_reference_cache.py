@@ -18,25 +18,27 @@ SOURCE (all free, all on NCBI GEO — no login, no paid API):
 READ: gctx is HDF5-based; use cmapPy.pandasGEXpress.parse_gctx.parse(path, cid=[...]).
 
 =============================================================================
-HONEST COVERAGE LIMITS (verified 2026-07-08, not assumed) — READ BEFORE USE:
+HONEST COVERAGE LIMITS (verified 2026-07-08, not assumed) -- READ BEFORE USE:
 =============================================================================
 1. CELL-CONTEXT MISMATCH (the big one). All 15 GSE106127 cell lines are CANCER
-   lines (A375, A549, MCF7, PC3, HEPG2, HT29, VCAP, HA1E, HCC515, PC3). ZERO
+   lines (A375, A549, MCF7, PC3, HEPG2, HT29, VCAP, HA1E, HCC515). ZERO
    T-cell / lymphoid lines. Our perturb-seq is primary human CD4+ T cells.
-   Cross-context connectivity mapping is inherently biased — treat any match as
+   Cross-context connectivity mapping is inherently biased -- treat any match as
    a weak hypothesis, never confirmation.
-2. TARGET COVERAGE. Only 4/15 shortlist genes have LINCS signatures:
-   SENP5 (24 sigs), PLCG1 (24), CCNC (24), PMVK (9) — all shRNA, cancer lines.
-   The IMMUNE candidates CD3E / LAT / CD247 / VAV1 have ZERO LINCS signatures
-   (not perturbed in cancer lines). LINCS cannot speak to exactly the targets
-   the platform ranks highest.
+2. TARGET COVERAGE = 4/15. Genes WITH LINCS signatures:
+   PLCG1 (24 sigs, IMMUNE candidate), SENP5 (24, broad-effect),
+   CCNC (24, broad-effect), PMVK (9, broad-effect) -- all shRNA, cancer lines.
+   Of the 5 immune candidates, only PLCG1 is covered; CD3E / LAT / CD247 / VAV1
+   have ZERO LINCS signatures (not perturbed in cancer lines). So LINCS covers
+   ONE top-ranked immune target (PLCG1 -- notable given its Angioedema safety
+   flag) but cannot speak to the other four immune candidates at all.
 3. LANDMARK SPACE. L1000 directly measures 978 landmark genes; the rest are
-   inferred. None of our shortlist genes are landmarks — their own knockdown is
+   inferred. None of our shortlist genes are landmarks -- their own knockdown is
    read out only in the inferred space. (Connectivity uses the 978-gene RESPONSE
    vector, so this does not block scoring, but lowers resolution vs full-tx.)
 
 => RECOMMENDATION: LINCS is a supporting, hypothesis-generating cross-reference
-   for the 4 covered non-immune genes only. The primary query signatures must
+   for the 4 covered non-immune genes only. (PLCG1 being the one covered immune target.) The primary query signatures must
    come from Task A (per-target gene-level DE in the ACTUAL CD4+ T context).
    LINCS does NOT substitute for A.
 """
