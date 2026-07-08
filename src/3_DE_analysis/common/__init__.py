@@ -22,10 +22,15 @@ Submodules:
 - ``coerce``: scalar/Series bool and float coercion (``to_bool``, ``to_float``, ``as_bool``).
 - ``timeutil``: UTC timestamp helper (``utc_now``).
 - ``degrade``: typed "unavailable" degradation wrapper(s) (``unavailable_available``, ``unavailable_source``).
+- ``overlay_lookup``: pure interpretation of an already-loaded overlay table
+  (``tractability_from_membrane_overlay``, ``safety_window_from_gtex``,
+  ``gnomad_flag_from_constraint``) -- added in architecture refactor Phase 3
+  so ``core/readiness.py`` can interpret an injected overlay without
+  importing ``evidence/``.
 """
 
 from __future__ import annotations
 
-from . import coerce, degrade, timeutil
+from . import coerce, degrade, overlay_lookup, timeutil
 
-__all__ = ["coerce", "degrade", "timeutil"]
+__all__ = ["coerce", "degrade", "overlay_lookup", "timeutil"]
