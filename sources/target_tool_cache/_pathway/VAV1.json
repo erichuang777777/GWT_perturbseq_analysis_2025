@@ -1,0 +1,198 @@
+{
+  "gene": "VAV1",
+  "ensembl_id": "ENSG00000141968",
+  "fetched_at": "2026-07-08T01:42:49.398196+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-114604",
+          "pathway_name": "GPVI-mediated activation cascade",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-1257604",
+          "pathway_name": "PIP3 activates AKT signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-1433557",
+          "pathway_name": "Signaling by SCF-KIT",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-193648",
+          "pathway_name": "NRAGE signals death through JNK",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2029482",
+          "pathway_name": "Regulation of actin dynamics for phagocytic cup formation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2219530",
+          "pathway_name": "Constitutive Signaling by Aberrant PI3K in Cancer",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-2871796",
+          "pathway_name": "FCERI mediated MAPK activation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2871809",
+          "pathway_name": "FCERI mediated Ca+2 mobilization",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-389359",
+          "pathway_name": "CD28 dependent Vav1 pathway",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-416482",
+          "pathway_name": "G alpha (12/13) signalling events",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-4420097",
+          "pathway_name": "VEGFA-VEGFR2 Pathway",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-512988",
+          "pathway_name": "Interleukin-3, Interleukin-5 and GM-CSF signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5218920",
+          "pathway_name": "VEGFR2 mediated vascular permeability",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-6811558",
+          "pathway_name": "PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-8980692",
+          "pathway_name": "RHOA GTPase cycle",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9013149",
+          "pathway_name": "RAC1 GTPase cycle",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9013404",
+          "pathway_name": "RAC2 GTPase cycle",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9013408",
+          "pathway_name": "RHOG GTPase cycle",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9027284",
+          "pathway_name": "Erythropoietin activates RAS",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-912631",
+          "pathway_name": "Regulation of signaling by CBL",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9664422",
+          "pathway_name": "FCGR3A-mediated phagocytosis",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9679191",
+          "pathway_name": "Potential therapeutics for SARS",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9748787",
+          "pathway_name": "Azathioprine ADME",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-983695",
+          "pathway_name": "Antigen activates B Cell Receptor (BCR) leading to generation of second messengers",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "BLNK",
+          "score": 0.999
+        },
+        {
+          "partner": "BTK",
+          "score": 0.999
+        },
+        {
+          "partner": "CBL",
+          "score": 0.999
+        },
+        {
+          "partner": "CD19",
+          "score": 0.999
+        },
+        {
+          "partner": "CDC42",
+          "score": 0.999
+        },
+        {
+          "partner": "GRB2",
+          "score": 0.999
+        },
+        {
+          "partner": "ITK",
+          "score": 0.999
+        },
+        {
+          "partner": "LCP2",
+          "score": 0.999
+        },
+        {
+          "partner": "LYN",
+          "score": 0.999
+        },
+        {
+          "partner": "NCK1",
+          "score": 0.999
+        },
+        {
+          "partner": "PLCG1",
+          "score": 0.999
+        },
+        {
+          "partner": "PLCG2",
+          "score": 0.999
+        },
+        {
+          "partner": "SH3BP2",
+          "score": 0.993
+        },
+        {
+          "partner": "SYK",
+          "score": 0.999
+        },
+        {
+          "partner": "ZAP70",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}
