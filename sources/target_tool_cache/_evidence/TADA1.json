@@ -1,0 +1,259 @@
+{
+  "gene": "TADA1",
+  "fetched_at": "2026-07-08T01:41:37.462473+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000152382",
+          "name": "TADA1"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.35681246266769717,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Chronic pain",
+          "disease_id": "HP_0012532",
+          "overall_score": 0.20865912120165767,
+          "genetic_association_score": 0.343228410242444
+        },
+        {
+          "disease": "Pain",
+          "disease_id": "HP_0012531",
+          "overall_score": 0.20865912120165767,
+          "genetic_association_score": 0.343228410242444
+        },
+        {
+          "disease": "ovarian carcinoma",
+          "disease_id": "MONDO_0005140",
+          "overall_score": 0.15374521954883594,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "retinitis pigmentosa",
+          "disease_id": "MONDO_0019200",
+          "overall_score": 0.10627875200793946,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Progressive cone dystrophy",
+          "disease_id": "Orphanet_1871",
+          "overall_score": 0.09150664974534098,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Cone rod dystrophy",
+          "disease_id": "Orphanet_1872",
+          "overall_score": 0.08669961650154173,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Oguchi disease",
+          "disease_id": "MONDO_0019152",
+          "overall_score": 0.07802528827675127,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "early-onset non-syndromic cataract",
+          "disease_id": "MONDO_0011060",
+          "overall_score": 0.07435286233485933,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Familial exudative vitreoretinopathy",
+          "disease_id": "Orphanet_891",
+          "overall_score": 0.07297059698232593,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "congenital stationary night blindness",
+          "disease_id": "MONDO_0016293",
+          "overall_score": 0.07155065986695827,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Familial drusen",
+          "disease_id": "Orphanet_75376",
+          "overall_score": 0.07146853101036167,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Leber congenital amaurosis",
+          "disease_id": "MONDO_0018998",
+          "overall_score": 0.07139496869633784,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "adult-onset foveomacular vitelliform dystrophy",
+          "disease_id": "MONDO_0011979",
+          "overall_score": 0.07095250513825815,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Posterior polar cataract",
+          "disease_id": "Orphanet_98993",
+          "overall_score": 0.06979405544955232,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}
