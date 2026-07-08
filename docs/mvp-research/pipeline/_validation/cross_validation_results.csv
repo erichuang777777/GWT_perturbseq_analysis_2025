@@ -1,0 +1,19 @@
+metric,R_value,Python_value,abs_diff,tolerance,result,calc_logic
+n_rows,33983,33983,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,nrow(de)<ef><bc><9a><e5><8e><9f><e5><a7><8b><e8><b3><87><e6><96><99><e7><b8><bd><e5><88><97><e6><95><b8>
+n_unique_targets,11526,11526,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,n_distinct(target_contrast)<ef><bc><9a><e7><8d><a8><e7><89><b9><e6><a8><99><e7><9a><84><e6><93><be><e5><8b><95><e6><95><b8>
+n_ontarget_significant,21216,21216,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(ontarget_significant==TRUE)<ef><bc><9a>on-target <e9><a1><af><e8><91><97><e5><88><97><e6><95><b8>
+n_offtarget_flag,2837,2837,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(offtarget_flag==TRUE)<ef><bc><9a>off-target <e6><97><97><e6><a8><99><e5><88><97><e6><95><b8>
+n_gate_passing_rows,2131,2131,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(n_cells_target>=200 & ontarget_significant & !offtarget_flag & n_total_de_genes>=50)<ef><bc><8c>NA <e8><a6><96><e7><82><ba> FALSE
+n_gate_passing_unique_targets,1235,1235,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,<e9><80><9a><e9><81><8e><e9><96><80><e6><aa><bb><e5><88><97><e7><9a><84> target_contrast <e4><b9><8b> n_distinct
+count_Rest,11287,11287,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(culture_condition=='Rest')
+count_Stim8hr,11415,11415,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(culture_condition=='Stim8hr')
+count_Stim48hr,11281,11281,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,sum(culture_condition=='Stim48hr')
+nde_median,2,2,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e4><b8><ad><e4><bd><8d>),<e9><80><9a><e9><81><8e>,median(n_total_de_genes)
+nde_max,5920,5920,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,max(n_total_de_genes)
+effect_min,-58.5479766689133,-58.5479766689133,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><a5><b5><e5><80><bc>/<e4><b8><ad><e4><bd><8d>),<e9><80><9a><e9><81><8e>,"min(ontarget_effect_size, na.rm=TRUE)"
+effect_median,-6.30463745267495,-6.30463745267495,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><a5><b5><e5><80><bc>/<e4><b8><ad><e4><bd><8d>),<e9><80><9a><e9><81><8e>,"median(ontarget_effect_size, na.rm=TRUE)"
+effect_max,7.0919377215825,7.0919377215825,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><a5><b5><e5><80><bc>/<e4><b8><ad><e4><bd><8d>),<e9><80><9a><e9><81><8e>,"max(ontarget_effect_size, na.rm=TRUE)"
+ncells_median,539,539,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e4><b8><ad><e4><bd><8d>),<e9><80><9a><e9><81><8e>,median(n_cells_target)
+corr_nde_ndownstream,0.999998468870455,0.999998468870455,4.44089e-16,abs<1e-6,<e9><80><9a><e9><81><8e>,"cor(n_total_de_genes, n_downstream, method='pearson')"
+frac_logde_lt1,0.756142777270988,0.756142777270988,0e+00,abs<1e-6,<e9><80><9a><e9><81><8e>,mean(log10(n_total_de_genes+1) < 1)
+set_significant_genelevel,7913,7913,0e+00,<e7><b2><be><e7><a2><ba><e7><9b><b8><e7><ad><89>(<e6><95><b4><e6><95><b8>),<e9><80><9a><e9><81><8e>,n_distinct(target_contrast_gene_name[ontarget_significant==TRUE])

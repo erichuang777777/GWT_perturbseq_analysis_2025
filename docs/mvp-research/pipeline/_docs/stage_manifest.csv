@@ -1,0 +1,16 @@
+stage,asset,type,current_location,description
+01_raw,DE_stats.suppl_table.csv,資料,/tmp/data/,"33,983 列聚合 DE 統計 (11,526 標的×3 條件)"
+01_raw,sgrna_library_metadata.suppl_table.csv,資料,/tmp/data/,"26,504 sgRNA 庫 metadata"
+01_raw,sample_metadata.suppl_table.csv,資料,/tmp/data/,12 樣本 metadata
+02_curated,curated_targets.csv,資料,(待產出),清理+MVP門檻+去重+標準化欄位
+02_curated,gnomad_constraint_seed.csv,資料,./pr10_out/_overlays/,15 基因 gnomAD LOEUF/pLI
+03_processed,effect_matrix.csv,資料,(待產出),標的×條件 效應矩陣 pivot
+03_processed,embedding_input.csv,資料,(待產出),降維輸入特徵
+04_statistical,summary_statistics.csv,資料,(待產出),門檻/分佈/相關/集合統計
+04_statistical,_evidence/*.json,資料,./pr10_out/_evidence/,15 基因 OpenTargets/CT/PubMed 證據
+04_statistical,_pathway/*.json,資料,./pr10_out/_pathway/,15 基因 Reactome/STRING 機制圖
+05_visualization,2D_CHART_CATALOG (53 張),文件,artifact,53 張 2D 圖表目錄
+05_visualization,structures/*.cif (15),資料,10× broad-effect 在 ./pr10_out/structures/ + 5× immune 僅存 artifact,15 標的 AlphaFold 結構 (10 broad-effect 本 session PR10 新增 + 5 immune 候選先前存 artifact)，每標的 1 個 .cif
+06_animation,anim01-10.gif,資產,artifact,10 個 SaaS 動畫
+07_dashboard,target_card_dashboard.py,腳本,repo,Streamlit 儀表板
+07_dashboard,target_card_api.py,腳本,repo,FastAPI 後端
