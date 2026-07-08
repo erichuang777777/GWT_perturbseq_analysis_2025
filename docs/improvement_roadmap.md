@@ -1,6 +1,8 @@
 # 改善方向路線圖(deep-research 支撐 + repo 現況核對)
 
-**狀態:** 規劃 · **語言:** 繁體中文 · **對照:** `main` @ PR #12 合併後 · **日期:** 2026-07-08
+**狀態:** Phase 1–2 已整合 · Phase 3–5 hook 就位、待資料 · **語言:** 繁體中文 · **日期:** 2026-07-08
+
+**進度標記:** Phase 1(遺傳信心分級 + 複合安全負債 + trait-similarity 誠實 stub)與 Phase 2(LINCS 化合物反轉接線)**已實作並合併**——全部描述性、不進決策層、`unknown≠0` 誠實 fallback。Phase 3(SCEPTRE/GSFA/scPerturb)、Phase 4(Pi/GPS)、Phase 5(multiome)**在此 sandbox 卡資料**(需細胞層 OAK 重跑、外部參考集組裝、或新資料生成),接口/契約就位,對應 `docs/sandbox_blocked_tasks.md`——由有資料/網路的環境接續。
 
 這份路線圖把一輪對抗式查證過的 deep-research(9 個高信心方向、0 refuted、28 來源)落成**可執行、對應本 repo 實際模組**的分階段計畫。每項標:資料來源 / 方法 / 對應我們哪個檔案 / 效果 / 成本 / 誠實 caveat。全部維持本專案紀律:never-fabricate、`unknown ≠ 0`、descriptive-vs-decision 分離。
 
@@ -28,7 +30,9 @@
 
 ## 1. 分階段計畫(按 leverage-to-effort 排序)
 
-### Phase 1 — 近零成本、強化既有紀律、打在最強成功預測因子(遺傳+安全)【建議先做】
+### Phase 1 — 近零成本、強化既有紀律、打在最強成功預測因子(遺傳+安全)【✅ 已整合】
+
+> 實作:`common/evidence_grading.py`(新)、`common/overlay_lookup.py`、`core/readiness.py` 新增描述性欄位 `genetic_support_confidence`/`genetic_support_max_genetic_score`(僅用 genetic score 分級,避免癌症文獻的 overall score 假冒遺傳支持)、`composite_safety_liability`(gnomAD 約束 × GTEx 特異性,liability flag)、`trait_liability_similarity`(無不良反應詞彙 → 誠實 unknown)。實測:MED12 → strong genetics(0.896)+ high 複合負債;VAV1/PLCG1 → 複合 `unknown`(約束已知但不在 GTEx,誠實傳遞)。regression 確認不動 `readiness_call`/`overall_readiness_stage`。
 
 **P1.1(deep-research ⑧)GWAS-to-gene 連結分級**
 - 方法:`human_genetic_support` 呈現時,附上 causal-gene 指派**方法 + 信心 tier**;不把 L2G/eQTL 當權威。
@@ -47,7 +51,9 @@
 - 依據:Duffy 2020(五個聯合遺傳特徵 → 2.6x 副作用風險);Nat Rev Genet 2025(安全性停試標的低組織特異性 + 高約束;關聯相似性狀時不良反應 2x)。
 - 成本:低-中(約束/組織特異性已有;trait-similarity 是新增)。⚠️ **反直覺**:遺傳支持預測 **on-target 負債**——是 liability flag,不是 de-risking,措辭必須清楚。
 
-### Phase 2 — 重用既有 machinery、公開資料
+### Phase 2 — 重用既有 machinery、公開資料【✅ 接線已整合(化合物資料未到前誠實 unavailable)】
+
+> 實作:`evidence/lincs_reference_cache.py` 新增 `COMPOUND_SIGNATURES_PATH`/`load_compound_signatures`/`compound_reversal_matches`(重用 `lincs_connectivity_score`,依反轉連結性排序);`signature_explorer.py::match_reference_compounds` 現在 route 到化合物反轉路徑,化合物矩陣未 committed 時維持 `source_status: unavailable`。cell-context mismatch caveat 強制帶。真化合物資料(GSE92742/70138)一落地即亮。
 
 **P2.1(⑦)LINCS L1000 化合物反轉 — 補明說的 compound-reversal 缺口**
 - 方法:把 L1000 **化合物** perturbation profile 接進 connectivity explorer,找 signature 反轉命中;**重用 `signature_explorer.connectivity_score` 的加權 cosine**(已支援任意 `{gene:score}` 參考)。
