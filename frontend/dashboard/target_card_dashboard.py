@@ -425,6 +425,36 @@ st.markdown(
 
 st.title("GWT Target Evidence Browser")
 
+# Onboarding intro (north-star 支柱一 好上手 / UI friendly): a first-time visitor
+# should understand what this is, how to start, and where to go in one glance --
+# rather than landing on a blank app that st.stop()s until a dataset is picked.
+with st.expander("ℹ️ 開始使用 · What is this & how to start", expanded=False):
+    st.markdown(
+        f"""
+**CD4 T-cell Perturb-seq 標的發現工具** — turns a CRISPRi knockdown screen in primary human
+CD4⁺ T cells into decision-ready, evidence-integrated **target cards**. Research /
+hypothesis-generating use only — **not** clinical software.
+
+**How to start:** pick or build a dataset in the sidebar → the tabs below show the
+Overview, Target Explorer, robustness, pathway/clinical axes, and export.
+
+**Go deeper (side pages, left):**
+- **標的檔案 · Target dossier** — one target per page: evidence, concept profile, mechanism
+  graph, safety window, tractability, external evidence, readiness call.
+- **個體概念剖面 · Concept profile (探索 demo)** — project a sample's expression onto the 20
+  CD4 immune concept modules.
+
+**Query the data yourself:** a documented REST API lives at
+[`{API_BASE}/docs`]({API_BASE}/docs) (Swagger UI) and [`{API_BASE}/redoc`]({API_BASE}/redoc);
+see `docs/API.md` for a curl/Python quickstart. `{API_BASE}/api/health` reports engine/schema
+versions.
+
+**Reading the data:** every value is source- & version-stamped; **`unknown` is shown as
+unknown, never as `0`** (a gene not yet checked is not a measured zero); descriptive evidence
+is kept separate from the final advance/validate/watchlist/deprioritize call.
+        """
+    )
+
 with st.sidebar:
     with st.expander("Gene lookup", expanded=False):
         st.caption("Alias-tolerant search (typos/partial/old symbols OK) + three-state result status. Works without a loaded dataset.")
