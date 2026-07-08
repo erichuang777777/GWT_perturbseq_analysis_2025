@@ -1,0 +1,267 @@
+{
+  "gene": "MED12",
+  "fetched_at": "2026-07-08T01:41:29.682139+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "39663454",
+          "title": "Central control of dynamic gene circuits governs T cell rest and activation.",
+          "year": "2025",
+          "journal": "Nature",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39663454/"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000184634",
+          "name": "MED12"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "FG syndrome 1",
+          "disease_id": "MONDO_0010590",
+          "overall_score": 0.7766654780331379,
+          "genetic_association_score": 0.8184706293852668
+        },
+        {
+          "disease": "Blepharophimosis-intellectual disability syndrome, MKB type",
+          "disease_id": "Orphanet_293707",
+          "overall_score": 0.7677821839573256,
+          "genetic_association_score": 0.8692056181887067
+        },
+        {
+          "disease": "cholestasis-pigmentary retinopathy-cleft palate syndrome",
+          "disease_id": "MONDO_0012997",
+          "overall_score": 0.7643166059180078,
+          "genetic_association_score": 0.8301460568538868
+        },
+        {
+          "disease": "X-linked intellectual disability with marfanoid habitus",
+          "disease_id": "MONDO_0010655",
+          "overall_score": 0.7593740274108369,
+          "genetic_association_score": 0.7847655179884149
+        },
+        {
+          "disease": "FG syndrome",
+          "disease_id": "MONDO_0002010",
+          "overall_score": 0.7373776991373554,
+          "genetic_association_score": 0.8956616514475075
+        },
+        {
+          "disease": "blepharophimosis - intellectual disability syndrome, MKB type",
+          "disease_id": "MONDO_0010477",
+          "overall_score": 0.7093837361770611,
+          "genetic_association_score": 0.8485239335236082
+        },
+        {
+          "disease": "MED12-related intellectual disability syndrome",
+          "disease_id": "MONDO_0100000",
+          "overall_score": 0.5877195478208496,
+          "genetic_association_score": 0.8147713293941626
+        },
+        {
+          "disease": "familial thoracic aortic aneurysm and aortic dissection",
+          "disease_id": "MONDO_0019625",
+          "overall_score": 0.5223378942760211,
+          "genetic_association_score": 0.8592061733475768
+        },
+        {
+          "disease": "Rare disease with thoracic aortic aneurysm and aortic dissection",
+          "disease_id": "Orphanet_285014",
+          "overall_score": 0.5060690608826085,
+          "genetic_association_score": 0.8324451777583945
+        },
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.4985029980467241,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Intellectual disability",
+          "disease_id": "HP_0001249",
+          "overall_score": 0.4786665128996378,
+          "genetic_association_score": 0.7813949795856738
+        },
+        {
+          "disease": "Global developmental delay",
+          "disease_id": "HP_0001263",
+          "overall_score": 0.40191039238930726,
+          "genetic_association_score": 0.6565652614205508
+        },
+        {
+          "disease": "Abnormal facial shape",
+          "disease_id": "HP_0001999",
+          "overall_score": 0.399146243059478,
+          "genetic_association_score": 0.6565652614205508
+        },
+        {
+          "disease": "leiomyoma",
+          "disease_id": "MONDO_0001572",
+          "overall_score": 0.3982175722981631,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hereditary disease",
+          "disease_id": "MONDO_0003847",
+          "overall_score": 0.3868336595969862,
+          "genetic_association_score": 0.6324730359009918
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}
