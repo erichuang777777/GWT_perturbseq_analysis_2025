@@ -1,0 +1,138 @@
+{
+  "gene": "CD247",
+  "ensembl_id": "ENSG00000198821",
+  "fetched_at": "2026-07-08T01:42:58.118815+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-164944",
+          "pathway_name": "Nef and signal transduction",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-198933",
+          "pathway_name": "Immunoregulatory interactions between a Lymphoid and a non-Lymphoid cell",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-202424",
+          "pathway_name": "Downstream TCR signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-202427",
+          "pathway_name": "Phosphorylation of CD3 and TCR zeta chains",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-202430",
+          "pathway_name": "Translocation of ZAP-70 to Immunological synapse",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-202433",
+          "pathway_name": "Generation of second messenger molecules",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2029481",
+          "pathway_name": "FCGR activation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2029482",
+          "pathway_name": "Regulation of actin dynamics for phagocytic cup formation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2029485",
+          "pathway_name": "Role of phospholipids in phagocytosis",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-389948",
+          "pathway_name": "Co-inhibition by PD-1",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9664323",
+          "pathway_name": "FCGR3A-mediated IL10 synthesis",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9664422",
+          "pathway_name": "FCGR3A-mediated phagocytosis",
+          "is_in_disease": true
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "CD3D",
+          "score": 0.999
+        },
+        {
+          "partner": "CD3E",
+          "score": 0.999
+        },
+        {
+          "partner": "CD3G",
+          "score": 0.999
+        },
+        {
+          "partner": "CD4",
+          "score": 0.999
+        },
+        {
+          "partner": "CD8A",
+          "score": 0.999
+        },
+        {
+          "partner": "FCER1G",
+          "score": 0.999
+        },
+        {
+          "partner": "FCGR3A",
+          "score": 0.999
+        },
+        {
+          "partner": "FCGR3B",
+          "score": 0.999
+        },
+        {
+          "partner": "FYN",
+          "score": 0.998
+        },
+        {
+          "partner": "LCK",
+          "score": 0.999
+        },
+        {
+          "partner": "NCR1",
+          "score": 0.999
+        },
+        {
+          "partner": "NCR3",
+          "score": 0.999
+        },
+        {
+          "partner": "SYK",
+          "score": 0.999
+        },
+        {
+          "partner": "TNFRSF9",
+          "score": 0.988
+        },
+        {
+          "partner": "ZAP70",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}
