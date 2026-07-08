@@ -1,0 +1,259 @@
+{
+  "gene": "SENP5",
+  "fetched_at": "2026-07-08T01:41:15.707898+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000119231",
+          "name": "SENP5"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.26364668236062977,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "placental abruption",
+          "disease_id": "MONDO_0004846",
+          "overall_score": 0.23898630778984933,
+          "genetic_association_score": 0.39311432934267404
+        },
+        {
+          "disease": "response to xenobiotic stimulus",
+          "disease_id": "GO_0009410",
+          "overall_score": 0.2362493108885154,
+          "genetic_association_score": 0.38861217726864394
+        },
+        {
+          "disease": "alcohol drinking",
+          "disease_id": "EFO_0004329",
+          "overall_score": 0.15766314389721256,
+          "genetic_association_score": 0.2593438998593657
+        },
+        {
+          "disease": "seasonal allergic rhinitis",
+          "disease_id": "MONDO_0005324",
+          "overall_score": 0.15766314389721256,
+          "genetic_association_score": 0.2593438998593657
+        },
+        {
+          "disease": "neoplasm",
+          "disease_id": "MONDO_0005070",
+          "overall_score": 0.09136768052867884,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast cancer",
+          "disease_id": "MONDO_0007254",
+          "overall_score": 0.07799146610418185,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast carcinoma",
+          "disease_id": "MONDO_0004989",
+          "overall_score": 0.07780510064367213,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "osteosarcoma",
+          "disease_id": "MONDO_0009807",
+          "overall_score": 0.07527700974320121,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "gastric cancer",
+          "disease_id": "MONDO_0001056",
+          "overall_score": 0.05966661431743019,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "posterior cortical atrophy",
+          "disease_id": "MONDO_0018899",
+          "overall_score": 0.05765445733081349,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "gastric neoplasm",
+          "disease_id": "MONDO_0021085",
+          "overall_score": 0.053219499074597054,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Zinc deficiency",
+          "disease_id": "EFO_1000003",
+          "overall_score": 0.05284991921991235,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "esophageal squamous cell carcinoma",
+          "disease_id": "MONDO_0005580",
+          "overall_score": 0.049318378386258535,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.046919792085332805,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

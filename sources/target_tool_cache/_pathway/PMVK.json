@@ -1,0 +1,88 @@
+{
+  "gene": "PMVK",
+  "ensembl_id": "ENSG00000163344",
+  "fetched_at": "2026-07-08T01:43:14.298128+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-2426168",
+          "pathway_name": "Activation of gene expression by SREBF (SREBP)",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9969896",
+          "pathway_name": "Lanosterol biosynthesis",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "ACAT1",
+          "score": 0.997
+        },
+        {
+          "partner": "FDFT1",
+          "score": 0.999
+        },
+        {
+          "partner": "FDPS",
+          "score": 0.997
+        },
+        {
+          "partner": "GGPS1",
+          "score": 0.996
+        },
+        {
+          "partner": "HMGA1",
+          "score": 0.882
+        },
+        {
+          "partner": "HMGCR",
+          "score": 0.999
+        },
+        {
+          "partner": "HMGCS1",
+          "score": 0.999
+        },
+        {
+          "partner": "IDI1",
+          "score": 0.998
+        },
+        {
+          "partner": "IDI2",
+          "score": 0.997
+        },
+        {
+          "partner": "MVD",
+          "score": 0.999
+        },
+        {
+          "partner": "MVK",
+          "score": 0.999
+        },
+        {
+          "partner": "PEX5",
+          "score": 0.999
+        },
+        {
+          "partner": "PEX7",
+          "score": 0.999
+        },
+        {
+          "partner": "SQLE",
+          "score": 0.999
+        },
+        {
+          "partner": "SREBF1",
+          "score": 0.956
+        }
+      ]
+    }
+  }
+}

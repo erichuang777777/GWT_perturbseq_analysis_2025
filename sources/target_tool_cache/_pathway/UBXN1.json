@@ -1,0 +1,88 @@
+{
+  "gene": "UBXN1",
+  "ensembl_id": "ENSG00000162191",
+  "fetched_at": "2026-07-08T01:42:55.049923+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-532668",
+          "pathway_name": "N-glycan trimming in the ER and Calnexin/Calreticulin cycle",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5693565",
+          "pathway_name": "Recruitment and ATM-mediated phosphorylation of repair and signaling proteins at DNA double strand breaks",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "BAG6",
+          "score": 0.995
+        },
+        {
+          "partner": "BTBD9",
+          "score": 0.994
+        },
+        {
+          "partner": "FAF1",
+          "score": 0.999
+        },
+        {
+          "partner": "FAF2",
+          "score": 0.999
+        },
+        {
+          "partner": "KCTD10",
+          "score": 0.995
+        },
+        {
+          "partner": "MAGED1",
+          "score": 0.994
+        },
+        {
+          "partner": "NSFL1C",
+          "score": 0.999
+        },
+        {
+          "partner": "SVIP",
+          "score": 0.997
+        },
+        {
+          "partner": "TNFAIP1",
+          "score": 0.995
+        },
+        {
+          "partner": "UBXN2A",
+          "score": 0.999
+        },
+        {
+          "partner": "UBXN4",
+          "score": 0.999
+        },
+        {
+          "partner": "UBXN6",
+          "score": 0.999
+        },
+        {
+          "partner": "UBXN7",
+          "score": 0.999
+        },
+        {
+          "partner": "UBXN8",
+          "score": 0.991
+        },
+        {
+          "partner": "VCP",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}

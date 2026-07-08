@@ -1,0 +1,259 @@
+{
+  "gene": "TADA2B",
+  "fetched_at": "2026-07-08T01:41:14.076111+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000173011",
+          "name": "TADA2B"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "multiple sclerosis",
+          "disease_id": "MONDO_0005301",
+          "overall_score": 0.25595107577337484,
+          "genetic_association_score": 0.4210200844881199
+        },
+        {
+          "disease": "ventricular septal defect",
+          "disease_id": "MONDO_0002070",
+          "overall_score": 0.17678051003767187,
+          "genetic_association_score": 0.29079051551951274
+        },
+        {
+          "disease": "breast carcinoma",
+          "disease_id": "MONDO_0004989",
+          "overall_score": 0.15337563969415124,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "gastric carcinoma",
+          "disease_id": "MONDO_0004950",
+          "overall_score": 0.15337563969415124,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "orofaciodigital syndrome",
+          "disease_id": "MONDO_0015375",
+          "overall_score": 0.11087395640541053,
+          "genetic_association_score": 0.18237923928348632
+        },
+        {
+          "disease": "Miyoshi myopathy",
+          "disease_id": "MONDO_0009685",
+          "overall_score": 0.09145561487385183,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "neuroblastoma",
+          "disease_id": "MONDO_0005072",
+          "overall_score": 0.06633958391590397,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "cancer",
+          "disease_id": "MONDO_0004992",
+          "overall_score": 0.04700850429447916,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "osteoarthritis",
+          "disease_id": "MONDO_0005178",
+          "overall_score": 0.0439741798895931,
+          "genetic_association_score": 0.07233418682250439
+        },
+        {
+          "disease": "neuroendocrine neoplasm",
+          "disease_id": "MONDO_0019496",
+          "overall_score": 0.03022295515432787,
+          "genetic_association_score": 0.049714466306140195
+        },
+        {
+          "disease": "poisoning",
+          "disease_id": "MONDO_0029000",
+          "overall_score": 0.024901465875293845,
+          "genetic_association_score": 0.04096102051931615
+        },
+        {
+          "disease": "response to xenobiotic stimulus",
+          "disease_id": "GO_0009410",
+          "overall_score": 0.024901465875293845,
+          "genetic_association_score": 0.04096102051931615
+        },
+        {
+          "disease": "diaphragm disorder",
+          "disease_id": "MONDO_0005728",
+          "overall_score": 0.021965643651962477,
+          "genetic_association_score": 0.03613181588802368
+        },
+        {
+          "disease": "ovarian dysfunction",
+          "disease_id": "MONDO_0001889",
+          "overall_score": 0.019403737551077115,
+          "genetic_association_score": 0.03191767488554391
+        },
+        {
+          "disease": "lymphoma",
+          "disease_id": "MONDO_0005062",
+          "overall_score": 0.016117788107082833,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

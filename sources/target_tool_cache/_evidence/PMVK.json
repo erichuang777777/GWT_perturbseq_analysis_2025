@@ -1,0 +1,259 @@
+{
+  "gene": "PMVK",
+  "fetched_at": "2026-07-08T01:41:41.031074+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000163344",
+          "name": "PMVK"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "porokeratosis 1, Mibelli type",
+          "disease_id": "MONDO_0008290",
+          "overall_score": 0.6391375414471725,
+          "genetic_association_score": 0.7680300486413054
+        },
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.5261379875719714,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "porokeratosis",
+          "disease_id": "MONDO_0006602",
+          "overall_score": 0.4170969088709971,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "porokeratosis of Mibelli",
+          "disease_id": "MONDO_0019141",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": 0.607930797611621
+        },
+        {
+          "disease": "linear porokeratosis",
+          "disease_id": "MONDO_0023246",
+          "overall_score": 0.3521274726579242,
+          "genetic_association_score": 0.5792229543910723
+        },
+        {
+          "disease": "functional neutrophil defect",
+          "disease_id": "MONDO_0015978",
+          "overall_score": 0.3059934647387582,
+          "genetic_association_score": 0.5033360144623621
+        },
+        {
+          "disease": "hereditary disease",
+          "disease_id": "MONDO_0003847",
+          "overall_score": 0.19024837403350178,
+          "genetic_association_score": 0.3129441291359657
+        },
+        {
+          "disease": "atrial fibrillation",
+          "disease_id": "MONDO_0004981",
+          "overall_score": 0.117617296250105,
+          "genetic_association_score": 0.1801634095165817
+        },
+        {
+          "disease": "total knee arthroplasty",
+          "disease_id": "EFO_0020975",
+          "overall_score": 0.0971066220994197,
+          "genetic_association_score": 0.15973301974652818
+        },
+        {
+          "disease": "osteoarthritis, knee",
+          "disease_id": "MONDO_0005416",
+          "overall_score": 0.0971066220994197,
+          "genetic_association_score": 0.15973301974652818
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.07931861244600621,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "lung carcinoma",
+          "disease_id": "MONDO_0005138",
+          "overall_score": 0.07444980850481825,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "lung cancer",
+          "disease_id": "MONDO_0008903",
+          "overall_score": 0.07444980850481825,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "neoplasm",
+          "disease_id": "MONDO_0005070",
+          "overall_score": 0.06502631590753687,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "preeclampsia",
+          "disease_id": "MONDO_0005081",
+          "overall_score": 0.037697145177839585,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "gene": "MED12",
+  "ensembl_id": "ENSG00000184634",
+  "fetched_at": "2026-07-08T01:43:00.877004+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-1989781",
+          "pathway_name": "PPARA activates gene expression",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-212436",
+          "pathway_name": "Generic Transcription Pathway",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-381340",
+          "pathway_name": "Transcriptional regulation of white adipocyte differentiation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9833110",
+          "pathway_name": "RSV-host interactions",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9841922",
+          "pathway_name": "MLL4 and MLL3 complexes regulate expression of PPARG target genes in adipogenesis and hepatic steatosis",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "MED1",
+          "score": 0.999
+        },
+        {
+          "partner": "MED10",
+          "score": 0.999
+        },
+        {
+          "partner": "MED11",
+          "score": 0.999
+        },
+        {
+          "partner": "MED13L",
+          "score": 0.999
+        },
+        {
+          "partner": "MED14",
+          "score": 0.999
+        },
+        {
+          "partner": "MED15",
+          "score": 0.999
+        },
+        {
+          "partner": "MED17",
+          "score": 0.999
+        },
+        {
+          "partner": "MED20",
+          "score": 0.999
+        },
+        {
+          "partner": "MED21",
+          "score": 0.999
+        },
+        {
+          "partner": "MED27",
+          "score": 0.999
+        },
+        {
+          "partner": "MED28",
+          "score": 0.999
+        },
+        {
+          "partner": "MED30",
+          "score": 0.999
+        },
+        {
+          "partner": "MED31",
+          "score": 0.999
+        },
+        {
+          "partner": "MED4",
+          "score": 0.999
+        },
+        {
+          "partner": "MED8",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}

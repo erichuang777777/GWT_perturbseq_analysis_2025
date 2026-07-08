@@ -1,0 +1,259 @@
+{
+  "gene": "SUPT20H",
+  "fetched_at": "2026-07-08T01:41:35.466506+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000102710",
+          "name": "SUPT20H"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.522357858387338,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "bacterial arthritis",
+          "disease_id": "MONDO_0004471",
+          "overall_score": 0.3412449195211702,
+          "genetic_association_score": 0.5613219808271267
+        },
+        {
+          "disease": "insomnia",
+          "disease_id": "MONDO_0013600",
+          "overall_score": 0.27290344161233787,
+          "genetic_association_score": 0.44890543904749386
+        },
+        {
+          "disease": "methicillin-resistant staphylococcus aureus infectious disease",
+          "disease_id": "MONDO_0100073",
+          "overall_score": 0.23664547459688332,
+          "genetic_association_score": 0.38926383648697
+        },
+        {
+          "disease": "rheumatoid arthritis",
+          "disease_id": "MONDO_0008383",
+          "overall_score": 0.19356755155218328,
+          "genetic_association_score": 0.3039653988058105
+        },
+        {
+          "disease": "temporomandibular joint disorder",
+          "disease_id": "MONDO_0005473",
+          "overall_score": 0.0727147483385686,
+          "genetic_association_score": 0.11961023956056048
+        },
+        {
+          "disease": "diabetes mellitus",
+          "disease_id": "MONDO_0005015",
+          "overall_score": 0.06488405518907842,
+          "genetic_association_score": 0.10672934393846886
+        },
+        {
+          "disease": "alcohol drinking",
+          "disease_id": "EFO_0004329",
+          "overall_score": 0.05934056848613106,
+          "genetic_association_score": 0.09761072924626038
+        },
+        {
+          "disease": "Leber congenital amaurosis",
+          "disease_id": "MONDO_0018998",
+          "overall_score": 0.04919867557776899,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Varicose veins",
+          "disease_id": "HP_0002619",
+          "overall_score": 0.04291020623776512,
+          "genetic_association_score": 0.07058403095606693
+        },
+        {
+          "disease": "vein disorder",
+          "disease_id": "MONDO_0004634",
+          "overall_score": 0.042768719800043035,
+          "genetic_association_score": 0.07035129650951817
+        },
+        {
+          "disease": "lymphatic system disorder",
+          "disease_id": "MONDO_0005833",
+          "overall_score": 0.042768719800043035,
+          "genetic_association_score": 0.07035129650951817
+        },
+        {
+          "disease": "Meckel syndrome",
+          "disease_id": "MONDO_0018921",
+          "overall_score": 0.041036299164915864,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Neu-Laxova syndrome",
+          "disease_id": "MONDO_0000179",
+          "overall_score": 0.03945634528613876,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Waardenburg syndrome type 1",
+          "disease_id": "MONDO_0008670",
+          "overall_score": 0.03896849987795496,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "gene": "UBXN1",
+  "fetched_at": "2026-07-08T01:41:25.447377+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": []
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000162191",
+          "name": "UBXN1"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "neoplasm",
+          "disease_id": "MONDO_0005070",
+          "overall_score": 0.07710098270176928,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.07444980850481825,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "metabolic syndrome",
+          "disease_id": "EFO_0000195",
+          "overall_score": 0.07391597093694036,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "posterior cortical atrophy",
+          "disease_id": "MONDO_0018899",
+          "overall_score": 0.06578521413387693,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "glioma",
+          "disease_id": "MONDO_0021042",
+          "overall_score": 0.05325631357774707,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "central nervous system cancer",
+          "disease_id": "MONDO_0002714",
+          "overall_score": 0.05325631357774707,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "familial pseudohyperkalemia",
+          "disease_id": "MONDO_0012204",
+          "overall_score": 0.035997077846289964,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Blackfan-Diamond anemia",
+          "disease_id": "Orphanet_124",
+          "overall_score": 0.03458528280139439,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "dehydrated hereditary stomatocytosis",
+          "disease_id": "MONDO_0017910",
+          "overall_score": 0.033387844072215955,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "monosomy 7 myelodysplasia and leukemia syndrome 1",
+          "disease_id": "MONDO_0009646",
+          "overall_score": 0.032449111241316816,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hereditary intrinsic factor deficiency",
+          "disease_id": "MONDO_0009852",
+          "overall_score": 0.03069730273011133,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Congenital intrinsic factor deficiency",
+          "disease_id": "Orphanet_332",
+          "overall_score": 0.03069730273011133,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "glioblastoma",
+          "disease_id": "MONDO_0018177",
+          "overall_score": 0.027971718578567773,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Abnormality of the skeletal system",
+          "disease_id": "HP_0000924",
+          "overall_score": 0.025695166221609722,
+          "genetic_association_score": 0.042266597320876606
+        },
+        {
+          "disease": "Familial prostate cancer",
+          "disease_id": "Orphanet_1331",
+          "overall_score": 0.02565500157936305,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

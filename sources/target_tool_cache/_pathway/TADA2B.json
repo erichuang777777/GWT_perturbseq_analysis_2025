@@ -1,0 +1,88 @@
+{
+  "gene": "TADA2B",
+  "ensembl_id": "ENSG00000173011",
+  "fetched_at": "2026-07-08T01:42:41.042128+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-3214847",
+          "pathway_name": "HATs acetylate histones",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5689880",
+          "pathway_name": "Ub-specific processing proteases",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "ENY2",
+          "score": 0.999
+        },
+        {
+          "partner": "KAT2A",
+          "score": 0.999
+        },
+        {
+          "partner": "KAT2B",
+          "score": 0.999
+        },
+        {
+          "partner": "SGF29",
+          "score": 0.999
+        },
+        {
+          "partner": "SUPT20H",
+          "score": 0.999
+        },
+        {
+          "partner": "SUPT3H",
+          "score": 0.999
+        },
+        {
+          "partner": "SUPT7L",
+          "score": 0.999
+        },
+        {
+          "partner": "TADA3",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF10",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF12",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF5L",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF6L",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF9",
+          "score": 0.999
+        },
+        {
+          "partner": "TAF9B",
+          "score": 0.999
+        },
+        {
+          "partner": "TRRAP",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}

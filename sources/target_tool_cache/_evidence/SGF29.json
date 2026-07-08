@@ -1,0 +1,267 @@
+{
+  "gene": "SGF29",
+  "fetched_at": "2026-07-08T01:41:22.632029+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "41479897",
+          "title": "Dynamic genetic regulation of CD4(+) T cells in obstructive sleep apnea: integrating context-specific eQTL, Mendelian randomization, single-cell sequencing, and experimental validation.",
+          "year": "2025",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41479897/"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000176476",
+          "name": "SGF29"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "Abnormality of refraction",
+          "disease_id": "HP_0000539",
+          "overall_score": 0.22004305630413537,
+          "genetic_association_score": 0.36195411906851727
+        },
+        {
+          "disease": "Crohn disease",
+          "disease_id": "MONDO_0005011",
+          "overall_score": 0.15204896239867044,
+          "genetic_association_score": 0.24858917060244987
+        },
+        {
+          "disease": "refractive error",
+          "disease_id": "MONDO_0004892",
+          "overall_score": 0.1474009199886822,
+          "genetic_association_score": 0.24246332077232555
+        },
+        {
+          "disease": "Cannabis use",
+          "disease_id": "EFO_0007585",
+          "overall_score": 0.14553535547943716,
+          "genetic_association_score": 0.23939460881271715
+        },
+        {
+          "disease": "psoriasis",
+          "disease_id": "MONDO_0005083",
+          "overall_score": 0.12567301187281038,
+          "genetic_association_score": 0.20672256178917434
+        },
+        {
+          "disease": "inflammatory bowel disease",
+          "disease_id": "MONDO_0005265",
+          "overall_score": 0.12262752571527133,
+          "genetic_association_score": 0.20110503751562128
+        },
+        {
+          "disease": "cystic kidney disease",
+          "disease_id": "MONDO_0002473",
+          "overall_score": 0.08492871293667852,
+          "genetic_association_score": 0.1397012838802346
+        },
+        {
+          "disease": "risk-taking behaviour",
+          "disease_id": "EFO_0008579",
+          "overall_score": 0.0793447299549692,
+          "genetic_association_score": 0.13051605588447074
+        },
+        {
+          "disease": "Abnormality of the skeletal system",
+          "disease_id": "HP_0000924",
+          "overall_score": 0.07878305849156175,
+          "genetic_association_score": 0.12959214897662186
+        },
+        {
+          "disease": "leukemia",
+          "disease_id": "MONDO_0005059",
+          "overall_score": 0.07447034071896741,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "attention deficit-hyperactivity disorder",
+          "disease_id": "MONDO_0007743",
+          "overall_score": 0.07432874536841186,
+          "genetic_association_score": 0.12226514211885194
+        },
+        {
+          "disease": "substance abuse",
+          "disease_id": "MONDO_0002491",
+          "overall_score": 0.07432874536841186,
+          "genetic_association_score": 0.12226514211885194
+        },
+        {
+          "disease": "essential tremor",
+          "disease_id": "MONDO_0003233",
+          "overall_score": 0.07344044485724603,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "type 1 diabetes mellitus",
+          "disease_id": "MONDO_0005147",
+          "overall_score": 0.06523448385116397,
+          "genetic_association_score": 0.10669784168085272
+        },
+        {
+          "disease": "episodic kinesigenic dyskinesia 1",
+          "disease_id": "MONDO_0100352",
+          "overall_score": 0.06450667315880934,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}

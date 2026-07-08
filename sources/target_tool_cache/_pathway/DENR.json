@@ -1,0 +1,78 @@
+{
+  "gene": "DENR",
+  "ensembl_id": "ENSG00000139726",
+  "fetched_at": "2026-07-08T01:43:12.020626+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "unavailable",
+      "reason": "HTTPError: 404 Client Error: Not Found for url: https://reactome.org/ContentService/data/mapping/ENSEMBL/ENSG00000139726/pathways?species=9606",
+      "items": []
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "FAU",
+          "score": 0.999
+        },
+        {
+          "partner": "FIS1",
+          "score": 0.995
+        },
+        {
+          "partner": "MCTS1",
+          "score": 0.999
+        },
+        {
+          "partner": "MFF",
+          "score": 0.994
+        },
+        {
+          "partner": "MIEF1",
+          "score": 0.99
+        },
+        {
+          "partner": "MIEF2",
+          "score": 0.988
+        },
+        {
+          "partner": "RPS11",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS15",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS17",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS19",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS24",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS25",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS28",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS3",
+          "score": 0.999
+        },
+        {
+          "partner": "RPS6",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}

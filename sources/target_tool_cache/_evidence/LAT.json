@@ -1,0 +1,416 @@
+{
+  "gene": "LAT",
+  "fetched_at": "2026-07-08T01:41:10.818045+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": [
+        {
+          "nct_id": "NCT07118514",
+          "title": "Effect of Resistance Training on Psychophysiological Indicators in People With Multiple Sclerosis",
+          "phase": "NA",
+          "status": "COMPLETED",
+          "conditions": [
+            "Multiple Sclerosis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT07118514"
+        },
+        {
+          "nct_id": "NCT02939768",
+          "title": "Impact of Different Types of Exercise Training on Biochemical Markers of Insulin-dependent Patients",
+          "phase": "NA",
+          "status": "COMPLETED",
+          "conditions": [
+            "Diabetes Mellitus, Type 1"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT02939768"
+        },
+        {
+          "nct_id": "NCT04060875",
+          "title": "Research Protocol for Karuna Labs Inc.: Safety and Efficacy of Virtual Reality Graded Motor Imagery for Chronic Pain",
+          "phase": null,
+          "status": "COMPLETED",
+          "conditions": [
+            "Chronic Pain",
+            "Low Back Pain",
+            "Fibromyalgia",
+            "Upper Extremity Dysfunction",
+            "Complex Regional Pain Syndromes",
+            "Phantom Limb Pain",
+            "Rheumatoid Arthritis",
+            "Carpal Tunnel Syndrome",
+            "Repetitive Strain Injury"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT04060875"
+        },
+        {
+          "nct_id": "NCT07245589",
+          "title": "Evaluation of the Clinical Contribution of Quantitative MRI in Neuro-imaging",
+          "phase": "NA",
+          "status": "NOT_YET_RECRUITING",
+          "conditions": [
+            "Multiple Sclerosis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT07245589"
+        },
+        {
+          "nct_id": "NCT06318923",
+          "title": "Social and Moral Cognition in Multiple Sclerosis",
+          "phase": "NA",
+          "status": "UNKNOWN",
+          "conditions": [
+            "Multiple Sclerosis"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT06318923"
+        },
+        {
+          "nct_id": "NCT07064291",
+          "title": "Enhancing Self-Esteem in Patients With Multiple Sclerosis: A Randomised Controlled Trial of the Lexical Association Technique",
+          "phase": "NA",
+          "status": "NOT_YET_RECRUITING",
+          "conditions": [
+            "Multiple Sclerosis",
+            "Quality of Life (QOL)"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT07064291"
+        },
+        {
+          "nct_id": "NCT04762342",
+          "title": "Power Training in Older Multiple Sclerosis Patients",
+          "phase": "NA",
+          "status": "UNKNOWN",
+          "conditions": [
+            "Multiple Sclerosis",
+            "Sclerosis",
+            "Demyelinating Autoimmune Diseases, CNS",
+            "Autoimmune Diseases of the Nervous System",
+            "Demyelinating Diseases",
+            "Healthy Aging",
+            "Aging"
+          ],
+          "url": "https://clinicaltrials.gov/study/NCT04762342"
+        }
+      ]
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "42210692",
+          "title": "Pharmacological METTL3 inhibition attenuates HIV-1 latency reversal in CD4(+) T cells.",
+          "year": "2026",
+          "journal": "Antimicrobial agents and chemotherapy",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42210692/"
+        },
+        {
+          "pmid": "41890003",
+          "title": "Pharmacological METTL3 inhibition attenuates HIV-1 latency reversal in CD4(+) T cells.",
+          "year": "2026",
+          "journal": "bioRxiv : the preprint server for biology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41890003/"
+        },
+        {
+          "pmid": "41769381",
+          "title": "Bipolar CD4-targeted dual-DARPin-55/57 lipid nanoparticle enables efficient CRISPR/Cas-mediated HIV-1 DNA excision and reactivation blockade in latent CD4 T cell lines.",
+          "year": "2026",
+          "journal": "Materials today. Bio",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41769381/"
+        },
+        {
+          "pmid": "41610151",
+          "title": "The effect of combining HIV latency reversal with inhibition of phosphoinositide-3 kinases or B-cell lymphoma-2 on the HIV reservoir.",
+          "year": "2026",
+          "journal": "PLoS pathogens",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41610151/"
+        },
+        {
+          "pmid": "41218081",
+          "title": "The RNA-binding protein RBM39 scaffolds an m\u2076A-dependent RNA decay complex that destabilizes Tat transcripts and restricts HIV-1 reactivation.",
+          "year": "2025",
+          "journal": "PLoS biology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41218081/"
+        },
+        {
+          "pmid": "41057723",
+          "title": "Age-dependent Zap70 expression in thymocytes regulates selection of the neonatal regulatory T cell repertoire.",
+          "year": "2025",
+          "journal": "Nature immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41057723/"
+        },
+        {
+          "pmid": "40143326",
+          "title": "Targeting Latent HIV Reservoirs: Effectiveness of Combination Therapy with HDAC and PARP Inhibitors.",
+          "year": "2025",
+          "journal": "Viruses",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40143326/"
+        },
+        {
+          "pmid": "39869972",
+          "title": "A high-throughput, microplate reader-based method to monitor in vitro HIV latency reversal in the absence of flow cytometry.",
+          "year": "2025",
+          "journal": "Virology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39869972/"
+        },
+        {
+          "pmid": "39854737",
+          "title": "Construction of a prognostic signature based on T-helper 17 cells differentiation-related genes for predicting survival and tumor microenvironment in head and neck squamous cell carcinoma.",
+          "year": "2025",
+          "journal": "Medicine",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39854737/"
+        },
+        {
+          "pmid": "39373537",
+          "title": "Epitranscriptomic m(6)A modifications during reactivation of HIV-1 latency in CD4(+) T cells.",
+          "year": "2024",
+          "journal": "mBio",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39373537/"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000213658",
+          "name": "LAT"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "severe combined immunodeficiency due to LAT deficiency",
+          "disease_id": "MONDO_0044721",
+          "overall_score": 0.7008290752906964,
+          "genetic_association_score": 0.7436580202533826
+        },
+        {
+          "disease": "sarcoidosis",
+          "disease_id": "MONDO_0019338",
+          "overall_score": 0.3955304985134744,
+          "genetic_association_score": 0.6273809168505303
+        },
+        {
+          "disease": "autoimmune disorder of central nervous system",
+          "disease_id": "MONDO_0000568",
+          "overall_score": 0.19464271984385612,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Alzheimer disease",
+          "disease_id": "MONDO_0004975",
+          "overall_score": 0.1878594832785735,
+          "genetic_association_score": 0.30159559715553674
+        },
+        {
+          "disease": "sinusitis",
+          "disease_id": "MONDO_0005961",
+          "overall_score": 0.11729286365454913,
+          "genetic_association_score": 0.192937854300782
+        },
+        {
+          "disease": "liver disorder",
+          "disease_id": "MONDO_0005154",
+          "overall_score": 0.10266224316083741,
+          "genetic_association_score": 0.16887159453702094
+        },
+        {
+          "disease": "neoplasm",
+          "disease_id": "MONDO_0005070",
+          "overall_score": 0.10077762707718331,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast cancer",
+          "disease_id": "MONDO_0007254",
+          "overall_score": 0.09704420671724837,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast carcinoma",
+          "disease_id": "MONDO_0004989",
+          "overall_score": 0.09384951505240988,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "colorectal carcinoma",
+          "disease_id": "MONDO_0024331",
+          "overall_score": 0.09330762059010518,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "eye infection",
+          "disease_id": "EFO_1001888",
+          "overall_score": 0.08869741270325608,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.08680053082437932,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "activated PI3K-delta syndrome",
+          "disease_id": "MONDO_0018338",
+          "overall_score": 0.08007868527701598,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "non-small cell lung carcinoma",
+          "disease_id": "MONDO_0005233",
+          "overall_score": 0.07894771450093004,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "infection",
+          "disease_id": "EFO_0000544",
+          "overall_score": 0.0787839076548808,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}
