@@ -30,6 +30,7 @@ CD4 Perturb-seq 標靶探索工具是一套建立在 **Marson lab CD4 T 細胞 P
 
 - **[介紹(本頁)](Home)** — 平台是什麼、能力總覽、設計原則
 - **[開發說明 Development Guide](Development-Guide)** — 給協同開發夥伴:現況、目標、快速上手、程式碼地圖、可接手的第一件事
+- **[完整手冊 Manual](Manual)** — 引用文獻、數據來源、文件索引、commit 紀錄與完整 ASCII 架構圖,集中一頁
 - **[維護 Maintenance](Maintenance)** — 環境、測試、重建、快取與版本失效政策
 - **[路線圖 Roadmap](Roadmap)** — 已完成的 Wave 1–6 與未來方向
 - **[計劃 Plan](Plan)** — 實作計劃摘要與可執行的規格來源
