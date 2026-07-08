@@ -1,7 +1,7 @@
 {
   "gene": "VAV1",
-  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
-  "source_version": "seeded_via_mcp_session/v1",
+  "fetched_at": "2026-07-08T01:41:20.381499+00:00",
+  "source_version": "external_evidence_cache/v1",
   "sources": {
     "clinical_trials": {
       "source_status": "ok",
@@ -11,19 +11,320 @@
       "source_status": "ok",
       "items": [
         {
-          "pmid": "39060140",
-          "title": "VAV1 as a putative therapeutic target in autoimmune and chronic inflammatory diseases.",
+          "pmid": "42099607",
+          "title": "Regenerating myofiber with activating of TGF-\u03b2 signaling contributes to macrophage efferocytosis through enhancing Tregs response in inflamed muscle.",
+          "year": "2026",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42099607/"
+        },
+        {
+          "pmid": "40902588",
+          "title": "Tolerance to non-inherited maternal antigen is sustained by LysM(+) CD11c(+) maternal microchimeric cells.",
+          "year": "2025",
+          "journal": "Immunity",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40902588/"
+        },
+        {
+          "pmid": "38565808",
+          "title": "Positive regulation of Vav1 by Themis controls CD4 T cell pathogenicity in a mouse model of central nervous system inflammation.",
           "year": "2024",
-          "journal": "Trends Immunol",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/39060140/",
-          "doi": "10.1016/j.it.2024.06.004"
+          "journal": "Cellular and molecular life sciences : CMLS",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38565808/"
+        },
+        {
+          "pmid": "34617326",
+          "title": "Cancer-associated mutations in VAV1 trigger variegated signaling outputs and T-cell lymphomagenesis.",
+          "year": "2021",
+          "journal": "The EMBO journal",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34617326/"
+        },
+        {
+          "pmid": "34605719",
+          "title": "CD4(+) T-cell DNA methylation changes during pregnancy significantly correlate with disease-associated methylation changes in autoimmune diseases.",
+          "year": "2022",
+          "journal": "Epigenetics",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34605719/"
+        },
+        {
+          "pmid": "34471108",
+          "title": "Defining the RBPome of primary T helper cells to elucidate higher-order Roquin-mediated mRNA regulation.",
+          "year": "2021",
+          "journal": "Nature communications",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34471108/"
+        },
+        {
+          "pmid": "33163251",
+          "title": "Deletion Timing of Cic Alleles during Hematopoiesis Determines the Degree of Peripheral CD4(+) T Cell Activation and Proliferation.",
+          "year": "2020",
+          "journal": "Immune network",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33163251/"
+        },
+        {
+          "pmid": "32811992",
+          "title": "PPAR\u03b3 enhances ILC2 function during allergic airway inflammation via transcription regulation of ST2.",
+          "year": "2021",
+          "journal": "Mucosal immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32811992/"
+        },
+        {
+          "pmid": "31859368",
+          "title": "Angioimmunoblastic T-cell lymphoma contains multiple clonal T-cell populations derived from a common TET2 mutant progenitor cell.",
+          "year": "2020",
+          "journal": "The Journal of pathology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31859368/"
+        },
+        {
+          "pmid": "31456807",
+          "title": "Conditional Deletion of the V-ATPase a2-Subunit Disrupts Intrathymic T Cell Development.",
+          "year": "2019",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31456807/"
         }
       ]
     },
     "open_targets": {
-      "source_status": "unavailable",
-      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
-      "items": []
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000141968",
+          "name": "VAV1"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "cutaneous leishmaniasis",
+          "disease_id": "MONDO_0005446",
+          "overall_score": 0.5030392466541774,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "cancer",
+          "disease_id": "MONDO_0004992",
+          "overall_score": 0.394010296253949,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "lung adenocarcinoma",
+          "disease_id": "MONDO_0005061",
+          "overall_score": 0.2297771627994443,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast carcinoma",
+          "disease_id": "MONDO_0004989",
+          "overall_score": 0.21100528013158126,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "lung carcinoma",
+          "disease_id": "MONDO_0005138",
+          "overall_score": 0.2094264036365039,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "acute myeloid leukemia",
+          "disease_id": "MONDO_0018874",
+          "overall_score": 0.20639152270967975,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "angioimmunoblastic T-cell lymphoma",
+          "disease_id": "MONDO_0004977",
+          "overall_score": 0.2040019791540551,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.20023210294285593,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "melanoma",
+          "disease_id": "MONDO_0005105",
+          "overall_score": 0.19201808424070527,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "esophageal squamous cell carcinoma",
+          "disease_id": "MONDO_0005580",
+          "overall_score": 0.1912524417457959,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "pancreatic ductal adenocarcinoma",
+          "disease_id": "MONDO_0005184",
+          "overall_score": 0.19029438559565076,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "non-small cell lung carcinoma",
+          "disease_id": "MONDO_0005233",
+          "overall_score": 0.1894148599099823,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "B-cell chronic lymphocytic leukemia",
+          "disease_id": "MONDO_0004948",
+          "overall_score": 0.1886202870919605,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "plasma cell myeloma",
+          "disease_id": "MONDO_0009693",
+          "overall_score": 0.1874886302395798,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "glioma",
+          "disease_id": "MONDO_0021042",
+          "overall_score": 0.18702090640126215,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
     }
   }
 }
