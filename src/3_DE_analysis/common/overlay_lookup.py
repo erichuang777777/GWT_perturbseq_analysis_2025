@@ -36,11 +36,14 @@ MODALITY_ANTIBODY_SURFACE = "antibody (surface)"
 MODALITY_ANTIBODY_BIOLOGIC = "antibody / biologic"
 MODALITY_SMALL_MOLECULE = "small molecule"
 
-# Per the connector-recommendation doc's conservative rule (§2 of
-# ENHANCEMENT_連結器加強建議.md): LOEUF below this bar flags loss-of-function
-# intolerance. This is the ONLY threshold used by gnomad_flag_from_constraint;
+# gnomAD v4's "constrained" cutoff: a gene with LOEUF below this bar is flagged
+# loss-of-function intolerant. Set to 0.6 to match gnomAD v4's current
+# constrained threshold, consistent with the v4 LOEUF/pLI values now in the
+# seed overlay -- broader than the gnomAD v2.1.1-era 0.35 this originally used
+# (per ENHANCEMENT_連結器加強建議.md §2), so more genes in the constrained band
+# are flagged. This is the ONLY threshold used by gnomad_flag_from_constraint;
 # it does not vary by gene.
-LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.35
+LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.6
 
 
 def tractability_from_membrane_overlay(gene_ensembl: str, overlay: Dict[str, Any]) -> Tuple[str, Any]:

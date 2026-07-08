@@ -75,12 +75,101 @@ def consensus_signature(mat: pd.DataFrame, sig_ids: list[str]) -> pd.Series:
     cols = [s for s in sig_ids if s in mat.columns]
     return mat[cols].median(axis=1)
 
-def connectivity_score(query: pd.Series, reference: pd.Series) -> float:
+def lincs_connectivity_score(query: pd.Series, reference: pd.Series) -> float:
     """Spearman-based connectivity between a query DE signature (from Task A,
     restricted to shared landmark genes) and a LINCS reference signature.
-    +1 = mimics, -1 = reverses. Shared-gene intersection only."""
+    +1 = mimics, -1 = reverses. Shared-gene intersection only.
+
+    NOTE: distinct from ``signature_explorer.connectivity_score`` (which is a
+    magnitude-weighted *cosine* similarity over an arbitrary shared gene set,
+    for comparing a single-gene query proxy against in-repo reference
+    signatures). This one is Spearman rank correlation over the L1000 978-gene
+    landmark response space specifically -- named ``lincs_`` to keep the two
+    unambiguous. Returns NaN (never 0) when fewer than 20 landmark genes are
+    shared, so a low-overlap comparison is honestly non-scored, not a fake 0.
+    """
     shared = query.index.intersection(reference.index)
     if len(shared) < 20:
         return float("nan")
     from scipy.stats import spearmanr
     return float(spearmanr(query[shared], reference[shared]).correlation)
+
+
+# --- Committed-data access (the real 4-gene demo signatures + coverage) ---------
+#
+# What actually landed in the repo is genetic-PERTURBATION (shRNA knockdown)
+# reference signatures from GSE106127 for the 4 shortlist genes that had LINCS
+# coverage -- NOT compound signatures. So these functions expose knockdown
+# reference signatures for cross-referencing our own CD4 knockdown against
+# LINCS's (cancer-line) knockdown of the same gene; they do NOT enable
+# compound-reversal matching (that needs GSE92742/GSE70138 compound data,
+# which is not committed -- see signature_explorer.match_reference_compounds).
+
+_LINCS_DIR = Path(__file__).resolve().parents[3] / "sources" / "target_tool_cache" / "_lincs"
+DEMO_SIGNATURES_PATH = _LINCS_DIR / "lincs_demo_signatures_4genes.csv"
+COVERAGE_PATH = _LINCS_DIR / "lincs_shortlist_coverage.csv"
+
+# The 4 shortlist genes with real committed LINCS knockdown signatures
+# (verified against lincs_shortlist_coverage.csv, lincs_covered == "yes").
+COVERED_GENES = ("SENP5", "PLCG1", "CCNC", "PMVK")
+
+CAVEAT_TEXT = (
+    "LINCS reference is genetic-perturbation (shRNA knockdown) signal from "
+    "GSE106127 in CANCER cell lines; our platform is primary human CD4+ T "
+    "cells. Cross-context connectivity is a weak hypothesis-generating "
+    "cross-reference only, never confirmation, and covers 4 shortlist genes "
+    "(PLCG1, SENP5, CCNC, PMVK). It does not substitute for the in-context "
+    "per-target DE signature (Task A)."
+)
+
+
+def load_demo_signatures(path: Path | None = None) -> dict:
+    """Load the committed 4-gene LINCS knockdown reference signatures.
+
+    Returns ``{"available": bool, "reason": str|None, "table": DataFrame}``
+    (index = 978 L1000 landmark gene symbols, columns = the covered genes).
+    Honest-fallback: a missing file degrades to ``available: False`` with an
+    empty table, never a fabricated matrix.
+    """
+    resolved = Path(path) if path is not None else DEMO_SIGNATURES_PATH
+    if not resolved.exists():
+        return {"available": False, "reason": f"LINCS demo signatures not found: {resolved}", "table": pd.DataFrame()}
+    df = pd.read_csv(resolved, index_col=0)
+    return {"available": True, "reason": None, "table": df}
+
+
+def load_coverage(path: Path | None = None) -> dict:
+    """Load the shortlist LINCS-coverage table (which shortlist genes have real
+    LINCS signatures, how many, in how many cell lines). Honest-fallback."""
+    resolved = Path(path) if path is not None else COVERAGE_PATH
+    if not resolved.exists():
+        return {"available": False, "reason": f"LINCS coverage table not found: {resolved}", "table": pd.DataFrame()}
+    return {"available": True, "reason": None, "table": pd.read_csv(resolved)}
+
+
+def knockdown_reference(gene: str, signatures: dict | None = None) -> dict:
+    """Return the LINCS knockdown reference signature (978-landmark z-score
+    vector) for one shortlist gene, or an honest unavailable result.
+
+    ``{"available": bool, "reason": str|None, "gene": str,
+    "signature": Series|None, "caveat": CAVEAT_TEXT}``. A gene without
+    committed LINCS coverage (11 of the 15 shortlist genes) returns
+    ``available: False`` -- unchecked/unavailable, never a fabricated vector.
+    """
+    gene_u = str(gene).strip().upper()
+    sigs = signatures if signatures is not None else load_demo_signatures()
+    if not sigs["available"]:
+        return {"available": False, "reason": sigs["reason"], "gene": gene_u, "signature": None, "caveat": CAVEAT_TEXT}
+    table = sigs["table"]
+    if gene_u not in table.columns:
+        return {
+            "available": False,
+            "reason": (
+                f"{gene_u} has no committed LINCS knockdown signature "
+                f"(covered genes: {', '.join(COVERED_GENES)})"
+            ),
+            "gene": gene_u,
+            "signature": None,
+            "caveat": CAVEAT_TEXT,
+        }
+    return {"available": True, "reason": None, "gene": gene_u, "signature": table[gene_u], "caveat": CAVEAT_TEXT}
