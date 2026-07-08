@@ -1,0 +1,11 @@
+id,title,interaction_methods,toggle_position,data_source_choice,streamlit_widget,priority
+R1,Lollipop 排序,hover 顯示基因完整證據；點擊跳轉標的卡,左側邊欄,條件(Rest/Stim8/Stim48)、Top-N 數量、是否隱藏broad-effect,st.selectbox(條件)+st.slider(Top-N)+st.checkbox(隱藏broad),🔴 首選
+DOT,三合一 dot plot,hover 顯示三維度數值；點擊選標的,上方 toggle bar,大小編碼欄位、顏色編碼欄位、顯示哪些條件,st.radio(size欄)+st.radio(color欄)+st.multiselect(條件),🔴 首選
+V3,UMAP 降維,hover 顯示基因名+特徵；框選一群標的匯出,右側控制面板,著色依據(廣度/敲低/broad旗標)、n_neighbors、篩選門檻,st.selectbox(著色)+st.slider(n_neighbors)+st.slider(門檻),🔴 首選
+M3,Hexbin 密度,hover 顯示格內標的數；刷選區域,下方,條件、gridsize、x/y 軸欄位,st.selectbox(條件)+st.slider(gridsize)+st.selectbox×2(軸),🟠 次要
+R2,上下調分歧bar,hover 顯示上/下調基因清單,左側邊欄,條件、Top-N,st.selectbox+st.slider,🟠 次要
+N1,STRING 網路,拖曳節點；hover 顯示交互作用分數；調整 score 門檻,上方 toggle bar,STRING score 門檻、要顯示的標的集合、佈局演算法,st.slider(score)+st.multiselect(基因)+st.selectbox(layout),🟠 次要
+M1,相關性熱圖,hover 顯示精確相關值,無需(靜態即可),相關法(Pearson/Spearman)、要納入的特徵,st.radio(方法)+st.multiselect(特徵),🟡 補充
+N5,Slope 條件動態,hover 顯示各條件值；highlight 單一基因,左側邊欄,要顯示的基因集合、y 軸(廣度/上調/下調),st.multiselect(基因)+st.radio(y軸),🟡 補充
+D1,Violin 分佈,hover 顯示分位數,無需,條件、y 軸欄位、log/linear,st.multiselect(條件)+st.selectbox(欄位)+st.radio(尺度),🟡 補充
+R4,Waterfall,hover 顯示基因名+效應,無需,條件、highlight 特定基因,st.selectbox(條件)+st.text_input(highlight),🟡 補充
