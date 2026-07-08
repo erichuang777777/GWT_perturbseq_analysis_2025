@@ -1,0 +1,253 @@
+{
+  "gene": "PLCG1",
+  "ensembl_id": "ENSG00000124181",
+  "fetched_at": "2026-07-08T01:42:46.548225+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-1169408",
+          "pathway_name": "ISG15 antiviral mechanism",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-1236382",
+          "pathway_name": "Constitutive Signaling by Ligand-Responsive EGFR Cancer Variants",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-1251932",
+          "pathway_name": "PLCG1 events in ERBB2 signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-1489509",
+          "pathway_name": "DAG and IP3 signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-167021",
+          "pathway_name": "PLC-gamma1 signalling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-1855204",
+          "pathway_name": "Synthesis of IP3 and IP4 in the cytosol",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-186763",
+          "pathway_name": "Downstream signal transduction",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-201556",
+          "pathway_name": "Signaling by ALK",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-202433",
+          "pathway_name": "Generation of second messenger molecules",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2029485",
+          "pathway_name": "Role of phospholipids in phagocytosis",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-210990",
+          "pathway_name": "PECAM1 interactions",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-212718",
+          "pathway_name": "EGFR interacts with phospholipase C-gamma",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2424491",
+          "pathway_name": "DAP12 signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2871796",
+          "pathway_name": "FCERI mediated MAPK activation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-2871809",
+          "pathway_name": "FCERI mediated Ca+2 mobilization",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-418890",
+          "pathway_name": "Role of second messengers in netrin-1 signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5218921",
+          "pathway_name": "VEGFR2 mediated cell proliferation",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5637810",
+          "pathway_name": "Constitutive Signaling by EGFRvIII",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-5654219",
+          "pathway_name": "Phospholipase C-mediated cascade: FGFR1",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5654221",
+          "pathway_name": "Phospholipase C-mediated cascade; FGFR2",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5654227",
+          "pathway_name": "Phospholipase C-mediated cascade; FGFR3",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5654228",
+          "pathway_name": "Phospholipase C-mediated cascade; FGFR4",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-5655253",
+          "pathway_name": "Signaling by FGFR2 in disease",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-5655291",
+          "pathway_name": "Signaling by FGFR4 in disease",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-5655302",
+          "pathway_name": "Signaling by FGFR1 in disease",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-5655332",
+          "pathway_name": "Signaling by FGFR3 in disease",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-8853659",
+          "pathway_name": "RET signaling",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9026527",
+          "pathway_name": "Activated NTRK2 signals through PLCG1",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9027277",
+          "pathway_name": "Erythropoietin activates Phospholipase C gamma (PLCG)",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9034793",
+          "pathway_name": "Activated NTRK3 signals through PLCG1",
+          "is_in_disease": false
+        },
+        {
+          "pathway_id": "R-HSA-9664323",
+          "pathway_name": "FCGR3A-mediated IL10 synthesis",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9664565",
+          "pathway_name": "Signaling by ERBB2 KD Mutants",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9665348",
+          "pathway_name": "Signaling by ERBB2 ECD mutants",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9665686",
+          "pathway_name": "Signaling by ERBB2 TMD/JMD mutants",
+          "is_in_disease": true
+        },
+        {
+          "pathway_id": "R-HSA-9725370",
+          "pathway_name": "Signaling by ALK fusions and activated point mutants",
+          "is_in_disease": true
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "EGFR",
+          "score": 0.999
+        },
+        {
+          "partner": "FGFR1",
+          "score": 0.999
+        },
+        {
+          "partner": "FGFR2",
+          "score": 0.998
+        },
+        {
+          "partner": "GRAP2",
+          "score": 0.999
+        },
+        {
+          "partner": "GRB2",
+          "score": 0.999
+        },
+        {
+          "partner": "ITK",
+          "score": 0.999
+        },
+        {
+          "partner": "LAT",
+          "score": 0.999
+        },
+        {
+          "partner": "LCP2",
+          "score": 0.999
+        },
+        {
+          "partner": "NTRK1",
+          "score": 0.994
+        },
+        {
+          "partner": "NTRK2",
+          "score": 0.992
+        },
+        {
+          "partner": "PDGFRA",
+          "score": 0.989
+        },
+        {
+          "partner": "PDGFRB",
+          "score": 0.999
+        },
+        {
+          "partner": "SH3BP2",
+          "score": 0.993
+        },
+        {
+          "partner": "SYK",
+          "score": 0.999
+        },
+        {
+          "partner": "VAV1",
+          "score": 0.999
+        }
+      ]
+    }
+  }
+}
