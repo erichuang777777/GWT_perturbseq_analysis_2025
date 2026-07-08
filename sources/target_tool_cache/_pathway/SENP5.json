@@ -1,0 +1,75 @@
+{
+  "gene": "SENP5",
+  "ensembl_id": "ENSG00000119231",
+  "fetched_at": "2026-07-08T01:42:43.864999+00:00",
+  "source_version": "pathway_network_cache/v1",
+  "sources": {
+    "reactome_pathways": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pathway_id": "R-HSA-3065679",
+          "pathway_name": "SUMO is proteolytically processed",
+          "is_in_disease": false
+        }
+      ]
+    },
+    "string_network": {
+      "source_status": "ok",
+      "items": [
+        {
+          "partner": "DESI1",
+          "score": 0.831
+        },
+        {
+          "partner": "GNL2",
+          "score": 0.99
+        },
+        {
+          "partner": "NPM1",
+          "score": 0.904
+        },
+        {
+          "partner": "RANGAP1",
+          "score": 0.999
+        },
+        {
+          "partner": "RPL37A",
+          "score": 0.99
+        },
+        {
+          "partner": "SAE1",
+          "score": 0.999
+        },
+        {
+          "partner": "SUMO1",
+          "score": 0.999
+        },
+        {
+          "partner": "SUMO2",
+          "score": 0.999
+        },
+        {
+          "partner": "SUMO3",
+          "score": 0.999
+        },
+        {
+          "partner": "SUMO4",
+          "score": 0.998
+        },
+        {
+          "partner": "UBA2",
+          "score": 0.999
+        },
+        {
+          "partner": "UBE2I",
+          "score": 0.999
+        },
+        {
+          "partner": "USPL1",
+          "score": 0.972
+        }
+      ]
+    }
+  }
+}
