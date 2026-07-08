@@ -11,7 +11,7 @@ from api import deps
 from core.readiness import compute_readiness, readiness_summary
 from evidence.external_cache import load_snapshot as load_evidence_snapshot
 
-router = APIRouter(tags=["readiness"])
+router = APIRouter(tags=["Readiness"])
 
 
 @router.get("/api/readiness/{dataset_id}")

@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from api import deps
 from evidence.disease import list_diseases, translate_disease
 
-router = APIRouter(tags=["disease"])
+router = APIRouter(tags=["Disease"])
 
 
 @router.get("/api/disease")

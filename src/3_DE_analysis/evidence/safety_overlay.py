@@ -69,11 +69,13 @@ import pandas as pd
 
 from common import degrade
 from common.overlay_lookup import (
+    BREADTH_BROAD_THRESHOLD,
     LOEUF_LOSS_INTOLERANT_THRESHOLD,
     MODALITY_ANTIBODY_BIOLOGIC,
     MODALITY_ANTIBODY_SURFACE,
     MODALITY_SMALL_MOLECULE,
     UNKNOWN,
+    composite_safety_liability,
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
     tractability_from_membrane_overlay,
@@ -196,8 +198,11 @@ def load_gnomad_constraint_overlay(path: Optional[Path] = None) -> Dict[str, Any
     return {"available": True, "reason": None, "table": df}
 
 
-# tractability_from_membrane_overlay, safety_window_from_gtex, and
-# gnomad_flag_from_constraint (the pure overlay-interpretation functions)
-# are imported above from common.overlay_lookup and re-exported under their
-# original names here -- see this module's docstring and
-# common/overlay_lookup.py's docstring (architecture refactor Phase 3).
+# tractability_from_membrane_overlay, safety_window_from_gtex,
+# gnomad_flag_from_constraint, and composite_safety_liability (the pure
+# overlay-interpretation functions) are imported above from
+# common.overlay_lookup and re-exported under their original names here -- see
+# this module's docstring and common/overlay_lookup.py's docstring
+# (architecture refactor Phase 3). composite_safety_liability (roadmap P1.3)
+# composes gnomAD constraint + GTEx breadth into one disclosed on-target
+# safety-LIABILITY tier -- never a de-risking signal.
