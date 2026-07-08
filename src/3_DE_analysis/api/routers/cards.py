@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from api import deps
 from report.generate import build_report_payload, write_report
 
-router = APIRouter(tags=["cards"])
+router = APIRouter(tags=["Target cards"])
 
 
 @router.get("/api/targets/{dataset_id}")

@@ -27,7 +27,7 @@ from upload.import_manager import (
     suggested_mapping,
 )
 
-router = APIRouter(tags=["imports"])
+router = APIRouter(tags=["Uploads"])
 
 
 class ImportRequest(BaseModel):

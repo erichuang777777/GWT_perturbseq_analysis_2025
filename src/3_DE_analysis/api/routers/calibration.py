@@ -11,7 +11,7 @@ from fastapi import APIRouter, HTTPException, Query
 from api import deps
 from core.calibration import run_calibration
 
-router = APIRouter(tags=["calibration"])
+router = APIRouter(tags=["Calibration"])
 
 
 @router.get("/api/calibration/{dataset_id}")

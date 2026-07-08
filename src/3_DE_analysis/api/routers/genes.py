@@ -12,7 +12,7 @@ from resolve.cre import cre_for_gene, load_cre_elements, load_variant_cre_links
 from resolve.resolver import result_status
 from resolve.search import search_genes
 
-router = APIRouter(tags=["genes"])
+router = APIRouter(tags=["Genes"])
 
 
 @router.get("/api/genes/resolve")
