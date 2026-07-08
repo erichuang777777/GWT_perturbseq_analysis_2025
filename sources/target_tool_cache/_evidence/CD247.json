@@ -1,0 +1,323 @@
+{
+  "gene": "CD247",
+  "fetched_at": "2026-07-08T01:41:27.455114+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "41058567",
+          "title": "Exacerbation of Dahl SS Hypertension and Renal Damage by NOX2 in CD4+ T Cells.",
+          "year": "2025",
+          "journal": "Hypertension (Dallas, Tex. : 1979)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41058567/"
+        },
+        {
+          "pmid": "36194662",
+          "title": "Crosstalk between CD4(+) T Cells and Airway Smooth Muscle in Pediatric Obesity-related Asthma.",
+          "year": "2023",
+          "journal": "American journal of respiratory and critical care medicine",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36194662/"
+        },
+        {
+          "pmid": "31383034",
+          "title": "Depletion of regulatory T cells increases T cell brain infiltration, reactive astrogliosis, and interferon-\u03b3 gene expression in acute experimental traumatic brain injury.",
+          "year": "2019",
+          "journal": "Journal of neuroinflammation",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31383034/"
+        },
+        {
+          "pmid": "31096062",
+          "title": "The mouse intron-nested gene, Israa, is expressed in the lymphoid organs and involved in T-cell activation and signaling.",
+          "year": "2019",
+          "journal": "Molecular immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31096062/"
+        },
+        {
+          "pmid": "26608909",
+          "title": "Impaired SNX9 Expression in Immune Cells during Chronic Inflammation: Prognostic and Diagnostic Implications.",
+          "year": "2016",
+          "journal": "Journal of immunology (Baltimore, Md. : 1950)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26608909/"
+        },
+        {
+          "pmid": "26459776",
+          "title": "Epigenetic profiling in CD4+ and CD8+ T cells from Graves' disease patients reveals changes in genes associated with T cell receptor signaling.",
+          "year": "2016",
+          "journal": "Journal of autoimmunity",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26459776/"
+        },
+        {
+          "pmid": "26286066",
+          "title": "Effect of induction therapy on the expression of molecular markers associated with rejection and tolerance.",
+          "year": "2015",
+          "journal": "BMC nephrology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26286066/"
+        },
+        {
+          "pmid": "24574234",
+          "title": "Genome-wide DNA methylation patterns in naive CD4+ T cells from patients with primary Sj\u00f6gren's syndrome.",
+          "year": "2014",
+          "journal": "Arthritis & rheumatology (Hoboken, N.J.)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24574234/"
+        },
+        {
+          "pmid": "24325470",
+          "title": "Expression pattern of T-helper 17 cell signaling pathway and mucosal inflammation in celiac disease.",
+          "year": "2014",
+          "journal": "Scandinavian journal of gastroenterology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24325470/"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000198821",
+          "name": "CD247"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "immunodeficiency 25",
+          "disease_id": "MONDO_0012426",
+          "overall_score": 0.7337305869862291,
+          "genetic_association_score": 0.8689312587807495
+        },
+        {
+          "disease": "cutaneous leishmaniasis",
+          "disease_id": "MONDO_0005446",
+          "overall_score": 0.5824563131615152,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "asthma",
+          "disease_id": "MONDO_0004979",
+          "overall_score": 0.4869971223544638,
+          "genetic_association_score": 0.7921654121893752
+        },
+        {
+          "disease": "T-B+ severe combined immunodeficiency",
+          "disease_id": "MONDO_0044200",
+          "overall_score": 0.4619748183558772,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "T-B- severe combined immunodeficiency",
+          "disease_id": "MONDO_0017855",
+          "overall_score": 0.4619748183558772,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hypothyroidism",
+          "disease_id": "MONDO_0005420",
+          "overall_score": 0.4498975690785981,
+          "genetic_association_score": 0.7385275120223714
+        },
+        {
+          "disease": "allergic rhinitis",
+          "disease_id": "MONDO_0011786",
+          "overall_score": 0.42479153776764383,
+          "genetic_association_score": 0.698749823888711
+        },
+        {
+          "disease": "allergic disease",
+          "disease_id": "MONDO_0005271",
+          "overall_score": 0.41651448410469716,
+          "genetic_association_score": 0.6830766000611074
+        },
+        {
+          "disease": "respiratory system disorder",
+          "disease_id": "MONDO_0005087",
+          "overall_score": 0.38612560726809475,
+          "genetic_association_score": 0.635147304240988
+        },
+        {
+          "disease": "T-B+ severe combined immunodeficiency due to CD3delta/CD3epsilon/CD3zeta",
+          "disease_id": "MONDO_0015703",
+          "overall_score": 0.38424377911523333,
+          "genetic_association_score": 0.607930797611621
+        },
+        {
+          "disease": "Eczematoid dermatitis",
+          "disease_id": "HP_0000964",
+          "overall_score": 0.3841877776873806,
+          "genetic_association_score": 0.6319597217261239
+        },
+        {
+          "disease": "immune system disorder",
+          "disease_id": "MONDO_0005046",
+          "overall_score": 0.3803374729686772,
+          "genetic_association_score": 0.619250867221714
+        },
+        {
+          "disease": "HIV infectious disease",
+          "disease_id": "MONDO_0005109",
+          "overall_score": 0.3721277997995405,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "viral infectious disease",
+          "disease_id": "MONDO_0005108",
+          "overall_score": 0.3720745187038235,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "influenza",
+          "disease_id": "MONDO_0005812",
+          "overall_score": 0.37050380432141355,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}
