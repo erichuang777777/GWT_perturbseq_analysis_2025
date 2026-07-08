@@ -270,34 +270,40 @@ def test_readiness_engine_without_overlays_is_unchanged_regression():
 
 
 def test_load_gnomad_constraint_overlay_real_seed_file():
-    """The 8-gene seed, derived from the real values in
-    docs/mvp-research/connector_enrichment_demo.csv, loads with all 8 genes
+    """The seed (now the real gnomAD v4 LOEUF/pLI snapshot, expanded from the
+    original 8-gene demo seed to 15 shortlist genes) loads with all 15 genes
     and the exact required columns."""
     from safety_overlay import load_gnomad_constraint_overlay
 
     result = load_gnomad_constraint_overlay()
     assert result["available"] is True
     table = result["table"]
-    assert len(table) == 8
+    assert len(table) == 15
     assert set(["ensembl_id", "gene_symbol", "loeuf", "pli"]).issubset(table.columns)
 
 
-def test_gnomad_constraint_seed_matches_connector_enrichment_demo_csv():
-    """Regression-pins the seed values against the real source CSV so a
-    future edit to the seed can't silently drift from the verified numbers."""
-    from pathlib import Path
-
+def test_gnomad_constraint_seed_is_valid_and_pins_known_v4_values():
+    """Validates the seed directly (it is now an independent real gnomAD v4
+    snapshot, no longer derived from the 8-gene connector_enrichment_demo.csv):
+    valid schema, no nulls, no duplicate ids, values in the metrics' real
+    ranges, and a regression pin on three known genes' v4 values so a future
+    edit can't silently drift from the verified numbers."""
     import pandas as pd
 
     from safety_overlay import load_gnomad_constraint_overlay
 
-    repo_root = Path(__file__).resolve().parent.parent
-    demo = pd.read_csv(repo_root / "docs" / "mvp-research" / "connector_enrichment_demo.csv")
     seed = load_gnomad_constraint_overlay()["table"]
-    merged = demo.merge(seed, left_on="gene", right_on="gene_symbol", how="inner")
-    assert len(merged) == 8
-    assert (merged["gnomAD_LOEUF"].astype(float) == merged["loeuf"].astype(float)).all()
-    assert (merged["gnomAD_pLI"].astype(float) == merged["pli"].astype(float)).all()
+    # schema + integrity
+    assert not seed["ensembl_id"].duplicated().any()
+    assert not seed[["ensembl_id", "gene_symbol", "loeuf", "pli"]].isna().any().any()
+    # LOEUF is a non-negative observed/expected ratio; pLI is a probability in [0, 1]
+    assert (seed["loeuf"].astype(float) >= 0).all()
+    assert ((seed["pli"].astype(float) >= 0) & (seed["pli"].astype(float) <= 1)).all()
+    # regression pins on verified v4 values
+    by_gene = seed.set_index("gene_symbol")
+    assert by_gene.loc["CD3E", "loeuf"] == pytest.approx(0.7008)
+    assert by_gene.loc["VAV1", "loeuf"] == pytest.approx(0.3444)
+    assert by_gene.loc["MED12", "loeuf"] == pytest.approx(0.0955)
 
 
 def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
@@ -309,7 +315,7 @@ def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
 
 
 def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
-    """VAV1: LOEUF 0.344 < 0.35 threshold -> loss_intolerant."""
+    """VAV1: LOEUF 0.3444 < 0.35 threshold -> loss_intolerant."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
@@ -317,7 +323,7 @@ def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
 
 
 def test_gnomad_flag_from_constraint_cd3e_is_none():
-    """CD3E: LOEUF 0.701 >= 0.35 threshold -> present but not flagged ('none')."""
+    """CD3E: LOEUF 0.7008 >= 0.35 threshold -> present but not flagged ('none')."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
@@ -325,11 +331,11 @@ def test_gnomad_flag_from_constraint_cd3e_is_none():
 
 
 def test_gnomad_flag_from_constraint_absent_gene_is_unknown():
-    """A gene absent from the 8-gene seed is unchecked, not 'safe' -- unknown, never 0/'none'."""
+    """A gene absent from the seed is unchecked, not 'safe' -- unknown, never 0/'none'."""
     from safety_overlay import UNKNOWN, gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
-    assert gnomad_flag_from_constraint("ENSG00000184634", overlay) == UNKNOWN  # MED12, not in seed
+    assert gnomad_flag_from_constraint("ENSG00000134460", overlay) == UNKNOWN  # IL2RA, not in seed
 
 
 def test_gnomad_flag_from_constraint_unavailable_overlay_is_unknown():
@@ -377,7 +383,7 @@ def test_readiness_engine_gnomad_overlay_alone_does_not_change_readiness_call(re
     if not vav1_rows.empty:
         vav1 = vav1_rows.iloc[0]
         assert vav1["gnomad_constraint_flag"] == "loss_intolerant"
-        assert vav1["gnomad_loeuf"] == pytest.approx(0.344)
+        assert vav1["gnomad_loeuf"] == pytest.approx(0.3444)
         assert vav1["gnomad_pli"] == pytest.approx(1.0)
 
 
