@@ -66,6 +66,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "population": "api.routers.population",
     "imports": "api.routers.imports",
     "mechanism": "api.routers.mechanism",
+    "individual_concept": "api.routers.individual_concept",
 }
 
 # name -> "available" | "degraded: <reason>". Populated below as each
