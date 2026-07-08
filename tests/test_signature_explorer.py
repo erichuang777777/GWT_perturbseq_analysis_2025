@@ -250,6 +250,50 @@ def test_match_reference_compounds_never_fabricates_regardless_of_kwargs():
     assert result["source_status"] == "unavailable"
 
 
+def test_match_reference_compounds_unavailable_reason_points_at_compound_path():
+    """The honest-unavailable reason must precisely name where a committed
+    compound matrix would live (COMPOUND_SIGNATURES_PATH) and preserve the
+    genetic-vs-compound distinction -- so no one mistakes the committed
+    knockdown data for compound data."""
+    from evidence.lincs_reference_cache import COMPOUND_SIGNATURES_PATH
+    from signature_explorer import match_reference_compounds
+
+    result = match_reference_compounds("PLCG1")  # a LINCS-covered gene, still no COMPOUND data
+    assert result["source_status"] == "unavailable"
+    assert str(COMPOUND_SIGNATURES_PATH) in result["reason"] or "GSE92742" in result["reason"]
+    assert "knockdown" in result["reason"].lower() or "genetic-perturbation" in result["reason"].lower()
+
+
+def test_match_reference_compounds_routes_when_compound_data_supplied():
+    """When a compound matrix IS available (here: a SYNTHETIC in-memory fixture
+    injected via compound_signatures -- NOT committed data), match_reference_compounds
+    genuinely routes to the compound-reversal ranking and returns the available
+    shape with the most-reversing compound first and the forced cell-context
+    caveat. This proves the wiring is real, not a permanent stub, without
+    fabricating any committed data."""
+    import numpy as np
+
+    from evidence.lincs_reference_cache import COMPOUND_CAVEAT_TEXT
+    from signature_explorer import match_reference_compounds
+
+    genes = [f"LMARK{i}" for i in range(25)]
+    base = np.arange(25, dtype=float)
+    query_signature = {g: float(v) for g, v in zip(genes, base)}
+    compound_df = pd.DataFrame(
+        {"REVERSER": -base, "MIMIC": base.copy()}, index=genes
+    )
+
+    result = match_reference_compounds(
+        "SOME_TARGET",
+        query_signature=query_signature,
+        compound_signatures=compound_df,
+    )
+    assert result["source_status"] == "available"
+    assert result["items"][0]["compound"] == "REVERSER"
+    assert result["items"][0]["is_reversal"] is True
+    assert result["caveat"] == COMPOUND_CAVEAT_TEXT
+
+
 # --- A4: combination explorer ---------------------------------------------------
 
 
