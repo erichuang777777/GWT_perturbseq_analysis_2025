@@ -1,0 +1,16 @@
+gene,group,lincs_n_signatures,lincs_covered,cell_lines
+CD3E,immune,0,no,0
+LAT,immune,0,no,0
+TADA2B,broad-effect,0,no,0
+SENP5,broad-effect,24,yes,8
+PLCG1,immune,24,yes,8
+VAV1,immune,0,no,0
+SGF29,broad-effect,0,no,0
+UBXN1,broad-effect,0,no,0
+CD247,immune,0,no,0
+MED12,broad-effect,0,no,0
+CCNC,broad-effect,24,yes,8
+SUPT20H,broad-effect,0,no,0
+TADA1,broad-effect,0,no,0
+DENR,broad-effect,0,no,0
+PMVK,broad-effect,9,yes,1
