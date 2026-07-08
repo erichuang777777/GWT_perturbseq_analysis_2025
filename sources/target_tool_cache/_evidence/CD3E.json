@@ -1,30 +1,25 @@
 {
   "gene": "CD3E",
-  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
-  "source_version": "seeded_via_mcp_session/v1",
+  "fetched_at": "2026-07-08T01:41:07.903677+00:00",
+  "source_version": "external_evidence_cache/v1",
   "sources": {
     "clinical_trials": {
       "source_status": "ok",
       "items": [
         {
-          "nct_id": "NCT00378508",
-          "title": "Phase II Trial of hOKT3gamma1(Ala-Ala) Teplizumab for Treatment of Patients With Recent Onset Type 1 Diabetes",
-          "phase": "PHASE2",
-          "status": "COMPLETED",
+          "nct_id": "NCT06373081",
+          "title": "Anti-CD19-CD3E-CAR-T Cells in Relapsed/Refractory Autoimmune Disease",
+          "phase": "NA",
+          "status": "UNKNOWN",
           "conditions": [
-            "Type 1 Diabetes Mellitus"
+            "Systemic Lupus Erythematosus (SLE)",
+            "Sjogren's Syndrome",
+            "Systemic Sclerosis",
+            "Inflammatory Myopathy",
+            "ANCA Associated Vasculitis",
+            "Antiphospholipid Syndrome"
           ],
-          "url": "https://clinicaltrials.gov/study/NCT00378508"
-        },
-        {
-          "nct_id": "NCT00920582",
-          "title": "A Phase 3, Randomized, Double-Blind, Multinational, Placebo-Controlled Study to Evaluate Efficacy and Safety of Teplizumab (MGA031)... in Children and Adults With Recent-Onset Type 1 Diabetes Mellitus",
-          "phase": "PHASE3",
-          "status": "TERMINATED",
-          "conditions": [
-            "Type 1 Diabetes Mellitus"
-          ],
-          "url": "https://clinicaltrials.gov/study/NCT00920582"
+          "url": "https://clinicaltrials.gov/study/NCT06373081"
         }
       ]
     },
@@ -32,19 +27,320 @@
       "source_status": "ok",
       "items": [
         {
-          "pmid": "16264327",
-          "title": "CD3 deficiencies.",
-          "year": "2005",
-          "journal": null,
-          "url": "https://pubmed.ncbi.nlm.nih.gov/16264327/",
-          "doi": "10.1097/01.all.0000191886.12645.79"
+          "pmid": "41515303",
+          "title": "Preparation of ESAT6-Fc Fusion Protein and Its Therapeutic Efficacy and Immune Mechanisms in Allergic Asthma Mice via Intranasal Immunization.",
+          "year": "2025",
+          "journal": "Molecules (Basel, Switzerland)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41515303/"
+        },
+        {
+          "pmid": "39536856",
+          "title": "Tanshinone I inhibits the functions of T lymphocytes and exerts therapeutic effects on delayed-type hypersensitivity reaction via blocking STATs signaling pathways.",
+          "year": "2024",
+          "journal": "European journal of pharmacology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39536856/"
+        },
+        {
+          "pmid": "39039306",
+          "title": "Immunometabolic alteration of CD4(+) T cells in the pathogenesis of primary Sj\u00f6gren's syndrome.",
+          "year": "2024",
+          "journal": "Clinical and experimental medicine",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39039306/"
+        },
+        {
+          "pmid": "38254668",
+          "title": "Effect of Topical Programmed Death-Ligand1 on Corneal Epithelium in Dry Eye Mouse.",
+          "year": "2024",
+          "journal": "Biomolecules",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38254668/"
+        },
+        {
+          "pmid": "36389741",
+          "title": "CD3e-immunotoxin spares CD62L(lo) Tregs and reshapes organ-specific T-cell composition by preferentially depleting CD3e(hi) T cells.",
+          "year": "2022",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36389741/"
+        },
+        {
+          "pmid": "35720370",
+          "title": "Single-Cell RNA and ATAC Sequencing Reveal Hemodialysis-Related Immune Dysregulation of Circulating Immune Cell Subpopulations.",
+          "year": "2022",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35720370/"
+        },
+        {
+          "pmid": "33621572",
+          "title": "Cationic polymer-modified Alhagi honey polysaccharide PLGA nanoparticles as an adjuvant to induce strong and long-lasting immune responses.",
+          "year": "2021",
+          "journal": "International journal of biological macromolecules",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33621572/"
+        },
+        {
+          "pmid": "33541497",
+          "title": "[Effect of semaphorin-3A on the cellular stability of CD4(+)CD25(+) regulatory T cells induced by lipopolysaccharide].",
+          "year": "2020",
+          "journal": "Zhonghua wei zhong bing ji jiu yi xue",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33541497/"
+        },
+        {
+          "pmid": "32712954",
+          "title": "iNKT cells with high PLZF expression are recruited into the lung via CCL21-CCR7 signaling to facilitate the development of asthma tolerance in mice.",
+          "year": "2021",
+          "journal": "European journal of immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32712954/"
+        },
+        {
+          "pmid": "31921117",
+          "title": "A Novel CD3G Mutation in a Taiwanese Patient With Normal T Regulatory Function Presenting With the CVID Phenotype Free of Autoimmunity-Analysis of all Genotypes and Phenotypes.",
+          "year": "2019",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31921117/"
         }
       ]
     },
     "open_targets": {
-      "source_status": "unavailable",
-      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
-      "items": []
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000198851",
+          "name": "CD3E"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": true
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "immunodeficiency 18",
+          "disease_id": "MONDO_0014278",
+          "overall_score": 0.7389724719802399,
+          "genetic_association_score": 0.9154702497470937
+        },
+        {
+          "disease": "neoplasm",
+          "disease_id": "MONDO_0005070",
+          "overall_score": 0.5990496559516594,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "plasma cell myeloma",
+          "disease_id": "MONDO_0009693",
+          "overall_score": 0.5968645621007588,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "follicular lymphoma",
+          "disease_id": "MONDO_0018906",
+          "overall_score": 0.5809800507839349,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "diffuse large B-cell lymphoma",
+          "disease_id": "MONDO_0018905",
+          "overall_score": 0.5808914999648448,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "acute lymphoblastic leukemia",
+          "disease_id": "MONDO_0004967",
+          "overall_score": 0.5787902914392252,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "type 1 diabetes mellitus",
+          "disease_id": "MONDO_0005147",
+          "overall_score": 0.5641245154854552,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "small cell lung carcinoma",
+          "disease_id": "MONDO_0008433",
+          "overall_score": 0.5596009066931881,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Ascites",
+          "disease_id": "HP_0001541",
+          "overall_score": 0.5052259274610619,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "B-cell acute lymphoblastic leukemia",
+          "disease_id": "MONDO_0004947",
+          "overall_score": 0.47158919582310693,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "T-B- severe combined immunodeficiency",
+          "disease_id": "MONDO_0017855",
+          "overall_score": 0.4619748183558772,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "T-B+ severe combined immunodeficiency",
+          "disease_id": "MONDO_0044200",
+          "overall_score": 0.4619748183558772,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "graft versus host disease",
+          "disease_id": "MONDO_0013730",
+          "overall_score": 0.44909393066672204,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "cancer",
+          "disease_id": "MONDO_0004992",
+          "overall_score": 0.4406504064702453,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "B-cell non-Hodgkin lymphoma",
+          "disease_id": "MONDO_0015759",
+          "overall_score": 0.4381023646097544,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
     }
   }
 }
