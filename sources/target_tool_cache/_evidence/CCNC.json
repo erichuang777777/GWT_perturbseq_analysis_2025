@@ -1,0 +1,267 @@
+{
+  "gene": "CCNC",
+  "fetched_at": "2026-07-08T01:41:32.721858+00:00",
+  "source_version": "external_evidence_cache/v1",
+  "sources": {
+    "clinical_trials": {
+      "source_status": "ok",
+      "items": []
+    },
+    "literature": {
+      "source_status": "ok",
+      "items": [
+        {
+          "pmid": "40930298",
+          "title": "Prediction and characterization of genetically regulated expression of asthma tissues from African-ancestry populations.",
+          "year": "2026",
+          "journal": "The Journal of allergy and clinical immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40930298/"
+        }
+      ]
+    },
+    "open_targets": {
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000112237",
+          "name": "CCNC"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "neurodegenerative disease",
+          "disease_id": "MONDO_0005559",
+          "overall_score": 0.545768424213716,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "cancer",
+          "disease_id": "MONDO_0004992",
+          "overall_score": 0.3812568956044295,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "Sjogren syndrome",
+          "disease_id": "MONDO_0010030",
+          "overall_score": 0.25465550325445563,
+          "genetic_association_score": 0.41888896607133774
+        },
+        {
+          "disease": "alcohol drinking",
+          "disease_id": "EFO_0004329",
+          "overall_score": 0.2518616771879317,
+          "genetic_association_score": 0.4142933343357848
+        },
+        {
+          "disease": "rhabdomyosarcoma",
+          "disease_id": "MONDO_0005212",
+          "overall_score": 0.20252975754754607,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "breast carcinoma",
+          "disease_id": "MONDO_0004989",
+          "overall_score": 0.19231019920382264,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hepatocellular carcinoma",
+          "disease_id": "MONDO_0007256",
+          "overall_score": 0.18863971749531655,
+          "genetic_association_score": 0
+        },
+        {
+          "disease": "prostate carcinoma",
+          "disease_id": "MONDO_0005159",
+          "overall_score": 0.18685377417808807,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "colon adenocarcinoma",
+          "disease_id": "MONDO_0002271",
+          "overall_score": 0.18612965431558293,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "lung carcinoma",
+          "disease_id": "MONDO_0005138",
+          "overall_score": 0.18598592881653886,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "rectum adenocarcinoma",
+          "disease_id": "MONDO_0002169",
+          "overall_score": 0.1858062719427338,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "gastric adenocarcinoma",
+          "disease_id": "MONDO_0005036",
+          "overall_score": 0.18571387697906264,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "B-cell chronic lymphocytic leukemia",
+          "disease_id": "MONDO_0004948",
+          "overall_score": 0.1854366920880491,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "thyroid gland papillary carcinoma",
+          "disease_id": "MONDO_0005075",
+          "overall_score": 0.18534429712437792,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "prostate adenocarcinoma",
+          "disease_id": "MONDO_0005082",
+          "overall_score": 0.18515950719703558,
+          "genetic_association_score": null
+        }
+      ],
+      "safety_liabilities": []
+    }
+  }
+}
