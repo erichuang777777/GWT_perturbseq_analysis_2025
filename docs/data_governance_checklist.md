@@ -44,6 +44,34 @@ any external sharing decision.
 - Cell-level and pseudobulk data (`donor_id` — an internal `D1`–`D4`-style code, not the demographics
   table) is not itself sensitive; the demographics table above is the one file this rule targets.
 
+### 2a. Individual-sample input (exploratory demo module — `individual_concept_profile.py`)
+
+The prior blanket rule "this toolkit accepts no individual-sample input" is **superseded, in a
+tightly-scoped way**, by the exploratory concept-profile demo (see
+`docs/compass_concept_integration_plan.md`). The rewritten rule and its enforced guarantees:
+
+- **Scope:** one module (`POST /api/individual-concept-profile`) accepts a single sample's
+  gene-expression vector (`{gene_symbol: value}`) and returns a **transparent projection** onto the
+  20 CD4 immune concept modules plus hypothesis-only screened-target links. It is an **exploratory
+  research demo, explicitly NOT medical software** — every output carries a forced non-diagnostic
+  caveat, and it never emits diagnosis, treatment, dose, prognosis, or efficacy predictions.
+- **No identifiers:** the endpoint accepts only expression values; no name/MRN/date/demographic field
+  is read or stored. (Same n=4-style re-identification caution as §2 does not even arise, because no
+  identifying attributes are ingested at all.)
+- **Request-only, never persisted:** the raw input expression vector lives only in the request's
+  memory — it is never written to `sources/target_tool_cache/`, never logged to a file, never cached,
+  never transmitted to any external service. This is enforced by a no-persist audit test
+  (`tests/test_individual_concept_profile.py`) that asserts no new file appears under the cache
+  directory across a request.
+- **Transparent, not black-box:** concept activation is a hand-auditable aggregate of standardized
+  expression over each concept's seed genes (with reported coverage), not a learned/opaque weight —
+  so a reviewer can reproduce every number. No response-prediction classifier is built (that would
+  need patient-outcome labels this repo does not have and must not fabricate — flagged data-blocked
+  in the plan §6).
+- **Descriptive only:** the concept profile never feeds `readiness_call`/`overall_readiness_stage`/
+  `statistical_evidence_grade` — same causal-independence property enforced for `safety_window_score`
+  and the gnomAD/mechanism-graph overlays.
+
 ---
 
 ## 3. Freshness / staleness disclosure
