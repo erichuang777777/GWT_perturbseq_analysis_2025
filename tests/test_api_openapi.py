@@ -52,6 +52,21 @@ def test_tag_groups_all_have_descriptions():
         assert t.get("description"), f"tag group {t['name']!r} missing a description"
 
 
+def test_every_response_carries_version_headers():
+    """Provenance/version headers are stamped on every response (including bare
+    list endpoints), the non-breaking REST way to surface 資料明確 without an
+    envelope change."""
+    from fastapi.testclient import TestClient
+    import target_card_api as api
+
+    client = TestClient(api.app)
+    for path in ("/api/health", "/api/datasets"):
+        h = client.get(path).headers
+        assert h.get("X-API-Version")
+        assert h.get("X-Engine-Version")
+        assert h.get("X-Schema-Version")
+
+
 def test_health_surfaces_versions_additively():
     """/api/health keeps its pre-existing status + capabilities keys (existing
     callers unaffected) and additively surfaces engine/dataset/schema versions
