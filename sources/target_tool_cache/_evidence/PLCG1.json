@@ -1,7 +1,7 @@
 {
   "gene": "PLCG1",
-  "fetched_at": "2026-07-07T08:46:03.182263+00:00",
-  "source_version": "seeded_via_mcp_session/v1",
+  "fetched_at": "2026-07-08T01:41:17.304922+00:00",
+  "source_version": "external_evidence_cache/v1",
   "sources": {
     "clinical_trials": {
       "source_status": "ok",
@@ -11,19 +11,312 @@
       "source_status": "ok",
       "items": [
         {
-          "pmid": "40447319",
-          "title": "Cbl-b inhibitor NX-1607 activates MAPK/ERK signaling pathway and enhances T-cell activation.",
-          "year": "2025",
-          "journal": "J Immunother Cancer",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/40447319/",
-          "doi": "10.1136/jitc-2024-011180"
+          "pmid": "41386109",
+          "title": "Nodal T-follicular helper cell lymphoma with hodgkin/reed-sternberg-like cells: Clinicopathologic and molecular characterization of 11 cases.",
+          "year": "2026",
+          "journal": "Pathology, research and practice",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41386109/"
+        },
+        {
+          "pmid": "35895386",
+          "title": "Primary cutaneous peripheral T-cell lymphomas with a T-follicular helper phenotype: an integrative clinical, pathological and molecular case series study.",
+          "year": "2022",
+          "journal": "The British journal of dermatology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35895386/"
+        },
+        {
+          "pmid": "35003060",
+          "title": "Analyses of circRNA and mRNA Profiles in Vogt-Koyanagi-Harada Disease.",
+          "year": "2021",
+          "journal": "Frontiers in immunology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35003060/"
+        },
+        {
+          "pmid": "32271188",
+          "title": "Primary Cutaneous CD4+ Small/Medium T-Cell Lymphoproliferative Disorders: A Clinical, Pathologic, and Molecular Study of 60 Cases Presenting With a Single Lesion: A Multicenter Study of the French Cutaneous Lymphoma Study Group.",
+          "year": "2020",
+          "journal": "The American journal of surgical pathology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32271188/"
+        },
+        {
+          "pmid": "31859368",
+          "title": "Angioimmunoblastic T-cell lymphoma contains multiple clonal T-cell populations derived from a common TET2 mutant progenitor cell.",
+          "year": "2020",
+          "journal": "The Journal of pathology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31859368/"
+        },
+        {
+          "pmid": "31234318",
+          "title": "Using the Pleiotropic Characteristics of Curcumin to Validate the Potential Application of a Novel Gene Expression Screening Platform.",
+          "year": "2019",
+          "journal": "Nutrients",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31234318/"
+        },
+        {
+          "pmid": "28148900",
+          "title": "Angioimmunoblastic T cell lymphoma: novel molecular insights by mutation profiling.",
+          "year": "2017",
+          "journal": "Oncotarget",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28148900/"
+        },
+        {
+          "pmid": "27369867",
+          "title": "Activating mutations in genes related to TCR signaling in angioimmunoblastic and other follicular helper T-cell-derived lymphomas.",
+          "year": "2016",
+          "journal": "Blood",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27369867/"
         }
       ]
     },
     "open_targets": {
-      "source_status": "unavailable",
-      "reason": "Open Targets GraphQL API requires a POST-capable HTTP client; no such MCP connector was available in this session. Wire via external_evidence_cache.fetch_open_targets when deployed with direct network access.",
-      "items": []
+      "source_status": "ok",
+      "items": [
+        {
+          "id": "ENSG00000124181",
+          "name": "PLCG1"
+        }
+      ],
+      "tractability": [
+        {
+          "label": "Approved Drug",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Structure with Ligand",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "High-Quality Ligand",
+          "modality": "SM",
+          "value": true
+        },
+        {
+          "label": "High-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Med-Quality Pocket",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Druggable Family",
+          "modality": "SM",
+          "value": false
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt loc high conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC high conf",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "UniProt loc med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "UniProt SigP or TMHMM",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "GO CC med conf",
+          "modality": "AB",
+          "value": false
+        },
+        {
+          "label": "Human Protein Atlas loc",
+          "modality": "AB",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "Literature",
+          "modality": "PR",
+          "value": false
+        },
+        {
+          "label": "UniProt Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Database Ubiquitination",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Half-life Data",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Small Molecule Binder",
+          "modality": "PR",
+          "value": true
+        },
+        {
+          "label": "Approved Drug",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Advanced Clinical",
+          "modality": "OC",
+          "value": false
+        },
+        {
+          "label": "Phase 1 Clinical",
+          "modality": "OC",
+          "value": false
+        }
+      ],
+      "associated_diseases": [
+        {
+          "disease": "cancer",
+          "disease_id": "MONDO_0004992",
+          "overall_score": 0.6003191945397127,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "bone development disease",
+          "disease_id": "MONDO_0005497",
+          "overall_score": 0.5511872888339344,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "cutaneous leishmaniasis",
+          "disease_id": "MONDO_0005446",
+          "overall_score": 0.5030392466541774,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "angiosarcoma",
+          "disease_id": "MONDO_0016982",
+          "overall_score": 0.4638750905453366,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "immune dysregulation, autoimmunity, and autoinflammation",
+          "disease_id": "MONDO_0957790",
+          "overall_score": 0.45360794109009855,
+          "genetic_association_score": 0.5547030788874036
+        },
+        {
+          "disease": "Hypercholesterolemia",
+          "disease_id": "HP_0003124",
+          "overall_score": 0.40162816540561447,
+          "genetic_association_score": 0.6606478352198834
+        },
+        {
+          "disease": "adult T-cell leukemia/lymphoma",
+          "disease_id": "MONDO_0019471",
+          "overall_score": 0.3798602263943539,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "angioimmunoblastic T-cell lymphoma",
+          "disease_id": "MONDO_0004977",
+          "overall_score": 0.3755354635189737,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "hemangioblastoma",
+          "disease_id": "MONDO_0016748",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "endometrial endometrioid adenocarcinoma",
+          "disease_id": "MONDO_0006192",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "skin basal cell carcinoma",
+          "disease_id": "MONDO_0005341",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "nodular malignant melanoma",
+          "disease_id": "MONDO_0000930",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "duodenal adenocarcinoma",
+          "disease_id": "MONDO_0006186",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "gastric carcinoma",
+          "disease_id": "MONDO_0004950",
+          "overall_score": 0.3695798546847018,
+          "genetic_association_score": null
+        },
+        {
+          "disease": "metabolic disease",
+          "disease_id": "MONDO_0005066",
+          "overall_score": 0.3693731711145791,
+          "genetic_association_score": 0.6075908188328939
+        }
+      ],
+      "safety_liabilities": [
+        {
+          "event": "Angioedema",
+          "event_id": "",
+          "tissues": []
+        }
+      ]
     }
   }
 }
