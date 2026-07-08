@@ -419,25 +419,34 @@ def match_reference_compounds(target: str, **kwargs: Any) -> Dict[str, Any]:
     CMap **compound** reference signatures to find compounds whose signature
     reverses the target's downstream signature.
 
-    **Not implemented.** LINCS/CMap reference signatures do not exist
-    anywhere in this repo (confirmed by inspection -- no L1000/CMap file
-    under ``sources/``, ``metadata/``, or anywhere else), and this sandbox's
-    egress to LINCS/CLUE is blocked (same class of restriction as the
-    Open Targets/gnomAD connectors noted elsewhere in
-    ``docs/next_phases_plan.md``). Per this repo's honest-fallback
-    contract, this function always returns the explicit
-    ``{"source_status": "unavailable", ...}`` shape (via
-    ``common.degrade.unavailable_source``) -- it never fabricates a
-    compound match. A real implementation would need a researcher to
-    download an L1000 Level 5 subset locally, or a deployed environment
-    with CLUE API access, and would reuse ``connectivity_score`` above
-    unchanged (it already accepts arbitrary ``{gene: score}`` reference
-    signatures).
+    **Compound matching remains unimplemented -- deliberately, on honest
+    grounds.** The LINCS data that has since landed in the repo
+    (``evidence/lincs_reference_cache.py`` + ``sources/target_tool_cache/
+    _lincs/``) is genetic-PERTURBATION (shRNA knockdown) signal from
+    GSE106127, NOT compound signal. Answering "which compound reverses this
+    target's signature" needs COMPOUND reference signatures
+    (LINCS GSE92742 / GSE70138 or CLUE), which are not committed. So per the
+    honest-fallback contract this still returns the explicit
+    ``{"source_status": "unavailable", ...}`` shape -- it never fabricates a
+    compound match.
+
+    What IS now available (for the 4 shortlist genes with LINCS coverage:
+    PLCG1, SENP5, CCNC, PMVK) is knockdown-vs-knockdown cross-referencing --
+    compare a target's own CD4 knockdown signature against LINCS's cancer-line
+    knockdown of the same gene -- via
+    ``evidence.lincs_reference_cache.knockdown_reference`` +
+    ``lincs_connectivity_score``. That is a weak cross-context hypothesis
+    cross-reference, not compound matching, and lives in the evidence layer
+    rather than being conflated into this compound-specific entry point.
+    ``connectivity_score`` above still accepts arbitrary ``{gene: score}``
+    reference signatures, so a future compound-signature drop reuses it
+    unchanged.
     """
     return unavailable_source(
         reason=(
-            "LINCS/CMap reference signatures not present in this repo; requires "
-            "external L1000 data or CLUE API access not available in this sandbox"
+            "compound reference signatures (LINCS GSE92742/GSE70138 or CLUE) not "
+            "present in this repo; the committed LINCS data is genetic-perturbation "
+            "(knockdown) signal only -- see evidence.lincs_reference_cache."
         )
     )
 

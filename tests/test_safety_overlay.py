@@ -315,7 +315,7 @@ def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
 
 
 def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
-    """VAV1: LOEUF 0.3444 < 0.35 threshold -> loss_intolerant."""
+    """VAV1: LOEUF 0.3444 < 0.6 (gnomAD v4) threshold -> loss_intolerant."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
@@ -323,7 +323,7 @@ def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
 
 
 def test_gnomad_flag_from_constraint_cd3e_is_none():
-    """CD3E: LOEUF 0.7008 >= 0.35 threshold -> present but not flagged ('none')."""
+    """CD3E: LOEUF 0.7008 >= 0.6 (gnomAD v4) threshold -> present but not flagged ('none')."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
