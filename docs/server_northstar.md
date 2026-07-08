@@ -1,10 +1,16 @@
 # Server 終極目標(North-star)— data portal 化
 
-**狀態:** 終極目標草案 · 四個關鍵決策**待使用者拍板**(尚未開始實作) · **語言:** 繁體中文 · **日期:** 2026-07-08
+**狀態:** 四個關鍵決策**已由使用者拍板(2026-07)** · 依確認的預設方向實作中 · **語言:** 繁體中文 · **日期:** 2026-07-08
 
 **觸發需求(使用者 `/goal`):** 「優化這個 server,讓使用者好上手(UI friendly)、資料明確、且提供 API 讓其他人查資料。參考其他網站的 server 怎麼提供服務,我們也想做到相同。先制定終極目標,討論後再開始。」
 
-> ⚠️ 本文件是**討論用的終極目標**,不是開工授權。四個決策(§4)對齊前不動 server 程式。
+**四個產品決策(使用者已拍板,全採推薦預設):**
+1. **API 風格 = REST 做到一流**(不加 GraphQL)。→ OpenAPI 豐富化 + Swagger/ReDoc + 每筆回應帶 `X-API/Engine/Schema-Version` header。
+2. **對外範圍 = 內部/受邀先行**(不做全公開)。→ 不建 auth/rate-limit 重工;維持 research-use-only、GWT dataset 授權未定的既有揭露。真正對外前再回來處理 license + auth。
+3. **UI = 維持 Streamlit**(不改 React)。→ target dossier 頁 + onboarding intro。
+4. **資料下載 = 要 bulk download**。→ `/api/exports/{id}` csv+json(json 帶 provenance)。
+
+因四項皆採推薦預設,無需建 GraphQL / 公開級 auth / React;伺服器沿精簡路徑收斂。
 
 ---
 

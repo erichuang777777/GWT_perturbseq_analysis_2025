@@ -101,6 +101,24 @@ app = FastAPI(
     license_info={"name": "Toolkit code: MIT (see LICENSE). Underlying GWT dataset: license TBD -- internal-research-use-only until confirmed (see docs/data_governance_checklist.md)."},
 )
 
+
+@app.middleware("http")
+async def _stamp_version_headers(request, call_next):
+    """Attach engine/schema/API version provenance to EVERY response as headers
+    (north-star 支柱二 資料明確). Headers are the idiomatic, non-breaking way to
+    expose response metadata in a REST API (the user-confirmed API style): they
+    reach every endpoint -- including the bare-list responses whose JSON body
+    can't gain a provenance key without a breaking envelope change -- without
+    altering any existing response body. A consumer can read what release served
+    any call; the per-dataset metadata.json stays authoritative per build.
+    """
+    response = await call_next(request)
+    response.headers["X-API-Version"] = app.version
+    response.headers["X-Engine-Version"] = str(ENGINE_VERSION)
+    response.headers["X-Schema-Version"] = str(CARD_SCHEMA_VERSION)
+    return response
+
+
 # name -> module path, one entry per resource area (§4.1). Match the actual
 # endpoint groupings in the original target_card_api.py, not a forced exact
 # match to the plan doc's illustrative router list.
