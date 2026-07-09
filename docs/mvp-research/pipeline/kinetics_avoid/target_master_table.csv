@@ -1,0 +1,1236 @@
+gene,is_ctx_specific,delivery_modality,polarity,kinetic_archetype,avoid_tier,n_avoid_flags,avoid_flags,n_concept_modules,stimulation_gated,ctx_specific_de,de_Rest,de_Stim8hr,de_Stim48hr,loeuf,pli,breadth_max_de
+AASDH,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,150.0,151.0,1.0,101.0,,,151.0
+ABCC1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,51.0,88.0,54.0,37.0,,,88.0
+ABHD12,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,446.0,447.0,3.0,1.0,,,447.0
+ABHD13,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,144.0,214.0,194.0,70.0,,,214.0
+ABHD14A,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,98.0,101.0,3.0,6.0,,,101.0
+ACACA,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,True,909.0,4.0,4.0,913.0,,,913.0
+ACAD9,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,606.0,1.0,5.0,607.0,,,607.0
+ACLY,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,True,2419.0,13.0,1321.0,2432.0,0.400071926771869,0.9999997939567736,2432.0
+ACOT7,True,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,True,843.0,2.0,5.0,845.0,,,845.0
+ACSL3,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,38.0,16.0,5.0,54.0,,,54.0
+ACSS1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,353.0,357.0,5.0,4.0,,,357.0
+ACTMAP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,53.0,95.0,42.0,51.0,,,95.0
+ACTR2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,972.0,77.0,583.0,1049.0,,,1049.0
+ACTR3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,177.0,32.0,209.0,117.0,,,209.0
+ACTR5,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,253.0,332.0,585.0,374.0,,,585.0
+ACYP2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,389.0,13.0,14.0,402.0,,,402.0
+ADAM19,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,206.0,243.0,402.0,449.0,,,449.0
+ADAM9,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,other(其他),clear,0,,0,False,95.0,97.0,11.0,2.0,,,97.0
+ADCY4,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,271.0,273.0,2.0,221.0,,,273.0
+ADNP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,25.0,25.0,50.0,42.0,,,50.0
+ADNP2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,39.0,58.0,92.0,97.0,,,97.0
+AEBP2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,498.0,12.0,55.0,510.0,,,510.0
+AHR,False,小分子 (胞內可成藥口袋),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1013.0,2790.0,1777.0,1822.0,0.5995461034933206,0.0016710447041249,2790.0
+AHSA1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,59.0,63.0,4.0,18.0,,,63.0
+AIP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,199.0,104.0,303.0,249.0,,,303.0
+AK3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,266.0,324.0,213.0,58.0,,,324.0
+AKAP10,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,23.0,34.0,56.0,11.0,,,56.0
+AKAP17A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,57.0,29.0,71.0,86.0,,,86.0
+ALDH18A1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,103.0,119.0,175.0,16.0,,,175.0
+ALG13,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,151.0,35.0,186.0,4.0,,,186.0
+ALG3,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,114.0,8.0,122.0,10.0,,,122.0
+ALG6,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,191.0,142.0,260.0,333.0,,,333.0
+ALG8,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,725.0,82.0,550.0,807.0,,,807.0
+ALKBH2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,268.0,365.0,107.0,97.0,,,365.0
+ALS2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,101.0,102.0,6.0,1.0,,,102.0
+AMBRA1,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,602.0,6.0,16.0,608.0,,,608.0
+AMD1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,412.0,16.0,194.0,428.0,,,428.0
+AMER1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,275.0,276.0,2.0,1.0,,,276.0
+ANKAR,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,285.0,292.0,136.0,7.0,,,292.0
+ANKRD11,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,54.0,15.0,69.0,19.0,,,69.0
+ANKRD61,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1176.0,1.0,82.0,1177.0,,,1177.0
+ANP32B,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,181.0,93.0,274.0,31.0,,,274.0
+AP1S2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,217.0,221.0,146.0,4.0,,,221.0
+AP3D1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,71.0,72.0,1.0,2.0,,,72.0
+APOBEC3B,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,72.0,113.0,185.0,47.0,,,185.0
+APOBEC3G,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,103.0,104.0,1.0,2.0,,,104.0
+APPL2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,458.0,2.0,460.0,9.0,,,460.0
+ARF1,False,待新模態 (無已知遞送方式),repressor,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0,False,1746.0,1754.0,58.0,8.0,0.263708322947604,0.99917045222594,1754.0
+ARF4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,148.0,6.0,154.0,13.0,,,154.0
+ARHGAP27,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,True,925.0,9.0,934.0,76.0,,,934.0
+ARHGAP30,False,待新模態 (無已知遞送方式),mixed,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,1541.0,1840.0,299.0,1484.0,0.4528866412654388,0.9991164905958896,1840.0
+ARHGAP45,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,33.0,34.0,50.0,1.0,,,50.0
+ARID2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,82.0,298.0,216.0,270.0,,,298.0
+ARID4B,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,234.0,8.0,242.0,18.0,,,242.0
+ARIH1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,437.0,434.0,601.0,871.0,,,871.0
+ARL1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,136.0,1.0,10.0,137.0,,,137.0
+ARL6IP1,False,抗體 (表面但胞外域有限),activator,late_sustained(晚期持續),clear,0,,0,False,117.0,1.0,1.0,118.0,,,118.0
+ARMC8,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,48.0,37.0,85.0,63.0,,,85.0
+ARMH3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,109.0,116.0,7.0,13.0,,,116.0
+ARNT,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,627.0,2320.0,2643.0,2947.0,0.3873464603285701,0.9999996812420346,2947.0
+ARPC1B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,61.0,4.0,44.0,65.0,,,65.0
+ARPC2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,823.0,216.0,1039.0,856.0,,,1039.0
+ARPC3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,758.0,148.0,906.0,720.0,,,906.0
+ASXL1,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,266.0,275.0,42.0,9.0,,,275.0
+ATAD3A,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,718.0,2.0,7.0,720.0,,,720.0
+ATF4,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,976.0,86.0,1062.0,393.0,,,1062.0
+ATF7IP,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,66.0,8.0,6.0,74.0,,,74.0
+ATF7IP2,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1877.0,854.0,2731.0,1380.0,0.8461628384545281,1.7715256641434115e-09,2731.0
+ATG14,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,248.0,19.0,6.0,267.0,,,267.0
+ATM,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,46.0,97.0,71.0,143.0,,,143.0
+ATP1B3,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,167.0,329.0,216.0,162.0,,,329.0
+ATP23,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,43.0,54.0,67.0,97.0,,,97.0
+ATP2A2,False,抗體 (表面但胞外域有限),repressor,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0,False,1953.0,3519.0,3260.0,1566.0,0.2003169158021933,0.9999999999999998,3519.0
+ATP2A3,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,72.0,8.0,80.0,5.0,,,80.0
+ATP5F1E,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,402.0,24.0,4.0,426.0,,,426.0
+ATP5ME,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,368.0,365.0,101.0,733.0,,,733.0
+ATP5MF,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,593.0,96.0,12.0,689.0,,,689.0
+ATP5PO,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,734.0,423.0,94.0,1157.0,,,1157.0
+ATRX,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,617.0,214.0,831.0,347.0,,,831.0
+ATXN1L,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,95.0,98.0,3.0,4.0,,,98.0
+ATXN2L,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,32.0,118.0,120.0,86.0,,,120.0
+ATXN7L3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1397.0,545.0,1942.0,503.0,,,1942.0
+AUP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,231.0,10.0,128.0,241.0,,,241.0
+AVEN,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,154.0,3.0,157.0,1.0,,,157.0
+B3GAT1,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,188.0,195.0,7.0,8.0,,,195.0
+BAHD1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,362.0,31.0,96.0,393.0,,,393.0
+BAZ1A,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,85.0,89.0,4.0,16.0,,,89.0
+BBS10,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,35.0,44.0,79.0,23.0,,,79.0
+BCAP29,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,104.0,1.0,105.0,15.0,,,105.0
+BCL10,True,待新模態 (無已知遞送方式),mixed,stim_switch(刺激開關),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.94),1,True,3455.0,1.0,3456.0,2980.0,0.5462126708195334,0.9432447077010372,3456.0
+BCL6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,52.0,16.0,28.0,68.0,,,68.0
+BCLAF1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,72.0,43.0,107.0,115.0,,,115.0
+BEX3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,298.0,311.0,16.0,13.0,,,311.0
+BHLHE40,False,待新模態 (無已知遞送方式),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0,False,1532.0,465.0,1997.0,1687.0,0.2171883786993017,0.99999860099106,1997.0
+BICDL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,75.0,4.0,4.0,79.0,,,79.0
+BLOC1S2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,26.0,27.0,45.0,53.0,,,53.0
+BLOC1S4,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,80.0,2.0,82.0,4.0,,,82.0
+BLZF1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,448.0,454.0,6.0,108.0,,,454.0
+BPTF,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,167.0,437.0,604.0,386.0,,,604.0
+BRAT1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,198.0,219.0,21.0,144.0,,,219.0
+BRD1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,227.0,65.0,292.0,136.0,,,292.0
+BRD10,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,118.0,119.0,57.0,1.0,,,119.0
+BRD7,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,72.0,80.0,45.0,8.0,,,80.0
+BRK1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,655.0,622.0,1277.0,426.0,,,1277.0
+BRPF1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,783.0,1005.0,1788.0,802.0,,,1788.0
+BSG,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,113.0,1.0,1.0,114.0,,,114.0
+BTAF1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,440.0,1053.0,1493.0,1296.0,,,1493.0
+BZW2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,84.0,4.0,2.0,88.0,,,88.0
+C11orf54,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,886.0,1045.0,159.0,656.0,,,1045.0
+C16orf87,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,74.0,129.0,182.0,55.0,,,182.0
+C18orf32,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,40.0,34.0,74.0,40.0,,,74.0
+C1D,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,405.0,555.0,960.0,894.0,,,960.0
+C1orf21,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,834.0,843.0,9.0,9.0,,,843.0
+C2CD2L,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,40.0,23.0,63.0,5.0,,,63.0
+C2CD5,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,59.0,2.0,61.0,2.0,,,61.0
+C2orf15,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,259.0,8.0,14.0,267.0,,,267.0
+C6orf120,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,39.0,17.0,40.0,56.0,,,56.0
+C8orf33,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,250.0,264.0,85.0,14.0,,,264.0
+CAAP1,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,58.0,7.0,5.0,65.0,,,65.0
+CAB39,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,119.0,10.0,129.0,23.0,,,129.0
+CABIN1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,164.0,27.0,191.0,182.0,,,191.0
+CALCOCO2,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,True,2347.0,5.0,2352.0,484.0,0.8696402064773731,7.441149884659057e-10,2352.0
+CALR,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,50.0,63.0,13.0,35.0,,,63.0
+CAMK1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,16.0,46.0,30.0,61.0,,,61.0
+CAND1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,321.0,838.0,1159.0,929.0,,,1159.0
+CAP1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,110.0,190.0,102.0,80.0,,,190.0
+CAPZA1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,52.0,3.0,55.0,53.0,,,55.0
+CARD6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,32.0,55.0,23.0,78.0,,,78.0
+CARM1,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,271.0,108.0,203.0,379.0,,,379.0
+CARMIL2,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,2459.0,86.0,2545.0,1918.0,,,2545.0
+CARNMT1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,45.0,13.0,47.0,58.0,,,58.0
+CASC3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,211.0,1239.0,1431.0,1028.0,,,1431.0
+CASK,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,104.0,121.0,17.0,170.0,,,170.0
+CASP9,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,753.0,754.0,1.0,4.0,,,754.0
+CATSPERG,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,218.0,5.0,13.0,223.0,,,223.0
+CAV1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,94.0,95.0,1.0,10.0,,,95.0
+CBFA2T2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,298.0,300.0,2.0,2.0,,,300.0
+CBLB,True,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,True,1022.0,6.0,1028.0,180.0,,,1028.0
+CBLL1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,230.0,302.0,532.0,232.0,,,532.0
+CBX3,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,66.0,66.0,97.0,132.0,,,132.0
+CBX5,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,513.0,49.0,233.0,562.0,,,562.0
+CCDC134,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,103.0,9.0,32.0,112.0,,,112.0
+CCDC136,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,246.0,17.0,38.0,263.0,,,263.0
+CCDC138,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,784.0,178.0,962.0,16.0,,,962.0
+CCDC22,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,503.0,116.0,1.0,619.0,,,619.0
+CCDC6,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,83.0,102.0,185.0,145.0,,,185.0
+CCDC90B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,105.0,1.0,1.0,106.0,,,106.0
+CCDC93,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,301.0,102.0,92.0,403.0,,,403.0
+CCL5,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,95.0,98.0,20.0,3.0,,,98.0
+CCNA2,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,351.0,467.0,818.0,384.0,,,818.0
+CCNC,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1360.0,2731.0,2271.0,4091.0,,,4091.0
+CCND2,False,小分子 (胞內可成藥口袋),activator,early_transient(早期瞬態),clear,0,,0,False,1284.0,1287.0,1321.0,3.0,,,1321.0
+CCND3,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,1,False,199.0,1.0,1.0,200.0,,,200.0
+CCNF,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,490.0,615.0,125.0,197.0,,,615.0
+CCNK,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,514.0,148.0,662.0,368.0,,,662.0
+CCNQ,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,311.0,466.0,777.0,412.0,,,777.0
+CCR4,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,503.0,508.0,61.0,5.0,,,508.0
+CD2,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,True,985.0,4.0,669.0,989.0,,,989.0
+CD247,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),1,True,4325.0,5.0,4330.0,828.0,0.6885845464824588,0.1639353679412317,4330.0
+CD274,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,143.0,24.0,167.0,102.0,,,167.0
+CD28,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),1,True,1793.0,5.0,1506.0,1798.0,0.6754854307844184,0.5463803561379975,1798.0
+CD3E,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),1,True,5707.0,4.0,5711.0,1586.0,0.7007847405093005,0.0481985216488277,5711.0
+CD5,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,True,1193.0,8.0,358.0,1201.0,,,1201.0
+CD99L2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,unknown,clear,0,,0,,,,50.0,113.0,,,113.0
+CDADC1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,169.0,173.0,36.0,4.0,,,173.0
+CDC25B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,1225.0,1256.0,1208.0,31.0,,,1256.0
+CDCA3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,57.0,127.0,74.0,70.0,,,127.0
+CDIPT,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,352.0,24.0,376.0,1.0,,,376.0
+CDK13,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,332.0,558.0,672.0,890.0,,,890.0
+CDK2,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,346.0,1.0,58.0,347.0,,,347.0
+CDK5RAP3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,108.0,132.0,240.0,52.0,,,240.0
+CDKN2AIP,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,11.0,113.0,102.0,120.0,,,120.0
+CEP104,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,54.0,58.0,4.0,7.0,,,58.0
+CEP135,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,123.0,2.0,38.0,125.0,,,125.0
+CEP43,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,766.0,995.0,229.0,483.0,,,995.0
+CEP44,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,70.0,72.0,2.0,3.0,,,72.0
+CEP89,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,145.0,31.0,49.0,176.0,,,176.0
+CFAP20,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,838.0,455.0,863.0,1293.0,,,1293.0
+CFAP298,False,待新模態 (無已知遞送方式),mixed,unknown,clear,0,,0,False,,487.0,1425.0,,,,1425.0
+CFAP97,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,600.0,601.0,1.0,3.0,,,601.0
+CHD4,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,783.0,1200.0,1517.0,417.0,,,1517.0
+CHD7,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1024.0,1254.0,2278.0,1030.0,,,2278.0
+CHIC2,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,43.0,32.0,75.0,59.0,,,75.0
+CHMP1A,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,563.0,570.0,87.0,7.0,,,570.0
+CHMP4A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,59.0,41.0,100.0,20.0,,,100.0
+CHTF18,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,722.0,136.0,86.0,858.0,,,858.0
+CIT,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,39.0,74.0,54.0,35.0,,,74.0
+CKAP4,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,437.0,441.0,16.0,4.0,,,441.0
+CLCC1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1493.0,239.0,680.0,1732.0,0.8051613354337509,4.419423940838039e-08,1732.0
+CLPB,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,281.0,5.0,5.0,286.0,,,286.0
+CLUH,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,71.0,32.0,27.0,103.0,,,103.0
+CMTM7,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,35.0,82.0,47.0,92.0,,,92.0
+CMTR1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,130.0,154.0,195.0,24.0,,,195.0
+CNBP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,209.0,53.0,262.0,252.0,,,262.0
+CNOT10,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,48.0,43.0,81.0,91.0,,,91.0
+CNOT4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,815.0,143.0,505.0,958.0,,,958.0
+CNOT6L,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,103.0,6.0,29.0,109.0,,,109.0
+COA3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,422.0,112.0,253.0,534.0,,,534.0
+COA6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,101.0,5.0,10.0,106.0,,,106.0
+COA7,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,501.0,43.0,200.0,544.0,,,544.0
+COLGALT1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,321.0,5.0,9.0,326.0,,,326.0
+COMMD10,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,80.0,99.0,143.0,179.0,,,179.0
+COMMD4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,75.0,36.0,8.0,111.0,,,111.0
+COMMD5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,215.0,7.0,124.0,222.0,,,222.0
+COMMD7,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,111.0,2.0,3.0,113.0,,,113.0
+COMMD8,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,227.0,57.0,6.0,284.0,,,284.0
+COP1,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,142.0,71.0,213.0,40.0,,,213.0
+COPRS,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,385.0,76.0,182.0,461.0,,,461.0
+COPS9,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,79.0,10.0,45.0,89.0,,,89.0
+COQ6,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,True,780.0,20.0,229.0,800.0,,,800.0
+COX15,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,232.0,15.0,98.0,247.0,,,247.0
+COX16,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,60.0,2.0,4.0,62.0,,,62.0
+COX17,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,97.0,1.0,90.0,98.0,,,98.0
+COX18,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,395.0,3.0,5.0,398.0,,,398.0
+COX19,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,458.0,26.0,310.0,484.0,,,484.0
+COX20,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,107.0,111.0,4.0,6.0,,,111.0
+COX6B1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,100.0,31.0,131.0,20.0,,,131.0
+COX6C,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1227.0,267.0,1494.0,568.0,,,1494.0
+COX7C,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,112.0,3.0,35.0,115.0,,,115.0
+CPOX,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,322.0,326.0,4.0,13.0,,,326.0
+CPSF6,False,待新模態 (無已知遞送方式),repressor,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0,False,768.0,2158.0,2487.0,1390.0,0.2992907577699072,0.9999997861097684,2487.0
+CREB1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,289.0,200.0,436.0,489.0,,,489.0
+CREBBP,False,小分子 (胞內可成藥口袋),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0,False,1407.0,1562.0,2969.0,1957.0,0.1051924869763193,1.0,2969.0
+CRLS1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,724.0,111.0,50.0,835.0,,,835.0
+CROT,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,137.0,146.0,283.0,46.0,,,283.0
+CRTAP,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,84.0,77.0,161.0,8.0,,,161.0
+CRTC2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,364.0,367.0,3.0,7.0,,,367.0
+CRY1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,191.0,197.0,6.0,6.0,,,197.0
+CRYZL1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,1195.0,1212.0,736.0,17.0,,,1212.0
+CSDE1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1124.0,1814.0,1053.0,690.0,,,1814.0
+CSK,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,499.0,548.0,326.0,49.0,,,548.0
+CSNK2A1,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,157.0,296.0,139.0,293.0,,,296.0
+CSNK2A2,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,98.0,110.0,23.0,12.0,,,110.0
+CTDSP2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,118.0,2.0,3.0,120.0,,,120.0
+CTDSPL2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,328.0,409.0,478.0,737.0,,,737.0
+CTH,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,152.0,2.0,0.0,154.0,,,154.0
+CTNNB1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,53.0,7.0,24.0,60.0,,,60.0
+CTPS1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,813.0,79.0,892.0,253.0,,,892.0
+CTSF,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,284.0,284.0,0.0,0.0,,,284.0
+CTSO,False,小分子 (胞內可成藥口袋),activator,late_sustained(晚期持續),clear,0,,0,False,96.0,2.0,3.0,98.0,,,98.0
+CTU1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,404.0,454.0,297.0,50.0,,,454.0
+CUL3,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,108.0,693.0,585.0,670.0,,,693.0
+CUL4A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,96.0,7.0,13.0,103.0,,,103.0
+CUL4B,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,550.0,572.0,99.0,22.0,,,572.0
+CYB561D2,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,386.0,393.0,88.0,7.0,,,393.0
+CYB5R4,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1417.0,258.0,1675.0,1028.0,,,1675.0
+CYB5RL,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,378.0,11.0,1.0,389.0,,,389.0
+CYLD,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,94.0,96.0,46.0,2.0,,,96.0
+CYP4V2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,210.0,265.0,80.0,55.0,,,265.0
+CYTH3,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,63.0,36.0,99.0,1.0,,,99.0
+DAP,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,260.0,6.0,227.0,266.0,,,266.0
+DAXX,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,186.0,65.0,251.0,5.0,,,251.0
+DCAF11,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,117.0,20.0,137.0,8.0,,,137.0
+DCAF4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,125.0,1.0,1.0,126.0,,,126.0
+DCAF5,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,107.0,52.0,67.0,159.0,,,159.0
+DCAKD,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,952.0,546.0,1498.0,112.0,,,1498.0
+DCTPP1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,175.0,177.0,2.0,6.0,,,177.0
+DDIT4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,314.0,4.0,1.0,318.0,,,318.0
+DDX17,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,750.0,891.0,763.0,141.0,,,891.0
+DDX31,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,69.0,7.0,39.0,76.0,,,76.0
+DDX6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,486.0,669.0,986.0,1155.0,,,1155.0
+DDX60L,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,191.0,6.0,197.0,67.0,,,197.0
+DEF6,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,59.0,1.0,60.0,23.0,,,60.0
+DEF8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,142.0,103.0,104.0,245.0,,,245.0
+DEGS1,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,57.0,28.0,85.0,3.0,,,85.0
+DEK,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,48.0,94.0,46.0,82.0,,,94.0
+DENND2D,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,309.0,317.0,8.0,8.0,,,317.0
+DENR,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,1740.0,1897.0,3637.0,1483.0,0.3874194075618192,0.9992814483738396,3637.0
+DEPDC5,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,69.0,70.0,9.0,1.0,,,70.0
+DGKZ,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,100.0,28.0,128.0,94.0,,,128.0
+DHRS7,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,137.0,41.0,178.0,29.0,,,178.0
+DHX30,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,272.0,5.0,26.0,277.0,,,277.0
+DHX36,False,待新模態 (無已知遞送方式),mixed,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,518.0,2327.0,1809.0,2299.0,0.4553339341486281,0.999362616857637,2327.0
+DIPK1A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,141.0,1.0,142.0,1.0,,,142.0
+DIS3L,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,250.0,20.0,270.0,27.0,,,270.0
+DIS3L2,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,456.0,474.0,581.0,18.0,,,581.0
+DLAT,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1113.0,3.0,1.0,1116.0,,,1116.0
+DLG4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1257.0,1286.0,41.0,29.0,,,1286.0
+DMXL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,50.0,1.0,14.0,51.0,,,51.0
+DNAAF5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,143.0,2.0,10.0,145.0,,,145.0
+DNAJC24,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,253.0,211.0,442.0,464.0,,,464.0
+DNAJC3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,59.0,69.0,59.0,128.0,,,128.0
+DNTTIP1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,2488.0,237.0,2725.0,1904.0,0.5940742399639497,0.2212354032267378,2725.0
+DOCK2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,852.0,1180.0,328.0,664.0,,,1180.0
+DOHH,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1224.0,339.0,1563.0,1052.0,,,1563.0
+DOLPP1,False,抗體 (表面但胞外域有限),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,2138.0,580.0,2718.0,1506.0,0.6768439051045957,0.1159548513278398,2718.0
+DOP1B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,2252.0,989.0,611.0,3241.0,,,3241.0
+DOT1L,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,313.0,123.0,176.0,436.0,,,436.0
+DPH1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,418.0,91.0,509.0,143.0,,,509.0
+DPH2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,117.0,54.0,19.0,171.0,,,171.0
+DPH5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,770.0,484.0,684.0,1254.0,,,1254.0
+DPH6,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,686.0,32.0,157.0,718.0,,,718.0
+DPM2,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,57.0,1.0,58.0,2.0,,,58.0
+DR1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,492.0,103.0,435.0,595.0,,,595.0
+DTWD1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,135.0,38.0,38.0,173.0,,,173.0
+DUSP4,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,54.0,2.0,56.0,1.0,,,56.0
+DYNLT2B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,188.0,189.0,1.0,1.0,,,189.0
+DZIP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,130.0,7.0,137.0,38.0,,,137.0
+EARS2,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,358.0,50.0,277.0,408.0,,,408.0
+ECI2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,76.0,2.0,78.0,1.0,,,78.0
+ECSIT,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,683.0,11.0,26.0,694.0,,,694.0
+EDC3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,782.0,914.0,778.0,132.0,,,914.0
+EDF1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,55.0,9.0,11.0,64.0,,,64.0
+EFHC1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,382.0,382.0,1.0,0.0,,,382.0
+EGLN1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,107.0,1.0,108.0,13.0,,,108.0
+EGR2,True,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,True,855.0,0.0,855.0,254.0,,,855.0
+EGR3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,91.0,11.0,102.0,2.0,,,102.0
+EHBP1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,52.0,4.0,56.0,15.0,,,56.0
+EHMT2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,422.0,1429.0,1178.0,1007.0,,,1429.0
+EID2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,2.0,96.0,95.0,94.0,,,96.0
+EIF1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,389.0,343.0,732.0,505.0,,,732.0
+EIF1AX,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1288.0,1289.0,2577.0,47.0,,,2577.0
+EIF2AK1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,122.0,1.0,1.0,123.0,,,123.0
+EIF3L,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,64.0,142.0,198.0,206.0,,,206.0
+EIF4B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,49.0,103.0,54.0,90.0,,,103.0
+EIF4G2,False,待新模態 (無已知遞送方式),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0,False,516.0,2014.0,2530.0,1830.0,0.1226951830624844,1.0,2530.0
+EIF4H,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,131.0,94.0,225.0,25.0,,,225.0
+ELAVL1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,156.0,2164.0,2170.0,2008.0,,,2170.0
+ELF4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,74.0,86.0,67.0,12.0,,,86.0
+ELOB,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1561.0,1491.0,3052.0,2340.0,0.6023557757549423,0.8880882091422733,3052.0
+ELOC,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,199.0,64.0,263.0,6.0,,,263.0
+ELP3,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,478.0,666.0,996.0,188.0,,,996.0
+ELP5,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,190.0,397.0,571.0,207.0,,,571.0
+ELP6,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,35.0,73.0,56.0,38.0,,,73.0
+EMB,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,51.0,9.0,60.0,46.0,,,60.0
+EMC3,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,145.0,12.0,54.0,157.0,,,157.0
+EMC4,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,535.0,61.0,39.0,596.0,,,596.0
+EMC9,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,138.0,38.0,176.0,23.0,,,176.0
+EML2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,284.0,59.0,343.0,309.0,,,343.0
+ENDOG,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,280.0,287.0,159.0,7.0,,,287.0
+EOLA1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,72.0,75.0,52.0,3.0,,,75.0
+EP300,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,104.0,74.0,159.0,178.0,,,178.0
+EPB41L3,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,2397.0,2399.0,801.0,2.0,0.5592822688724435,0.0007625204611379,2399.0
+EPC1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,197.0,247.0,444.0,90.0,,,444.0
+ERCC1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,191.0,225.0,236.0,416.0,,,416.0
+ERCC6L,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,41.0,117.0,76.0,97.0,,,117.0
+ERCC6L2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,231.0,9.0,240.0,17.0,,,240.0
+ERF,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,51.0,52.0,1.0,3.0,,,52.0
+ERGIC1,False,抗體 (表面但胞外域有限),mixed,early_transient(早期瞬態),clear,0,,0,False,58.0,11.0,69.0,6.0,,,69.0
+ERGIC3,False,抗體 (表面但胞外域有限),mixed,early_transient(早期瞬態),clear,0,,0,False,89.0,67.0,156.0,75.0,,,156.0
+ERN1,False,小分子 (胞內可成藥口袋),activator,late_sustained(晚期持續),clear,0,,0,False,52.0,124.0,117.0,176.0,,,176.0
+ETNK1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,280.0,300.0,34.0,20.0,,,300.0
+EXT1,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,91.0,92.0,2.0,1.0,,,92.0
+EXT2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,395.0,398.0,8.0,3.0,,,398.0
+EXTL2,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,31.0,19.0,50.0,15.0,,,50.0
+FAM118A,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,36.0,18.0,54.0,4.0,,,54.0
+FAM118B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,342.0,6.0,8.0,348.0,,,348.0
+FAM161A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,363.0,74.0,437.0,12.0,,,437.0
+FAM161B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,265.0,29.0,294.0,173.0,,,294.0
+FAM20B,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,167.0,22.0,189.0,14.0,,,189.0
+FAM3C,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,185.0,212.0,31.0,27.0,,,212.0
+FAM98B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,535.0,893.0,905.0,1428.0,,,1428.0
+FAM98C,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,78.0,79.0,1.0,2.0,,,79.0
+FANCC,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,76.0,1.0,8.0,77.0,,,77.0
+FANCD2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,88.0,107.0,84.0,19.0,,,107.0
+FANCE,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,14.0,51.0,37.0,40.0,,,51.0
+FANCF,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,72.0,81.0,9.0,72.0,,,81.0
+FARS2,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,420.0,4.0,6.0,424.0,,,424.0
+FBRS,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,148.0,40.0,188.0,76.0,,,188.0
+FBXL15,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1598.0,1709.0,126.0,111.0,1.1826789436555596,4.1948068703587386e-06,1709.0
+FBXL3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,213.0,211.0,424.0,65.0,,,424.0
+FBXO11,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,66.0,47.0,113.0,107.0,,,113.0
+FBXO28,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,277.0,302.0,67.0,25.0,,,302.0
+FBXO3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,179.0,179.0,64.0,0.0,,,179.0
+FBXO32,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,968.0,1355.0,748.0,387.0,,,1355.0
+FBXO38,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,120.0,122.0,17.0,2.0,,,122.0
+FBXO42,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,306.0,69.0,99.0,375.0,,,375.0
+FBXW2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,108.0,16.0,124.0,1.0,,,124.0
+FBXW7,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,142.0,50.0,192.0,182.0,,,192.0
+FCHO1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,244.0,2.0,18.0,246.0,,,246.0
+FEM1A,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,49.0,46.0,95.0,6.0,,,95.0
+FIGNL1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,512.0,539.0,27.0,346.0,,,539.0
+FITM1,False,抗體 (表面但胞外域有限),activator,other(其他),clear,0,,0,False,705.0,712.0,7.0,21.0,,,712.0
+FITM2,True,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,True,2586.0,21.0,2607.0,336.0,1.0450714524369302,0.000157763241128,2607.0
+FLCN,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,400.0,8.0,7.0,408.0,,,408.0
+FLI1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,250.0,315.0,283.0,65.0,,,315.0
+FLT1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,322.0,324.0,5.0,2.0,,,324.0
+FN3K,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,117.0,11.0,11.0,128.0,,,128.0
+FNBP4,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,263.0,621.0,884.0,539.0,,,884.0
+FOSL2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,1,False,163.0,35.0,51.0,198.0,,,198.0
+FOXK1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,662.0,157.0,819.0,140.0,,,819.0
+FOXN2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,52.0,255.0,301.0,203.0,,,301.0
+FOXO1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,747.0,1328.0,847.0,581.0,,,1328.0
+FPGS,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,100.0,9.0,33.0,109.0,,,109.0
+FRS3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,444.0,3.0,24.0,447.0,,,447.0
+FUBP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,700.0,553.0,1193.0,1253.0,,,1253.0
+GAB2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,53.0,3.0,23.0,56.0,,,56.0
+GABPB1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,552.0,1030.0,1582.0,790.0,,,1582.0
+GADD45GIP1,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,527.0,10.0,70.0,537.0,,,537.0
+GALNT6,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,294.0,68.0,39.0,362.0,,,362.0
+GANAB,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,609.0,623.0,671.0,14.0,,,671.0
+GAS2L1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,437.0,20.0,2.0,457.0,,,457.0
+GATA3,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,1,False,365.0,888.0,1239.0,1253.0,,,1253.0
+GBA1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,55.0,56.0,1.0,1.0,,,56.0
+GCN1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,220.0,58.0,69.0,278.0,,,278.0
+GDAP1,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,54.0,3.0,25.0,57.0,,,57.0
+GGA3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1112.0,1113.0,1.0,175.0,,,1113.0
+GID8,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,624.0,348.0,972.0,13.0,,,972.0
+GIGYF2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,158.0,158.0,234.0,316.0,,,316.0
+GLI1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,175.0,4.0,179.0,6.0,,,179.0
+GLIPR2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,616.0,745.0,1361.0,161.0,,,1361.0
+GLS,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,292.0,28.0,320.0,78.0,,,320.0
+GMEB1,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,407.0,244.0,651.0,559.0,,,651.0
+GNA13,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,745.0,759.0,14.0,50.0,,,759.0
+GNAZ,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,48.0,55.0,7.0,88.0,,,88.0
+GNE,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,362.0,1.0,4.0,363.0,,,363.0
+GNLY,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,49.0,53.0,46.0,4.0,,,53.0
+GNMT,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,44.0,60.0,54.0,16.0,,,60.0
+GNPAT,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,181.0,24.0,205.0,2.0,,,205.0
+GNPDA2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,166.0,167.0,1.0,1.0,,,167.0
+GNS,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,349.0,370.0,21.0,36.0,,,370.0
+GPAA1,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,139.0,38.0,177.0,3.0,,,177.0
+GPATCH3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,73.0,74.0,18.0,1.0,,,74.0
+GPATCH8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,163.0,58.0,178.0,221.0,,,221.0
+GPI,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1551.0,229.0,955.0,1780.0,0.9229446089984256,1.9827279594387428e-14,1780.0
+GPR146,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,86.0,2.0,88.0,52.0,,,88.0
+GPR15,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,251.0,70.0,321.0,14.0,,,321.0
+GPS2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,233.0,317.0,475.0,84.0,,,475.0
+GPT2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,97.0,2.0,99.0,5.0,,,99.0
+GRAP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,69.0,71.0,2.0,8.0,,,71.0
+GRK6,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,101.0,3.0,1.0,104.0,,,104.0
+GRSF1,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,True,1847.0,2.0,22.0,1849.0,1.238268357002918,3.6082166576301735e-17,1849.0
+GTF2H5,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,209.0,47.0,256.0,30.0,,,256.0
+GTPBP10,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1002.0,2.0,1.0,1004.0,,,1004.0
+GYPC,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,22.0,61.0,39.0,67.0,,,67.0
+GZMB,True,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,1,False,255.0,261.0,496.0,6.0,,,496.0
+H2AZ1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,321.0,121.0,304.0,442.0,,,442.0
+HACD2,True,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,True,1420.0,4.0,10.0,1424.0,0.7454421044138124,0.0265548796823512,1424.0
+HACD4,True,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,True,542.0,5.0,547.0,5.0,,,547.0
+HAPSTR1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,503.0,650.0,433.0,1153.0,,,1153.0
+HCCS,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,467.0,906.0,1373.0,1231.0,,,1373.0
+HDAC1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,21.0,69.0,90.0,59.0,,,90.0
+HDAC3,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,843.0,944.0,908.0,101.0,,,944.0
+HDAC7,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,50.0,85.0,57.0,135.0,,,135.0
+HDHD3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,48.0,70.0,118.0,33.0,,,118.0
+HELZ,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,55.0,60.0,6.0,5.0,,,60.0
+HEXIM1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,1293.0,65.0,248.0,1358.0,,,1358.0
+HIBADH,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,67.0,68.0,1.0,2.0,,,68.0
+HIF1A,True,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,1,False,127.0,2.0,3.0,129.0,,,129.0
+HIP1R,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,202.0,227.0,81.0,25.0,,,227.0
+HK2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,232.0,4.0,7.0,236.0,,,236.0
+HMBS,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,512.0,535.0,1047.0,724.0,,,1047.0
+HMGB3,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,37.0,17.0,29.0,54.0,,,54.0
+HNRNPA2B1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,232.0,148.0,380.0,354.0,,,380.0
+HNRNPD,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,576.0,66.0,165.0,642.0,,,642.0
+HOXB2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,622.0,802.0,180.0,318.0,,,802.0
+HP1BP3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,387.0,389.0,5.0,2.0,,,389.0
+HPF1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,46.0,13.0,59.0,3.0,,,59.0
+HPRT1,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,72.0,74.0,4.0,2.0,,,74.0
+HPS1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,54.0,249.0,303.0,231.0,,,303.0
+HRAS,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,139.0,1.0,2.0,140.0,,,140.0
+HS3ST3B1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,219.0,2.0,5.0,221.0,,,221.0
+HSD17B10,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,555.0,125.0,680.0,340.0,,,680.0
+HSDL2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,191.0,56.0,247.0,155.0,,,247.0
+HSP90B1,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,60.0,2.0,3.0,62.0,,,62.0
+HSPA8,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,28.0,32.0,60.0,7.0,,,60.0
+HSPH1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,76.0,46.0,74.0,122.0,,,122.0
+HTT,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,123.0,11.0,6.0,134.0,,,134.0
+HUWE1,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,686.0,688.0,9.0,2.0,,,688.0
+HYKK,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,265.0,266.0,1.0,1.0,,,266.0
+IBA57,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,906.0,13.0,140.0,919.0,,,919.0
+ICE2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,82.0,3.0,1.0,85.0,,,85.0
+ICMT,False,抗體 (表面但胞外域有限),repressor,unknown,clear,0,,0,,,,,64.0,,,64.0
+ICOS,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,2,False,669.0,739.0,211.0,70.0,,,739.0
+ID2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,357.0,431.0,74.0,499.0,,,499.0
+IFFO2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,21.0,64.0,51.0,43.0,,,64.0
+IFI30,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,33.0,59.0,60.0,26.0,,,60.0
+IFNAR1,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,other(其他),clear,0,,1,False,11.0,46.0,57.0,39.0,,,57.0
+IFNGR1,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,early_transient(早期瞬態),clear,0,,1,False,109.0,1.0,110.0,3.0,,,110.0
+IFNGR2,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,early_transient(早期瞬態),clear,0,,1,False,66.0,4.0,70.0,2.0,,,70.0
+IFT172,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,50.0,12.0,6.0,62.0,,,62.0
+IKBKB,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,1,False,292.0,1.0,5.0,293.0,,,293.0
+IKZF1,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,141.0,27.0,168.0,33.0,,,168.0
+IL12RB2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,early_transient(早期瞬態),clear,0,,0,False,521.0,230.0,751.0,160.0,,,751.0
+IL21,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,294.0,402.0,121.0,108.0,,,402.0
+IL21R,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,103.0,4.0,75.0,107.0,,,107.0
+IL23R,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,1,False,256.0,256.0,0.0,5.0,,,256.0
+IL4I1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,295.0,2.0,16.0,297.0,,,297.0
+IL4R,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,1,True,726.0,3.0,240.0,729.0,,,729.0
+IL7R,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,unknown,clear,0,,1,,,,812.0,99.0,,,812.0
+IMMP2L,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,140.0,57.0,155.0,197.0,,,197.0
+IMPA2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,1143.0,1145.0,11.0,2.0,,,1145.0
+ING3,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,110.0,9.0,52.0,119.0,,,119.0
+INIP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,52.0,70.0,47.0,18.0,,,70.0
+INO80B,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,262.0,166.0,428.0,175.0,,,428.0
+INO80C,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,277.0,219.0,496.0,457.0,,,496.0
+INPP5D,True,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,True,533.0,3.0,12.0,536.0,,,536.0
+INPP5F,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,87.0,39.0,126.0,41.0,,,126.0
+INPPL1,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,46.0,51.0,5.0,7.0,,,51.0
+INSIG1,True,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,True,709.0,22.0,116.0,731.0,,,731.0
+INSR,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,1275.0,1366.0,91.0,366.0,,,1366.0
+INTS10,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1361.0,715.0,1454.0,2076.0,,,2076.0
+INTS14,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,96.0,810.0,782.0,714.0,,,810.0
+INTS15,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,266.0,30.0,296.0,270.0,,,296.0
+INTS6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,24.0,68.0,44.0,83.0,,,83.0
+IRF1,True,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,2,False,213.0,271.0,182.0,58.0,,,271.0
+IRF2BP1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,146.0,58.0,204.0,106.0,,,204.0
+IRF4,True,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,1,False,242.0,325.0,567.0,498.0,,,567.0
+IRF8,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,85.0,3.0,88.0,7.0,,,88.0
+ISCA1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,63.0,86.0,24.0,23.0,,,86.0
+ISG15,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,147.0,149.0,2.0,5.0,,,149.0
+IST1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,377.0,554.0,475.0,177.0,,,554.0
+ITGB2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,65.0,134.0,123.0,69.0,,,134.0
+ITK,True,待新模態 (無已知遞送方式),mixed,stim_switch(刺激開關),caution,1,泛效應(breadth top10%),1,True,3391.0,2.0,3393.0,2566.0,0.6583348217168689,5.378493633649366e-06,3393.0
+ITM2A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,61.0,17.0,78.0,1.0,,,78.0
+ITM2B,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,147.0,148.0,1.0,2.0,,,148.0
+ITPR1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,391.0,1.0,1.0,392.0,,,392.0
+ITSN1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,78.0,154.0,114.0,76.0,,,154.0
+IWS1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,276.0,686.0,682.0,410.0,,,686.0
+JOSD2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,81.0,104.0,23.0,79.0,,,104.0
+JUNB,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,94.0,49.0,102.0,143.0,,,143.0
+KAT6A,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,427.0,79.0,506.0,143.0,,,506.0
+KBTBD2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,82.0,84.0,5.0,2.0,,,84.0
+KCNA2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,319.0,332.0,32.0,13.0,,,332.0
+KDM1A,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,895.0,2018.0,2301.0,2913.0,0.5683288227507527,0.0020561601934449,2913.0
+KDM2A,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,68.0,258.0,315.0,190.0,,,315.0
+KDM3B,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,57.0,87.0,140.0,30.0,,,140.0
+KDM5C,False,小分子 (胞內可成藥口袋),repressor,unknown,clear,0,,0,False,,68.0,115.0,,,,115.0
+KDM6A,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,89.0,137.0,62.0,48.0,,,137.0
+KDM8,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,63.0,109.0,172.0,120.0,,,172.0
+KHDRBS1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,766.0,170.0,936.0,164.0,,,936.0
+KIF14,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,81.0,7.0,2.0,88.0,,,88.0
+KIF16B,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,400.0,1.0,401.0,1.0,,,401.0
+KIF5C,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,137.0,5.0,2.0,142.0,,,142.0
+KIFAP3,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,328.0,1585.0,1347.0,1257.0,,,1585.0
+KLF10,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,48.0,32.0,80.0,9.0,,,80.0
+KLF2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,809.0,987.0,914.0,178.0,,,987.0
+KLHDC10,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,204.0,237.0,76.0,33.0,,,237.0
+KMT2B,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,89.0,35.0,124.0,57.0,,,124.0
+KMT2C,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,146.0,453.0,307.0,462.0,,,462.0
+KMT2E,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,559.0,337.0,304.0,896.0,,,896.0
+KMT5B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,326.0,614.0,782.0,940.0,,,940.0
+KPNA1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,432.0,531.0,963.0,139.0,,,963.0
+KPNA4,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,70.0,1.0,71.0,2.0,,,71.0
+KRBA2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,750.0,752.0,176.0,2.0,,,752.0
+KRCC1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,211.0,214.0,84.0,3.0,,,214.0
+KTI12,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,58.0,768.0,826.0,730.0,,,826.0
+KTN1,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,103.0,5.0,108.0,1.0,,,108.0
+L2HGDH,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,8.0,110.0,113.0,118.0,,,118.0
+L3MBTL2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,133.0,364.0,365.0,497.0,,,497.0
+LAIR2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,198.0,0.0,0.0,198.0,,,198.0
+LAMP1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,225.0,238.0,13.0,32.0,,,238.0
+LAMTOR2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1658.0,405.0,593.0,2063.0,,,2063.0
+LAMTOR3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,95.0,87.0,182.0,159.0,,,182.0
+LAMTOR4,True,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,True,657.0,27.0,334.0,684.0,,,684.0
+LARP4,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,66.0,1.0,1.0,67.0,,,67.0
+LARS2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,691.0,122.0,813.0,601.0,,,813.0
+LAT,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,stim_switch(刺激開關),caution,1,泛效應(breadth top10%),1,True,5532.0,4.0,5536.0,3187.0,,,5536.0
+LAT2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,62.0,193.0,254.0,131.0,,,254.0
+LEO1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1224.0,3015.0,2664.0,1791.0,0.5628212243588973,0.0965911515007667,3015.0
+LETM2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,368.0,18.0,47.0,386.0,,,386.0
+LIG3,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1175.0,2.0,2.0,1177.0,,,1177.0
+LIG4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,104.0,2.0,106.0,6.0,,,106.0
+LIN37,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,118.0,143.0,259.0,25.0,,,259.0
+LMNA,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,54.0,58.0,4.0,10.0,,,58.0
+LMTK2,False,抗體 (表面但胞外域有限),mixed,early_transient(早期瞬態),clear,0,,0,False,524.0,76.0,600.0,24.0,,,600.0
+LPCAT3,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,144.0,144.0,62.0,0.0,,,144.0
+LRBA,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,True,2988.0,5.0,2993.0,223.0,0.6044274850704704,2.77834428745411e-23,2993.0
+LRIG1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,138.0,1.0,139.0,1.0,,,139.0
+LRP5,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,284.0,11.0,5.0,295.0,,,295.0
+LRPPRC,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1154.0,772.0,771.0,1926.0,,,1926.0
+LRRC8A,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,429.0,19.0,11.0,448.0,,,448.0
+LRRC8B,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,26.0,32.0,28.0,58.0,,,58.0
+LSM12,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,190.0,535.0,345.0,520.0,,,535.0
+LSM14A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,102.0,35.0,22.0,137.0,,,137.0
+LYRM2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,50.0,63.0,55.0,13.0,,,63.0
+LZTS1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,169.0,163.0,332.0,180.0,,,332.0
+MAEA,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1645.0,1651.0,1190.0,6.0,0.6806142487031202,0.0098124017602529,1651.0
+MAF,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,128.0,10.0,13.0,138.0,,,138.0
+MAGEH1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,91.0,92.0,19.0,1.0,,,92.0
+MALT1,True,待新模態 (無已知遞送方式),mixed,stim_switch(刺激開關),caution,1,泛效應(breadth top10%),1,True,1637.0,3.0,1640.0,1412.0,0.5559133450604872,0.1044634796963359,1640.0
+MAN1A2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,375.0,377.0,2.0,2.0,,,377.0
+MAN2A1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,77.0,84.0,28.0,7.0,,,84.0
+MANEA,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,278.0,280.0,2.0,2.0,,,280.0
+MAP1LC3B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,161.0,167.0,17.0,6.0,,,167.0
+MAP3K1,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,89.0,1.0,90.0,2.0,,,90.0
+MAP3K13,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,28.0,32.0,52.0,4.0,,,52.0
+MAP3K5,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,161.0,38.0,199.0,76.0,,,199.0
+MAP4K1,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,80.0,14.0,94.0,5.0,,,94.0
+MAPK14,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,94.0,12.0,20.0,106.0,,,106.0
+MAPKAP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,164.0,101.0,16.0,265.0,,,265.0
+MARK2,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,63.0,3.0,66.0,1.0,,,66.0
+MAU2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,315.0,428.0,324.0,113.0,,,428.0
+MAX,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 1.00),0,False,2133.0,90.0,2223.0,101.0,0.3484073260389697,0.9988528450920444,2223.0
+MBIP,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,297.0,11.0,86.0,308.0,,,308.0
+MBTPS1,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,1210.0,61.0,280.0,1271.0,,,1271.0
+MCM8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,316.0,40.0,217.0,356.0,,,356.0
+MCTS1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,387.0,974.0,1361.0,1184.0,,,1361.0
+MCUR1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,152.0,1.0,1.0,153.0,,,153.0
+MED1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,567.0,252.0,819.0,232.0,,,819.0
+MED12,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0,False,1299.0,2843.0,4142.0,2046.0,0.0954812775147903,1.0,4142.0
+MED13,True,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,True,586.0,43.0,220.0,629.0,,,629.0
+MED14,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,247.0,120.0,367.0,135.0,,,367.0
+MED15,False,待新模態 (無已知遞送方式),mixed,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,1466.0,2807.0,2051.0,1341.0,0.4480506233470686,0.999749051257536,2807.0
+MED23,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,865.0,147.0,1012.0,367.0,,,1012.0
+MED24,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1256.0,1539.0,2795.0,1607.0,0.755814149616394,1.0755616312756054e-14,2795.0
+MEST,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,744.0,825.0,682.0,81.0,,,825.0
+METAP2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,396.0,772.0,376.0,528.0,,,772.0
+METTL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,768.0,515.0,1047.0,1283.0,,,1283.0
+METTL17,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,45.0,8.0,5.0,53.0,,,53.0
+MFHAS1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,270.0,64.0,334.0,66.0,,,334.0
+MGA,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,75.0,56.0,131.0,123.0,,,131.0
+MIA2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1513.0,53.0,19.0,1566.0,0.8770834710616209,2.548279421428051e-32,1566.0
+MICOS13,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,133.0,1.0,2.0,134.0,,,134.0
+MIDN,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,37.0,22.0,59.0,4.0,,,59.0
+MIEN1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,96.0,98.0,2.0,3.0,,,98.0
+MIPEP,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1992.0,152.0,414.0,2144.0,1.0550293896792875,9.073153027848116e-24,2144.0
+MITD1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,239.0,11.0,1.0,250.0,,,250.0
+MLKL,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,47.0,33.0,37.0,80.0,,,80.0
+MLST8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,266.0,298.0,131.0,564.0,,,564.0
+MLYCD,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,342.0,178.0,7.0,520.0,,,520.0
+MMAB,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,331.0,837.0,506.0,744.0,,,837.0
+MMGT1,True,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,True,699.0,31.0,65.0,730.0,,,730.0
+MOB1A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,373.0,374.0,3.0,1.0,,,374.0
+MOGS,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,30.0,23.0,53.0,24.0,,,53.0
+MORC2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,388.0,413.0,801.0,83.0,,,801.0
+MORF4L1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,212.0,9.0,221.0,59.0,,,221.0
+MOSMO,False,抗體 (表面但胞外域有限),activator,other(其他),clear,0,,0,False,184.0,197.0,20.0,13.0,,,197.0
+MOSPD1,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,153.0,154.0,1.0,1.0,,,154.0
+MOV10,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,469.0,956.0,741.0,1425.0,,,1425.0
+MPG,False,待新模態 (無已知遞送方式),mixed,unknown,clear,0,,0,,,,56.0,166.0,,,166.0
+MPI,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,2051.0,244.0,2295.0,147.0,,,2295.0
+MRC2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,1214.0,137.0,585.0,1351.0,,,1351.0
+MSL2,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,235.0,321.0,86.0,110.0,,,321.0
+MTA2,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,350.0,1522.0,1729.0,1172.0,,,1729.0
+MTA3,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,True,1051.0,2.0,1053.0,57.0,,,1053.0
+MTCH2,True,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,True,687.0,6.0,2.0,693.0,,,693.0
+MTERF2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,39.0,60.0,21.0,32.0,,,60.0
+MTG1,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,True,1884.0,10.0,8.0,1894.0,,,1894.0
+MTG2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,73.0,75.0,2.0,2.0,,,75.0
+MTHFD1L,True,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,True,707.0,9.0,31.0,716.0,,,716.0
+MTHFD2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,797.0,1.0,3.0,798.0,,,798.0
+MTIF2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,308.0,3.0,5.0,311.0,,,311.0
+MTMR10,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,174.0,213.0,39.0,117.0,,,213.0
+MTMR3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,882.0,218.0,1100.0,23.0,,,1100.0
+MTRR,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,75.0,32.0,14.0,107.0,,,107.0
+MVB12B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,533.0,574.0,309.0,41.0,,,574.0
+MYB,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,300.0,1325.0,1025.0,1222.0,,,1325.0
+MYC,True,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,1,True,637.0,39.0,676.0,41.0,,,676.0
+MYH9,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,113.0,119.0,57.0,6.0,,,119.0
+MYO18A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,77.0,94.0,72.0,17.0,,,94.0
+MYO9A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,123.0,488.0,365.0,527.0,,,527.0
+N6AMT1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,161.0,350.0,270.0,511.0,,,511.0
+NAA40,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,148.0,89.0,135.0,237.0,,,237.0
+NAB2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,301.0,1.0,302.0,7.0,,,302.0
+NABP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,353.0,70.0,423.0,11.0,,,423.0
+NADK2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,79.0,12.0,26.0,91.0,,,91.0
+NARS2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,159.0,12.0,32.0,171.0,,,171.0
+NASP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,242.0,243.0,124.0,1.0,,,243.0
+NATD1,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,True,828.0,2.0,830.0,32.0,,,830.0
+NCAPG2,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1026.0,671.0,1697.0,1179.0,,,1697.0
+NCBP3,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,360.0,565.0,632.0,205.0,,,632.0
+NCKAP1L,False,待新模態 (無已知遞送方式),repressor,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.98),0,False,2357.0,2947.0,1359.0,590.0,0.4785320751053298,0.9780942101857696,2947.0
+NCOA6,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,73.0,97.0,28.0,24.0,,,97.0
+NCR3,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,early_transient(早期瞬態),clear,0,,0,False,78.0,4.0,82.0,3.0,,,82.0
+NDFIP2,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,True,833.0,2.0,835.0,128.0,,,835.0
+NDRG1,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,111.0,55.0,166.0,25.0,,,166.0
+NDST2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,157.0,158.0,5.0,1.0,,,158.0
+NDUFA10,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,128.0,129.0,1.0,1.0,,,129.0
+NDUFA3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,59.0,1.0,4.0,60.0,,,60.0
+NDUFA6,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,242.0,3.0,9.0,245.0,,,245.0
+NDUFA8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,902.0,136.0,17.0,1038.0,,,1038.0
+NDUFA9,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,517.0,4.0,17.0,521.0,,,521.0
+NDUFAF3,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,True,1917.0,6.0,3.0,1923.0,1.3390337239482806,1.7241082293043013e-07,1923.0
+NDUFAF5,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,66.0,6.0,72.0,8.0,,,72.0
+NDUFAF6,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,58.0,5.0,1.0,63.0,,,63.0
+NDUFB2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,172.0,6.0,8.0,178.0,,,178.0
+NDUFB4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,205.0,24.0,8.0,229.0,,,229.0
+NDUFB6,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,140.0,13.0,3.0,153.0,,,153.0
+NDUFC1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,175.0,7.0,1.0,182.0,,,182.0
+NDUFS2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,81.0,12.0,2.0,93.0,,,93.0
+NDUFS5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,299.0,2.0,6.0,301.0,,,301.0
+NDUFS7,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,50.0,4.0,14.0,54.0,,,54.0
+NDUFS8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,792.0,91.0,72.0,883.0,,,883.0
+NEB,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,122.0,132.0,10.0,66.0,,,132.0
+NEIL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,81.0,9.0,77.0,90.0,,,90.0
+NEK1,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,66.0,67.0,1.0,1.0,,,67.0
+NEK3,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,61.0,1.0,1.0,62.0,,,62.0
+NEMP2,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,62.0,73.0,42.0,11.0,,,73.0
+NFAT5,False,待新模態 (無已知遞送方式),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0,False,1623.0,1624.0,1.0,2.0,0.2512521224755644,1.0,1624.0
+NFATC2,True,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,1,False,170.0,2.0,172.0,27.0,,,172.0
+NFATC2IP,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,44.0,51.0,30.0,7.0,,,51.0
+NFE2L1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,58.0,65.0,61.0,123.0,,,123.0
+NFKB1,True,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,1,False,115.0,90.0,205.0,63.0,,,205.0
+NFKB2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,907.0,443.0,1350.0,738.0,,,1350.0
+NFKBIL1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,863.0,91.0,954.0,33.0,,,954.0
+NFRKB,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,500.0,3020.0,2892.0,2520.0,0.5645913204101243,0.000120780181341,3020.0
+NFU1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,277.0,5.0,16.0,282.0,,,282.0
+NGRN,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,175.0,1.0,3.0,176.0,,,176.0
+NIPBL,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,226.0,358.0,317.0,584.0,,,584.0
+NIPSNAP3A,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,56.0,1.0,57.0,1.0,,,57.0
+NKAPD1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,290.0,529.0,605.0,819.0,,,819.0
+NLGN2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,47.0,48.0,1.0,60.0,,,60.0
+NLRX1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,474.0,489.0,15.0,25.0,,,489.0
+NMT2,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,85.0,45.0,130.0,19.0,,,130.0
+NONO,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,40.0,16.0,56.0,14.0,,,56.0
+NPHP4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,101.0,76.0,177.0,6.0,,,177.0
+NPRL3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,54.0,55.0,4.0,1.0,,,55.0
+NR2C2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,72.0,285.0,263.0,213.0,,,285.0
+NR4A3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,396.0,0.0,32.0,396.0,,,396.0
+NRAS,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,149.0,226.0,375.0,147.0,,,375.0
+NRBP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,366.0,385.0,628.0,751.0,,,751.0
+NSD1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,408.0,1767.0,1994.0,2175.0,,,2175.0
+NSD2,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,96.0,178.0,182.0,82.0,,,182.0
+NSUN4,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,989.0,37.0,109.0,1026.0,,,1026.0
+NUBPL,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,366.0,1.0,4.0,367.0,,,367.0
+NUDT19,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,119.0,151.0,32.0,37.0,,,151.0
+NUFIP2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,53.0,55.0,3.0,2.0,,,55.0
+NUP42,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,72.0,18.0,11.0,90.0,,,90.0
+NXT1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,96.0,6.0,5.0,102.0,,,102.0
+OAZ3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,215.0,0.0,0.0,215.0,,,215.0
+ORAI1,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,True,1247.0,3.0,1250.0,77.0,,,1250.0
+ORMDL2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,371.0,372.0,1.0,1.0,,,372.0
+OST4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,105.0,10.0,98.0,115.0,,,115.0
+OTUB1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,185.0,305.0,293.0,120.0,,,305.0
+OTUD1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1099.0,1110.0,321.0,11.0,,,1110.0
+OXA1L,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1275.0,267.0,114.0,1542.0,,,1542.0
+P4HB,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,102.0,191.0,89.0,131.0,,,191.0
+PA2G4,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,26.0,51.0,28.0,25.0,,,51.0
+PABIR1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,47.0,32.0,72.0,79.0,,,79.0
+PACS2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,123.0,24.0,29.0,147.0,,,147.0
+PACSIN2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,631.0,632.0,1.0,2.0,,,632.0
+PAGR1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,391.0,501.0,561.0,110.0,,,561.0
+PAICS,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,87.0,1.0,4.0,88.0,,,88.0
+PAK1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,275.0,278.0,265.0,3.0,,,278.0
+PAK2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,87.0,147.0,98.0,60.0,,,147.0
+PAN3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,260.0,90.0,185.0,350.0,,,350.0
+PAPOLA,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,42.0,14.0,56.0,38.0,,,56.0
+PAPSS1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,248.0,250.0,6.0,2.0,,,250.0
+PARD6A,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,140.0,143.0,3.0,7.0,,,143.0
+PARK7,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,88.0,7.0,7.0,95.0,,,95.0
+PARL,False,抗體 (表面但胞外域有限),activator,late_sustained(晚期持續),clear,0,,0,False,341.0,2.0,1.0,343.0,,,343.0
+PARP14,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,955.0,374.0,1329.0,114.0,,,1329.0
+PARS2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,553.0,98.0,651.0,548.0,,,651.0
+PATL1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,161.0,166.0,7.0,5.0,,,166.0
+PAXIP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,170.0,1071.0,992.0,1241.0,,,1241.0
+PCBP2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,421.0,523.0,627.0,102.0,,,627.0
+PCBP4,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,28.0,54.0,30.0,26.0,,,54.0
+PCGF1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,395.0,684.0,948.0,1079.0,,,1079.0
+PCGF3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,44.0,7.0,27.0,51.0,,,51.0
+PCGF6,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,36.0,18.0,54.0,53.0,,,54.0
+PCNX3,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,31.0,67.0,66.0,98.0,,,98.0
+PCNX4,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,476.0,480.0,4.0,5.0,,,480.0
+PCYT2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,143.0,828.0,724.0,685.0,,,828.0
+PDCD10,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,271.0,27.0,140.0,298.0,,,298.0
+PDCD2L,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,994.0,1046.0,385.0,52.0,,,1046.0
+PDCD5,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,872.0,30.0,38.0,902.0,,,902.0
+PDCL,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,749.0,753.0,1272.0,1502.0,,,1502.0
+PDHB,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,174.0,5.0,8.0,179.0,,,179.0
+PDIA3,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,235.0,75.0,310.0,25.0,,,310.0
+PDIA6,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,49.0,151.0,151.0,102.0,,,151.0
+PDLIM2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,171.0,73.0,244.0,159.0,,,244.0
+PDS5B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,35.0,24.0,59.0,42.0,,,59.0
+PDSS1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,353.0,32.0,385.0,113.0,,,385.0
+PDSS2,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1284.0,943.0,2227.0,1432.0,,,2227.0
+PELO,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,120.0,163.0,43.0,275.0,,,275.0
+PEX5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,214.0,3.0,165.0,217.0,,,217.0
+PFDN5,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,211.0,218.0,66.0,7.0,,,218.0
+PGP,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,489.0,1.0,2.0,490.0,,,490.0
+PHACTR4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,63.0,66.0,3.0,4.0,,,66.0
+PHF12,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,138.0,188.0,326.0,123.0,,,326.0
+PHF20,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,168.0,9.0,10.0,177.0,,,177.0
+PHF20L1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,65.0,5.0,70.0,5.0,,,70.0
+PHF3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,139.0,220.0,81.0,215.0,,,220.0
+PHF6,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,197.0,15.0,19.0,212.0,,,212.0
+PHF8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,304.0,11.0,56.0,315.0,,,315.0
+PHIP,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,115.0,5.0,12.0,120.0,,,120.0
+PIAS1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,92.0,92.0,0.0,1.0,,,92.0
+PIK3C2B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,72.0,73.0,1.0,1.0,,,73.0
+PIK3R4,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,127.0,139.0,82.0,12.0,,,139.0
+PKM,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1784.0,57.0,1841.0,202.0,0.536419057150002,0.8900951453671474,1841.0
+PKN1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,101.0,102.0,1.0,1.0,,,102.0
+PKN3,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,85.0,1.0,2.0,86.0,,,86.0
+PKNOX1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,92.0,183.0,265.0,275.0,,,275.0
+PLA2G4A,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,71.0,28.0,99.0,7.0,,,99.0
+PLCG1,True,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),1,True,5030.0,3.0,5033.0,2218.0,0.4865636818969194,0.7209971026115483,5033.0
+PMVK,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,3318.0,210.0,88.0,3528.0,0.8927935405880859,0.0300398556424171,3528.0
+PNPT1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1107.0,131.0,1238.0,1069.0,,,1238.0
+POGK,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,258.0,259.0,8.0,1.0,,,259.0
+POGLUT3,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1602.0,875.0,2477.0,701.0,1.1236447812473118,5.261785745779371e-15,2477.0
+POGZ,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,95.0,1.0,3.0,96.0,,,96.0
+POLG,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,True,1561.0,40.0,266.0,1601.0,0.8291352903695456,6.160424673359716e-26,1601.0
+PPCDC,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,288.0,591.0,751.0,303.0,,,751.0
+PPDPF,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,683.0,816.0,1142.0,133.0,,,1142.0
+PPIF,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,211.0,219.0,29.0,8.0,,,219.0
+PPIH,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,716.0,161.0,877.0,387.0,,,877.0
+PPIL1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,457.0,571.0,507.0,114.0,,,571.0
+PPM1D,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1321.0,1390.0,140.0,69.0,,,1390.0
+PPP1R12A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,65.0,93.0,57.0,28.0,,,93.0
+PPP1R12C,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,137.0,142.0,6.0,5.0,,,142.0
+PPP1R13L,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,184.0,215.0,377.0,31.0,,,377.0
+PPP1R3B,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,298.0,312.0,14.0,25.0,,,312.0
+PPP3R1,True,待新模態 (無已知遞送方式),repressor,stim_switch(刺激開關),clear,0,,0,True,612.0,1.0,613.0,523.0,,,613.0
+PPP6C,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,172.0,126.0,298.0,278.0,,,298.0
+PPP6R2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,123.0,124.0,1.0,2.0,,,124.0
+PPRC1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,30.0,70.0,40.0,86.0,,,86.0
+PQBP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,35.0,56.0,85.0,21.0,,,85.0
+PRCP,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,103.0,107.0,4.0,6.0,,,107.0
+PRDM15,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,33.0,28.0,61.0,41.0,,,61.0
+PRDX3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,54.0,56.0,2.0,3.0,,,56.0
+PRKD2,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,70.0,2.0,53.0,72.0,,,72.0
+PRKRA,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,18.0,57.0,50.0,75.0,,,75.0
+PRORP,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,110.0,5.0,6.0,115.0,,,115.0
+PRPF39,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,273.0,53.0,326.0,207.0,,,326.0
+PRR12,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,27.0,52.0,25.0,36.0,,,52.0
+PRRC2A,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,90.0,32.0,122.0,85.0,,,122.0
+PRSS21,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,224.0,242.0,18.0,56.0,,,242.0
+PRXL2B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,94.0,97.0,3.0,5.0,,,97.0
+PSIP1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,364.0,123.0,263.0,487.0,,,487.0
+PSMB9,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,37.0,88.0,125.0,125.0,,,125.0
+PSMF1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,273.0,399.0,427.0,126.0,,,427.0
+PTCD2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,650.0,50.0,43.0,700.0,,,700.0
+PTCH1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,364.0,364.0,0.0,1.0,,,364.0
+PTDSS1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,67.0,10.0,11.0,77.0,,,77.0
+PTDSS2,False,抗體 (表面但胞外域有限),activator,other(其他),clear,0,,0,False,52.0,49.0,101.0,60.0,,,101.0
+PTEN,False,小分子 (胞內可成藥口袋),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,2466.0,2929.0,1639.0,463.0,0.5972332460642497,0.3381560734403222,2929.0
+PTGER3,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,99.0,100.0,1.0,8.0,,,100.0
+PTPA,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,761.0,344.0,292.0,1105.0,,,1105.0
+PTPN11,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,52.0,8.0,4.0,60.0,,,60.0
+PTPN2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,312.0,414.0,102.0,371.0,,,414.0
+PTPRC,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,3171.0,55.0,2255.0,3226.0,,,3226.0
+PUM1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,157.0,84.0,227.0,241.0,,,241.0
+PUS3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,32.0,36.0,65.0,4.0,,,65.0
+PXMP4,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,62.0,103.0,165.0,115.0,,,165.0
+PYGM,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,82.0,110.0,28.0,184.0,,,184.0
+QRICH1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,41.0,38.0,79.0,20.0,,,79.0
+QRSL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,251.0,18.0,96.0,269.0,,,269.0
+R3HCC1L,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,104.0,224.0,120.0,184.0,,,224.0
+RAB11FIP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,369.0,219.0,588.0,218.0,,,588.0
+RAB21,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,115.0,13.0,9.0,128.0,,,128.0
+RAB27B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,28.0,85.0,64.0,57.0,,,85.0
+RAB2B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,42.0,23.0,29.0,65.0,,,65.0
+RABGEF1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,86.0,42.0,13.0,128.0,,,128.0
+RAC2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1060.0,35.0,121.0,1095.0,,,1095.0
+RAD50,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,641.0,108.0,18.0,749.0,,,749.0
+RAD51B,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,139.0,34.0,37.0,173.0,,,173.0
+RALGAPB,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,77.0,83.0,24.0,6.0,,,83.0
+RANBP3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,64.0,148.0,168.0,84.0,,,168.0
+RASA2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,481.0,700.0,250.0,219.0,,,700.0
+RASAL3,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,884.0,102.0,11.0,986.0,,,986.0
+RASGRP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,594.0,399.0,993.0,309.0,,,993.0
+RB1CC1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,510.0,392.0,902.0,581.0,,,902.0
+RBFA,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1152.0,14.0,146.0,1166.0,,,1166.0
+RBM15,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,62.0,2.0,18.0,64.0,,,64.0
+RBM27,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,289.0,437.0,726.0,170.0,,,726.0
+RBM33,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,650.0,165.0,815.0,242.0,,,815.0
+RBM5,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,278.0,29.0,168.0,307.0,,,307.0
+RBPJ,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,59.0,61.0,57.0,120.0,,,120.0
+RC3H1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,227.0,114.0,169.0,341.0,,,341.0
+RCC1L,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,1109.0,58.0,2.0,1167.0,,,1167.0
+RCOR1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,433.0,293.0,223.0,726.0,,,726.0
+RCOR3,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,320.0,325.0,5.0,16.0,,,325.0
+RDH13,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,91.0,34.0,125.0,10.0,,,125.0
+REL,True,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,1,False,77.0,3.0,80.0,2.0,,,80.0
+RELA,True,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,1,False,102.0,4.0,106.0,38.0,,,106.0
+RESF1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,35.0,50.0,15.0,23.0,,,50.0
+RFX1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,99.0,195.0,294.0,165.0,,,294.0
+RHBDF2,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,17.0,35.0,33.0,52.0,,,52.0
+RHEB,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,701.0,159.0,860.0,81.0,,,860.0
+RHOC,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,309.0,313.0,6.0,4.0,,,313.0
+RHOF,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,186.0,476.0,394.0,290.0,,,476.0
+RIC8B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,60.0,1.0,5.0,61.0,,,61.0
+RICTOR,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,179.0,218.0,39.0,269.0,,,269.0
+RIPK1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,356.0,438.0,241.0,82.0,,,438.0
+RIPOR1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,147.0,166.0,89.0,19.0,,,166.0
+RMND5A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,280.0,284.0,378.0,4.0,,,378.0
+RNASEH1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,550.0,78.0,12.0,628.0,,,628.0
+RNF111,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,313.0,319.0,7.0,6.0,,,319.0
+RNF145,False,抗體 (表面但胞外域有限),activator,early_transient(早期瞬態),clear,0,,0,False,66.0,3.0,69.0,17.0,,,69.0
+RNF181,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,57.0,72.0,51.0,15.0,,,72.0
+RNF19B,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,444.0,8.0,452.0,124.0,,,452.0
+RNF8,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,108.0,125.0,26.0,233.0,,,233.0
+RNFT1,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,393.0,21.0,414.0,110.0,,,414.0
+RNFT2,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,True,1075.0,29.0,35.0,1104.0,,,1104.0
+ROBO3,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,late_sustained(晚期持續),clear,0,,0,False,65.0,0.0,2.0,65.0,,,65.0
+RP9,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,102.0,1.0,1.0,103.0,,,103.0
+RPE,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,317.0,9.0,117.0,326.0,,,326.0
+RPRD2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1247.0,1508.0,1823.0,2755.0,,,2755.0
+RPTOR,True,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,1,False,517.0,639.0,1029.0,122.0,,,1029.0
+RPUSD3,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1225.0,13.0,1.0,1238.0,,,1238.0
+RRAGA,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1602.0,130.0,358.0,1732.0,0.8864753653087472,0.0192670341100712,1732.0
+RRAGC,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1270.0,49.0,88.0,1319.0,,,1319.0
+RREB1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,29.0,48.0,77.0,35.0,,,77.0
+RRM2B,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,326.0,28.0,123.0,354.0,,,354.0
+RSBN1L,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,175.0,4.0,179.0,40.0,,,179.0
+RWDD2B,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,530.0,190.0,720.0,1.0,,,720.0
+RXRB,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,192.0,308.0,116.0,422.0,,,422.0
+SACM1L,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,700.0,707.0,129.0,7.0,,,707.0
+SAMD1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,200.0,383.0,485.0,583.0,,,583.0
+SAP130,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,246.0,349.0,595.0,573.0,,,595.0
+SAP30,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,113.0,40.0,9.0,153.0,,,153.0
+SARS2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,340.0,77.0,417.0,98.0,,,417.0
+SBDS,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,44.0,34.0,7.0,78.0,,,78.0
+SBF1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,177.0,182.0,9.0,5.0,,,182.0
+SCAF4,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,433.0,167.0,235.0,600.0,,,600.0
+SCAF8,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,37.0,82.0,59.0,119.0,,,119.0
+SCD,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,135.0,1.0,2.0,136.0,,,136.0
+SCYL3,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,662.0,220.0,541.0,882.0,,,882.0
+SDHAF4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,59.0,2.0,61.0,8.0,,,61.0
+SEC14L2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1070.0,1141.0,71.0,102.0,,,1141.0
+SEC24A,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,495.0,497.0,2.0,64.0,,,497.0
+SEC31A,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,59.0,1.0,11.0,60.0,,,60.0
+SEC62,False,抗體 (表面但胞外域有限),activator,other(其他),clear,0,,0,False,139.0,142.0,3.0,7.0,,,142.0
+SEC63,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,354.0,293.0,306.0,647.0,,,647.0
+SEMA4C,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,77.0,79.0,4.0,2.0,,,79.0
+SENP5,False,小分子 (胞內可成藥口袋),repressor,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,1843.0,3329.0,5172.0,2798.0,0.4073313098017,0.9999757537024356,5172.0
+SERGEF,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,88.0,2.0,14.0,90.0,,,90.0
+SESTD1,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,194.0,200.0,6.0,8.0,,,200.0
+SET,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,83.0,9.0,8.0,92.0,,,92.0
+SETD7,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,69.0,0.0,17.0,69.0,,,69.0
+SETDB1,False,待新模態 (無已知遞送方式),repressor,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0,False,1107.0,2291.0,1309.0,1184.0,0.3043910358837762,0.9999999999998964,2291.0
+SFXN1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,660.0,53.0,179.0,713.0,,,713.0
+SGF29,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1422.0,3447.0,4048.0,4869.0,0.6060002377116417,0.4902195579775483,4869.0
+SH3D21,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,137.0,138.0,1.0,2.0,,,138.0
+SH3GL1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,318.0,325.0,7.0,171.0,,,325.0
+SHLD1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,202.0,285.0,487.0,384.0,,,487.0
+SHMT2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,179.0,9.0,23.0,188.0,,,188.0
+SIAH2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,47.0,22.0,59.0,69.0,,,69.0
+SIK2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,136.0,147.0,38.0,11.0,,,147.0
+SIK3,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1353.0,457.0,479.0,1810.0,,,1810.0
+SIMC1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,38.0,53.0,26.0,15.0,,,53.0
+SIN3A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,159.0,162.0,32.0,3.0,,,162.0
+SIN3B,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,359.0,1255.0,1578.0,1614.0,,,1614.0
+SINHCAF,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,1153.0,58.0,1211.0,411.0,,,1211.0
+SIRT7,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,103.0,120.0,111.0,17.0,,,120.0
+SKA2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,266.0,8.0,274.0,78.0,,,274.0
+SLAMF7,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,63.0,45.0,108.0,2.0,,,108.0
+SLC16A1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,382.0,5.0,1.0,387.0,,,387.0
+SLC17A5,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,232.0,237.0,267.0,5.0,,,267.0
+SLC25A1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,367.0,10.0,87.0,377.0,,,377.0
+SLC25A10,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,167.0,148.0,179.0,315.0,,,315.0
+SLC25A26,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,191.0,12.0,83.0,203.0,,,203.0
+SLC25A28,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,136.0,6.0,20.0,142.0,,,142.0
+SLC25A3,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,71.0,76.0,26.0,5.0,,,76.0
+SLC25A32,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,73.0,3.0,2.0,76.0,,,76.0
+SLC25A51,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,125.0,193.0,68.0,103.0,,,193.0
+SLC27A3,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,188.0,188.0,0.0,1.0,,,188.0
+SLC35A2,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,56.0,64.0,9.0,8.0,,,64.0
+SLC35D2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,88.0,89.0,1.0,2.0,,,89.0
+SLC3A2,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,True,2489.0,3.0,2492.0,52.0,0.8854389501607435,1.514479054207042e-07,2492.0
+SLC4A7,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,133.0,15.0,46.0,148.0,,,148.0
+SLC5A3,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,169.0,1.0,10.0,170.0,,,170.0
+SLC7A6,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,256.0,6.0,262.0,6.0,,,262.0
+SLC9A6,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,42.0,20.0,12.0,62.0,,,62.0
+SLF1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,95.0,18.0,113.0,9.0,,,113.0
+SLTM,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,311.0,32.0,32.0,343.0,,,343.0
+SMAD3,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,128.0,529.0,471.0,401.0,,,529.0
+SMAD4,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,89.0,114.0,25.0,74.0,,,114.0
+SMAD7,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,335.0,335.0,0.0,3.0,,,335.0
+SMAGP,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,other(其他),clear,0,,0,False,56.0,72.0,28.0,16.0,,,72.0
+SMARCA4,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,1,False,261.0,40.0,165.0,301.0,,,301.0
+SMARCA5,False,待新模態 (無已知遞送方式),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0,False,2650.0,2786.0,1996.0,136.0,0.1901104812110659,1.0,2786.0
+SMARCB1,False,小分子 (胞內可成藥口袋),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1093.0,2130.0,1921.0,1037.0,,,2130.0
+SMARCC1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,63.0,138.0,131.0,201.0,,,201.0
+SMARCD1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,47.0,101.0,54.0,84.0,,,101.0
+SMARCD2,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,50.0,61.0,24.0,11.0,,,61.0
+SMG1,False,小分子 (胞內可成藥口袋),repressor,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0,False,650.0,2034.0,2684.0,1705.0,0.0748237416869631,1.0,2684.0
+SMG7,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,763.0,1668.0,1765.0,905.0,,,1765.0
+SMG8,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,180.0,576.0,756.0,645.0,,,756.0
+SMG9,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,592.0,420.0,941.0,1012.0,,,1012.0
+SMIM7,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,unknown,clear,0,,0,,,,46.0,132.0,,,132.0
+SMS,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,42.0,74.0,53.0,32.0,,,74.0
+SNAP23,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,100.0,88.0,36.0,188.0,,,188.0
+SND1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,337.0,26.0,105.0,363.0,,,363.0
+SNPH,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,171.0,181.0,10.0,12.0,,,181.0
+SNRPB2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,142.0,12.0,154.0,48.0,,,154.0
+SNTB1,False,待新模態 (無已知遞送方式),mixed,unknown,clear,0,,0,False,,197.0,16.0,,,,197.0
+SNX1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,63.0,64.0,3.0,1.0,,,64.0
+SOD2,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,67.0,6.0,73.0,7.0,,,73.0
+SOS2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,321.0,6.0,327.0,2.0,,,327.0
+SP1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,278.0,129.0,222.0,407.0,,,407.0
+SP100,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,104.0,230.0,307.0,126.0,,,307.0
+SP140L,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,1168.0,1170.0,3.0,2.0,,,1170.0
+SP2,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1289.0,382.0,1671.0,1021.0,,,1671.0
+SP3,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,97.0,16.0,14.0,113.0,,,113.0
+SPAG7,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,55.0,6.0,61.0,21.0,,,61.0
+SPOP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,125.0,149.0,54.0,24.0,,,149.0
+SPSB2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,49.0,52.0,35.0,3.0,,,52.0
+SRD5A3,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,45.0,54.0,9.0,9.0,,,54.0
+SREBF2,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,86.0,7.0,12.0,93.0,,,93.0
+SRM,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,109.0,6.0,115.0,29.0,,,115.0
+SRP9,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,233.0,2.0,235.0,3.0,,,235.0
+SRR,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,347.0,466.0,813.0,278.0,,,813.0
+SRRD,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,164.0,37.0,133.0,201.0,,,201.0
+SRSF10,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,770.0,377.0,1147.0,824.0,,,1147.0
+SRSF11,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,428.0,507.0,79.0,88.0,,,507.0
+SRSF6,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,87.0,12.0,53.0,99.0,,,99.0
+SS18L2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,424.0,8.0,4.0,432.0,,,432.0
+SSBP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,1231.0,132.0,952.0,1363.0,,,1363.0
+SSR2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,32.0,82.0,50.0,72.0,,,82.0
+SSR3,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,35.0,66.0,31.0,31.0,,,66.0
+STAG2,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,106.0,271.0,165.0,187.0,,,271.0
+STAP1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,74.0,74.0,0.0,1.0,,,74.0
+STARD7,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,147.0,2.0,4.0,149.0,,,149.0
+STAT3,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),1,False,668.0,925.0,1370.0,1593.0,,,1593.0
+STAT5A,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,1,False,252.0,9.0,19.0,261.0,,,261.0
+STAT6,True,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,1,True,1125.0,3.0,233.0,1128.0,,,1128.0
+STIM1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,76.0,5.0,81.0,10.0,,,81.0
+STIP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,417.0,1029.0,1008.0,1446.0,,,1446.0
+STK11,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,681.0,1086.0,1171.0,405.0,,,1171.0
+STK35,False,小分子 (胞內可成藥口袋),mixed,other(其他),clear,0,,0,False,61.0,95.0,34.0,37.0,,,95.0
+STOM,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,52.0,59.0,94.0,7.0,,,94.0
+STRAP,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,850.0,1700.0,1216.0,850.0,,,1700.0
+STX16,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,929.0,216.0,1145.0,522.0,,,1145.0
+SUCLG1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,108.0,2.0,110.0,69.0,,,110.0
+SUGP1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,79.0,95.0,107.0,16.0,,,107.0
+SUPT20H,False,小分子 (胞內可成藥口袋),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,876.0,3072.0,3948.0,3312.0,0.8022851299965428,4.354538789554109e-18,3948.0
+SUPT3H,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,557.0,558.0,1.0,2.0,,,558.0
+SYNCRIP,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,23.0,37.0,14.0,55.0,,,55.0
+SYVN1,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,87.0,114.0,201.0,93.0,,,201.0
+SZRD1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,283.0,36.0,88.0,319.0,,,319.0
+TADA1,False,小分子 (胞內可成藥口袋),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,705.0,2944.0,3649.0,3114.0,0.8285647409891969,9.554752210681992e-05,3649.0
+TADA2A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,272.0,9.0,53.0,281.0,,,281.0
+TADA2B,False,小分子 (胞內可成藥口袋),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1239.0,4681.0,5920.0,5260.0,0.5988324325843294,0.6498382645866219,5920.0
+TAF13,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1152.0,2190.0,3342.0,2100.0,,,3342.0
+TAF6L,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1271.0,3368.0,4639.0,3486.0,,,4639.0
+TARS2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1161.0,663.0,1824.0,777.0,,,1824.0
+TASOR,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,88.0,286.0,374.0,360.0,,,374.0
+TASP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,45.0,23.0,35.0,68.0,,,68.0
+TATDN2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,167.0,199.0,53.0,32.0,,,199.0
+TBC1D10A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,122.0,125.0,6.0,3.0,,,125.0
+TBC1D14,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,102.0,103.0,1.0,2.0,,,103.0
+TBC1D31,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,50.0,18.0,68.0,10.0,,,68.0
+TBL1X,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,72.0,61.0,133.0,61.0,,,133.0
+TBL1XR1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,292.0,135.0,125.0,427.0,,,427.0
+TBPL1,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,34.0,24.0,26.0,58.0,,,58.0
+TBX21,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,1,False,363.0,40.0,308.0,403.0,,,403.0
+TCEAL1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,543.0,484.0,1027.0,25.0,,,1027.0
+TCEAL3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,454.0,454.0,0.0,44.0,,,454.0
+TEFM,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,58.0,30.0,69.0,88.0,,,88.0
+TENT2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,1202.0,156.0,1358.0,61.0,,,1358.0
+TENT5C,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,59.0,48.0,107.0,66.0,,,107.0
+TEP1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1359.0,1363.0,192.0,4.0,,,1363.0
+TESK2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,62.0,9.0,7.0,71.0,,,71.0
+TESPA1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,1521.0,454.0,1975.0,141.0,0.7618234638627701,4.831720331482248e-06,1975.0
+TET2,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,69.0,125.0,58.0,56.0,,,125.0
+TFAM,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,2620.0,341.0,818.0,2961.0,0.6748343213970932,0.2102456557495484,2961.0
+TFAP4,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,359.0,113.0,199.0,472.0,,,472.0
+TFB1M,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,865.0,1.0,7.0,866.0,,,866.0
+TFDP1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,160.0,280.0,440.0,122.0,,,440.0
+TFG,False,小分子 (胞內可成藥口袋),mixed,early_transient(早期瞬態),clear,0,,0,False,427.0,7.0,434.0,156.0,,,434.0
+TGFBRAP1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,49.0,2.0,3.0,51.0,,,51.0
+TGIF2,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,102.0,4.0,2.0,106.0,,,106.0
+THAP11,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,1105.0,1547.0,1298.0,442.0,,,1547.0
+THAP5,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,85.0,90.0,5.0,66.0,,,90.0
+THRA,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,334.0,337.0,3.0,101.0,,,337.0
+THRAP3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,940.0,1200.0,836.0,260.0,,,1200.0
+TIA1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,160.0,68.0,228.0,5.0,,,228.0
+TIAL1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,184.0,54.0,216.0,238.0,,,238.0
+TIGAR,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,1010.0,1012.0,2.0,8.0,,,1012.0
+TIMM10,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,1227.0,1352.0,1056.0,125.0,,,1352.0
+TIMMDC1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,117.0,3.0,5.0,120.0,,,120.0
+TIPARP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,345.0,364.0,19.0,89.0,,,364.0
+TIPRL,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,505.0,894.0,1290.0,389.0,,,1290.0
+TM2D1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,803.0,382.0,334.0,1185.0,,,1185.0
+TM9SF3,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,45.0,96.0,51.0,65.0,,,96.0
+TMED10,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,247.0,534.0,616.0,287.0,,,616.0
+TMED2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,30.0,129.0,159.0,123.0,,,159.0
+TMED4,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,51.0,92.0,95.0,41.0,,,95.0
+TMEM123,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,70.0,72.0,142.0,35.0,,,142.0
+TMEM126B,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,413.0,28.0,50.0,441.0,,,441.0
+TMEM131,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,79.0,91.0,12.0,33.0,,,91.0
+TMEM131L,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,late_sustained(晚期持續),clear,0,,0,False,179.0,83.0,204.0,262.0,,,262.0
+TMEM140,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,218.0,12.0,11.0,230.0,,,230.0
+TMEM167A,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,414.0,55.0,205.0,469.0,,,469.0
+TMEM185A,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,37.0,65.0,34.0,28.0,,,65.0
+TMEM205,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,63.0,68.0,110.0,5.0,,,110.0
+TMEM214,False,抗體 (表面但胞外域有限),repressor,late_sustained(晚期持續),clear,0,,0,False,645.0,110.0,649.0,755.0,,,755.0
+TMEM245,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,199.0,202.0,12.0,3.0,,,202.0
+TMEM263,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,244.0,7.0,13.0,251.0,,,251.0
+TMEM265,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,263.0,278.0,23.0,15.0,,,278.0
+TMEM30A,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,459.0,332.0,791.0,44.0,,,791.0
+TMEM33,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,61.0,25.0,5.0,86.0,,,86.0
+TMEM44,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,55.0,0.0,4.0,55.0,,,55.0
+TMEM79,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,379.0,251.0,630.0,58.0,,,630.0
+TMEM86A,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,late_sustained(晚期持續),clear,0,,0,False,60.0,59.0,70.0,119.0,,,119.0
+TMEM87B,False,抗體 (表面但胞外域有限),repressor,other(其他),clear,0,,0,False,119.0,120.0,34.0,1.0,,,120.0
+TMX1,True,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,stim_switch(刺激開關),caution,1,泛效應(breadth top10%),0,True,2346.0,1.0,2347.0,1960.0,0.953116590555264,2.0870547825830695e-06,2347.0
+TMX2,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,early_transient(早期瞬態),clear,0,,0,False,80.0,39.0,119.0,0.0,,,119.0
+TNFRSF10B,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,other(其他),clear,0,,0,False,266.0,267.0,8.0,1.0,,,267.0
+TNPO1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,738.0,711.0,769.0,1449.0,,,1449.0
+TNRC6A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0,False,1490.0,57.0,45.0,1547.0,0.2557160301054788,1.0,1547.0
+TOP2B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,95.0,99.0,4.0,4.0,,,99.0
+TOR1A,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,49.0,78.0,29.0,59.0,,,78.0
+TP53INP2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1184.0,509.0,927.0,1693.0,,,1693.0
+TP53RK,False,待新模態 (無已知遞送方式),repressor,unknown,clear,0,,0,False,,3.0,78.0,,,,78.0
+TP73,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,7.0,103.0,110.0,96.0,,,110.0
+TPD52,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,341.0,434.0,121.0,93.0,,,434.0
+TPRG1L,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,50.0,9.0,7.0,59.0,,,59.0
+TRAF3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,737.0,1344.0,1626.0,607.0,,,1626.0
+TRAPPC13,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,123.0,3.0,126.0,6.0,,,126.0
+TRIB2,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,105.0,108.0,101.0,3.0,,,108.0
+TRIM14,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,127.0,139.0,12.0,21.0,,,139.0
+TRIM25,False,小分子 (胞內可成藥口袋),activator,other(其他),clear,0,,0,False,23.0,27.0,50.0,44.0,,,50.0
+TRIM39,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,14.0,53.0,39.0,39.0,,,53.0
+TRIP12,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1249.0,2013.0,1830.0,764.0,,,2013.0
+TRMT10C,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,333.0,9.0,10.0,342.0,,,342.0
+TRMT61A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,98.0,148.0,241.0,50.0,,,241.0
+TRRAP,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,689.0,568.0,1257.0,35.0,,,1257.0
+TRUB1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,108.0,109.0,2.0,1.0,,,109.0
+TSC1,False,小分子 (胞內可成藥口袋),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1329.0,1676.0,347.0,1199.0,,,1676.0
+TSFM,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,366.0,1.0,4.0,367.0,,,367.0
+TSPYL1,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,48.0,2.0,7.0,50.0,,,50.0
+TSPYL5,False,待新模態 (無已知遞送方式),repressor,other(其他),caution,1,泛效應(breadth top10%),0,False,434.0,1799.0,2233.0,1594.0,,,2233.0
+TTC39C,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,331.0,333.0,4.0,2.0,,,333.0
+TTC5,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,145.0,170.0,231.0,25.0,,,231.0
+TTC7A,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,106.0,4.0,110.0,2.0,,,110.0
+TWF1,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,233.0,234.0,117.0,1.0,,,234.0
+TWNK,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,570.0,232.0,219.0,802.0,,,802.0
+TXNIP,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,35.0,22.0,48.0,57.0,,,57.0
+TXNL1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,170.0,173.0,201.0,3.0,,,201.0
+TYK2,False,小分子 (胞內可成藥口袋),activator,late_sustained(晚期持續),clear,0,,0,False,20.0,34.0,29.0,54.0,,,54.0
+U2SURP,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,58.0,68.0,15.0,10.0,,,68.0
+UBAC1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,36.0,22.0,58.0,22.0,,,58.0
+UBC,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,1223.0,1272.0,373.0,49.0,,,1272.0
+UBE2E1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,96.0,60.0,27.0,156.0,,,156.0
+UBE2E2,True,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.99),0,True,1520.0,4.0,1524.0,128.0,0.4786828092559536,0.9869808341742088,1524.0
+UBE2F,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,94.0,8.0,102.0,27.0,,,102.0
+UBE2G2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,115.0,130.0,245.0,74.0,,,245.0
+UBE2H,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,229.0,237.0,191.0,8.0,,,237.0
+UBE2I,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,296.0,438.0,730.0,734.0,,,734.0
+UBE2J1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,51.0,2.0,14.0,53.0,,,53.0
+UBE2L3,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0,False,969.0,1905.0,2874.0,1071.0,0.266852087256841,0.9990778906806628,2874.0
+UBE2V2,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,1401.0,43.0,32.0,1444.0,,,1444.0
+UBIAD1,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,150.0,4.0,90.0,154.0,,,154.0
+UBL3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,67.0,75.0,8.0,10.0,,,75.0
+UBL7,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,295.0,1.0,296.0,1.0,,,296.0
+UBR4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,699.0,1209.0,585.0,510.0,,,1209.0
+UBR5,False,抗體 (表面但胞外域有限),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,509.0,1197.0,1706.0,1303.0,,,1706.0
+UBXN1,False,小分子 (胞內可成藥口袋),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,3900.0,4440.0,3444.0,540.0,0.7192906263671383,0.0043143101729293,4440.0
+UBXN6,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,135.0,27.0,21.0,162.0,,,162.0
+UFC1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,112.0,123.0,31.0,11.0,,,123.0
+UFL1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,671.0,650.0,1321.0,734.0,,,1321.0
+UFM1,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,609.0,1670.0,2279.0,1385.0,1.0211132528084477,0.0165244005244548,2279.0
+UGDH,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,954.0,966.0,194.0,12.0,,,966.0
+UGGT1,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,34.0,52.0,22.0,18.0,,,52.0
+ULK4,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,59.0,39.0,98.0,3.0,,,98.0
+UQCC1,False,待新模態 (無已知遞送方式),repressor,unknown,clear,0,,0,False,,3.0,153.0,,,,153.0
+UQCRB,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,219.0,360.0,440.0,579.0,,,579.0
+UQCRQ,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,106.0,267.0,208.0,161.0,,,267.0
+URM1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,378.0,431.0,438.0,53.0,,,438.0
+USF2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,55.0,44.0,99.0,25.0,,,99.0
+USP10,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,38.0,112.0,119.0,74.0,,,119.0
+USP13,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,795.0,797.0,2.0,2.0,,,797.0
+USP22,False,待新模態 (無已知遞送方式),repressor,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,598.0,1783.0,2381.0,1849.0,0.461151726275716,0.9982519239682268,2381.0
+USP24,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,144.0,5.0,3.0,149.0,,,149.0
+USP28,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,183.0,38.0,19.0,221.0,,,221.0
+USP4,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,63.0,13.0,18.0,76.0,,,76.0
+UXS1,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,161.0,172.0,28.0,11.0,,,172.0
+VARS2,False,小分子 (胞內可成藥口袋),mixed,late_sustained(晚期持續),clear,0,,0,False,1093.0,54.0,784.0,1147.0,,,1147.0
+VAV1,True,小分子 (胞內可成藥口袋),mixed,other(其他),avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 1.00),1,False,4828.0,70.0,4898.0,3575.0,0.3444029706478581,0.9999999998734816,4898.0
+VBP1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,41.0,11.0,14.0,52.0,,,52.0
+VHL,False,小分子 (胞內可成藥口袋),repressor,late_sustained(晚期持續),clear,0,,0,False,94.0,240.0,217.0,334.0,,,334.0
+VPS13A,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,83.0,1.0,1.0,84.0,,,84.0
+VPS29,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,183.0,277.0,460.0,300.0,,,460.0
+VPS4A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,49.0,1.0,5.0,50.0,,,50.0
+VPS8,True,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,True,535.0,2.0,4.0,537.0,,,537.0
+WAC,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,1311.0,1165.0,2476.0,1669.0,,,2476.0
+WARS2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,880.0,59.0,68.0,939.0,,,939.0
+WAS,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,462.0,33.0,495.0,44.0,,,495.0
+WASF2,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,681.0,723.0,42.0,169.0,,,723.0
+WASHC4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,61.0,64.0,7.0,3.0,,,64.0
+WASL,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,12.0,38.0,50.0,31.0,,,50.0
+WBP4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,101.0,142.0,203.0,41.0,,,203.0
+WDFY1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,49.0,6.0,20.0,55.0,,,55.0
+WDR54,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,156.0,10.0,103.0,166.0,,,166.0
+WDR59,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,740.0,547.0,958.0,1287.0,,,1287.0
+WDR82,False,待新模態 (無已知遞送方式),mixed,other(其他),caution,1,泛效應(breadth top10%),0,False,539.0,1253.0,1792.0,1563.0,,,1792.0
+WIZ,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,421.0,232.0,653.0,313.0,,,653.0
+WNK1,False,小分子 (胞內可成藥口袋),repressor,early_transient(早期瞬態),clear,0,,0,False,233.0,332.0,377.0,99.0,,,377.0
+WRN,False,小分子 (胞內可成藥口袋),repressor,other(其他),clear,0,,0,False,46.0,58.0,31.0,12.0,,,58.0
+XBP1,False,小分子 (胞內可成藥口袋),activator,late_sustained(晚期持續),clear,0,,0,False,312.0,180.0,238.0,492.0,,,492.0
+XPR1,False,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,early_transient(早期瞬態),clear,0,,0,False,541.0,273.0,814.0,95.0,,,814.0
+XRN1,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,372.0,76.0,448.0,100.0,,,448.0
+YEATS2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,186.0,512.0,505.0,698.0,,,698.0
+YIPF1,False,抗體 (表面但胞外域有限),repressor,early_transient(早期瞬態),clear,0,,0,False,82.0,10.0,92.0,36.0,,,92.0
+YIPF3,False,抗體 (表面但胞外域有限),mixed,late_sustained(晚期持續),clear,0,,0,False,184.0,3.0,28.0,187.0,,,187.0
+YME1L1,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,66.0,15.0,15.0,81.0,,,81.0
+YPEL2,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,104.0,22.0,126.0,31.0,,,126.0
+YPEL5,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,53.0,57.0,38.0,4.0,,,57.0
+YTHDF2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),caution,1,泛效應(breadth top10%),0,False,1716.0,902.0,1484.0,2618.0,,,2618.0
+YY1,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,451.0,510.0,961.0,474.0,,,961.0
+ZBTB33,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,39.0,17.0,15.0,56.0,,,56.0
+ZBTB39,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,129.0,130.0,259.0,86.0,,,259.0
+ZBTB7A,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,497.0,543.0,221.0,46.0,,,543.0
+ZBTB9,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,1117.0,1117.0,3.0,0.0,,,1117.0
+ZC3H10,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,58.0,381.0,323.0,360.0,,,381.0
+ZC3H12A,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,615.0,181.0,261.0,796.0,,,796.0
+ZC3H14,False,待新模態 (無已知遞送方式),activator,late_sustained(晚期持續),clear,0,,0,False,66.0,1.0,26.0,67.0,,,67.0
+ZC3H4,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,141.0,136.0,277.0,37.0,,,277.0
+ZC3HC1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,42.0,59.0,25.0,101.0,,,101.0
+ZCCHC8,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,86.0,42.0,119.0,128.0,,,128.0
+ZDHHC12,False,抗體 (表面但胞外域有限),mixed,other(其他),clear,0,,0,False,135.0,138.0,8.0,3.0,,,138.0
+ZEB1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,163.0,253.0,216.0,416.0,,,416.0
+ZFAT,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,49.0,45.0,94.0,31.0,,,94.0
+ZFP82,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,42.0,13.0,55.0,12.0,,,55.0
+ZHX3,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,124.0,127.0,3.0,120.0,,,127.0
+ZMAT1,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,53.0,190.0,170.0,243.0,,,243.0
+ZMYM2,False,小分子 (胞內可成藥口袋),mixed,other(其他),high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0,False,2003.0,2178.0,305.0,175.0,0.4298169675674165,0.9999929398943758,2178.0
+ZMYND19,False,待新模態 (無已知遞送方式),activator,early_transient(早期瞬態),clear,0,,0,False,120.0,24.0,144.0,28.0,,,144.0
+ZMYND8,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,15.0,52.0,55.0,37.0,,,55.0
+ZNF148,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,862.0,1355.0,595.0,493.0,,,1355.0
+ZNF18,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,125.0,128.0,4.0,3.0,,,128.0
+ZNF200,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,47.0,10.0,54.0,57.0,,,57.0
+ZNF221,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,663.0,663.0,0.0,0.0,,,663.0
+ZNF254,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,77.0,78.0,1.0,2.0,,,78.0
+ZNF274,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,6.0,146.0,152.0,144.0,,,152.0
+ZNF280D,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,80.0,66.0,146.0,130.0,,,146.0
+ZNF304,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,813.0,814.0,1.0,1.0,,,814.0
+ZNF330,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,121.0,4.0,2.0,125.0,,,125.0
+ZNF35,False,待新模態 (無已知遞送方式),activator,other(其他),clear,0,,0,False,110.0,110.0,0.0,0.0,,,110.0
+ZNF384,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,37.0,73.0,36.0,70.0,,,73.0
+ZNF470,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,354.0,355.0,25.0,1.0,,,355.0
+ZNF507,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,56.0,16.0,37.0,72.0,,,72.0
+ZNF512B,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,491.0,493.0,2.0,3.0,,,493.0
+ZNF554,False,待新模態 (無已知遞送方式),repressor,late_sustained(晚期持續),clear,0,,0,False,293.0,512.0,219.0,659.0,,,659.0
+ZNF589,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,40.0,53.0,14.0,13.0,,,53.0
+ZNF613,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),caution,1,泛效應(breadth top10%),0,False,832.0,789.0,1621.0,676.0,,,1621.0
+ZNF622,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,64.0,4.0,22.0,68.0,,,68.0
+ZNF627,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,53.0,54.0,3.0,1.0,,,54.0
+ZNF641,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,708.0,58.0,96.0,766.0,,,766.0
+ZNF644,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,156.0,431.0,275.0,444.0,,,444.0
+ZNF649,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,1069.0,105.0,281.0,1174.0,,,1174.0
+ZNF653,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,119.0,121.0,5.0,2.0,,,121.0
+ZNF655,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,49.0,19.0,36.0,68.0,,,68.0
+ZNF70,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,683.0,687.0,19.0,4.0,,,687.0
+ZNF785,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,238.0,10.0,6.0,248.0,,,248.0
+ZNF790,False,待新模態 (無已知遞送方式),repressor,early_transient(早期瞬態),clear,0,,0,False,276.0,1.0,277.0,2.0,,,277.0
+ZNF837,True,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,True,758.0,0.0,0.0,758.0,,,758.0
+ZNF92,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,220.0,122.0,342.0,245.0,,,342.0
+ZRANB2,False,待新模態 (無已知遞送方式),mixed,late_sustained(晚期持續),clear,0,,0,False,133.0,39.0,130.0,172.0,,,172.0
+ZRSR2,False,待新模態 (無已知遞送方式),mixed,early_transient(早期瞬態),clear,0,,0,False,263.0,291.0,424.0,28.0,,,424.0
+ZSCAN2,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,194.0,197.0,28.0,3.0,,,197.0
+ZSCAN25,False,待新模態 (無已知遞送方式),repressor,other(其他),clear,0,,0,False,153.0,155.0,4.0,2.0,,,155.0
+ZSWIM4,False,待新模態 (無已知遞送方式),mixed,other(其他),clear,0,,0,False,453.0,472.0,19.0,19.0,,,472.0
