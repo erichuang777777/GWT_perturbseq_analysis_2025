@@ -31,7 +31,6 @@ labeled as a fixture, not real data — mirroring pages/1_個體概念剖面_探
 
 from __future__ import annotations
 
-import math
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -42,6 +41,24 @@ import streamlit as st
 # `concept_waterfall` sits in the parent `dashboard/` dir, which Streamlit places
 # on sys.path when it runs the main dashboard script. Same import path page 1 uses.
 from concept_waterfall import SAMPLE_REPORT, build_waterfall_figure
+
+# Shared evidence-chip primitives (FE-3) — the `unknown != 0` visual grammar now
+# lives in `ui_chips` so the main dashboard reuses the SAME helpers. Behaviour is
+# preserved verbatim: the old `_name` aliases below keep the rest of this page
+# byte-for-byte identical in behaviour to before the extraction.
+from nav import seed_dossier_session
+from ui_chips import (
+    descriptive_note as _descriptive_note,
+    fields_row as _fields_row,
+    flag_chip as _flag_chip,
+    fmt as _fmt,
+    inject_chip_css,
+    is_unknown as _is_unknown,
+    labeled as _labeled,
+    not_available as _not_available,
+    provenance_line as _provenance,
+    val_chip as _val_chip,
+)
 
 API_BASE = os.getenv("GWT_API_BASE", "http://127.0.0.1:8000").rstrip("/")
 
@@ -57,138 +74,8 @@ def _api_get(path: str, params: Optional[Dict[str, Any]] = None) -> Any:
     return r.json()
 
 
-# --------------------------------------------------------------------------- #
-# `unknown != 0` primitives. A field is UNKNOWN (unchecked / not in an overlay)
-# when it is None/NaN or one of these honest-degradation tokens the backend
-# emits. A real numeric 0 or the string "none"/"no_*" is a MEASURED verdict and
-# must NOT be greyed out — that is the whole point of the invariant.
-# --------------------------------------------------------------------------- #
-_UNKNOWN_TOKENS = {"unknown", "nan", "na", "n/a", "", "not_assessed", "not_measurable", "not measurable"}
-
-
-def _is_unknown(value: Any) -> bool:
-    if value is None:
-        return True
-    if isinstance(value, float) and math.isnan(value):
-        return True
-    if isinstance(value, str) and value.strip().lower() in _UNKNOWN_TOKENS:
-        return True
-    return False
-
-
-def _fmt(value: Any) -> str:
-    if isinstance(value, bool):
-        return "yes" if value else "no"
-    if isinstance(value, float):
-        return f"{value:.3g}"
-    return str(value)
-
-
-def _val_chip(value: Any, *, unknown_label: str = "未檢查 (unknown)") -> str:
-    """Render one field as an HTML chip. UNKNOWN → distinct grey chip that reads
-    as 'not checked', explicitly NOT a measured 0. Measured value (incl. real 0)
-    → neutral chip."""
-    if _is_unknown(value):
-        return f'<span class="gwt-chip gwt-chip--unknown" title="unmeasured / not in overlay — 非測得 0">{unknown_label}</span>'
-    return f'<span class="gwt-chip gwt-chip--value">{_fmt(value)}</span>'
-
-
-_LIABILITY_CLASS = {
-    "high": "gwt-chip--flag-high",
-    "moderate": "gwt-chip--flag-mod",
-    "low": "gwt-chip--flag-low",
-    "loss_intolerant": "gwt-chip--flag-high",
-    "none": "gwt-chip--flag-low",
-    "strong_genetic_association": "gwt-chip--flag-info",
-    "moderate_genetic_association": "gwt-chip--flag-info",
-    "no_genetic_association": "gwt-chip--flag-low",
-}
-
-
-def _flag_chip(value: Any, *, unknown_label: str = "未檢查 (unknown)") -> str:
-    """Liability / flag chip with severity colour. Same unknown≠0 rule — an
-    unchecked flag is grey 'unknown', never a green 'low/safe'."""
-    if _is_unknown(value):
-        return f'<span class="gwt-chip gwt-chip--unknown" title="unmeasured / not in overlay — 非測得 0">{unknown_label}</span>'
-    cls = _LIABILITY_CLASS.get(str(value).strip().lower(), "gwt-chip--value")
-    return f'<span class="gwt-chip {cls}">{_fmt(value)}</span>'
-
-
-def _labeled(label: str, chip_html: str, hint: str = "") -> str:
-    hint_html = f'<span class="gwt-field-hint">{hint}</span>' if hint else ""
-    return (
-        '<div class="gwt-field">'
-        f'<div class="gwt-field-label">{label}{hint_html}</div>'
-        f"<div>{chip_html}</div>"
-        "</div>"
-    )
-
-
-def _fields_row(items: List[str]) -> None:
-    st.markdown('<div class="gwt-fields">' + "".join(items) + "</div>", unsafe_allow_html=True)
-
-
-def _provenance(source: str, *, version: Any = None, fetched_at: Any = None, extra: Optional[Dict[str, Any]] = None) -> None:
-    bits = [f"來源 source: {source}"]
-    if version is not None and not _is_unknown(version):
-        bits.append(f"version: {version}")
-    if fetched_at is not None and not _is_unknown(fetched_at):
-        bits.append(f"fetched_at: {fetched_at}")
-    for k, v in (extra or {}).items():
-        if not _is_unknown(v):
-            bits.append(f"{k}: {v}")
-    st.markdown(
-        '<div class="gwt-prov">🔖 ' + "  ·  ".join(str(b) for b in bits) + "</div>",
-        unsafe_allow_html=True,
-    )
-
-
-def _descriptive_note() -> None:
-    st.caption(
-        "🧭 **描述性區塊(descriptive)** — 僅供解讀,**不改變** readiness 判定"
-        "(readiness_call / overall_readiness_stage)。"
-    )
-
-
-def _not_available(what: str, reason: str = "") -> None:
-    tail = f" — {reason}" if reason else ""
-    st.info(f"未取得 (not available):{what}{tail}")
-
-
-# --------------------------------------------------------------------------- #
-# CSS (theme-neutral chips). Injected once.
-# --------------------------------------------------------------------------- #
-_CSS = """
-<style>
-.gwt-chip { display:inline-block; padding:2px 9px; margin:2px 4px 2px 0; border-radius:11px;
-  font-size:0.82rem; font-weight:600; border:1px solid transparent; line-height:1.5; }
-.gwt-chip--value      { background:#eef1f5; color:#243b53; border-color:#cfd8e3; }
-.gwt-chip--unknown    { background:#e7e7e4; color:#6b6b66; border-color:#cbcbc4;
-  border-style:dashed; font-weight:500; }
-.gwt-chip--flag-high  { background:#fbe6e6; color:#8a1f1f; border-color:#e5a3a3; }
-.gwt-chip--flag-mod   { background:#fff2dd; color:#8a5a12; border-color:#e8c98a; }
-.gwt-chip--flag-low   { background:#e6f4ea; color:#1f6b37; border-color:#a8d5b7; }
-.gwt-chip--flag-info  { background:#e6eefb; color:#1f3f8a; border-color:#a8bde8; }
-.gwt-chip--grade      { background:#243b53; color:#fff; font-size:0.95rem; padding:3px 12px; }
-.gwt-chip--call       { background:#0b5; color:#fff; font-size:0.95rem; padding:3px 12px; }
-.gwt-fields { display:flex; flex-wrap:wrap; gap:6px 22px; margin:2px 0 6px 0; }
-.gwt-field  { min-width:150px; }
-.gwt-field-label { font-size:0.72rem; color:#7b8794; text-transform:uppercase;
-  letter-spacing:0.02em; margin-bottom:2px; }
-.gwt-field-hint  { text-transform:none; letter-spacing:0; color:#9aa5b1; margin-left:5px;
-  font-size:0.68rem; }
-.gwt-prov { font-size:0.74rem; color:#7b8794; background:#f6f8fa; border:1px solid #e1e4e8;
-  border-radius:6px; padding:4px 10px; margin:2px 0 4px 0; display:inline-block; }
-.gwt-red-flag { display:inline-block; background:#fbe6e6; color:#8a1f1f; border:1px solid #e5a3a3;
-  border-radius:6px; padding:3px 10px; margin:3px 6px 3px 0; font-size:0.82rem; }
-@media (prefers-color-scheme: dark) {
-  .gwt-chip--value   { background:#22303c; color:#c7d3de; border-color:#33424f; }
-  .gwt-chip--unknown { background:#2a2a27; color:#9a9a92; border-color:#44443c; }
-  .gwt-prov  { background:#1c2530; color:#9aa5b1; border-color:#2c3a47; }
-}
-</style>
-"""
-
+# NOTE: the `unknown != 0` chip primitives and `_CSS` string that used to live
+# here now come from `ui_chips` (imported + aliased at the top of this file, FE-3).
 
 # --------------------------------------------------------------------------- #
 # Inline SAMPLE payloads — each matches the shape of the named live endpoint.
@@ -469,7 +356,9 @@ def _readiness_row(readiness: Optional[Dict[str, Any]], target: str) -> Optional
 # PAGE BODY
 # =========================================================================== #
 st.set_page_config(page_title="標的檔案 · Target Dossier", layout="wide")
-st.markdown(_CSS, unsafe_allow_html=True)
+inject_chip_css()
+# FE-1 deep-link: preselect the target/dataset a list view passed via query params.
+seed_dossier_session(st.query_params, st.session_state)
 
 st.title("標的檔案 · Target Dossier")
 st.warning(
