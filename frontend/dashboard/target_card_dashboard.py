@@ -159,6 +159,27 @@ def _switches(dataset_id: str, top_n: int = 100) -> Dict[str, Any]:
     return _api_get(f"/api/switches/{dataset_id}", params={"top_n": top_n})
 
 
+@st.cache_data(ttl=60)
+def _robust_ranked(dataset_id: str, strict: bool = False, lenient: bool = False, top_n: int = 100) -> Dict[str, Any]:
+    return _api_get(
+        f"/api/robust_ranked/{dataset_id}",
+        params={"strict": strict, "lenient": lenient, "top_n": top_n},
+    )
+
+
+@st.cache_data(ttl=60)
+def _genetic_double_support(dataset_id: str, min_grade: int = 2, trait: str = "lymphocyte_count") -> Dict[str, Any]:
+    return _api_get(
+        f"/api/genetic_double_support/{dataset_id}",
+        params={"min_grade": min_grade, "trait": trait},
+    )
+
+
+@st.cache_data(ttl=60)
+def _triage(dataset_id: str, top_n: int = 100) -> Dict[str, Any]:
+    return _api_get(f"/api/triage/{dataset_id}", params={"top_n": top_n})
+
+
 def _compatibility_banner(dataset_id: str) -> None:
     """Warn when the active dataset is a user upload, keyed on its context tier."""
     status = _dataset_status(dataset_id)
@@ -536,7 +557,7 @@ except Exception as e:
 
 summary = summary_payload.get("summary", {})
 _compatibility_banner(dataset_id)
-tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export", "Disease Translator", "免疫優先 Immune Priority"])
+tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export", "Disease Translator", "免疫優先 Immune Priority", "整合 Triage"])
 
 with tabs[0]:
     cols = st.columns(6)
@@ -992,3 +1013,102 @@ with tabs[6]:
                 st.dataframe(sw_df, use_container_width=True, hide_index=True)
     except Exception as e:
         st.info(f"Switches view not available: {e}")
+
+
+with tabs[5]:
+    st.divider()
+    st.subheader("遺傳雙證據 — Genetic double-support (disease × population)")
+    st.caption(
+        "Targets that are BOTH a genetic-association top target for ≥1 immune "
+        "indication AND carry a UK Biobank rare-LoF-burden signal whose 95% CI "
+        "excludes zero. Descriptive hypothesis prioritisation — GWAS-style "
+        "genetic association (not experimental causal proof) crossed with a "
+        "**population-level** burden estimate (not a patient-level prediction)."
+    )
+    ds_cols = st.columns([1, 3])
+    with ds_cols[0]:
+        ds_min_grade = st.slider("Min statistical grade", 1, 4, 2)
+    try:
+        ds_payload = _genetic_double_support(dataset_id, min_grade=ds_min_grade)
+        if not ds_payload.get("available", False):
+            st.info(f"Double-support not available: {ds_payload.get('reason', 'unknown')}")
+        else:
+            st.caption(
+                f"trait: `{ds_payload.get('trait', '')}` · "
+                f"{ds_payload.get('n_double_support', 0)} double-support targets · "
+                f"⚠️ {ds_payload.get('caveat', '')}"
+            )
+            ds_rows = ds_payload.get("targets", [])
+            if not ds_rows:
+                st.info("No double-support targets at this grade threshold.")
+            else:
+                ds_df = pd.DataFrame(ds_rows)
+                if "diseases" in ds_df.columns:
+                    ds_df["diseases"] = ds_df["diseases"].map(lambda v: ", ".join(v) if isinstance(v, list) else v)
+                st.dataframe(ds_df, use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.info(f"Double-support view not available: {e}")
+
+
+with tabs[7]:
+    st.subheader("整合多軸 Triage — composite descriptive shortlist")
+    st.caption(
+        "One row per target, scored across independent descriptive axes: immune "
+        "concept membership, stimulation-gating, direction switches, safety window "
+        "(gnomAD/GTeX — only ~15 genes covered), druggability, robustness tier, and "
+        "genetic double-support. **Every axis is descriptive — none feeds the "
+        "readiness call.** Sparse axes (safety) never credit `unknown` as safe."
+    )
+    tri_top_n = st.slider("Top N targets", 10, 500, 100, 10, key="triage_top_n")
+    try:
+        tri_payload = _triage(dataset_id, top_n=tri_top_n)
+        if not tri_payload.get("available", False):
+            st.info(f"Triage not available: {tri_payload.get('reason', 'unknown')}")
+        else:
+            prov = tri_payload.get("provenance", {})
+            st.caption(
+                f"{tri_payload.get('returned', 0)} of {tri_payload.get('n_total', 0)} targets · "
+                f"concept_set: `{prov.get('concept_set_version', '?')}` · "
+                f"safety coverage: {prov.get('gnomad_source', 'gnomAD')} / {prov.get('gtex_source', 'GTEx')}"
+            )
+            tri_rows = tri_payload.get("targets", [])
+            if tri_rows:
+                tri_df = pd.DataFrame(tri_rows)
+                if "concept_modules" in tri_df.columns:
+                    tri_df["concept_modules"] = tri_df["concept_modules"].map(
+                        lambda v: ", ".join(m.get("module_id", "") for m in v) if isinstance(v, list) else ""
+                    )
+                st.dataframe(tri_df, use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.info(f"Triage view not available: {e}")
+
+    st.divider()
+    st.subheader("穩健優先排序 — Robustness-first (filter-then-rank)")
+    st.caption(
+        "Keeps only `high_confidence` rows (all measurable robustness checks pass) "
+        "THEN ranks — addressing the calibration finding that the raw-DE shortlist "
+        "churns 74–85% under strict filtering. `unresolved` rows (a robustness field "
+        "is unmeasured) are counted separately, never treated as pass or fail."
+    )
+    rr_cols = st.columns(3)
+    with rr_cols[0]:
+        rr_strict = st.checkbox("Strict (cross ≥0.5)", value=False)
+    with rr_cols[1]:
+        rr_lenient = st.checkbox("Lenient (accept confounded-but-robust)", value=False)
+    with rr_cols[2]:
+        rr_top_n = st.slider("Top N", 10, 500, 100, 10, key="robust_top_n")
+    try:
+        rr_payload = _robust_ranked(dataset_id, strict=rr_strict, lenient=rr_lenient, top_n=rr_top_n)
+        if not rr_payload.get("available", False):
+            st.info(f"Robust ranking not available: {rr_payload.get('reason', 'unknown')}")
+        else:
+            st.caption(
+                f"high_confidence: {rr_payload.get('n_high_confidence', 0)} · "
+                f"unresolved: {rr_payload.get('n_unresolved', 0)} · "
+                f"total: {rr_payload.get('n_total', 0)} · thresholds: {rr_payload.get('thresholds', {})}"
+            )
+            rr_rows = rr_payload.get("targets", [])
+            if rr_rows:
+                st.dataframe(pd.DataFrame(rr_rows), use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.info(f"Robust ranking view not available: {e}")
