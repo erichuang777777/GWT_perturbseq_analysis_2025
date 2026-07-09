@@ -1,28 +1,388 @@
 gene,avoid_tier,n_avoid_flags,avoid_flags,loeuf,pli,breadth_max_de,is_ctx_specific
-MED12,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.0954812775147903,1.0,4142.0,False
-SETDB1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.3043910358837762,0.9999999999998964,2291.0,False
-SMARCA5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.1901104812110659,1.0,2786.0,False
-SMG1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.0748237416869631,1.0,2684.0,False
-ARF1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.263708322947604,0.99917045222594,1754.0,False
-MAX,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 1.00),0.3484073260389697,0.9988528450920444,2223.0,False
-EIF4G2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.1226951830624844,1.0,2530.0,False
-TNRC6A,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.2557160301054788,1.0,1547.0,False
-CREBBP,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.1051924869763193,1.0,2969.0,False
-CPSF6,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.2992907577699072,0.9999997861097684,2487.0,False
-BHLHE40,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.2171883786993017,0.99999860099106,1997.0,False
-UBE2L3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266852087256841,0.9990778906806628,2874.0,False
-ATP2A2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.2003169158021933,0.9999999999999998,3519.0,False
-VAV1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 1.00),0.3444029706478581,0.9999999998734816,4898.0,True
 NFAT5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.2512521224755644,1.0,1624.0,False
-UBE2E2,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.99),0.4786828092559536,0.9869808341742088,1524.0,True
+VAV1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 1.00),0.3444029706478581,0.9999999998734816,4898.0,True
+SMARCB1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.22,0.9971,2130.0,False
+BHLHE40,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.2171883786993017,0.99999860099106,1997.0,False
+ELAVL1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 0.99),0.222,0.98849,2170.0,False
+UBR5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.073,1.0,1706.0,False
+BTAF1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.128,1.0,1493.0,False
+EIF4G2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.1226951830624844,1.0,2530.0,False
+UBE2L3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266852087256841,0.9990778906806628,2874.0,False
+SMG1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.0748237416869631,1.0,2684.0,False
+SMG7,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.219,0.99998,1765.0,False
+TSC1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.118,1.0,1676.0,False
+TRIP12,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.06,1.0,2013.0,False
+CCNC,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.146,0.99914,4091.0,False
+TRAF3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.224,0.99869,1626.0,False
+TNRC6A,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.2557160301054788,1.0,1547.0,False
+CHD4,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,1.0,1517.0,False
+CHD7,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.076,1.0,2278.0,False
+TNPO1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.056,1.0,1449.0,False
+SP2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.219,0.99721,1671.0,False
+STAT3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.095,1.0,1593.0,True
+CPSF6,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.2992907577699072,0.9999997861097684,2487.0,False
+PTPRC,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.207,1.0,3226.0,False
+CREBBP,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.1051924869763193,1.0,2969.0,False
+INTS10,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,0.99999,2076.0,False
+CSDE1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.144,1.0,1814.0,False
+STIP1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.201,0.99987,1446.0,False
+SMARCA5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.1901104812110659,1.0,2786.0,False
+BRPF1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.176,1.0,1788.0,False
+SIN3B,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.195,0.99999,1614.0,False
+MAX,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 1.00),0.3484073260389697,0.9988528450920444,2223.0,False
+SIK3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.128,1.0,1810.0,False
+MED12,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.0954812775147903,1.0,4142.0,False
+ATXN7L3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.196,0.99892,1942.0,False
+RPRD2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.064,1.0,2755.0,False
+NCAPG2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.303,0.97764,1697.0,False
+ATP2A2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.2003169158021933,0.9999999999999998,3519.0,False
+ARF1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.263708322947604,0.99917045222594,1754.0,False
+SETDB1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.3043910358837762,0.9999999999998964,2291.0,False
+NSD1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.095,1.0,2175.0,False
+WAC,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.084,1.0,2476.0,False
+YTHDF2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.139,0.99943,2618.0,False
+RALGAPB,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.106,1.0,83.0,False
+PUM1,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.129,1.0,241.0,False
+RAC2,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.97),0.284,0.96627,1095.0,True
+QRICH1,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.275,0.99576,79.0,False
+RC3H1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.287,0.99309,341.0,False
+RNF111,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.213,0.99987,319.0,False
+RNF145,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.98),0.309,0.98031,69.0,False
+RANBP3,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.141,0.99997,168.0,False
+RNF8,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.183,0.99943,233.0,False
+RPTOR,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.101,1.0,1029.0,True
+RRAGC,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.3,0.97538,1319.0,True
+PTPN2,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.179,0.99953,414.0,False
+PTPN11,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.135,0.99998,60.0,False
+RICTOR,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.155,1.0,269.0,False
+RB1CC1,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.138,1.0,902.0,False
+RIC8B,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.196,0.99892,61.0,False
+RASGRP1,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.318,0.96554,993.0,False
+RHEB,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 0.98),0.247,0.98119,860.0,False
+RBM15,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.99),0.276,0.99474,64.0,False
+RBM27,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.206,0.99999,726.0,False
+RBM33,high_risk,2,高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.082,1.0,815.0,False
+RFX1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.273,0.99724,294.0,False
+RBM5,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.135,1.0,307.0,False
+RELA,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.181,0.99948,106.0,True
+REL,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.229,0.99836,80.0,True
+PTCH1,high_risk,2,高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.075,1.0,364.0,False
+RCOR3,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.292,0.988,325.0,False
+RBPJ,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.241,0.99853,120.0,False
+RCOR1,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.111,0.99992,726.0,False
+PTPA,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 0.99),0.258,0.99057,1105.0,False
+PIK3C2B,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.279,0.99651,73.0,False
+PSIP1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266,0.99668,487.0,False
+PCGF1,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.174,0.99713,1079.0,False
+PAXIP1,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.099,1.0,1241.0,False
+PATL1,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.96),0.316,0.964,166.0,False
+PAPOLA,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.177,0.99998,56.0,False
+PAN3,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.15,0.99999,350.0,False
+PAK2,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.32,0.97169,147.0,False
+PACS2,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.279,0.99583,147.0,False
+PA2G4,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.199,0.99876,51.0,False
+P4HB,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.224,0.99662,191.0,False
+OTUB1,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.97),0.309,0.97107,305.0,False
+NUFIP2,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.196,0.99891,55.0,False
+NSD2,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.119,1.0,182.0,False
+NRBP1,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.135,0.99998,751.0,False
+NR2C2,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.22,0.99892,285.0,False
+NONO,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.99),0.244,0.9935,56.0,False
+NLGN2,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.126,0.99974,60.0,False
+NIPBL,high_risk,2,高遺傳約束(LOEUF 0.03); 劑量敏感(pLI 1.00),0.032,1.0,584.0,False
+NFKB2,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.163,1.0,1350.0,False
+NFKB1,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.138,1.0,205.0,True
+NFE2L1,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.251,0.99759,123.0,False
+PCBP2,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.228,0.99617,627.0,False
+PCGF3,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.338,0.95326,51.0,False
+PRRC2A,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.186,1.0,122.0,False
+PCNX3,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.227,0.99999,98.0,False
+PRR12,high_risk,2,高遺傳約束(LOEUF 0.05); 劑量敏感(pLI 1.00),0.051,1.0,52.0,False
+PRPF39,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.238,0.99875,326.0,False
+PRKD2,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.189,0.99995,72.0,False
+PPRC1,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.152,1.0,86.0,False
+PPP1R12A,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.13,1.0,93.0,False
+POGZ,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.119,1.0,96.0,False
+PKNOX1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 0.99),0.262,0.99401,275.0,False
+RXRB,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.219,0.99719,422.0,False
+PIAS1,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.094,0.99999,92.0,False
+PHIP,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.113,1.0,120.0,False
+PHF8,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.263,0.99785,315.0,False
+PHF6,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.166,0.99784,212.0,False
+PHF3,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.286,0.99256,220.0,False
+PHF20L1,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.187,1.0,70.0,False
+PHF20,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.261,0.99875,177.0,False
+PHF12,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.135,1.0,326.0,False
+PDS5B,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.18,1.0,59.0,False
+PDIA3,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.25,0.99608,310.0,False
+PDCD10,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.96),0.325,0.96197,298.0,False
+RREB1,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,1.0,77.0,False
+ACACA,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.216,1.0,913.0,True
+SAP130,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.159,1.0,595.0,False
+U2SURP,high_risk,2,高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.077,1.0,68.0,False
+VPS4A,high_risk,2,高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 0.94),0.347,0.94474,50.0,False
+USP24,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.147,1.0,149.0,False
 USP22,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.461151726275716,0.9982519239682268,2381.0,False
-ACLY,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.400071926771869,0.9999997939567736,2432.0,True
-SENP5,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4073313098017,0.9999757537024356,5172.0,False
-NCKAP1L,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.98),0.4785320751053298,0.9780942101857696,2947.0,False
-MED15,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4480506233470686,0.999749051257536,2807.0,False
-DHX36,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4553339341486281,0.999362616857637,2327.0,False
-DENR,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3874194075618192,0.9992814483738396,3637.0,False
-BCL10,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.94),0.5462126708195334,0.9432447077010372,3456.0,True
-ARNT,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3873464603285701,0.9999996812420346,2947.0,False
-ARHGAP30,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4528866412654388,0.9991164905958896,1840.0,False
+USP10,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.99),0.282,0.99411,119.0,False
+USF2,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 0.99),0.249,0.99253,99.0,False
+UBR4,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.095,1.0,1209.0,False
+UBE2I,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.96),0.287,0.96496,734.0,False
+UBE2E2,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.99),0.4786828092559536,0.9869808341742088,1524.0,True
+TRRAP,high_risk,2,高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.06,1.0,1257.0,False
+SBF1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.265,0.99933,182.0,False
+TRIM39,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 0.99),0.269,0.99474,53.0,False
+TRIB2,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.98),0.24,0.98349,108.0,False
+TP73,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.256,0.99696,110.0,False
+TOP2B,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.247,0.99989,99.0,False
+TMEM131L,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.96),0.302,0.95975,262.0,False
+TMEM131,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.244,0.99995,91.0,False
+TM9SF3,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.09,0.99999,96.0,False
+TIPRL,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.338,0.95372,1290.0,False
+WAS,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.149,0.99901,495.0,False
+WASF2,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.98),0.311,0.97567,723.0,False
+WIZ,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.225,0.99865,653.0,False
+WNK1,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.126,1.0,377.0,False
+ZRANB2,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.181,0.99949,172.0,False
+ZNF644,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.253,0.99914,444.0,False
+ZNF512B,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.206,0.99992,493.0,False
+ZNF384,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.228,0.99842,73.0,False
+ZNF148,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.103,0.99997,1355.0,False
+ZMYND8,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.131,1.0,55.0,False
+ZMYND19,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.34,0.95174,144.0,False
 ZMYM2,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4298169675674165,0.9999929398943758,2178.0,False
+ZEB1,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.317,0.96665,416.0,False
+ZCCHC8,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.323,0.96584,128.0,False
+ZC3H4,high_risk,2,高遺傳約束(LOEUF 0.05); 劑量敏感(pLI 1.00),0.054,1.0,277.0,False
+ZBTB7A,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.96),0.329,0.95915,543.0,False
+YY1,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 0.99),0.198,0.9938,961.0,False
+YPEL2,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.95),0.316,0.95044,126.0,False
+YEATS2,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.28,0.99639,698.0,False
+XRN1,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.197,1.0,448.0,False
+XPR1,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,0.99999,814.0,False
+TIPARP,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.113,0.99991,364.0,False
+TIAL1,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.112,0.99992,238.0,False
+THRAP3,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.19,0.99998,1200.0,False
+SND1,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.301,0.98213,363.0,False
+SMARCD1,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.206,0.99947,101.0,False
+SMARCC1,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.116,1.0,201.0,False
+SMARCA4,high_risk,2,高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.055,1.0,301.0,True
+SMAD4,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.222,0.99881,114.0,False
+NFATC2,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.187,0.99995,172.0,True
+SLC9A6,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.206,0.99833,62.0,False
+SLC5A3,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.324,0.96739,170.0,False
+SIN3A,high_risk,2,高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.07,1.0,162.0,False
+SIK2,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.277,0.99651,147.0,False
+SET,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.183,0.99597,92.0,False
+SESTD1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.265,0.99802,200.0,False
+SENP5,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4073313098017,0.9999757537024356,5172.0,False
+SEMA4C,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.122,1.0,79.0,False
+SEC62,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.297,0.98295,142.0,False
+SCD,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.97),0.312,0.96968,136.0,False
+SCAF8,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.096,1.0,119.0,False
+SCAF4,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.106,1.0,600.0,False
+SMS,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.97),0.305,0.97297,74.0,False
+SNPH,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.97),0.309,0.97082,181.0,False
+TFDP1,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.97),0.318,0.97174,440.0,False
+SNX1,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.93),0.344,0.93179,64.0,False
+TFAP4,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.172,0.99731,472.0,False
+TBX21,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.226,0.99636,403.0,True
+TBL1XR1,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.106,0.99995,427.0,False
+TBL1X,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.98),0.309,0.97946,133.0,False
+SYVN1,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.171,0.9997,201.0,False
+SYNCRIP,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.209,0.99939,55.0,False
+SUGP1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.271,0.99568,107.0,False
+STRAP,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.90),0.375,0.90143,1700.0,False
+STK11,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.99),0.245,0.9934,1171.0,False
+STAT6,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.99),0.296,0.98849,1128.0,True
+STAT5A,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.202,0.99994,261.0,True
+STAG2,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.09,1.0,271.0,False
+SRSF11,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.233,0.99806,507.0,False
+SPOP,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.144,0.99922,149.0,False
+SP3,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.146,0.99995,113.0,False
+SP1,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.1,0.99997,407.0,False
+SOS2,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.256,0.99955,327.0,False
+SLTM,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.274,0.99785,343.0,False
+MORF4L1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 0.99),0.265,0.99339,221.0,False
+NCOA6,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266,0.99913,97.0,False
+DDX6,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.174,0.99964,1155.0,False
+DCAF5,high_risk,2,高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.078,1.0,159.0,False
+CYLD,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.204,0.99993,96.0,False
+CUL4B,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.085,1.0,572.0,False
+CUL4A,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.124,0.99999,103.0,False
+CUL3,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.228,0.9996,693.0,False
+CTPS1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.287,0.99259,892.0,False
+CTNNB1,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.129,0.99999,60.0,False
+CTDSPL2,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.174,0.99966,737.0,False
+CSNK2A2,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.184,0.9994,110.0,False
+CSNK2A1,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.99),0.297,0.98711,296.0,False
+CSK,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.168,0.99977,548.0,False
+CRTC2,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.235,0.99891,367.0,False
+CREB1,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.223,0.99673,489.0,False
+COP1,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.202,0.99994,213.0,False
+CNOT6L,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.231,0.99821,109.0,False
+CNOT4,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.143,0.99996,958.0,False
+CNOT10,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.305,0.98194,91.0,False
+CNBP,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.96),0.298,0.95994,262.0,False
+CMTR1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.289,0.99252,195.0,False
+DDX17,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.126,0.99999,891.0,False
+DEF6,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.259,0.99768,60.0,False
+CIT,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.261,0.9997,74.0,False
+DENR,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3874194075618192,0.9992814483738396,3637.0,False
+FBXL3,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.98),0.288,0.9807,424.0,False
+FBRS,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.159,0.99987,188.0,False
+EXT1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.261,0.99732,92.0,False
+ERN1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.293,0.99027,176.0,False
+ERF,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 0.99),0.261,0.98968,52.0,False
+ERCC6L,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.211,0.99932,117.0,False
+EPC1,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.125,1.0,444.0,False
+EP300,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.099,1.0,178.0,False
+EIF4B,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.123,0.99999,103.0,False
+EIF1AX,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.91),0.386,0.91015,2577.0,False
+EGR3,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.95),0.312,0.95288,102.0,False
+EGLN1,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.97),0.303,0.97403,108.0,False
+DOT1L,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.118,1.0,436.0,False
+DOCK2,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.261,0.99969,1180.0,False
+DMXL1,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.202,1.0,51.0,False
+DLG4,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.238,0.99954,1286.0,False
+DIS3L2,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.94),0.325,0.944,581.0,False
+DHX36,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4553339341486281,0.999362616857637,2327.0,False
+DHX30,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.115,1.0,277.0,False
+CLUH,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.99),0.284,0.99474,103.0,False
+CDKN2AIP,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.96),0.329,0.96386,120.0,False
+FBXO28,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 0.99),0.271,0.98681,302.0,False
+ATRX,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.119,1.0,831.0,False
+ARPC2,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.168,0.99769,1039.0,False
+ARNT,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3873464603285701,0.9999996812420346,2947.0,False
+ARMC8,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.172,0.99999,85.0,False
+ARIH1,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.166,0.99997,871.0,False
+ARID4B,high_risk,2,高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.187,1.0,242.0,False
+ARID2,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.096,1.0,298.0,False
+ARHGAP30,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4528866412654388,0.9991164905958896,1840.0,False
+ARF4,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.96),0.298,0.95992,154.0,False
+AP3D1,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.99),0.296,0.98648,72.0,False
+ANP32B,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.96),0.331,0.95827,274.0,False
+ANKRD11,high_risk,2,高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.107,1.0,69.0,False
+AMD1,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.98),0.284,0.98227,428.0,False
+AMBRA1,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.14,1.0,608.0,True
+ALG13,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.16,0.99998,186.0,False
+AHSA1,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.15,0.99896,63.0,False
+AEBP2,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.145,0.99921,510.0,True
+ADNP,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.123,1.0,50.0,False
+ACTR3,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.118,0.99986,209.0,False
+ACTR2,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.195,0.99896,1049.0,False
+ATF7IP,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.213,0.99993,74.0,False
+ATXN1L,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.305,0.97897,98.0,False
+CDK13,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.91),0.324,0.90753,890.0,False
+ATXN2L,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.143,1.0,120.0,False
+CCNK,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.165,0.9998,662.0,False
+CCND3,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.98),0.24,0.98347,200.0,True
+CCND2,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 0.99),0.229,0.98658,1321.0,False
+CCNA2,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.132,0.99962,818.0,False
+CCDC22,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.123,0.99979,619.0,False
+CBLL1,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.145,0.99918,532.0,False
+CBLB,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266,0.99825,1028.0,True
+CBFA2T2,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.263,0.99585,300.0,False
+CASK,high_risk,2,高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.073,1.0,170.0,False
+CARM1,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.099,0.99998,379.0,False
+CAND1,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.101,1.0,1159.0,False
+C2CD2L,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.99),0.297,0.98718,63.0,False
+BRD7,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.258,0.99774,80.0,False
+BRD1,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.245,0.99949,292.0,False
+BPTF,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.099,1.0,604.0,False
+BCL6,high_risk,2,高遺傳約束(LOEUF 0.33); 劑量敏感(pLI 0.96),0.33,0.96038,68.0,False
+BCL10,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.94),0.5462126708195334,0.9432447077010372,3456.0,True
+BAZ1A,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.176,1.0,89.0,False
+BAHD1,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.99),0.3,0.98547,393.0,False
+FBXO11,high_risk,2,高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.097,1.0,113.0,False
+FBXO3,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.293,0.98916,179.0,False
+NCKAP1L,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.98),0.4785320751053298,0.9780942101857696,2947.0,False
+LRRC8B,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.249,0.99619,58.0,False
+LPCAT3,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.268,0.99508,144.0,False
+LMTK2,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.239,0.99978,600.0,False
+LMNA,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.209,0.9994,58.0,False
+KPNA4,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,0.99989,71.0,False
+KPNA1,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.245,0.99818,963.0,False
+KMT2E,high_risk,2,高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.06,1.0,896.0,False
+KMT2C,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.122,1.0,462.0,False
+KMT2B,high_risk,2,高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.07,1.0,124.0,False
+KIF5C,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.117,1.0,142.0,False
+KHDRBS1,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.99),0.24,0.99423,936.0,False
+KDM6A,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.161,1.0,137.0,False
+KDM5C,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.166,1.0,115.0,False
+KDM3B,high_risk,2,高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.06,1.0,140.0,False
+KDM2A,high_risk,2,高遺傳約束(LOEUF 0.04); 劑量敏感(pLI 1.00),0.045,1.0,315.0,False
+KBTBD2,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.234,0.99795,84.0,False
+KAT6A,high_risk,2,高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.069,1.0,506.0,False
+IWS1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.267,0.99727,686.0,False
+ITSN1,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.221,1.0,154.0,False
+ITPR1,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.134,1.0,392.0,False
+LRRC8A,high_risk,2,高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 0.94),0.347,0.94398,448.0,False
+LSM12,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 0.97),0.271,0.97211,535.0,False
+IRF2BP1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 0.99),0.259,0.99024,204.0,False
+LZTS1,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.34,0.95491,332.0,False
+NASP,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 1.00),0.276,0.99553,243.0,False
+MYO18A,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.287,0.98723,94.0,False
+MYH9,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.088,1.0,119.0,False
+MYC,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.164,0.99801,676.0,True
+MTMR3,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.258,0.99937,1100.0,False
+ACLY,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.400071926771869,0.9999997939567736,2432.0,True
+MORC2,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.205,0.99999,801.0,False
+MOB1A,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.95),0.315,0.95091,374.0,False
+MGA,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.09,1.0,131.0,False
+MED15,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4480506233470686,0.999749051257536,2807.0,False
+MED14,high_risk,2,高遺傳約束(LOEUF 0.09); 劑量敏感(pLI 1.00),0.092,1.0,367.0,False
+MED13,high_risk,2,高遺傳約束(LOEUF 0.03); 劑量敏感(pLI 1.00),0.03,1.0,629.0,True
+MED1,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.117,1.0,819.0,False
+MAU2,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.119,1.0,428.0,False
+MARK2,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,0.99999,66.0,False
+MAPKAP1,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.153,0.99991,265.0,False
+MAP4K1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.295,0.98919,94.0,False
+MAP3K1,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.214,0.99998,90.0,False
+MAN1A2,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.235,0.99892,377.0,False
+IRF8,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.344,0.94807,88.0,False
+IRF1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 0.99),0.256,0.9909,271.0,True
+FBXO32,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.222,0.99692,1355.0,False
+HDAC7,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 1.00),0.239,0.99969,135.0,False
+GNAZ,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.96),0.292,0.96272,88.0,False
+GMEB1,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.291,0.98549,651.0,False
+GLS,high_risk,2,高遺傳約束(LOEUF 0.32); 劑量敏感(pLI 0.96),0.323,0.96154,320.0,False
+GIGYF2,high_risk,2,高遺傳約束(LOEUF 0.08); 劑量敏感(pLI 1.00),0.077,1.0,316.0,False
+GCN1,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.208,1.0,278.0,False
+GANAB,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.267,0.99873,671.0,False
+GABPB1,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.91),0.369,0.91121,1582.0,False
+GAB2,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.304,0.98325,56.0,False
+FUBP1,high_risk,2,高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.115,1.0,1253.0,False
+FOXO1,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.173,0.99725,1328.0,False
+FOSL2,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.98),0.241,0.98293,198.0,True
+FNBP4,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.142,1.0,884.0,False
+FLT1,high_risk,2,高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.246,0.99983,324.0,False
+FLI1,high_risk,2,高遺傳約束(LOEUF 0.28); 劑量敏感(pLI 0.99),0.28,0.9894,315.0,False
+FCHO1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.264,0.99845,246.0,False
+FBXW7,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.232,0.99949,192.0,False
+FBXW2,high_risk,2,高遺傳約束(LOEUF 0.15); 劑量敏感(pLI 1.00),0.153,0.99877,124.0,False
+FBXO42,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.274,0.99503,375.0,False
+FBXO38,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.265,0.99879,122.0,False
+GPATCH8,high_risk,2,高遺傳約束(LOEUF 0.17); 劑量敏感(pLI 1.00),0.17,1.0,221.0,False
+HELZ,high_risk,2,高遺傳約束(LOEUF 0.05); 劑量敏感(pLI 1.00),0.048,1.0,60.0,False
+INTS6,high_risk,2,高遺傳約束(LOEUF 0.14); 劑量敏感(pLI 1.00),0.136,1.0,83.0,False
+HEXIM1,high_risk,2,高遺傳約束(LOEUF 0.24); 劑量敏感(pLI 0.98),0.238,0.98396,1358.0,False
+INTS15,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.298,0.97647,296.0,False
+INPP5D,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.97),0.306,0.97198,536.0,True
+ING3,high_risk,2,高遺傳約束(LOEUF 0.21); 劑量敏感(pLI 1.00),0.211,0.99933,119.0,False
+IL21R,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.205,0.99835,107.0,False
+IKZF1,high_risk,2,高遺傳約束(LOEUF 0.16); 劑量敏感(pLI 1.00),0.156,0.9986,168.0,False
+IKBKB,high_risk,2,高遺傳約束(LOEUF 0.29); 劑量敏感(pLI 0.99),0.29,0.99192,293.0,True
+IFNGR2,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.339,0.95281,70.0,True
+HUWE1,high_risk,2,高遺傳約束(LOEUF 0.06); 劑量敏感(pLI 1.00),0.06,1.0,688.0,False
+HTT,high_risk,2,高遺傳約束(LOEUF 0.18); 劑量敏感(pLI 1.00),0.176,1.0,134.0,False
+HSPH1,high_risk,2,高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.264,0.99822,122.0,False
+HSPA8,high_risk,2,高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.201,0.99863,60.0,False
+HSP90B1,high_risk,2,高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.271,0.9972,62.0,False
+HSD17B10,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.94),0.342,0.93604,680.0,False
+HPRT1,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.94),0.34,0.93728,74.0,False
+HP1BP3,high_risk,2,高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 0.98),0.3,0.98422,389.0,False
+HNRNPD,high_risk,2,高遺傳約束(LOEUF 0.23); 劑量敏感(pLI 1.00),0.227,0.99621,642.0,False
+HNRNPA2B1,high_risk,2,高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.218,0.99732,380.0,False
+HMBS,high_risk,2,高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 0.95),0.343,0.94884,1047.0,False
+HIF1A,high_risk,2,高遺傳約束(LOEUF 0.31); 劑量敏感(pLI 0.98),0.309,0.9777,129.0,True
+ZRSR2,high_risk,2,高遺傳約束(LOEUF 0.13); 劑量敏感(pLI 1.00),0.132,0.99963,424.0,False
