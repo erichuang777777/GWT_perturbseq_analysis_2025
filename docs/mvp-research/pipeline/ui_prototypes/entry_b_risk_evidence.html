@@ -133,6 +133,38 @@ details.collapse summary{cursor:pointer;font-size:13px;font-weight:600;color:var
 details.collapse summary::-webkit-details-marker{display:none}
 details.collapse summary::before{content:'▸ ';color:var(--blue)}
 details.collapse[open] summary::before{content:'▾ '}
+
+/* ---- avoid list panel ---- */
+.avoid-sec{border-left:4px solid var(--warn)}
+.avoid-sec > h2 .badge{background:var(--warn-bg);color:var(--warn)}
+details.avoid-wrap{margin-top:6px}
+details.avoid-wrap > summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--warn);padding:10px 0}
+details.avoid-wrap > summary::-webkit-details-marker{display:none}
+details.avoid-wrap > summary::before{content:'▸';color:var(--warn);font-size:13px}
+details.avoid-wrap[open] > summary::before{content:'▾'}
+details.avoid-wrap > summary .cnt{font-size:11.5px;font-weight:600;background:var(--warn);color:#fff;padding:2px 9px;border-radius:20px}
+.avoid-use{background:var(--warn-bg);border:1px solid #e8c9c2;border-left:4px solid var(--warn);border-radius:10px;padding:14px 16px;font-size:13px;color:#5a2a22;line-height:1.65;margin:8px 0 16px}
+.avoid-use b{color:var(--warn)}
+.avoid-use .ex{display:block;margin-top:8px;font-size:12.5px;color:#6d3229;background:#fff;border-radius:7px;padding:8px 11px;border:1px solid #ecd3cc}
+.avoid-scroll{max-height:520px;overflow-y:auto;border:1px solid var(--border);border-radius:10px}
+table.avoid-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+table.avoid-tbl th{position:sticky;top:0;background:#f4f1e9;color:var(--muted);font-weight:600;font-size:11px;text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;z-index:1}
+table.avoid-tbl td{padding:8px 10px;border-bottom:1px solid #f0ede4;vertical-align:middle}
+table.avoid-tbl tr:last-child td{border-bottom:none}
+table.avoid-tbl tbody tr:hover{background:#fbf6ee}
+.gene-cell{font-weight:600;font-size:13px}
+.tierpill{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap;letter-spacing:.02em}
+.tierpill.avoid{background:var(--warn);color:#fff}
+.tierpill.hr{background:#fbe9cf;color:#946200;border:1px solid #eccd95}
+.flagchips{display:flex;gap:5px;flex-wrap:wrap}
+.fchip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.fchip.on{background:#f6d9d2;color:var(--warn);border:1px solid #e8bcb2}
+.fchip.off{background:#f2f0ea;color:#bdbbb1;border:1px solid #e8e5db}
+.num{font-variant-numeric:tabular-nums;font-size:12.5px}
+.num.hot{color:var(--warn);font-weight:600}
+.ctxtag{font-size:9.5px;color:var(--green);background:#eef1e8;border-radius:4px;padding:1px 5px;margin-left:5px;font-weight:600}
+.avoid-foot{font-size:11.5px;color:var(--muted);font-style:italic;line-height:1.6;margin-top:14px;background:#f4f1e9;padding:11px 14px;border-radius:8px}
+.avoid-foot b{color:var(--dark);font-style:normal}
 </style>
 </head>
 <body>
@@ -213,6 +245,38 @@ details.collapse[open] summary::before{content:'▾ '}
     <div id="evcard"></div>
   </div>
 
+  <!-- B2b clinical avoid list (de-risk tool) -->
+  <div class="section avoid-sec">
+    <h2><span class="badge">避雷</span> 高風險標的清單（去風險工具）</h2>
+    <p class="q">跟上方發現工具互補：這裡列出<b>應審慎或避免</b>作為敲低／抑制標的的基因。</p>
+    <details class="avoid-wrap" id="avoidWrap">
+      <summary>⚠ 高風險標的（避雷清單）<span class="cnt" id="avoidCnt"></span></summary>
+
+      <div class="avoid-use">
+        <b>用途：</b>這些標的的多效性（pan-effect breadth）與必需性（遺傳約束、劑量敏感）偏高，敲低或抑制的<b>脫靶毒性風險高</b>；臨床轉譯上應<b>審慎評估或避免</b>選作直接治療標的。此面板為<b>去風險（de-risk）</b>用途，與上方「風險×證據」發現工具互補——一個找候選、一個排除高危候選。
+        <span class="ex"><b>例：</b>MED12 — LOEUF 0.10（極高遺傳約束）＋ pLI 1.00（劑量敏感）＋ 泛效應 breadth top10%，三個風險旗全中。</span>
+      </div>
+
+      <div class="avoid-scroll">
+        <table class="avoid-tbl">
+          <thead>
+            <tr>
+              <th>基因</th><th>分級</th><th>風險訊號（命中）</th>
+              <th>LOEUF</th><th>pLI</th><th>Breadth (max DE)</th>
+            </tr>
+          </thead>
+          <tbody id="avoidBody"></tbody>
+        </table>
+      </div>
+
+      <div class="avoid-foot">
+        分級：<b>avoid</b> = 三個風險旗全中（泛效應＋高遺傳約束＋劑量敏感）；<b>high_risk</b> = 命中 ≥2 個風險旗。
+        風險旗定義：泛效應 = breadth 落在 top 10%；高遺傳約束 = gnomAD LOEUF &lt; 0.35；劑量敏感 = pLI ≥ 0.9。
+        本清單為<b>族群層級</b>的標的去風險提示，非病人層預測，亦不構成對特定病人的醫療建議。<span class="ctxtag">脈絡特異</span> 標記表示該基因在特定族群脈絡下才顯示強效應。
+      </div>
+    </details>
+  </div>
+
   <!-- B4 report -->
   <div class="section" id="b4sec" style="display:none">
     <h2><span class="badge">B4</span> 產生報告</h2>
@@ -246,6 +310,36 @@ details.collapse[open] summary::before{content:'▾ '}
 const DATA = [{"gene": "CD3E", "ensembl": "ENSG00000198851", "loeuf": 0.701, "pli": 0.048, "n_safety": 0, "safety_events": "", "n_tractability": 10, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "LAT", "ensembl": "ENSG00000213658", "loeuf": 0.497, "pli": 0.985, "n_safety": 0, "safety_events": "", "n_tractability": 7, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.172, "loss_intolerant": true}, {"gene": "TADA2B", "ensembl": "ENSG00000173011", "loeuf": 0.599, "pli": 0.65, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.002, "loss_intolerant": true}, {"gene": "SENP5", "ensembl": "ENSG00000119231", "loeuf": 0.407, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.321, "loss_intolerant": true}, {"gene": "PLCG1", "ensembl": "ENSG00000124181", "loeuf": 0.487, "pli": 0.721, "n_safety": 1, "safety_events": "Angioedema", "n_tractability": 7, "n_literature": 8, "n_evidence_axes": 5, "risk_score": 0.589, "loss_intolerant": true}, {"gene": "VAV1", "ensembl": "ENSG00000141968", "loeuf": 0.344, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 5, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.426, "loss_intolerant": true}, {"gene": "SGF29", "ensembl": "ENSG00000176476", "loeuf": 0.606, "pli": 0.49, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "UBXN1", "ensembl": "ENSG00000162191", "loeuf": 0.719, "pli": 0.004, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "CD247", "ensembl": "ENSG00000198821", "loeuf": 0.689, "pli": 0.164, "n_safety": 0, "safety_events": "", "n_tractability": 6, "n_literature": 9, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "MED12", "ensembl": "ENSG00000184634", "loeuf": 0.096, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.841, "loss_intolerant": true}, {"gene": "CCNC", "ensembl": "ENSG00000112237", "loeuf": 0.558, "pli": 0.724, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.07, "loss_intolerant": true}, {"gene": "SUPT20H", "ensembl": "ENSG00000102710", "loeuf": 0.802, "pli": 0.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "TADA1", "ensembl": "ENSG00000152382", "loeuf": 0.829, "pli": 0.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "DENR", "ensembl": "ENSG00000139726", "loeuf": 0.387, "pli": 0.999, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.354, "loss_intolerant": true}, {"gene": "PMVK", "ensembl": "ENSG00000163344", "loeuf": 0.893, "pli": 0.03, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}];
 const BYGENE = {}; DATA.forEach(d=>BYGENE[d.gene]=d);
 const NOW = new Date().toISOString().slice(0,10);
+
+/* ---- clinical avoid list (≥2 risk flags) ---- */
+const AVOID = [{"gene": "SMG1", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.075, "pli": 1.0, "breadth": 2684, "ctx": false}, {"gene": "MED12", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.095, "pli": 1.0, "breadth": 4142, "ctx": false}, {"gene": "CREBBP", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.105, "pli": 1.0, "breadth": 2969, "ctx": false}, {"gene": "EIF4G2", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.123, "pli": 1.0, "breadth": 2530, "ctx": false}, {"gene": "SMARCA5", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.19, "pli": 1.0, "breadth": 2786, "ctx": false}, {"gene": "ATP2A2", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.2, "pli": 1.0, "breadth": 3519, "ctx": false}, {"gene": "BHLHE40", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.217, "pli": 1.0, "breadth": 1997, "ctx": false}, {"gene": "NFAT5", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.251, "pli": 1.0, "breadth": 1624, "ctx": false}, {"gene": "TNRC6A", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.256, "pli": 1.0, "breadth": 1547, "ctx": false}, {"gene": "ARF1", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.264, "pli": 0.999, "breadth": 1754, "ctx": false}, {"gene": "UBE2L3", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.267, "pli": 0.999, "breadth": 2874, "ctx": false}, {"gene": "CPSF6", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.299, "pli": 1.0, "breadth": 2487, "ctx": false}, {"gene": "SETDB1", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.304, "pli": 1.0, "breadth": 2291, "ctx": false}, {"gene": "VAV1", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.344, "pli": 1.0, "breadth": 4898, "ctx": true}, {"gene": "MAX", "tier": "avoid", "n": 3, "breadth_flag": true, "constraint_flag": true, "dosage_flag": true, "loeuf": 0.348, "pli": 0.999, "breadth": 2223, "ctx": false}, {"gene": "DENR", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.387, "pli": 0.999, "breadth": 3637, "ctx": false}, {"gene": "ARNT", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.387, "pli": 1.0, "breadth": 2947, "ctx": false}, {"gene": "ACLY", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.4, "pli": 1.0, "breadth": 2432, "ctx": true}, {"gene": "SENP5", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.407, "pli": 1.0, "breadth": 5172, "ctx": false}, {"gene": "ZMYM2", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.43, "pli": 1.0, "breadth": 2178, "ctx": false}, {"gene": "MED15", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.448, "pli": 1.0, "breadth": 2807, "ctx": false}, {"gene": "ARHGAP30", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.453, "pli": 0.999, "breadth": 1840, "ctx": false}, {"gene": "DHX36", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.455, "pli": 0.999, "breadth": 2327, "ctx": false}, {"gene": "USP22", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.461, "pli": 0.998, "breadth": 2381, "ctx": false}, {"gene": "UBE2E2", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.479, "pli": 0.987, "breadth": 1524, "ctx": true}, {"gene": "NCKAP1L", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.479, "pli": 0.978, "breadth": 2947, "ctx": false}, {"gene": "BCL10", "tier": "high_risk", "n": 2, "breadth_flag": true, "constraint_flag": false, "dosage_flag": true, "loeuf": 0.546, "pli": 0.943, "breadth": 3456, "ctx": true}];
+function renderAvoid(){
+  document.getElementById('avoidCnt').textContent = AVOID.length + ' 個標的';
+  const fchip=(on,label)=>`<span class="fchip ${on?'on':'off'}">${on?'✓':'·'} ${label}</span>`;
+  const trs = AVOID.map(a=>{
+    const tier = a.tier==='avoid'
+      ? '<span class="tierpill avoid">AVOID</span>'
+      : '<span class="tierpill hr">HIGH RISK</span>';
+    const chips = `<div class="flagchips">`
+      + fchip(a.breadth_flag,'泛效應')
+      + fchip(a.constraint_flag,'高遺傳約束')
+      + fchip(a.dosage_flag,'劑量敏感')
+      + `</div>`;
+    const ctx = a.ctx ? '<span class="ctxtag">脈絡特異</span>' : '';
+    const loeufHot = a.loeuf < 0.35 ? ' hot' : '';
+    const pliHot = a.pli >= 0.9 ? ' hot' : '';
+    return `<tr>
+      <td class="gene-cell">${a.gene}${ctx}</td>
+      <td>${tier}</td>
+      <td>${chips}</td>
+      <td class="num${loeufHot}">${a.loeuf.toFixed(2)}</td>
+      <td class="num${pliHot}">${a.pli.toFixed(2)}</td>
+      <td class="num">${a.breadth.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('avoidBody').innerHTML = trs;
+}
+renderAvoid();
 
 /* ---- gate ---- */
 const chks=['c1','c2','c3'].map(id=>document.getElementById(id));
