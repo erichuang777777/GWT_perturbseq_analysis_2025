@@ -13,7 +13,7 @@
 
 ## 結果：96 個 context-specific 候選 / 1,235
 
-短名單乾淨地回收了已知 CD4 T 細胞調控架構：
+短名單命中的**免疫概念模組基因**回收了已知 CD4 T 細胞調控架構（Top 20 中 9 個屬概念模組；其餘 11 個為代謝/粒線體/運輸基因，靠 stimulation-gated 入選，非免疫調控子）：
 - **TCR 訊號體**：CD3E, LAT, PLCG1, VAV1, CD247, BCL10, ITK, CD28, MALT1
 - **Th 分化 TF**：STAT6, IL4R, STAT3, GATA3, TBX21
 - **共刺激**：ICOS, CD28
