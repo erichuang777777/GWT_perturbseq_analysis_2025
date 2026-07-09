@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTRY B — 臨床醫師 Patient Risk &amp; Evidence Lookup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#d97757; --blue:#6a9bcc; --green:#788c5d;
+  --dark:#141413; --light:#faf9f5;
+  --warn:#c0392b; --warn-bg:#fbeae7;
+  --amber:#b8860b;
+  --border:#e5e2d9; --muted:#6b6a63; --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:var(--light);color:var(--dark);line-height:1.55;font-size:15px}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.01em}
+.serif{font-family:'Lora',serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ---- persistent disclaimer header ---- */
+.topbar{position:sticky;top:0;z-index:50;background:var(--dark);color:var(--light);border-bottom:3px solid var(--orange)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding:10px 24px}
+.brand{font-weight:700;font-size:15px;white-space:nowrap}
+.brand .dot{color:var(--orange)}
+.disc-strip{font-size:12px;color:#d8d6cc;line-height:1.35;border-left:1px solid #3a3a37;padding-left:14px}
+.disc-strip b{color:var(--orange);font-weight:600}
+
+.session-tag{margin-left:auto;font-size:11px;color:#b9b7ad;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.session-tag .lock{color:var(--green)}
+
+/* ---- gate ---- */
+.gate{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.gate-card{background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:620px;padding:40px 42px;box-shadow:0 10px 40px rgba(20,20,19,.08)}
+.gate-card .lockbig{font-size:34px;margin-bottom:6px}
+.gate-card h1{font-size:24px;margin-bottom:4px}
+.gate-card .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.disc-box{background:var(--warn-bg);border:1px solid #e8c9c2;border-left:4px solid var(--warn);border-radius:10px;padding:16px 18px;font-size:13.5px;color:#5a2a22;margin-bottom:22px;line-height:1.6}
+.disc-box b{color:var(--warn)}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--border);cursor:pointer;font-size:14px}
+.chk input{margin-top:3px;width:17px;height:17px;accent-color:var(--orange);flex:none;cursor:pointer}
+.gate-btn{margin-top:22px;width:100%;padding:14px;border:none;border-radius:10px;background:var(--orange);color:#fff;font-family:'Poppins';font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+.gate-btn:disabled{background:#d8d5cc;color:#98968d;cursor:not-allowed}
+.gate-btn:not(:disabled):hover{background:#c96844}
+.gate-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:14px}
+
+/* ---- app ---- */
+#app{display:none;padding:28px 0 80px}
+.stepflow{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:20px;align-items:center}
+.stepflow span{background:#efece3;padding:5px 12px;border-radius:20px}
+.stepflow .arw{background:none;color:#c4c1b6;padding:0}
+.stepflow .on{background:var(--dark);color:#fff}
+
+.section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 26px;margin-bottom:20px}
+.section > h2{font-size:17px;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.section .badge{font-size:11px;font-weight:600;background:#efece3;color:var(--muted);padding:2px 9px;border-radius:6px}
+.section .q{color:var(--muted);font-size:13px;margin-bottom:16px;font-style:italic}
+
+textarea{width:100%;min-height:78px;border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-family:'Poppins';font-size:14px;resize:vertical;background:#fdfcf9}
+textarea:focus{outline:none;border-color:var(--blue)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:10px 20px;border:none;border-radius:9px;background:var(--blue);color:#fff;font-family:'Poppins';font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
+.btn:hover{background:#5688bc}
+.btn.ghost{background:#efece3;color:var(--dark)}
+.btn.ghost:hover{background:#e4e0d5}
+.btn.orange{background:var(--orange)}
+.btn.orange:hover{background:#c96844}
+
+.session-chip{font-size:11.5px;color:var(--green);display:inline-flex;align-items:center;gap:5px;background:#eef1e8;padding:5px 11px;border-radius:20px;font-weight:500}
+
+.qc-box{margin-top:16px;background:#eef3f8;border:1px solid #d5e2ee;border-radius:10px;padding:14px 16px;font-size:14px;display:none}
+.qc-box .big{font-size:15px;font-weight:600}
+.qc-box .note{font-size:12.5px;color:var(--muted);margin-top:6px;font-style:italic}
+
+/* scatter */
+.plot-title{font-size:16px;font-weight:600;margin-bottom:2px;line-height:1.4}
+.plot-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.chartwrap{display:flex;gap:22px;flex-wrap:wrap}
+svg{max-width:100%;height:auto}
+.legend{font-size:12.5px;min-width:180px}
+.legend .lg{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.legend .sw{width:14px;height:14px;border-radius:50%;flex:none;border:1.5px solid rgba(0,0,0,.15)}
+.legend .warnnote{margin-top:12px;font-size:11.5px;color:var(--warn);background:var(--warn-bg);padding:8px 10px;border-radius:8px;line-height:1.5}
+.dot{cursor:pointer;transition:.12s}
+.dot:hover{stroke:var(--dark);stroke-width:2.5px}
+.qcap{fill:var(--muted);font-size:11px;font-family:'Poppins'}
+.axlbl{fill:var(--dark);font-size:12.5px;font-weight:600;font-family:'Poppins'}
+.quad{fill:#9a988f;font-size:10.5px;font-family:'Poppins';opacity:.75}
+
+/* evidence card */
+#evcard{display:none;margin-top:18px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ev-head{padding:14px 18px;color:#fff;display:flex;align-items:center;gap:12px}
+.ev-head h3{font-size:19px}
+.ev-head .tag{font-size:11px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:6px;font-weight:600}
+.ev-body{padding:18px}
+.ev-warn{background:var(--warn-bg);border:1px solid #e8c9c2;border-left:4px solid var(--warn);border-radius:8px;padding:11px 14px;font-size:13px;color:#5a2a22;margin-bottom:16px;display:none}
+.ev-warn b{color:var(--warn)}
+.axgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ax{border:1px solid var(--border);border-radius:9px;padding:12px 14px;background:#fdfcf9}
+.ax .k{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.ax .v{font-size:15px;font-weight:600}
+.ax .src{font-size:10.5px;color:#9a988f;margin-top:3px}
+.led{width:9px;height:9px;border-radius:50%;flex:none}
+.led.g{background:var(--green)} .led.y{background:var(--amber)} .led.gray{background:#c4c1b6}
+.ev-foot{margin-top:15px;font-size:12px;color:var(--muted);font-style:italic;background:#f4f1e9;padding:10px 13px;border-radius:8px;line-height:1.55}
+.ev-foot b{color:var(--dark);font-style:normal}
+
+.foot-disc{font-size:12px;color:var(--muted);text-align:center;padding:26px 0 0;line-height:1.6}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(20,20,19,.55);z-index:100;align-items:center;justify-content:center;padding:30px}
+.modal{background:#fff;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.rep-head{border-bottom:2px solid var(--orange);padding:18px 26px;display:flex;align-items:center;gap:16px}
+.logo-slot{width:52px;height:52px;border:2px dashed #c4c1b6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#a8a69c;text-align:center;flex:none;line-height:1.2}
+.rep-head .rt{font-size:16px;font-weight:600}
+.rep-head .rd{font-size:11.5px;color:var(--muted)}
+.rep-disc-line{font-size:11px;color:var(--warn);margin-top:3px}
+.rep-body{padding:22px 26px}
+.rep-body h4{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 8px;border-bottom:1px solid var(--border);padding-bottom:5px}
+.rep-body h4:first-child{margin-top:0}
+.rep-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.rep-tbl th,.rep-tbl td{text-align:left;padding:6px 8px;border-bottom:1px solid #f0ede4}
+.rep-tbl th{color:var(--muted);font-weight:600;font-size:11.5px}
+.rep-discbox{background:var(--warn-bg);border:1px solid #e8c9c2;border-radius:9px;padding:14px 16px;font-size:12.5px;color:#5a2a22;line-height:1.65;margin-top:8px}
+.rep-meta{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.7}
+.modal-close{padding:11px 22px;margin:0 26px 22px;border:none;border-radius:9px;background:var(--dark);color:#fff;font-family:'Poppins';font-weight:600;cursor:pointer}
+.x{margin-left:auto;font-size:22px;color:#b0aea4;cursor:pointer;background:none;border:none;line-height:1}
+details.collapse{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+details.collapse summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--blue);list-style:none}
+details.collapse summary::-webkit-details-marker{display:none}
+details.collapse summary::before{content:'▸ ';color:var(--blue)}
+details.collapse[open] summary::before{content:'▾ '}
+</style>
+</head>
+<body>
+
+<!-- persistent header with disclaimer -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">GWT<span class="dot">·</span>Entry B</div>
+    <div class="disc-strip">
+      <b>研究用證據查詢與假設生成工具，非診斷或處方系統。</b>
+      所有輸出為族群層級證據強度與假設，不構成對特定病人的醫療建議；治療決策須由具完整病人脈絡的合格醫療專業人員做出。
+    </div>
+    <div class="session-tag" id="sesTag" style="display:none"><span class="lock">●</span> 純 session · 資料不儲存</div>
+  </div>
+</div>
+
+<!-- GATE: identity verification -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="lockbig">🔒</div>
+    <h1>醫療專業身分驗證</h1>
+    <p class="sub">此入口與研究者入口不共用登入。驗證未通過前，不顯示任何資料，也無法上傳病人資料。</p>
+
+    <div class="disc-box">
+      <b>責任邊界（進入前須確認）</b><br>
+      本入口為研究用證據查詢與假設生成工具，非診斷或處方系統。所有輸出為族群層級證據強度與假設，不構成對特定病人的醫療建議。治療決策須由具完整病人脈絡的合格醫療專業人員做出。
+    </div>
+
+    <label class="chk"><input type="checkbox" id="c1"><span>我確認我是具執業資格的醫療專業人員，於機構授權範圍內使用本工具。</span></label>
+    <label class="chk"><input type="checkbox" id="c2"><span>我已閱讀並理解上述責任邊界：本工具輸出為族群層級證據與假設，<b>非</b>對特定病人的診斷、處方或預後。</span></label>
+    <label class="chk"><input type="checkbox" id="c3"><span>我理解病人資料僅於本次 session 記憶體處理，關閉即清除，不落地、不外傳、不訓練模型。</span></label>
+
+    <button class="gate-btn" id="enterBtn" disabled>驗證未完成</button>
+    <p class="gate-note">Demo 原型 · 前端模擬閘門流程，不含真實憑證核驗。</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="wrap">
+
+  <div class="stepflow">
+    <span class="on">B1 資料上傳</span><span class="arw">→</span>
+    <span class="on">B2 風險×證據對照</span><span class="arw">→</span>
+    <span>B3 通路/族群脈絡</span><span class="arw">→</span>
+    <span>B4 可下載報告</span>
+  </div>
+
+  <!-- B1 upload -->
+  <div class="section">
+    <h2><span class="badge">B1</span> 病人基因清單上傳</h2>
+    <p class="q">把手上的病人資料接進來 — 僅於本次 session 處理。</p>
+    <textarea id="genein">MED12, PLCG1, CD3E</textarea>
+    <div class="row">
+      <button class="btn" id="analyzeBtn">分析</button>
+      <button class="btn ghost" id="sampleBtn">載入更多範例</button>
+      <span class="session-chip">🔒 資料僅於本次 session 處理，不儲存</span>
+    </div>
+    <div class="qc-box" id="qcBox"></div>
+  </div>
+
+  <!-- B2 risk x evidence -->
+  <div class="section" id="b2sec" style="display:none">
+    <h2><span class="badge">B2</span> 風險 × 證據對照</h2>
+    <p class="q">病人這些基因，哪些帶已知風險訊號？證據多強？</p>
+    <div class="plot-title" id="plotTitle"></div>
+    <div class="plot-sub">x = 證據充分度（獨立證據軸數）· y = 風險訊號（gnomAD 約束 + safety liability 綜合分）· 點選基因看族群層證據卡</div>
+    <div class="chartwrap">
+      <div id="chart"></div>
+      <div class="legend">
+        <div class="lg"><span class="sw" style="background:var(--blue)"></span> 無安全訊號</div>
+        <div class="lg"><span class="sw" style="background:var(--warn)"></span> 安全訊號 / 極高 loss-intolerance</div>
+        <div class="lg"><span class="sw" style="background:#c4c1b6"></span> 低風險訊號</div>
+        <div class="warnnote" id="warnNote"></div>
+      </div>
+    </div>
+
+    <div id="evcard"></div>
+  </div>
+
+  <!-- B4 report -->
+  <div class="section" id="b4sec" style="display:none">
+    <h2><span class="badge">B4</span> 產生報告</h2>
+    <p class="q">彙整成一頁式報告，供醫療專業人員在機構內參考使用。</p>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:4px">將產出帶<b>機構 logo 免責範本</b>的 PDF：頁首（logo 欄位 + 常駐 disclaimer 一行）→ 正文（每個結論附證據來源與時間戳）→ 專屬免責頁（完整 disclaimer + 產生日期 + 資料來源版本清單 + 「純 session 處理、未儲存」聲明）。</p>
+    <div class="row"><button class="btn orange" id="reportBtn">產生報告預覽</button></div>
+  </div>
+
+  <p class="foot-disc">本報告為研究用證據彙整，供醫療專業人員參考，非診斷或處方。</p>
+</div>
+</div>
+
+<!-- report modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="rep-head">
+      <div class="logo-slot">機構<br>LOGO</div>
+      <div>
+        <div class="rt">病人基因風險 × 證據對照報告</div>
+        <div class="rd" id="repDate"></div>
+        <div class="rep-disc-line">研究用證據彙整，非診斷或處方 · 族群層級假設</div>
+      </div>
+      <button class="x" id="modalX">×</button>
+    </div>
+    <div class="rep-body" id="repBody"></div>
+    <button class="modal-close" id="modalClose">關閉預覽</button>
+  </div>
+</div>
+
+<script>
+const DATA = [{"gene": "CD3E", "ensembl": "ENSG00000198851", "loeuf": 0.701, "pli": 0.048, "n_safety": 0, "safety_events": "", "n_tractability": 10, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "LAT", "ensembl": "ENSG00000213658", "loeuf": 0.497, "pli": 0.985, "n_safety": 0, "safety_events": "", "n_tractability": 7, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.172, "loss_intolerant": true}, {"gene": "TADA2B", "ensembl": "ENSG00000173011", "loeuf": 0.599, "pli": 0.65, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.002, "loss_intolerant": true}, {"gene": "SENP5", "ensembl": "ENSG00000119231", "loeuf": 0.407, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.321, "loss_intolerant": true}, {"gene": "PLCG1", "ensembl": "ENSG00000124181", "loeuf": 0.487, "pli": 0.721, "n_safety": 1, "safety_events": "Angioedema", "n_tractability": 7, "n_literature": 8, "n_evidence_axes": 5, "risk_score": 0.589, "loss_intolerant": true}, {"gene": "VAV1", "ensembl": "ENSG00000141968", "loeuf": 0.344, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 5, "n_literature": 10, "n_evidence_axes": 5, "risk_score": 0.426, "loss_intolerant": true}, {"gene": "SGF29", "ensembl": "ENSG00000176476", "loeuf": 0.606, "pli": 0.49, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "UBXN1", "ensembl": "ENSG00000162191", "loeuf": 0.719, "pli": 0.004, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "CD247", "ensembl": "ENSG00000198821", "loeuf": 0.689, "pli": 0.164, "n_safety": 0, "safety_events": "", "n_tractability": 6, "n_literature": 9, "n_evidence_axes": 5, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "MED12", "ensembl": "ENSG00000184634", "loeuf": 0.096, "pli": 1.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.841, "loss_intolerant": true}, {"gene": "CCNC", "ensembl": "ENSG00000112237", "loeuf": 0.558, "pli": 0.724, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 1, "n_evidence_axes": 5, "risk_score": 0.07, "loss_intolerant": true}, {"gene": "SUPT20H", "ensembl": "ENSG00000102710", "loeuf": 0.802, "pli": 0.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "TADA1", "ensembl": "ENSG00000152382", "loeuf": 0.829, "pli": 0.0, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}, {"gene": "DENR", "ensembl": "ENSG00000139726", "loeuf": 0.387, "pli": 0.999, "n_safety": 0, "safety_events": "", "n_tractability": 3, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.354, "loss_intolerant": true}, {"gene": "PMVK", "ensembl": "ENSG00000163344", "loeuf": 0.893, "pli": 0.03, "n_safety": 0, "safety_events": "", "n_tractability": 2, "n_literature": 0, "n_evidence_axes": 4, "risk_score": 0.0, "loss_intolerant": false}];
+const BYGENE = {}; DATA.forEach(d=>BYGENE[d.gene]=d);
+const NOW = new Date().toISOString().slice(0,10);
+
+/* ---- gate ---- */
+const chks=['c1','c2','c3'].map(id=>document.getElementById(id));
+const enterBtn=document.getElementById('enterBtn');
+chks.forEach(c=>c.addEventListener('change',()=>{
+  const ok=chks.every(x=>x.checked);
+  enterBtn.disabled=!ok;
+  enterBtn.textContent=ok?'確認身分並進入':'驗證未完成';
+}));
+enterBtn.addEventListener('click',()=>{
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('sesTag').style.display='flex';
+  window.scrollTo(0,0);
+});
+
+/* ---- B1 analyze ---- */
+let matched=[];
+document.getElementById('sampleBtn').addEventListener('click',()=>{
+  document.getElementById('genein').value='MED12, PLCG1, CD3E, VAV1, LAT, SENP5, DENR, BRCA2, FOXP3';
+});
+document.getElementById('analyzeBtn').addEventListener('click',analyze);
+
+function analyze(){
+  const raw=document.getElementById('genein').value.split(/[\s,;\n\t]+/).map(s=>s.trim().toUpperCase()).filter(Boolean);
+  const uniq=[...new Set(raw)];
+  matched=uniq.filter(g=>BYGENE[g]);
+  const withEv=matched.filter(g=>BYGENE[g].n_evidence_axes>0);
+  const qc=document.getElementById('qcBox');
+  qc.style.display='block';
+  qc.innerHTML=`<div class="big">已辨識 ${uniq.length} 個基因，其中 ${matched.length} 個對得上平台的 1,235 標的 · ${withEv.length} 個有 GWT T 細胞擾動證據。</div>
+    <div class="note">以下為這些基因的<b>族群層證據</b>，非病人層預測。資料僅於本次 session 處理，不儲存。${uniq.length-matched.length>0?`（${uniq.length-matched.length} 個未對應平台標的，不顯示。）`:''}</div>`;
+  if(matched.length){
+    document.getElementById('b2sec').style.display='block';
+    document.getElementById('b4sec').style.display='block';
+    drawChart();
+    document.getElementById('evcard').style.display='none';
+  } else {
+    document.getElementById('b2sec').style.display='none';
+    document.getElementById('b4sec').style.display='none';
+  }
+}
+
+/* ---- B2 scatter ---- */
+function isWarn(d){return d.n_safety>0 || d.loeuf<=0.10;}
+function dotColor(d){ if(isWarn(d)) return 'var(--warn)'; if(d.risk_score<0.05) return '#c4c1b6'; return 'var(--blue)';}
+
+function drawChart(){
+  const rows=matched.map(g=>BYGENE[g]);
+  const W=560,H=420,pad={l:64,r:24,t:24,b:56};
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const xmin=3.5,xmax=5.5;               // n_evidence_axes 4..5
+  const ymax=1.0;
+  const xsc=v=>pad.l+(v-xmin)/(xmax-xmin)*iw;
+  const ysc=v=>pad.t+(1-v/ymax)*ih;
+  // deterministic jitter by gene name so overlapping axis buckets separate
+  function jit(g){let h=0;for(const c of g)h=(h*31+c.charCodeAt(0))%97;return (h/97-0.5)*0.62;}
+
+  const warnGenes=rows.filter(isWarn).map(d=>d.gene);
+  const warnNote=document.getElementById('warnNote');
+  warnNote.innerHTML = warnGenes.length
+    ? `⚠ 安全訊號醒目標出：`+warnGenes.map(g=>{const d=BYGENE[g];return d.n_safety>0?`<b>${g}</b>（${d.safety_events}）`:`<b>${g}</b>（LOEUF ${d.loeuf}，極 loss-intolerant）`}).join('、')
+    : '本清單無安全訊號基因。';
+
+  // conclusion title
+  const hi=rows.filter(d=>d.risk_score>=0.4 && d.n_evidence_axes>=5).map(d=>d.gene);
+  document.getElementById('plotTitle').textContent = hi.length
+    ? `${hi.join('、')} 落在「高風險訊號且證據充分」區 — 優先納入風險脈絡評估`
+    : `本清單基因多為低風險訊號 — 未見高風險且證據充分的組合`;
+
+  let g='';
+  // gridlines y
+  [0,.25,.5,.75,1].forEach(v=>{const y=ysc(v);g+=`<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="#efece3"/><text x="${pad.l-10}" y="${y+4}" text-anchor="end" class="qcap">${v.toFixed(2)}</text>`;});
+  // x ticks
+  [4,5].forEach(v=>{const x=xsc(v);g+=`<text x="${x}" y="${H-pad.b+22}" text-anchor="middle" class="qcap">${v} 軸</text>`;});
+  // quadrant guide
+  const xm=xsc(4.5),ym=ysc(0.4);
+  g+=`<line x1="${xm}" y1="${pad.t}" x2="${xm}" y2="${H-pad.b}" stroke="#e5e2d9" stroke-dasharray="4 4"/>`;
+  g+=`<line x1="${pad.l}" y1="${ym}" x2="${W-pad.r}" y2="${ym}" stroke="#e5e2d9" stroke-dasharray="4 4"/>`;
+  g+=`<text x="${W-pad.r-6}" y="${pad.t+14}" text-anchor="end" class="quad">高風險 · 證據足</text>`;
+  g+=`<text x="${pad.l+6}" y="${pad.t+14}" class="quad">高風險 · 證據薄（謹慎）</text>`;
+  // axis labels
+  g+=`<text x="${pad.l+iw/2}" y="${H-10}" text-anchor="middle" class="axlbl">證據充分度（獨立證據軸數）▶</text>`;
+  g+=`<text transform="translate(18,${pad.t+ih/2}) rotate(-90)" text-anchor="middle" class="axlbl">▲ 風險訊號強度 (risk_score)</text>`;
+  // points
+  rows.forEach(d=>{
+    const cx=xsc(d.n_evidence_axes+jit(d.gene)), cy=ysc(d.risk_score);
+    const col=dotColor(d), r=isWarn(d)?9:7;
+    g+=`<circle class="dot" cx="${cx}" cy="${cy}" r="${r}" fill="${col}" fill-opacity="0.82" stroke="${col}" stroke-width="1" onclick="showCard('${d.gene}')"><title>${d.gene}</title></circle>`;
+    if(isWarn(d)) g+=`<circle cx="${cx}" cy="${cy}" r="${r+4}" fill="none" stroke="var(--warn)" stroke-width="1" stroke-dasharray="2 2" opacity="0.7"/>`;
+    g+=`<text x="${cx}" y="${cy-(r+5)}" text-anchor="middle" style="font-size:11px;font-weight:600;fill:${isWarn(d)?'var(--warn)':'var(--dark)'};font-family:Poppins" onclick="showCard('${d.gene}')" cursor="pointer">${d.gene}</text>`;
+  });
+  document.getElementById('chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}">${g}</svg>`;
+}
+
+/* ---- evidence card ---- */
+function led(cond,warn){return warn?'y':(cond?'g':'gray');}
+function showCard(gene){
+  const d=BYGENE[gene];
+  const warn=isWarn(d);
+  const headCol = warn?'var(--warn)':(d.risk_score<0.05?'#8a887f':'var(--blue)');
+  const grade = d.risk_score>=0.4?'風險訊號：高':d.risk_score>=0.15?'風險訊號：中':'風險訊號：低';
+  let warnHtml='';
+  if(d.n_safety>0) warnHtml=`<b>⚠ 安全訊號：</b>Open Targets safety liability — ${d.safety_events}（族群層證據，非此病人預測）。`;
+  else if(d.loeuf<=0.10) warnHtml=`<b>⚠ 極高 loss-intolerance：</b>gnomAD LOEUF ${d.loeuf}（極約束基因，功能喪失在族群中被強烈選汰）。`;
+
+  const axes=[
+    {k:'遺傳約束 (gnomAD)',v:`LOEUF ${d.loeuf} · pLI ${d.pli}`,src:'gnomAD v4',l:led(d.loss_intolerant,d.loeuf<=0.10),note:d.loss_intolerant?'loss-intolerant':'容忍 LoF'},
+    {k:'安全訊號 (Open Targets)',v:d.n_safety>0?`${d.n_safety} 項 · ${d.safety_events}`:'無已知 liability',src:'Open Targets',l:d.n_safety>0?'y':'gray'},
+    {k:'可成藥性 (tractability)',v:`${d.n_tractability} / 28 bucket`,src:'Open Targets',l:led(d.n_tractability>=5,false)},
+    {k:'文獻支持',v:`${d.n_literature} 篇 PubMed`,src:`fetched ${NOW}`,l:led(d.n_literature>=5,false)},
+    {k:'證據軸涵蓋',v:`${d.n_evidence_axes} / 5 軸`,src:'Evidence Spine',l:led(d.n_evidence_axes>=5,false)},
+    {k:'風險綜合分',v:`risk_score ${d.risk_score}`,src:'gnomAD+OT+GTEx',l:d.risk_score>=0.4?'y':led(d.risk_score>=0.15,false)},
+  ];
+  const el=document.getElementById('evcard');
+  el.style.display='block';
+  el.innerHTML=`
+    <div class="ev-head" style="background:${headCol}">
+      <h3>${d.gene}</h3><span class="tag">${grade}</span>
+      <span class="tag">${d.ensembl}</span>
+    </div>
+    <div class="ev-body">
+      <div class="ev-warn" style="display:${warnHtml?'block':'none'}">${warnHtml}</div>
+      <div class="axgrid">
+        ${axes.map(a=>`<div class="ax"><div class="k"><span class="led ${a.l}"></span>${a.k}</div><div class="v">${a.v}</div><div class="src">${a.src}${a.note?' · '+a.note:''}</div></div>`).join('')}
+      </div>
+      <div class="ev-foot">此卡為 <b>${d.gene}</b> 的<b>族群層證據</b>彙整，描述族群中此基因的約束、安全與可及性特徵。<b>此為族群層假設，非病人層預測</b>；不構成對特定病人的診斷、處方或預後。治療決策須由具完整病人脈絡的合格醫療專業人員做出。</div>
+      <details class="collapse"><summary>來源與時間戳</summary>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7">
+          gnomAD v4 (LOEUF/pLI) · Open Targets (safety, tractability) · GTEx (組織表現) · PubMed (文獻，fetched ${NOW})。所有數字可回溯原始 API 回應與版本。
+        </div>
+      </details>
+    </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ---- B4 report modal ---- */
+document.getElementById('reportBtn').addEventListener('click',()=>{
+  const rows=matched.map(g=>BYGENE[g]).sort((a,b)=>b.risk_score-a.risk_score);
+  document.getElementById('repDate').textContent=`產生日期 ${NOW} · 純 session 處理，資料未儲存`;
+  const trs=rows.map(d=>{
+    const flag=d.n_safety>0?`⚠ ${d.safety_events}`:(d.loeuf<=0.10?'⚠ 極約束':'—');
+    return `<tr><td><b>${d.gene}</b></td><td>${d.risk_score}</td><td>${d.n_evidence_axes}/5</td><td>${d.loeuf}</td><td style="color:${(d.n_safety>0||d.loeuf<=0.10)?'var(--warn)':'inherit'}">${flag}</td></tr>`;
+  }).join('');
+  document.getElementById('repBody').innerHTML=`
+    <h4>病人基因 — 風險 × 證據對照</h4>
+    <table class="rep-tbl">
+      <tr><th>基因</th><th>風險綜合分</th><th>證據軸</th><th>LOEUF</th><th>安全訊號</th></tr>${trs}
+    </table>
+    <h4>通路脈絡</h4>
+    <p style="font-size:13px;color:#444">病人基因落點集中於 TCR 近端訊號與轉錄共活化模組（Reactome/STRING）；若集中於 TCR 訊號，提示與 T 細胞活化相關。此為族群層通路歸屬，非病人層預測。</p>
+    <h4>專屬免責頁</h4>
+    <div class="rep-discbox">
+      本報告為研究用證據查詢與假設生成工具之輸出，<b>非診斷或處方系統</b>。所有內容為族群層級的證據強度與假設，不構成對特定病人的醫療建議。任何治療決策必須由具完整病人脈絡的合格醫療專業人員做出。<br><br>
+      本工具輸出以「族群層假設 / 證據強度」表述，不含用藥建議、診斷或預後。
+    </div>
+    <div class="rep-meta">
+      產生日期：${NOW}<br>
+      資料來源版本：gnomAD v4 · Open Targets · GTEx · ClinicalTrials · Reactome/STRING · PubMed (fetched ${NOW})<br>
+      資料處理聲明：病人資料僅於本次 session 記憶體處理，關閉/逾時即清除，不落地、不外傳、不訓練模型。
+    </div>`;
+  document.getElementById('modalBg').style.display='flex';
+});
+function closeModal(){document.getElementById('modalBg').style.display='none';}
+document.getElementById('modalX').addEventListener('click',closeModal);
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalBg').addEventListener('click',e=>{if(e.target.id==='modalBg')closeModal();});
+
+/* preload analysis after entering */
+enterBtn.addEventListener('click',()=>setTimeout(analyze,60));
+</script>
+</body>
+</html>
