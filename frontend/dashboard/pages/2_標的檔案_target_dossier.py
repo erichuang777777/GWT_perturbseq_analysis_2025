@@ -46,6 +46,7 @@ from concept_waterfall import SAMPLE_REPORT, build_waterfall_figure
 # lives in `ui_chips` so the main dashboard reuses the SAME helpers. Behaviour is
 # preserved verbatim: the old `_name` aliases below keep the rest of this page
 # byte-for-byte identical in behaviour to before the extraction.
+from nav import seed_dossier_session
 from ui_chips import (
     descriptive_note as _descriptive_note,
     fields_row as _fields_row,
@@ -356,6 +357,8 @@ def _readiness_row(readiness: Optional[Dict[str, Any]], target: str) -> Optional
 # =========================================================================== #
 st.set_page_config(page_title="標的檔案 · Target Dossier", layout="wide")
 inject_chip_css()
+# FE-1 deep-link: preselect the target/dataset a list view passed via query params.
+seed_dossier_session(st.query_params, st.session_state)
 
 st.title("標的檔案 · Target Dossier")
 st.warning(
