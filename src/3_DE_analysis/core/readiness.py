@@ -74,6 +74,19 @@ from common.overlay_lookup import (
 
 UNKNOWN = "unknown"
 
+# Repo root, anchored to this file's location (core -> 3_DE_analysis -> src ->
+# repo root), NOT to the process cwd. The CLI __main__ block below anchors its
+# default overlay paths here so that `python -m core.readiness cards.csv` loads
+# the druggability/essentials/broad-effect gene sets regardless of which
+# directory it is invoked from. Matches ``api/deps.py``'s ``ROOT`` (same
+# parents[3]) so the CLI and the API resolve the same files. Previously these
+# defaults were cwd-relative (``Path("metadata/gene_lists")``), so running from
+# anywhere but the repo root silently loaded ZERO overlays and collapsed the
+# advance tier -- with no error, since missing overlay files degrade to
+# "unknown" by design. Anchoring removes the silent-misconfiguration footgun
+# without changing the honest-degradation contract for genuinely-absent files.
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+
 # Ordered from least to most advanced; used for red-flag capping via min().
 CALL_ORDER = ["deprioritize", "watchlist", "validate", "advance"]
 STAGE_TO_CALL = {"R0": "deprioritize", "R1": "watchlist", "R2": "validate", "R3": "advance"}
@@ -529,10 +542,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Compute readiness calls from a target-cards CSV.")
     parser.add_argument("cards", type=Path)
-    parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
-    parser.add_argument("--essentials", type=Path, default=Path("metadata/gene_lists/core_essentials_hart.tsv"))
-    parser.add_argument("--broad-effect", type=Path, default=Path("sources/broad_effect_genes.txt"))
-    parser.add_argument("--evidence-dir", type=Path, default=Path("sources/target_tool_cache/_evidence"))
+    # Defaults are anchored to _REPO_ROOT (this file's location), NOT the cwd,
+    # so the CLI loads the overlay/essentials/broad-effect files from any
+    # working directory. An explicit --gene-lists (etc.) still wins.
+    parser.add_argument("--gene-lists", type=Path, default=_REPO_ROOT / "metadata" / "gene_lists")
+    parser.add_argument("--essentials", type=Path, default=_REPO_ROOT / "metadata" / "gene_lists" / "core_essentials_hart.tsv")
+    parser.add_argument("--broad-effect", type=Path, default=_REPO_ROOT / "sources" / "broad_effect_genes.txt")
+    parser.add_argument("--evidence-dir", type=Path, default=_REPO_ROOT / "sources" / "target_tool_cache" / "_evidence")
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
@@ -540,6 +556,24 @@ if __name__ == "__main__":
     ov = load_overlays(args.gene_lists)
     ess = load_gene_set(args.essentials)
     broad = load_gene_set(args.broad_effect)
+    # Loud (but non-fatal) guard, scoped to the CLI call site ONLY -- never
+    # inside the shared load_overlays(), which the API also calls and which must
+    # stay quiet under its honest-degradation contract. Keyed on "loaded zero
+    # overlays" regardless of whether the directory exists, so it also catches a
+    # wrong-but-present cwd directory. Zero overlays means every druggability /
+    # genetics domain reads "unknown" and the advance tier is under-called; this
+    # turns that previously-silent misconfiguration into a visible warning.
+    if not ov:
+        import warnings
+
+        warnings.warn(
+            f"load_overlays returned 0 gene sets from {args.gene_lists!s} -- "
+            "druggability/genetics domains will all read 'unknown' and the "
+            "advance tier will be under-called. Pass --gene-lists pointing at "
+            "the repo's metadata/gene_lists directory.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
     evidence_dir = args.evidence_dir
     result = compute_readiness(
         cards_df,
