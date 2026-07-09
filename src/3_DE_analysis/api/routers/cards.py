@@ -8,7 +8,9 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 
 import concept_annotation
+import robust_ranking
 import stimulation_switch_explorer
+import triage_view
 from api import deps
 from report.generate import build_report_payload, write_report
 
@@ -116,6 +118,65 @@ def stimulation_switches(dataset_id: str, top_n: int = Query(default=100, ge=1, 
         raise HTTPException(status_code=404, detail="dataset_id not found")
     df = deps._normalize_cell_values(deps._load_cards(out_csv))
     return stimulation_switch_explorer.switch_report(df, top_n=top_n)
+
+
+@router.get("/api/robust_ranked/{dataset_id}", summary="Robustness-first (filter-then-rank) target short-list (descriptive)")
+def robust_ranked(
+    dataset_id: str,
+    strict: bool = Query(default=False, description="Raise the cross-donor/cross-guide correlation floor to 0.5 (from 0.2)."),
+    lenient: bool = Query(default=False, description="Also accept batch_sensitivity_flag=='confounded_but_robust' as passing (default: not_flagged only)."),
+    top_n: int = Query(default=100, ge=1, le=1000),
+) -> Dict[str, Any]:
+    """Filter-then-rank short-list: keep only ``high_confidence`` rows (all
+    measurable robustness checks pass), THEN rank and de-dup to one row per
+    target. Returns the three-state survivor counts (``n_high_confidence`` /
+    ``n_unresolved`` / ``n_total``) so the churn the calibration surfaced -- only
+    ~3% of rows pass replicate filtering, and high-raw-DE rows are
+    disproportionately unstable -- is transparent.
+
+    Purely descriptive: the robustness tier is NEVER a readiness input.
+    ``unresolved`` rows (a robustness field is NaN/unmeasured) are counted
+    separately and never treated as pass or fail (``unknown != 0``). The pinned
+    thresholds and the strict/lenient flags are echoed under ``thresholds`` for
+    provenance.
+    """
+    out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    df = deps._normalize_cell_values(deps._load_cards(out_csv))
+    return robust_ranking.robust_rank(df, top_n=top_n, strict=strict, lenient=lenient)
+
+
+@router.get("/api/triage/{dataset_id}", summary="Integrated multi-axis triage short-list (descriptive)")
+def triage(
+    dataset_id: str,
+    top_n: int = Query(default=100, ge=1, le=1000),
+) -> Dict[str, Any]:
+    """One row per target with every descriptive axis laid out on a single card:
+    immune concept modules + stimulation-gating, stimulation-switch class, the
+    on-target safety-liability axis (gnomAD constraint + GTEx off-context breadth,
+    a SPARSE ~15-gene axis), druggability, robustness tier (D), and disease x
+    population genetic double support (E). Scored transparently with the
+    documented ``DEFAULT_WEIGHTS`` and sorted by ``(total_score, n_axes,
+    |effect|)``.
+
+    Purely descriptive -- NONE of these axes is a readiness input. The safety
+    axis ADDS only on a proven-favorable window and SUBTRACTS on a KNOWN-high
+    liability; an ``unknown`` (uncovered) safety value scores 0 (``unknown != 0``,
+    never credited), so the sparse axis cannot dominate the ranking. Per-axis
+    provenance and sparse-axis coverage are echoed under ``provenance``. The
+    response can be large -- respect ``top_n``.
+    """
+    out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    df = deps._normalize_cell_values(deps._load_cards(out_csv))
+    return triage_view.triage_rank(
+        df,
+        gnomad_overlay=deps._gnomad_overlay(),
+        gtex_overlay=deps._gtex_overlay(),
+        top_n=top_n,
+    )
 
 
 @router.get("/api/summary/{dataset_id}")
