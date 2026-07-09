@@ -179,6 +179,45 @@ def triage(
     )
 
 
+@router.get("/api/triage/{dataset_id}/{target}", summary="Per-target descriptive multi-axis card (for the target dossier)")
+def triage_target(dataset_id: str, target: str) -> Dict[str, Any]:
+    """The composite descriptive axes for ONE target -- the per-entity companion
+    to ``/api/triage/{dataset_id}`` (which is ranked + capped at top_n, so an
+    arbitrary target may not appear there). Powers the target-dossier page: immune
+    concept modules + stimulation-gating, stimulation-switch class, robustness
+    tier, disease x population genetic double support, and the sparse on-target
+    safety-liability axis (gnomAD/GTEx).
+
+    Purely descriptive -- none of these is a readiness input. ``unknown != 0`` is
+    preserved verbatim from ``build_triage`` (an uncovered safety gene is
+    ``unknown``, never ``0``/safe). Honest-fallback ``available: false`` when the
+    target is absent from the dataset. Match on the ``target`` gene symbol,
+    case-insensitively.
+    """
+    out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    df = deps._normalize_cell_values(deps._load_cards(out_csv))
+    triaged = triage_view.build_triage(
+        df,
+        gnomad_overlay=deps._gnomad_overlay(),
+        gtex_overlay=deps._gtex_overlay(),
+    )
+    if triaged.empty or "target" not in triaged.columns:
+        return {"available": False, "reason": "triage could not be built for this dataset", "target": target}
+    match = triaged[triaged["target"].astype(str).str.upper() == str(target).strip().upper()]
+    if match.empty:
+        return {"available": False, "reason": f"target not found in dataset: {target}", "target": target}
+    row = deps._json_records(match.head(1))[0]
+    return {
+        "available": True,
+        "target": row.get("target", target),
+        "axes": row,
+        "provenance": concept_annotation.annotation_provenance(),
+        "descriptive_only": True,
+    }
+
+
 @router.get("/api/summary/{dataset_id}")
 def summarize_dataset(dataset_id: str, top_n: int = Query(default=50, ge=1, le=500)) -> Dict[str, Any]:
     out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"

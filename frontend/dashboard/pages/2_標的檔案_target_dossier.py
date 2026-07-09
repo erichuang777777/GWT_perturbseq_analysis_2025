@@ -47,6 +47,7 @@ from concept_waterfall import SAMPLE_REPORT, build_waterfall_figure
 # preserved verbatim: the old `_name` aliases below keep the rest of this page
 # byte-for-byte identical in behaviour to before the extraction.
 from nav import seed_dossier_session
+from ui_chips import format_concept_chips
 from ui_chips import (
     descriptive_note as _descriptive_note,
     fields_row as _fields_row,
@@ -336,6 +337,16 @@ def _modules(dataset_id: str) -> Tuple[List[Dict[str, Any]], bool]:
         return [], True
 
 
+@st.cache_data(ttl=30, show_spinner=False)
+def _triage_target(dataset_id: str, target: str) -> Tuple[Optional[Dict[str, Any]], bool]:
+    """Per-target composite descriptive axes (concept / switch / robustness /
+    double-support / safety) from GET /api/triage/{dataset_id}/{target}."""
+    try:
+        return _api_get(f"/api/triage/{dataset_id}/{target}"), False
+    except Exception:
+        return None, True
+
+
 def _first(*values: Any) -> Any:
     """First non-unknown value — lets a field be pulled from card OR readiness row."""
     for v in values:
@@ -526,6 +537,38 @@ else:
         )
         st.dataframe(audit_df, use_container_width=True, hide_index=True)
 _provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": dataset_id})
+
+# ----- (2b) Descriptive multi-axis summary (triage) ----------------------- #
+st.subheader("②b 多軸描述性摘要(descriptive axes at a glance)")
+_descriptive_note()
+_triage_payload, _triage_sample = _triage_target(dataset_id, canonical)
+if _triage_sample or not _triage_payload:
+    _not_available("多軸摘要", "API 未連線或此標的無資料")
+elif not _triage_payload.get("available", False):
+    _not_available("多軸摘要", _triage_payload.get("reason", ""))
+else:
+    _axes = _triage_payload.get("axes", {})
+    _concept_ids = format_concept_chips(_axes.get("concept_modules"))
+    axis_row = [
+        _labeled("免疫概念模組 concept modules", _val_chip(_concept_ids or None, unknown_label="無(none)")),
+        _labeled("刺激門控 stimulation-gated", _flag_chip(_axes.get("stimulation_gated"))),
+        _labeled("刺激開關 switch", _val_chip(_axes.get("switch_type"), unknown_label="無翻轉(none)")),
+        _labeled("穩健度 tier", _flag_chip(_axes.get("robustness_tier"))),
+    ]
+    _fields_row(axis_row)
+    axis_row2 = [
+        _labeled("遺傳雙證據 double-support", _flag_chip(_axes.get("double_support"))),
+        _labeled("疾病關聯數 n_diseases", _val_chip(_axes.get("n_diseases"))),
+        _labeled("安全窗 composite liability", _flag_chip(_axes.get("composite_safety_liability")), hint="gnomAD+GTEx · 稀疏~15基因"),
+        _labeled("成藥類別 druggable_class", _val_chip(_axes.get("druggable_class"))),
+    ]
+    _fields_row(axis_row2)
+    prov = _triage_payload.get("provenance", {})
+    _provenance(
+        "GET /api/triage/{dataset_id}/{target}",
+        version=prov.get("concept_set_version"),
+        extra={"dataset_id": dataset_id, "descriptive_only": True},
+    )
 
 # ----- (4) CD4 concept profile (reuse concept_waterfall) ------------------ #
 st.subheader("③ CD4 概念剖面(concept profile)")

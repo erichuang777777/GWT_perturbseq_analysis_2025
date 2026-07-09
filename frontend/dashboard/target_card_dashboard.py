@@ -587,21 +587,9 @@ except Exception as e:
 
 summary = summary_payload.get("summary", {})
 _compatibility_banner(dataset_id)
-# Tab order (FE-2): the composite 整合 Triage front-door + the immune/disease
-# discovery views come right after Overview; the raw explorer/pathway/io tabs
-# follow. Indices below map each `with tabs[i]:` block to its slot here.
-tabs = st.tabs([
-    "Overview",              # 0
-    "整合 Triage",            # 1  (was 7)
-    "免疫優先 Immune Priority",  # 2  (was 6)
-    "Disease Translator",    # 3  (was 5) + 遺傳雙證據
-    "Target Explorer",       # 4  (was 1)
-    "Pathway + Clinical",    # 5  (was 2)
-    "Imports",               # 6  (was 3)
-    "Export",                # 7  (was 4)
-])
 
-with tabs[0]:
+
+def render_overview() -> None:
     cols = st.columns(6)
     for col, key, label in zip(
         cols,
@@ -701,7 +689,7 @@ with tabs[0]:
     except Exception as e:
         st.info(f"Robustness scatter not available: {e}")
 
-with tabs[4]:
+def render_target_explorer() -> None:
     filter_cols = st.columns([1, 1, 1, 1])
     condition_options = [""] + opts.get("conditions", [])
     pathway_options = [""] + opts.get("pathway_axis", [])
@@ -870,7 +858,7 @@ with tabs[4]:
             footer_bits.append(f"source_name={lineage.get('source_name', 'NA')}")
         st.caption(" · ".join(footer_bits))
 
-with tabs[5]:
+def render_pathway_clinical() -> None:
     module_df = _modules(dataset_id)
     clinical_chart = _count_chart(summary_payload.get("clinical_counts", []), "clinical_axis")
     panel_cols = st.columns(2)
@@ -889,10 +877,10 @@ with tabs[5]:
     st.subheader("Module hit table")
     st.dataframe(module_df, use_container_width=True, hide_index=True)
 
-with tabs[6]:
+def render_imports() -> None:
     _render_imports_tab()
 
-with tabs[7]:
+def render_export() -> None:
     report_top_n = st.slider("report top_n", min_value=10, max_value=500, value=50, step=10)
     report = _summary(dataset_id, top_n=int(report_top_n))
     st.write(report.get("summary", {}))
@@ -927,7 +915,7 @@ with tabs[7]:
             mime="text/markdown",
         )
 
-with tabs[3]:
+def render_disease() -> None:
     st.subheader("Disease Translator")
     st.caption(
         "Ranks target cards by real Open Targets genetic-association evidence for a chosen indication. "
@@ -968,8 +956,41 @@ with tabs[3]:
                 chart_df = disease_df.drop_duplicates("target").set_index("target")[["disease_association_score"]]
                 st.bar_chart(chart_df)
 
+    st.divider()
+    st.subheader("遺傳雙證據 — Genetic double-support (disease × population)")
+    st.caption(
+        "Targets that are BOTH a genetic-association top target for ≥1 immune "
+        "indication AND carry a UK Biobank rare-LoF-burden signal whose 95% CI "
+        "excludes zero. Descriptive hypothesis prioritisation — GWAS-style "
+        "genetic association (not experimental causal proof) crossed with a "
+        "**population-level** burden estimate (not a patient-level prediction)."
+    )
+    ds_cols = st.columns([1, 3])
+    with ds_cols[0]:
+        ds_min_grade = st.slider("Min statistical grade", 1, 4, 2)
+    try:
+        ds_payload = _genetic_double_support(dataset_id, min_grade=ds_min_grade)
+        if not ds_payload.get("available", False):
+            st.info(f"Double-support not available: {ds_payload.get('reason', 'unknown')}")
+        else:
+            st.caption(
+                f"trait: `{ds_payload.get('trait', '')}` · "
+                f"{ds_payload.get('n_double_support', 0)} double-support targets · "
+                f"⚠️ {ds_payload.get('caveat', '')}"
+            )
+            ds_rows = ds_payload.get("targets", [])
+            if not ds_rows:
+                st.info("No double-support targets at this grade threshold.")
+            else:
+                ds_df = pd.DataFrame(ds_rows)
+                if "diseases" in ds_df.columns:
+                    ds_df["diseases"] = ds_df["diseases"].map(lambda v: ", ".join(v) if isinstance(v, list) else v)
+                st.dataframe(ds_df, use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.info(f"Double-support view not available: {e}")
 
-with tabs[2]:
+
+def render_immune_priority() -> None:
     st.subheader("免疫優先排序 — Immune-concept priority")
     st.caption(
         "Re-orders targets by CD4 immune-concept interest (membership in the 20 "
@@ -1049,42 +1070,7 @@ with tabs[2]:
         st.info(f"Switches view not available: {e}")
 
 
-with tabs[3]:  # renders into the Disease Translator tab, below the translator
-    st.divider()
-    st.subheader("遺傳雙證據 — Genetic double-support (disease × population)")
-    st.caption(
-        "Targets that are BOTH a genetic-association top target for ≥1 immune "
-        "indication AND carry a UK Biobank rare-LoF-burden signal whose 95% CI "
-        "excludes zero. Descriptive hypothesis prioritisation — GWAS-style "
-        "genetic association (not experimental causal proof) crossed with a "
-        "**population-level** burden estimate (not a patient-level prediction)."
-    )
-    ds_cols = st.columns([1, 3])
-    with ds_cols[0]:
-        ds_min_grade = st.slider("Min statistical grade", 1, 4, 2)
-    try:
-        ds_payload = _genetic_double_support(dataset_id, min_grade=ds_min_grade)
-        if not ds_payload.get("available", False):
-            st.info(f"Double-support not available: {ds_payload.get('reason', 'unknown')}")
-        else:
-            st.caption(
-                f"trait: `{ds_payload.get('trait', '')}` · "
-                f"{ds_payload.get('n_double_support', 0)} double-support targets · "
-                f"⚠️ {ds_payload.get('caveat', '')}"
-            )
-            ds_rows = ds_payload.get("targets", [])
-            if not ds_rows:
-                st.info("No double-support targets at this grade threshold.")
-            else:
-                ds_df = pd.DataFrame(ds_rows)
-                if "diseases" in ds_df.columns:
-                    ds_df["diseases"] = ds_df["diseases"].map(lambda v: ", ".join(v) if isinstance(v, list) else v)
-                st.dataframe(ds_df, use_container_width=True, hide_index=True)
-    except Exception as e:
-        st.info(f"Double-support view not available: {e}")
-
-
-with tabs[1]:
+def render_triage() -> None:
     st.subheader("整合多軸 Triage — composite descriptive shortlist")
     st.caption(
         "One row per target, scored across independent descriptive axes: immune "
@@ -1144,3 +1130,36 @@ with tabs[1]:
                 st.dataframe(pd.DataFrame(rr_rows), use_container_width=True, hide_index=True)
     except Exception as e:
         st.info(f"Robust ranking view not available: {e}")
+
+
+# Tab order (FE-2): the composite 整合 Triage front-door + the immune/disease
+# discovery views come right after Overview; the raw explorer/pathway/io tabs
+# follow. The dispatch below is the single source of truth for tab order; each
+# body lives in a top-level render_*() so the section stays thin.
+tabs = st.tabs([
+    "Overview",              # 0
+    "整合 Triage",            # 1  (was 7)
+    "免疫優先 Immune Priority",  # 2  (was 6)
+    "Disease Translator",    # 3  (was 5) + 遺傳雙證據
+    "Target Explorer",       # 4  (was 1)
+    "Pathway + Clinical",    # 5  (was 2)
+    "Imports",               # 6  (was 3)
+    "Export",                # 7  (was 4)
+])
+
+with tabs[0]:
+    render_overview()
+with tabs[1]:
+    render_triage()
+with tabs[2]:
+    render_immune_priority()
+with tabs[3]:
+    render_disease()
+with tabs[4]:
+    render_target_explorer()
+with tabs[5]:
+    render_pathway_clinical()
+with tabs[6]:
+    render_imports()
+with tabs[7]:
+    render_export()
