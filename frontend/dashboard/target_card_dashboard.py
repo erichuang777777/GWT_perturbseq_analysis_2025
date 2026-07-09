@@ -10,6 +10,7 @@ import pandas as pd
 import requests
 import streamlit as st
 
+from glossary import render_glossary_expander  # advance/validate/watchlist/deprioritize/grade definitions
 from ui_chips import format_concept_chips  # shared unknown!=0-safe concept flattener (FE-3/FE-4)
 
 
@@ -624,6 +625,7 @@ def render_overview() -> None:
     st.dataframe(watch_df, use_container_width=True, hide_index=True)
 
     st.subheader("Readiness")
+    render_glossary_expander(keys=["advance", "validate", "watchlist", "deprioritize", "grade"])
     try:
         readiness_payload = _readiness(dataset_id)
         stage_counts = readiness_payload.get("counts", {})

@@ -9,8 +9,14 @@ Isolation (frontend/README.md, NON-NEGOTIABLE):
     This file lives in the ISOLATED `frontend/` package. It talks to the FastAPI
     backend ONLY over HTTP/JSON via the `_api_get` helper (copied from
     target_card_dashboard.py — NOT imported from the backend). It never imports
-    any `src/3_DE_analysis` module. The only concept-section renderer it reuses
-    is `concept_waterfall`, which is itself a backend-free frontend component.
+    any `src/3_DE_analysis` module.
+
+    Note: this page does NOT reuse `concept_waterfall`/`SAMPLE_REPORT` (the
+    pasted-expression-table demo on pages/1_個體概念剖面_探索demo.py). It
+    previously rendered that IL2RA fixture unconditionally under the "CD4
+    concept profile" heading, so every target's dossier showed an identical
+    waterfall regardless of which gene was queried. Fixed: this page now shows
+    only the real per-target module hits from GET /api/modules/{dataset_id}.
 
 資料明確 (§3 支柱二, honored throughout):
     * `unknown != 0` — an unmeasured/unchecked field renders as a distinct grey
@@ -38,14 +44,11 @@ import pandas as pd
 import requests
 import streamlit as st
 
-# `concept_waterfall` sits in the parent `dashboard/` dir, which Streamlit places
-# on sys.path when it runs the main dashboard script. Same import path page 1 uses.
-from concept_waterfall import SAMPLE_REPORT, build_waterfall_figure
-
 # Shared evidence-chip primitives (FE-3) — the `unknown != 0` visual grammar now
 # lives in `ui_chips` so the main dashboard reuses the SAME helpers. Behaviour is
 # preserved verbatim: the old `_name` aliases below keep the rest of this page
 # byte-for-byte identical in behaviour to before the extraction.
+from glossary import render_glossary_expander
 from nav import seed_dossier_session
 from ui_chips import format_concept_chips
 from ui_chips import (
@@ -475,6 +478,12 @@ _fields_row(header_bits)
 if not _is_unknown(resolve_payload.get("resolution_path")):
     st.caption(f"identity 解析路徑:`{resolve_payload.get('resolution_path')}`(query = `{selected_symbol}`)")
 _provenance("GET /api/targets/{dataset_id}/{target} + /api/genes/resolve", extra={"dataset_id": dataset_id})
+render_glossary_expander()
+st.caption(
+    "🧪 整個工具的證據基礎:**單一 CRISPRi screen**‧CD4⁺ T 細胞‧Rest/Stim8hr/Stim48hr 三種條件‧"
+    "N≈3 位捐贈者。所有以下判定都建立在這一次篩選之上,屬於**假設生成 (hypothesis-generating)** "
+    "用途,非臨床或個人醫療決策依據。詳見 REPRODUCIBILITY.md。"
+)
 
 # ----- (3) GWT evidence --------------------------------------------------- #
 st.subheader("② GWT 篩選證據(statistical / robustness)")
@@ -570,22 +579,24 @@ else:
         extra={"dataset_id": dataset_id, "descriptive_only": True},
     )
 
-# ----- (4) CD4 concept profile (reuse concept_waterfall) ------------------ #
+# ----- (4) CD4 concept profile (dataset-scoped module hits) --------------- #
 st.subheader("③ CD4 概念剖面(concept profile)")
 _descriptive_note()
 modules_payload, m_sample = _modules(dataset_id)
-# The dataset-scoped /api/modules returns per-target module hits, not a signed
-# activation waterfall; the concept-waterfall contract (SAMPLE_REPORT) is the
-# canonical shape for this shared component. When live module hits exist for
-# this target we surface them as a table alongside the waterfall.
-st.plotly_chart(
-    build_waterfall_figure(SAMPLE_REPORT.get("concept_profile", [])),
-    use_container_width=True,
-    config={"displayModeBar": False},
-)
+# NOTE: there is no live endpoint that returns a per-target SIGNED activation
+# waterfall (the concept_waterfall component + its SAMPLE_REPORT fixture is
+# the individual/COMPASS-layer demo on page 1, "探索demo" — driven by a
+# pasted expression table, not by dataset/target). This page previously
+# rendered that IL2RA fixture here UNCONDITIONALLY, so every target's dossier
+# showed the identical waterfall regardless of which gene was queried — an
+# honesty-invariant violation (a fixture presented as this target's data).
+# Fixed: this section now shows ONLY the real per-target module hits from
+# GET /api/modules/{dataset_id}, with an honest "not available" state when
+# there is no signed per-gene waterfall to show.
 st.caption(
-    "顏色 = 方向(藍 上調 / 紅 下調);長度 = 活化強度;透明度 = 覆蓋率;"
-    "灰色斜線 placeholder = **unknown(無 seed 覆蓋),非測得 0**。"
+    "此區塊顯示此資料集中,此標的命中的概念模組(descriptive,非活化強度波形)。"
+    "目前的篩選 pipeline 未提供逐標的、有方向性的活化分數,因此不顯示瀑布圖——"
+    "顯示假資料樣板會誤導使用者以為是這個基因的結果。"
 )
 target_modules = [r for r in (modules_payload or []) if str(r.get("target", "")).upper() == canonical.upper()]
 if target_modules:
@@ -593,11 +604,11 @@ if target_modules:
     st.dataframe(pd.DataFrame(target_modules), use_container_width=True, hide_index=True)
 elif not m_sample:
     _not_available(f"{canonical} 的概念模組命中", "此標的無模組對應")
-prov = SAMPLE_REPORT.get("provenance", {})
+else:
+    _not_available(f"{canonical} 的概念模組命中", "API 無法連線,無法取得 live 模組命中資料")
 _provenance(
-    "concept_waterfall (contract) + GET /api/modules/{dataset_id}",
-    version=prov.get("concept_set_version"),
-    extra={"note": "波形為概念契約示範;下方表格為此資料集 live 命中"},
+    "GET /api/modules/{dataset_id}",
+    extra={"dataset_id": dataset_id, "descriptive_only": True},
 )
 
 # ----- (5) Mechanism graph ------------------------------------------------ #
@@ -761,7 +772,10 @@ _provenance(
 
 # ----- (9) Readiness call + next validation step -------------------------- #
 st.subheader("⑧ Readiness 判定 + 下一步驗證")
-st.caption("這是本工具的**決定性**輸出(decision);上面的描述性區塊不改變它。")
+st.caption(
+    "這是本工具的**決定性**輸出(decision);上面的描述性區塊不改變它。"
+    "「advance / validate / watchlist / deprioritize」代表什麼、不代表什麼 → 見頁首「ℹ️ 名詞解釋」。"
+)
 if not rrow:
     _not_available("此標的的 readiness 記錄", "target 不在 readiness 表")
 else:
