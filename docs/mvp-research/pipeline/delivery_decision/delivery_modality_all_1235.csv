@@ -1,0 +1,1236 @@
+gene,delivery_modality,polarity,up_frac,n_concept_modules,stimulation_gated,ctx_specific_de,de_Rest,de_Stim8hr,de_Stim48hr,loeuf,druggability_tractability,is_surface_protein,has_extracellular_domain,extracellular_length,druggable_pathway,is_ctx_specific
+AASDH,待新模態 (無已知遞送方式),mixed,0.4166666666666667,0,False,150.0,151.0,1.0,101.0,,,False,False,,,False
+ABCC1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6408450704225352,0,False,51.0,88.0,54.0,37.0,,,True,True,147.0,ABC TRANSPORTER;DRUGGABLE GENOME;TRANSPORTER,False
+ABHD12,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6599552572706935,0,False,446.0,447.0,3.0,1.0,,,True,True,303.0,DRUGGABLE GENOME;ENZYME;PHOSPHOLIPASE,False
+ABHD13,待新模態 (無已知遞送方式),repressor,0.6820083682008368,0,False,144.0,214.0,194.0,70.0,,,False,False,0.0,,False
+ABHD14A,待新模態 (無已知遞送方式),activator,0.297029702970297,0,False,98.0,101.0,3.0,6.0,,,False,False,0.0,,False
+ACACA,小分子 (胞內可成藥口袋),mixed,0.43811610076670315,0,True,909.0,4.0,4.0,913.0,,,False,False,,DRUGGABLE GENOME;ENZYME,True
+ACAD9,待新模態 (無已知遞送方式),mixed,0.4876441515650741,0,True,606.0,1.0,5.0,607.0,,,False,False,,,True
+ACLY,小分子 (胞內可成藥口袋),mixed,0.6016520117239542,0,True,2419.0,13.0,1321.0,2432.0,0.400071926771869,,False,False,,DRUGGABLE GENOME;ENZYME,True
+ACOT7,待新模態 (無已知遞送方式),repressor,0.6899408284023668,0,True,843.0,2.0,5.0,845.0,,,,,,,True
+ACSL3,小分子 (胞內可成藥口袋),mixed,0.37037037037037035,0,False,38.0,16.0,5.0,54.0,,,False,False,0.0,CLINICALLY ACTIONABLE,False
+ACSS1,待新模態 (無已知遞送方式),repressor,0.680672268907563,0,False,353.0,357.0,5.0,4.0,,,False,False,,,False
+ACTMAP,待新模態 (無已知遞送方式),mixed,0.3767123287671233,0,False,53.0,95.0,42.0,51.0,,,,,,,False
+ACTR2,待新模態 (無已知遞送方式),repressor,0.6535985956699825,0,False,972.0,77.0,583.0,1049.0,,,False,False,,,False
+ACTR3,待新模態 (無已知遞送方式),repressor,0.7300613496932515,0,False,177.0,32.0,209.0,117.0,,,False,False,,,False
+ACTR5,待新模態 (無已知遞送方式),mixed,0.5530596436870643,0,False,253.0,332.0,585.0,374.0,,,,,,,False
+ACYP2,待新模態 (無已知遞送方式),mixed,0.6467661691542289,0,False,389.0,13.0,14.0,402.0,,,,,,,False
+ADAM19,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6937842778793418,0,False,206.0,243.0,402.0,449.0,,,True,True,497.0,DRUGGABLE GENOME;ENZYME;PROTEASE,False
+ADAM9,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.28865979381443296,0,False,95.0,97.0,11.0,2.0,,,True,True,669.0,CELL SURFACE;DRUGGABLE GENOME;ENZYME;EXTERNAL SIDE OF PLASMA MEMBRANE;NEUTRAL ZINC METALLOPEPTIDASE;PROTEASE,False
+ADCY4,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6983805668016194,0,False,271.0,273.0,2.0,221.0,,,True,True,27.0,DRUGGABLE GENOME;ENZYME,False
+ADNP,待新模態 (無已知遞送方式),mixed,0.58,0,False,25.0,25.0,50.0,42.0,,,False,False,,,False
+ADNP2,待新模態 (無已知遞送方式),mixed,0.5222672064777328,0,False,39.0,58.0,92.0,97.0,,,,,,,False
+AEBP2,待新模態 (無已知遞送方式),mixed,0.4495575221238938,0,True,498.0,12.0,55.0,510.0,,,,,,,True
+AHR,小分子 (胞內可成藥口袋),mixed,0.5731726404758178,0,False,1013.0,2790.0,1777.0,1822.0,0.5995461034933206,,False,False,,DRUGGABLE GENOME;ENZYME;NUCLEAR HORMONE RECEPTOR;TRANSCRIPTION FACTOR;TRANSCRIPTION FACTOR COMPLEX,False
+AHSA1,待新模態 (無已知遞送方式),mixed,0.36507936507936506,0,False,59.0,63.0,4.0,18.0,,,,,,,False
+AIP,待新模態 (無已知遞送方式),mixed,0.5853658536585366,0,False,199.0,104.0,303.0,249.0,,,,,,,False
+AK3,待新模態 (無已知遞送方式),repressor,0.8571428571428571,0,False,266.0,324.0,213.0,58.0,,,,,,,False
+AKAP10,待新模態 (無已知遞送方式),repressor,0.8571428571428571,0,False,23.0,34.0,56.0,11.0,,,False,False,,,False
+AKAP17A,待新模態 (無已知遞送方式),mixed,0.3821656050955414,0,False,57.0,29.0,71.0,86.0,,,,,,,False
+ALDH18A1,待新模態 (無已知遞送方式),repressor,0.7517006802721088,0,False,103.0,119.0,175.0,16.0,,,,,,,False
+ALG13,待新模態 (無已知遞送方式),repressor,0.8172043010752689,0,False,151.0,35.0,186.0,4.0,,,,,,,False
+ALG3,抗體 (表面但胞外域有限),repressor,0.9508196721311475,0,False,114.0,8.0,122.0,10.0,,,True,False,0.0,,False
+ALG6,抗體 (表面但胞外域有限),repressor,0.6789115646258503,0,False,191.0,142.0,260.0,333.0,,,True,False,0.0,,False
+ALG8,抗體 (表面但胞外域有限),mixed,0.5545517720639332,0,False,725.0,82.0,550.0,807.0,,,True,False,0.0,,False
+ALKBH2,待新模態 (無已知遞送方式),repressor,0.7065026362038664,0,False,268.0,365.0,107.0,97.0,,,,,,,False
+ALS2,待新模態 (無已知遞送方式),mixed,0.6078431372549019,0,False,101.0,102.0,6.0,1.0,,,False,False,,,False
+AMBRA1,待新模態 (無已知遞送方式),mixed,0.43914473684210525,0,True,602.0,6.0,16.0,608.0,,,,,,,True
+AMD1,小分子 (胞內可成藥口袋),mixed,0.635048231511254,0,False,412.0,16.0,194.0,428.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+AMER1,待新模態 (無已知遞送方式),mixed,0.6014492753623188,0,False,275.0,276.0,2.0,1.0,,,,,,,False
+ANKAR,待新模態 (無已知遞送方式),repressor,0.9299065420560748,0,False,285.0,292.0,136.0,7.0,,,False,False,0.0,,False
+ANKRD11,待新模態 (無已知遞送方式),mixed,0.4492753623188406,0,False,54.0,15.0,69.0,19.0,,,,,,,False
+ANKRD61,待新模態 (無已知遞送方式),mixed,0.5011914217633042,0,True,1176.0,1.0,82.0,1177.0,,,,,,,True
+ANP32B,待新模態 (無已知遞送方式),mixed,0.6403269754768393,0,False,181.0,93.0,274.0,31.0,,,,,,,False
+AP1S2,待新模態 (無已知遞送方式),repressor,0.776566757493188,0,False,217.0,221.0,146.0,4.0,,,,,,,False
+AP3D1,待新模態 (無已知遞送方式),repressor,0.75,0,False,71.0,72.0,1.0,2.0,,,False,False,,,False
+APOBEC3B,待新模態 (無已知遞送方式),repressor,0.8355704697986577,0,False,72.0,113.0,185.0,47.0,,,,,,,False
+APOBEC3G,待新模態 (無已知遞送方式),repressor,0.75,0,False,103.0,104.0,1.0,2.0,,,,,,,False
+APPL2,待新模態 (無已知遞送方式),repressor,0.8847826086956522,0,False,458.0,2.0,460.0,9.0,,,,,,,False
+ARF1,待新模態 (無已知遞送方式),repressor,0.6975717439293598,0,False,1746.0,1754.0,58.0,8.0,0.263708322947604,,,,,,False
+ARF4,待新模態 (無已知遞送方式),repressor,0.8116883116883117,0,False,148.0,6.0,154.0,13.0,,,,,,,False
+ARHGAP27,待新模態 (無已知遞送方式),repressor,0.7693069306930693,0,True,925.0,9.0,934.0,76.0,,,,,,,True
+ARHGAP30,待新模態 (無已知遞送方式),mixed,0.5735578250069003,0,False,1541.0,1840.0,299.0,1484.0,0.4528866412654388,,,,,,False
+ARHGAP45,待新模態 (無已知遞送方式),mixed,0.58,0,False,33.0,34.0,50.0,1.0,,,,,,,False
+ARID2,小分子 (胞內可成藥口袋),mixed,0.6403061224489796,0,False,82.0,298.0,216.0,270.0,,,False,False,,CLINICALLY ACTIONABLE;NUCLEAR HORMONE RECEPTOR,False
+ARID4B,待新模態 (無已知遞送方式),repressor,0.7933884297520661,0,False,234.0,8.0,242.0,18.0,,,,,,,False
+ARIH1,待新模態 (無已知遞送方式),repressor,0.7072402938090241,0,False,437.0,434.0,601.0,871.0,,,,,,,False
+ARL1,待新模態 (無已知遞送方式),repressor,0.6934306569343066,0,False,136.0,1.0,10.0,137.0,,,,,,,False
+ARL6IP1,抗體 (表面但胞外域有限),activator,0.2711864406779661,0,False,117.0,1.0,1.0,118.0,,,True,False,0.0,,False
+ARMC8,待新模態 (無已知遞送方式),repressor,0.8108108108108109,0,False,48.0,37.0,85.0,63.0,,,,,,,False
+ARMH3,待新模態 (無已知遞送方式),mixed,0.4827586206896552,0,False,109.0,116.0,7.0,13.0,,,False,False,0.0,,False
+ARNT,待新模態 (無已知遞送方式),mixed,0.5106194690265486,0,False,627.0,2320.0,2643.0,2947.0,0.3873464603285701,,,,,,False
+ARPC1B,待新模態 (無已知遞送方式),mixed,0.5384615384615384,0,False,61.0,4.0,44.0,65.0,,,,,,,False
+ARPC2,待新模態 (無已知遞送方式),repressor,0.7081951681667457,0,False,823.0,216.0,1039.0,856.0,,,,,,,False
+ARPC3,待新模態 (無已知遞送方式),repressor,0.7322435174746336,0,False,758.0,148.0,906.0,720.0,,,,,,,False
+ASXL1,待新模態 (無已知遞送方式),activator,0.33090909090909093,0,False,266.0,275.0,42.0,9.0,,,,,,,False
+ATAD3A,待新模態 (無已知遞送方式),mixed,0.4444444444444444,0,True,718.0,2.0,7.0,720.0,,,False,False,0.0,,True
+ATF4,待新模態 (無已知遞送方式),mixed,0.5710577547047372,0,False,976.0,86.0,1062.0,393.0,,,,,,,False
+ATF7IP,待新模態 (無已知遞送方式),repressor,0.7027027027027027,0,False,66.0,8.0,6.0,74.0,,,,,,,False
+ATF7IP2,待新模態 (無已知遞送方式),repressor,0.7953675730110775,0,False,1877.0,854.0,2731.0,1380.0,0.8461628384545281,,,,,,False
+ATG14,待新模態 (無已知遞送方式),mixed,0.5318352059925093,0,False,248.0,19.0,6.0,267.0,,,,,,,False
+ATM,小分子 (胞內可成藥口袋),repressor,0.6655948553054662,0,False,46.0,97.0,71.0,143.0,,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;DRUGGABLE GENOME;ENZYME;KINASE;PHOSPHATIDYLINOSITOL 3 KINASE;SERINE THREONINE KINASE;TUMOR SUPPRESSOR,False
+ATP1B3,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.785007072135785,0,False,167.0,329.0,216.0,162.0,,,True,True,223.0,DRUGGABLE GENOME;ENZYME;TRANSPORTER,False
+ATP23,待新模態 (無已知遞送方式),repressor,0.6605504587155964,0,False,43.0,54.0,67.0,97.0,,,,,,,False
+ATP2A2,抗體 (表面但胞外域有限),repressor,0.673816656680647,0,False,1953.0,3519.0,3260.0,1566.0,0.2003169158021933,,True,False,0.0,DRUGGABLE GENOME;ENZYME;TRANSPORTER,False
+ATP2A3,抗體 (表面但胞外域有限),repressor,0.65,0,False,72.0,8.0,80.0,5.0,,,True,False,0.0,DRUGGABLE GENOME;ENZYME;TRANSPORTER,False
+ATP5F1E,待新模態 (無已知遞送方式),mixed,0.47183098591549294,0,False,402.0,24.0,4.0,426.0,,,,,,,False
+ATP5ME,待新模態 (無已知遞送方式),mixed,0.5838198498748958,0,False,368.0,365.0,101.0,733.0,,,False,False,,,False
+ATP5MF,待新模態 (無已知遞送方式),mixed,0.5197452229299363,0,False,593.0,96.0,12.0,689.0,,,False,False,0.0,,False
+ATP5PO,待新模態 (無已知遞送方式),mixed,0.5268817204301075,0,False,734.0,423.0,94.0,1157.0,,,,,,,False
+ATRX,小分子 (胞內可成藥口袋),repressor,0.6566091954022989,0,False,617.0,214.0,831.0,347.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR;ENZYME,False
+ATXN1L,待新模態 (無已知遞送方式),mixed,0.5,0,False,95.0,98.0,3.0,4.0,,,,,,,False
+ATXN2L,待新模態 (無已知遞送方式),mixed,0.5308641975308642,0,False,32.0,118.0,120.0,86.0,,,,,,,False
+ATXN7L3,待新模態 (無已知遞送方式),repressor,0.6802675585284281,0,False,1397.0,545.0,1942.0,503.0,,,,,,,False
+AUP1,待新模態 (無已知遞送方式),mixed,0.5176151761517616,0,False,231.0,10.0,128.0,241.0,,,False,False,,,False
+AVEN,待新模態 (無已知遞送方式),repressor,0.7388535031847133,0,False,154.0,3.0,157.0,1.0,,,,,,,False
+B3GAT1,待新模態 (無已知遞送方式),activator,0.29743589743589743,0,False,188.0,195.0,7.0,8.0,,,False,False,0.0,,False
+BAHD1,待新模態 (無已知遞送方式),repressor,0.885480572597137,0,False,362.0,31.0,96.0,393.0,,,,,,,False
+BAZ1A,待新模態 (無已知遞送方式),mixed,0.43820224719101125,0,False,85.0,89.0,4.0,16.0,,,,,,,False
+BBS10,待新模態 (無已知遞送方式),repressor,0.7848101265822784,0,False,35.0,44.0,79.0,23.0,,,False,False,,,False
+BCAP29,抗體 (表面但胞外域有限),repressor,0.9523809523809523,0,False,104.0,1.0,105.0,15.0,,,True,False,0.0,,False
+BCL10,待新模態 (無已知遞送方式),mixed,0.5725605966438782,1,True,3455.0,1.0,3456.0,2980.0,0.5462126708195334,,,,,,True
+BCL6,待新模態 (無已知遞送方式),repressor,0.8823529411764706,0,False,52.0,16.0,28.0,68.0,,,,,,,False
+BCLAF1,待新模態 (無已知遞送方式),mixed,0.5720720720720721,0,False,72.0,43.0,107.0,115.0,,,,,,,False
+BEX3,待新模態 (無已知遞送方式),mixed,0.4565916398713826,0,False,298.0,311.0,16.0,13.0,,,,,,,False
+BHLHE40,待新模態 (無已知遞送方式),mixed,0.433116413593637,0,False,1532.0,465.0,1997.0,1687.0,0.2171883786993017,,,,,,False
+BICDL1,待新模態 (無已知遞送方式),mixed,0.4177215189873418,0,False,75.0,4.0,4.0,79.0,,,,,,,False
+BLOC1S2,待新模態 (無已知遞送方式),repressor,0.9056603773584906,0,False,26.0,27.0,45.0,53.0,,,,,,,False
+BLOC1S4,待新模態 (無已知遞送方式),mixed,0.47560975609756095,0,False,80.0,2.0,82.0,4.0,,,,,,,False
+BLZF1,待新模態 (無已知遞送方式),repressor,0.6886120996441281,0,False,448.0,454.0,6.0,108.0,,,,,,,False
+BPTF,待新模態 (無已知遞送方式),mixed,0.5122634898388227,0,False,167.0,437.0,604.0,386.0,,,,,,,False
+BRAT1,待新模態 (無已知遞送方式),mixed,0.44077134986225897,0,False,198.0,219.0,21.0,144.0,,,False,False,,,False
+BRD1,待新模態 (無已知遞送方式),mixed,0.38742393509127787,0,False,227.0,65.0,292.0,136.0,,,,,,,False
+BRD10,待新模態 (無已知遞送方式),mixed,0.5056818181818182,0,False,118.0,119.0,57.0,1.0,,,,,,,False
+BRD7,待新模態 (無已知遞送方式),mixed,0.6,0,False,72.0,80.0,45.0,8.0,,,,,,,False
+BRK1,待新模態 (無已知遞送方式),repressor,0.6563440860215054,0,False,655.0,622.0,1277.0,426.0,,,,,,,False
+BRPF1,待新模態 (無已知遞送方式),mixed,0.5429763560500696,0,False,783.0,1005.0,1788.0,802.0,,,,,,,False
+BSG,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6228070175438597,0,False,113.0,1.0,1.0,114.0,,,True,True,186.0,DRUGGABLE GENOME;TRANSPORTER,False
+BTAF1,待新模態 (無已知遞送方式),mixed,0.5700156168662155,0,False,440.0,1053.0,1493.0,1296.0,,,False,False,,,False
+BZW2,待新模態 (無已知遞送方式),mixed,0.6136363636363636,0,False,84.0,4.0,2.0,88.0,,,,,,,False
+C11orf54,待新模態 (無已知遞送方式),mixed,0.4962365591397849,0,False,886.0,1045.0,159.0,656.0,,,,,,,False
+C16orf87,待新模態 (無已知遞送方式),mixed,0.6202185792349727,0,False,74.0,129.0,182.0,55.0,,,,,,,False
+C18orf32,待新模態 (無已知遞送方式),mixed,0.6351351351351351,0,False,40.0,34.0,74.0,40.0,,,False,False,,,False
+C1D,待新模態 (無已知遞送方式),repressor,0.6919883769198838,0,False,405.0,555.0,960.0,894.0,,,,,,,False
+C1orf21,待新模態 (無已知遞送方式),repressor,0.7105575326215896,0,False,834.0,843.0,9.0,9.0,,,,,,,False
+C2CD2L,待新模態 (無已知遞送方式),repressor,0.9047619047619048,0,False,40.0,23.0,63.0,5.0,,,False,False,0.0,,False
+C2CD5,待新模態 (無已知遞送方式),mixed,0.47540983606557374,0,False,59.0,2.0,61.0,2.0,,,False,False,,,False
+C2orf15,待新模態 (無已知遞送方式),mixed,0.4756554307116105,0,False,259.0,8.0,14.0,267.0,,,,,,,False
+C6orf120,小分子 (胞內可成藥口袋),mixed,0.5714285714285714,0,False,39.0,17.0,40.0,56.0,,,False,False,,DRUGGABLE GENOME,False
+C8orf33,待新模態 (無已知遞送方式),mixed,0.6103151862464183,0,False,250.0,264.0,85.0,14.0,,,,,,,False
+CAAP1,待新模態 (無已知遞送方式),activator,0.3076923076923077,0,False,58.0,7.0,5.0,65.0,,,,,,,False
+CAB39,待新模態 (無已知遞送方式),repressor,0.8449612403100775,0,False,119.0,10.0,129.0,23.0,,,,,,,False
+CABIN1,待新模態 (無已知遞送方式),mixed,0.6112600536193029,0,False,164.0,27.0,191.0,182.0,,,,,,,False
+CALCOCO2,待新模態 (無已知遞送方式),repressor,0.7605782792665726,0,True,2347.0,5.0,2352.0,484.0,0.8696402064773731,,False,False,,,True
+CALR,小分子 (胞內可成藥口袋),repressor,0.9682539682539683,0,False,50.0,63.0,13.0,35.0,,,False,False,,CELL SURFACE;CLINICALLY ACTIONABLE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;NUCLEAR HORMONE RECEPTOR,False
+CAMK1,小分子 (胞內可成藥口袋),mixed,0.6065573770491803,0,False,16.0,46.0,30.0,61.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+CAND1,待新模態 (無已知遞送方式),mixed,0.583732057416268,0,False,321.0,838.0,1159.0,929.0,,,False,False,,,False
+CAP1,待新模態 (無已知遞送方式),repressor,0.717741935483871,0,False,110.0,190.0,102.0,80.0,,,False,False,,,False
+CAPZA1,待新模態 (無已知遞送方式),mixed,0.6481481481481481,0,False,52.0,3.0,55.0,53.0,,,,,,,False
+CARD6,待新模態 (無已知遞送方式),repressor,0.7593984962406015,0,False,32.0,55.0,23.0,78.0,,,False,False,,,False
+CARM1,小分子 (胞內可成藥口袋),repressor,0.6536231884057971,0,False,271.0,108.0,203.0,379.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+CARMIL2,待新模態 (無已知遞送方式),mixed,0.5865025280281381,0,False,2459.0,86.0,2545.0,1918.0,,,,,,,False
+CARNMT1,待新模態 (無已知遞送方式),mixed,0.5172413793103449,0,False,45.0,13.0,47.0,58.0,,,,,,,False
+CASC3,待新模態 (無已知遞送方式),repressor,0.7266089778258518,0,False,211.0,1239.0,1431.0,1028.0,,,,,,,False
+CASK,小分子 (胞內可成藥口袋),mixed,0.563573883161512,0,False,104.0,121.0,17.0,170.0,,,False,False,0.0,DRUGGABLE GENOME;ENZYME;ION CHANNEL;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+CASP9,待新模態 (無已知遞送方式),mixed,0.46419098143236076,0,False,753.0,754.0,1.0,4.0,,,,,,,False
+CATSPERG,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6457399103139013,0,False,218.0,5.0,13.0,223.0,,,True,True,1030.0,,False
+CAV1,待新模態 (無已知遞送方式),mixed,0.4842105263157895,0,False,94.0,95.0,1.0,10.0,,,False,False,0.0,,False
+CBFA2T2,待新模態 (無已知遞送方式),repressor,0.6966666666666667,0,False,298.0,300.0,2.0,2.0,,,,,,,False
+CBLB,待新模態 (無已知遞送方式),mixed,0.543046357615894,0,True,1022.0,6.0,1028.0,180.0,,,,,,,True
+CBLL1,待新模態 (無已知遞送方式),mixed,0.6322701688555347,0,False,230.0,302.0,532.0,232.0,,,,,,,False
+CBX3,待新模態 (無已知遞送方式),repressor,0.7559322033898305,0,False,66.0,66.0,97.0,132.0,,,,,,,False
+CBX5,待新模態 (無已知遞送方式),mixed,0.4188679245283019,0,True,513.0,49.0,233.0,562.0,,,,,,,True
+CCDC134,待新模態 (無已知遞送方式),mixed,0.5714285714285714,0,False,103.0,9.0,32.0,112.0,,,False,False,,,False
+CCDC136,待新模態 (無已知遞送方式),mixed,0.43346007604562736,0,False,246.0,17.0,38.0,263.0,,,False,False,0.0,,False
+CCDC138,待新模態 (無已知遞送方式),repressor,0.8271929824561404,0,False,784.0,178.0,962.0,16.0,,,,,,,False
+CCDC22,待新模態 (無已知遞送方式),repressor,0.6857142857142857,0,False,503.0,116.0,1.0,619.0,,,,,,,False
+CCDC6,待新模態 (無已知遞送方式),repressor,0.8217592592592593,0,False,83.0,102.0,185.0,145.0,,,,,,,False
+CCDC90B,待新模態 (無已知遞送方式),mixed,0.36792452830188677,0,False,105.0,1.0,1.0,106.0,,,False,False,0.0,,False
+CCDC93,待新模態 (無已知遞送方式),mixed,0.5862646566164154,0,False,301.0,102.0,92.0,403.0,,,,,,,False
+CCL5,小分子 (胞內可成藥口袋),activator,0.3469387755102041,0,False,95.0,98.0,20.0,3.0,,,False,False,,CELL SURFACE;DRUGGABLE GENOME;ENZYME;G PROTEIN COUPLED RECEPTOR;KINASE,False
+CCNA2,小分子 (胞內可成藥口袋),repressor,0.81725584182145,0,False,351.0,467.0,818.0,384.0,,,False,False,,DRUGGABLE GENOME;KINASE,False
+CCNC,小分子 (胞內可成藥口袋),mixed,0.6076102496425823,0,False,1360.0,2731.0,2271.0,4091.0,,3.0,False,False,,,False
+CCND2,小分子 (胞內可成藥口袋),activator,0.3178680981595092,0,False,1284.0,1287.0,1321.0,3.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;TRANSCRIPTION FACTOR,False
+CCND3,小分子 (胞內可成藥口袋),mixed,0.385,1,False,199.0,1.0,1.0,200.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;TRANSCRIPTION FACTOR,True
+CCNF,待新模態 (無已知遞送方式),mixed,0.4727854855923159,0,False,490.0,615.0,125.0,197.0,,,False,False,,,False
+CCNK,待新模態 (無已知遞送方式),mixed,0.5059422750424448,0,False,514.0,148.0,662.0,368.0,,,False,False,,,False
+CCNQ,待新模態 (無已知遞送方式),mixed,0.6235649546827795,0,False,311.0,466.0,777.0,412.0,,,False,False,,,False
+CCR4,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5957820738137083,0,False,503.0,508.0,61.0,5.0,,,True,True,100.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;G PROTEIN COUPLED RECEPTOR,False
+CD2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.537394451145959,0,True,985.0,4.0,669.0,989.0,,,True,True,185.0,CELL SURFACE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,True
+CD247,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6880573865839472,1,True,4325.0,5.0,4330.0,828.0,0.6885845464824588,6.0,True,True,9.0,DRUGGABLE GENOME;ENZYME;KINASE,True
+CD274,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.8550185873605948,0,False,143.0,24.0,167.0,102.0,,,True,True,220.0,CLINICALLY ACTIONABLE;DRUG RESISTANCE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+CD28,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5420702179176755,1,True,1793.0,5.0,1506.0,1798.0,0.6754854307844184,,True,True,134.0,CELL SURFACE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE,True
+CD3E,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6882280389201042,1,True,5707.0,4.0,5711.0,1586.0,0.7007847405093005,10.0,True,True,104.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE,True
+CD5,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6491340602950609,0,True,1193.0,8.0,358.0,1201.0,,,True,True,348.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,True
+CD99L2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.3619631901840491,0,,,,50.0,113.0,,,True,True,160.0,,False
+CDADC1,待新模態 (無已知遞送方式),repressor,0.8092485549132948,0,False,169.0,173.0,36.0,4.0,,,,,,,False
+CDC25B,待新模態 (無已知遞送方式),repressor,0.6672077922077922,0,False,1225.0,1256.0,1208.0,31.0,,,,,,,False
+CDCA3,待新模態 (無已知遞送方式),mixed,0.5571955719557196,0,False,57.0,127.0,74.0,70.0,,,,,,,False
+CDIPT,抗體 (表面但胞外域有限),repressor,0.851063829787234,0,False,352.0,24.0,376.0,1.0,,,True,False,0.0,,False
+CDK13,小分子 (胞內可成藥口袋),mixed,0.4410377358490566,0,False,332.0,558.0,672.0,890.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TUMOR SUPPRESSOR,False
+CDK2,小分子 (胞內可成藥口袋),mixed,0.6370370370370371,0,False,346.0,1.0,58.0,347.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR;DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR COMPLEX,False
+CDK5RAP3,待新模態 (無已知遞送方式),repressor,0.6933962264150944,0,False,108.0,132.0,240.0,52.0,,,,,,,False
+CDKN2AIP,待新模態 (無已知遞送方式),mixed,0.4,0,False,11.0,113.0,102.0,120.0,,,,,,,False
+CEP104,待新模態 (無已知遞送方式),mixed,0.5344827586206896,0,False,54.0,58.0,4.0,7.0,,,,,,,False
+CEP135,待新模態 (無已知遞送方式),mixed,0.44,0,False,123.0,2.0,38.0,125.0,,,False,False,,,False
+CEP43,小分子 (胞內可成藥口袋),repressor,0.6678383128295254,0,False,766.0,995.0,229.0,483.0,,,False,False,,CLINICALLY ACTIONABLE,False
+CEP44,待新模態 (無已知遞送方式),activator,0.2361111111111111,0,False,70.0,72.0,2.0,3.0,,,,,,,False
+CEP89,待新模態 (無已知遞送方式),mixed,0.4090909090909091,0,False,145.0,31.0,49.0,176.0,,,,,,,False
+CFAP20,待新模態 (無已知遞送方式),mixed,0.5917273075450019,0,False,838.0,455.0,863.0,1293.0,,,,,,,False
+CFAP298,待新模態 (無已知遞送方式),mixed,0.5277196652719666,0,False,,487.0,1425.0,,,,,,,,False
+CFAP97,待新模態 (無已知遞送方式),mixed,0.6306156405990017,0,False,600.0,601.0,1.0,3.0,,,,,,,False
+CHD4,小分子 (胞內可成藥口袋),repressor,0.6589023611997448,0,False,783.0,1200.0,1517.0,417.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+CHD7,待新模態 (無已知遞送方式),repressor,0.7483559842174485,0,False,1024.0,1254.0,2278.0,1030.0,,,False,False,,,False
+CHIC2,小分子 (胞內可成藥口袋),activator,0.3208955223880597,0,False,43.0,32.0,75.0,59.0,,,False,False,,CLINICALLY ACTIONABLE,False
+CHMP1A,小分子 (胞內可成藥口袋),mixed,0.6057838660578386,0,False,563.0,570.0,87.0,7.0,,,False,False,,DRUGGABLE GENOME;ENZYME;NEUTRAL ZINC METALLOPEPTIDASE,False
+CHMP4A,待新模態 (無已知遞送方式),repressor,0.7,0,False,59.0,41.0,100.0,20.0,,,,,,,False
+CHTF18,待新模態 (無已知遞送方式),mixed,0.5111111111111111,0,False,722.0,136.0,86.0,858.0,,,False,False,,,False
+CIT,小分子 (胞內可成藥口袋),mixed,0.3671875,0,False,39.0,74.0,54.0,35.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+CKAP4,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.671201814058957,0,False,437.0,441.0,16.0,4.0,,,True,True,475.0,,False
+CLCC1,抗體 (表面但胞外域有限),mixed,0.5767634854771784,0,False,1493.0,239.0,680.0,1732.0,0.8051613354337509,,True,False,0.0,,False
+CLPB,待新模態 (無已知遞送方式),mixed,0.6433566433566433,0,False,281.0,5.0,5.0,286.0,,,False,False,,,False
+CLUH,待新模態 (無已知遞送方式),activator,0.18446601941747573,0,False,71.0,32.0,27.0,103.0,,,False,False,,,False
+CMTM7,抗體 (表面但胞外域有限),repressor,0.7816091954022989,0,False,35.0,82.0,47.0,92.0,,,True,False,0.0,,False
+CMTR1,待新模態 (無已知遞送方式),repressor,0.7020057306590258,0,False,130.0,154.0,195.0,24.0,,,False,False,,,False
+CNBP,待新模態 (無已知遞送方式),mixed,0.5326278659611993,0,False,209.0,53.0,262.0,252.0,,,,,,,False
+CNOT10,待新模態 (無已知遞送方式),repressor,0.7151162790697675,0,False,48.0,43.0,81.0,91.0,,,False,False,,,False
+CNOT4,待新模態 (無已知遞送方式),mixed,0.5180572851805728,0,False,815.0,143.0,505.0,958.0,,,,,,,False
+CNOT6L,待新模態 (無已知遞送方式),mixed,0.3853211009174312,0,False,103.0,6.0,29.0,109.0,,,,,,,False
+COA3,待新模態 (無已知遞送方式),mixed,0.6017797552836485,0,False,422.0,112.0,253.0,534.0,,,False,False,0.0,,False
+COA6,待新模態 (無已知遞送方式),repressor,0.8867924528301887,0,False,101.0,5.0,10.0,106.0,,,,,,,False
+COA7,待新模態 (無已知遞送方式),mixed,0.6021505376344086,0,True,501.0,43.0,200.0,544.0,,,,,,,True
+COLGALT1,待新模態 (無已知遞送方式),mixed,0.5398773006134969,0,False,321.0,5.0,9.0,326.0,,,,,,,False
+COMMD10,待新模態 (無已知遞送方式),repressor,0.7339667458432304,0,False,80.0,99.0,143.0,179.0,,,,,,,False
+COMMD4,待新模態 (無已知遞送方式),mixed,0.5855855855855856,0,False,75.0,36.0,8.0,111.0,,,False,False,,,False
+COMMD5,待新模態 (無已知遞送方式),mixed,0.6098265895953757,0,False,215.0,7.0,124.0,222.0,,,,,,,False
+COMMD7,待新模態 (無已知遞送方式),repressor,0.6637168141592921,0,False,111.0,2.0,3.0,113.0,,,,,,,False
+COMMD8,待新模態 (無已知遞送方式),repressor,0.7390029325513197,0,False,227.0,57.0,6.0,284.0,,,,,,,False
+COP1,小分子 (胞內可成藥口袋),repressor,0.7570422535211268,0,False,142.0,71.0,213.0,40.0,,,False,False,0.0,CLINICALLY ACTIONABLE;ENZYME,False
+COPRS,待新模態 (無已知遞送方式),repressor,0.7732962447844228,0,False,385.0,76.0,182.0,461.0,,,,,,,False
+COPS9,待新模態 (無已知遞送方式),mixed,0.550561797752809,0,False,79.0,10.0,45.0,89.0,,,,,,,False
+COQ6,小分子 (胞內可成藥口袋),mixed,0.5140913508260447,0,True,780.0,20.0,229.0,800.0,,,False,False,,DRUGGABLE GENOME,True
+COX15,抗體 (表面但胞外域有限),mixed,0.4318840579710145,0,False,232.0,15.0,98.0,247.0,,,True,False,0.0,,False
+COX16,待新模態 (無已知遞送方式),repressor,0.7096774193548387,0,False,60.0,2.0,4.0,62.0,,,False,False,0.0,,False
+COX17,待新模態 (無已知遞送方式),mixed,0.6170212765957447,0,False,97.0,1.0,90.0,98.0,,,False,False,,,False
+COX18,抗體 (表面但胞外域有限),mixed,0.47738693467336685,0,False,395.0,3.0,5.0,398.0,,,True,False,0.0,,False
+COX19,待新模態 (無已知遞送方式),mixed,0.6183879093198993,0,False,458.0,26.0,310.0,484.0,,,,,,,False
+COX20,抗體 (表面但胞外域有限),mixed,0.35135135135135137,0,False,107.0,111.0,4.0,6.0,,,True,False,0.0,,False
+COX6B1,待新模態 (無已知遞送方式),mixed,0.4580152671755725,0,False,100.0,31.0,131.0,20.0,,,,,,,False
+COX6C,小分子 (胞內可成藥口袋),mixed,0.6496350364963503,0,False,1227.0,267.0,1494.0,568.0,,,False,False,0.0,CLINICALLY ACTIONABLE;ENZYME,False
+COX7C,待新模態 (無已知遞送方式),mixed,0.591304347826087,0,False,112.0,3.0,35.0,115.0,,,False,False,0.0,,False
+CPOX,待新模態 (無已知遞送方式),activator,0.29754601226993865,0,False,322.0,326.0,4.0,13.0,,,False,False,0.0,,False
+CPSF6,待新模態 (無已知遞送方式),repressor,0.6523612261806131,0,False,768.0,2158.0,2487.0,1390.0,0.2992907577699072,,,,,,False
+CREB1,小分子 (胞內可成藥口袋),mixed,0.43466666666666665,0,False,289.0,200.0,436.0,489.0,,,False,False,,CLINICALLY ACTIONABLE;KINASE;TRANSCRIPTION FACTOR,False
+CREBBP,小分子 (胞內可成藥口袋),mixed,0.6283908754623921,0,False,1407.0,1562.0,2969.0,1957.0,0.1051924869763193,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;DRUGGABLE GENOME;ENZYME;TRANSCRIPTION FACTOR;TRANSCRIPTION FACTOR COMPLEX,False
+CRLS1,抗體 (表面但胞外域有限),mixed,0.48092369477911645,0,False,724.0,111.0,50.0,835.0,,,True,False,0.0,,False
+CROT,小分子 (胞內可成藥口袋),repressor,0.7785547785547785,0,False,137.0,146.0,283.0,46.0,,,False,False,,DRUGGABLE GENOME,False
+CRTAP,小分子 (胞內可成藥口袋),repressor,0.8151260504201681,0,False,84.0,77.0,161.0,8.0,,,False,False,,DRUGGABLE GENOME,False
+CRTC2,待新模態 (無已知遞送方式),repressor,0.6539509536784741,0,False,364.0,367.0,3.0,7.0,,,,,,,False
+CRY1,待新模態 (無已知遞送方式),repressor,0.8274111675126904,0,False,191.0,197.0,6.0,6.0,,,,,,,False
+CRYZL1,小分子 (胞內可成藥口袋),repressor,0.7715605749486653,0,False,1195.0,1212.0,736.0,17.0,,,False,False,,DRUGGABLE GENOME,False
+CSDE1,待新模態 (無已知遞送方式),mixed,0.4964858026426764,0,False,1124.0,1814.0,1053.0,690.0,,,,,,,False
+CSK,小分子 (胞內可成藥口袋),mixed,0.5503432494279176,0,False,499.0,548.0,326.0,49.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;TYROSINE KINASE,False
+CSNK2A1,小分子 (胞內可成藥口袋),mixed,0.4945054945054945,0,False,157.0,296.0,139.0,293.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR;TUMOR SUPPRESSOR,False
+CSNK2A2,小分子 (胞內可成藥口袋),activator,0.32727272727272727,0,False,98.0,110.0,23.0,12.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+CTDSP2,待新模態 (無已知遞送方式),mixed,0.43333333333333335,0,False,118.0,2.0,3.0,120.0,,,,,,,False
+CTDSPL2,待新模態 (無已知遞送方式),mixed,0.4014778325123153,0,False,328.0,409.0,478.0,737.0,,,,,,,False
+CTH,待新模態 (無已知遞送方式),mixed,0.6233766233766234,0,False,152.0,2.0,0.0,154.0,,,False,False,,,False
+CTNNB1,小分子 (胞內可成藥口袋),mixed,0.6333333333333333,0,False,53.0,7.0,24.0,60.0,,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;DRUGGABLE GENOME;TRANSCRIPTION FACTOR;TRANSCRIPTION FACTOR COMPLEX,False
+CTPS1,待新模態 (無已知遞送方式),mixed,0.6094771241830066,0,False,813.0,79.0,892.0,253.0,,,False,False,,,False
+CTSF,待新模態 (無已知遞送方式),mixed,0.6161971830985915,0,False,284.0,284.0,0.0,0.0,,,,,,,False
+CTSO,小分子 (胞內可成藥口袋),activator,0.24489795918367346,0,False,96.0,2.0,3.0,98.0,,,False,False,,DRUGGABLE GENOME;ENZYME;PROTEASE,False
+CTU1,待新模態 (無已知遞送方式),repressor,0.6978776529338327,0,False,404.0,454.0,297.0,50.0,,,False,False,,,False
+CUL3,小分子 (胞內可成藥口袋),repressor,0.7186858316221766,0,False,108.0,693.0,585.0,670.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME;SERINE THREONINE KINASE,False
+CUL4A,待新模態 (無已知遞送方式),mixed,0.3786407766990291,0,False,96.0,7.0,13.0,103.0,,,,,,,False
+CUL4B,待新模態 (無已知遞送方式),activator,0.3472429210134128,0,False,550.0,572.0,99.0,22.0,,,False,False,,,False
+CYB561D2,抗體 (表面但胞外域有限),mixed,0.446985446985447,0,False,386.0,393.0,88.0,7.0,,,True,False,0.0,,False
+CYB5R4,待新模態 (無已知遞送方式),mixed,0.6173590003377237,0,False,1417.0,258.0,1675.0,1028.0,,,,,,,False
+CYB5RL,待新模態 (無已知遞送方式),mixed,0.5372750642673522,0,False,378.0,11.0,1.0,389.0,,,,,,,False
+CYLD,小分子 (胞內可成藥口袋),repressor,0.9270833333333334,0,False,94.0,96.0,46.0,2.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME;KINASE;PROTEASE,False
+CYP4V2,小分子 (胞內可成藥口袋),mixed,0.4725,0,False,210.0,265.0,80.0,55.0,,,False,False,0.0,CYTOCHROME P450;DRUGGABLE GENOME;ENZYME,False
+CYTH3,待新模態 (無已知遞送方式),activator,0.1919191919191919,0,False,63.0,36.0,99.0,1.0,,,,,,,False
+DAP,待新模態 (無已知遞送方式),mixed,0.4543610547667343,0,False,260.0,6.0,227.0,266.0,,,,,,,False
+DAXX,待新模態 (無已知遞送方式),repressor,0.7626582278481012,0,False,186.0,65.0,251.0,5.0,,,,,,,False
+DCAF11,待新模態 (無已知遞送方式),repressor,0.8978102189781022,0,False,117.0,20.0,137.0,8.0,,,False,False,,,False
+DCAF4,待新模態 (無已知遞送方式),mixed,0.4126984126984127,0,False,125.0,1.0,1.0,126.0,,,,,,,False
+DCAF5,待新模態 (無已知遞送方式),repressor,0.7230215827338129,0,False,107.0,52.0,67.0,159.0,,,,,,,False
+DCAKD,待新模態 (無已知遞送方式),repressor,0.7662337662337663,0,False,952.0,546.0,1498.0,112.0,,,False,False,,,False
+DCTPP1,待新模態 (無已知遞送方式),repressor,0.6949152542372882,0,False,175.0,177.0,2.0,6.0,,,,,,,False
+DDIT4,待新模態 (無已知遞送方式),mixed,0.6194968553459119,0,False,314.0,4.0,1.0,318.0,,,,,,,False
+DDX17,待新模態 (無已知遞送方式),mixed,0.45069637883008357,0,False,750.0,891.0,763.0,141.0,,,,,,,False
+DDX31,待新模態 (無已知遞送方式),mixed,0.631578947368421,0,False,69.0,7.0,39.0,76.0,,,,,,,False
+DDX6,待新模態 (無已知遞送方式),repressor,0.7231316725978648,0,False,486.0,669.0,986.0,1155.0,,,,,,,False
+DDX60L,待新模態 (無已知遞送方式),mixed,0.6212121212121212,0,False,191.0,6.0,197.0,67.0,,,False,False,,,False
+DEF6,待新模態 (無已知遞送方式),mixed,0.5833333333333334,0,False,59.0,1.0,60.0,23.0,,,,,,,False
+DEF8,待新模態 (無已知遞送方式),mixed,0.47345132743362833,0,False,142.0,103.0,104.0,245.0,,,,,,,False
+DEGS1,抗體 (表面但胞外域有限),repressor,0.7647058823529411,0,False,57.0,28.0,85.0,3.0,,,True,False,0.0,,False
+DEK,待新模態 (無已知遞送方式),repressor,0.8011363636363636,0,False,48.0,94.0,46.0,82.0,,,,,,,False
+DENND2D,待新模態 (無已知遞送方式),repressor,0.8264984227129337,0,False,309.0,317.0,8.0,8.0,,,False,False,,,False
+DENR,小分子 (胞內可成藥口袋),repressor,0.6695168875587858,0,False,1740.0,1897.0,3637.0,1483.0,0.3874194075618192,3.0,,,,,False
+DEPDC5,待新模態 (無已知遞送方式),mixed,0.5142857142857142,0,False,69.0,70.0,9.0,1.0,,,False,False,0.0,,False
+DGKZ,待新模態 (無已知遞送方式),mixed,0.581081081081081,0,False,100.0,28.0,128.0,94.0,,,False,False,,,False
+DHRS7,小分子 (胞內可成藥口袋),mixed,0.4943820224719101,0,False,137.0,41.0,178.0,29.0,,,False,False,,DRUGGABLE GENOME;ENZYME;SHORT CHAIN DEHYDROGENASE REDUCTASE,False
+DHX30,待新模態 (無已知遞送方式),mixed,0.51985559566787,0,False,272.0,5.0,26.0,277.0,,,False,False,,,False
+DHX36,待新模態 (無已知遞送方式),mixed,0.6156954156954157,0,False,518.0,2327.0,1809.0,2299.0,0.4553339341486281,,False,False,0.0,,False
+DIPK1A,待新模態 (無已知遞送方式),repressor,0.9225352112676056,0,False,141.0,1.0,142.0,1.0,,,False,False,0.0,,False
+DIS3L,待新模態 (無已知遞送方式),repressor,0.7111111111111111,0,False,250.0,20.0,270.0,27.0,,,,,,,False
+DIS3L2,小分子 (胞內可成藥口袋),repressor,0.8900473933649289,0,False,456.0,474.0,581.0,18.0,,,False,False,,CLINICALLY ACTIONABLE,False
+DLAT,待新模態 (無已知遞送方式),mixed,0.5277777777777778,0,True,1113.0,3.0,1.0,1116.0,,,False,False,,,True
+DLG4,待新模態 (無已知遞送方式),mixed,0.5769828926905132,0,False,1257.0,1286.0,41.0,29.0,,,,,,,False
+DMXL1,待新模態 (無已知遞送方式),mixed,0.45098039215686275,0,False,50.0,1.0,14.0,51.0,,,False,False,,,False
+DNAAF5,待新模態 (無已知遞送方式),mixed,0.36551724137931035,0,False,143.0,2.0,10.0,145.0,,,False,False,,,False
+DNAJC24,待新模態 (無已知遞送方式),mixed,0.4431512981199642,0,False,253.0,211.0,442.0,464.0,,,,,,,False
+DNAJC3,待新模態 (無已知遞送方式),mixed,0.58984375,0,False,59.0,69.0,59.0,128.0,,,False,False,,,False
+DNTTIP1,待新模態 (無已知遞送方式),mixed,0.5378133990957665,0,False,2488.0,237.0,2725.0,1904.0,0.5940742399639497,,,,,,False
+DOCK2,待新模態 (無已知遞送方式),mixed,0.578268876611418,0,False,852.0,1180.0,328.0,664.0,,,False,False,,,False
+DOHH,待新模態 (無已知遞送方式),mixed,0.502708192281652,0,False,1224.0,339.0,1563.0,1052.0,,,,,,,False
+DOLPP1,抗體 (表面但胞外域有限),repressor,0.6529975020815987,0,False,2138.0,580.0,2718.0,1506.0,0.6768439051045957,,True,False,0.0,,False
+DOP1B,待新模態 (無已知遞送方式),mixed,0.5265441024581698,0,False,2252.0,989.0,611.0,3241.0,,,False,False,,,False
+DOT1L,小分子 (胞內可成藥口袋),repressor,0.7714285714285715,0,False,313.0,123.0,176.0,436.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR;DRUGGABLE GENOME;ENZYME,False
+DPH1,待新模態 (無已知遞送方式),mixed,0.5720053835800808,0,False,418.0,91.0,509.0,143.0,,,False,False,,,False
+DPH2,待新模態 (無已知遞送方式),mixed,0.5822222222222222,0,False,117.0,54.0,19.0,171.0,,,False,False,,,False
+DPH5,待新模態 (無已知遞送方式),mixed,0.40668868703550787,0,False,770.0,484.0,684.0,1254.0,,,,,,,False
+DPH6,待新模態 (無已知遞送方式),mixed,0.44114285714285717,0,True,686.0,32.0,157.0,718.0,,,False,False,,,True
+DPM2,抗體 (表面但胞外域有限),repressor,0.7758620689655172,0,False,57.0,1.0,58.0,2.0,,,True,False,0.0,,False
+DR1,待新模態 (無已知遞送方式),mixed,0.5551632833186231,0,False,492.0,103.0,435.0,595.0,,,,,,,False
+DTWD1,待新模態 (無已知遞送方式),mixed,0.5953757225433526,0,False,135.0,38.0,38.0,173.0,,,False,False,,,False
+DUSP4,小分子 (胞內可成藥口袋),repressor,0.6964285714285714,0,False,54.0,2.0,56.0,1.0,,,False,False,,DRUGGABLE GENOME;KINASE;PROTEIN PHOSPHATASE,False
+DYNLT2B,待新模態 (無已知遞送方式),mixed,0.6031746031746031,0,False,188.0,189.0,1.0,1.0,,,False,False,,,False
+DZIP1,待新模態 (無已知遞送方式),repressor,0.8613138686131386,0,False,130.0,7.0,137.0,38.0,,,,,,,False
+EARS2,小分子 (胞內可成藥口袋),mixed,0.6285714285714286,0,False,358.0,50.0,277.0,408.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+ECI2,待新模態 (無已知遞送方式),mixed,0.6282051282051282,0,False,76.0,2.0,78.0,1.0,,,False,False,,,False
+ECSIT,待新模態 (無已知遞送方式),mixed,0.4697406340057637,0,True,683.0,11.0,26.0,694.0,,,,,,,True
+EDC3,待新模態 (無已知遞送方式),repressor,0.7653508771929824,0,False,782.0,914.0,778.0,132.0,,,,,,,False
+EDF1,待新模態 (無已知遞送方式),repressor,0.75,0,False,55.0,9.0,11.0,64.0,,,,,,,False
+EFHC1,待新模態 (無已知遞送方式),mixed,0.6282722513089005,0,False,382.0,382.0,1.0,0.0,,,,,,,False
+EGLN1,待新模態 (無已知遞送方式),repressor,0.8981481481481481,0,False,107.0,1.0,108.0,13.0,,,,,,,False
+EGR2,待新模態 (無已知遞送方式),mixed,0.4770063119927863,0,True,855.0,0.0,855.0,254.0,,,,,,,True
+EGR3,待新模態 (無已知遞送方式),repressor,0.7549019607843137,0,False,91.0,11.0,102.0,2.0,,,,,,,False
+EHBP1,待新模態 (無已知遞送方式),mixed,0.5714285714285714,0,False,52.0,4.0,56.0,15.0,,,False,False,,,False
+EHMT2,待新模態 (無已知遞送方式),mixed,0.522136137244051,0,False,422.0,1429.0,1178.0,1007.0,,,,,,,False
+EID2,待新模態 (無已知遞送方式),repressor,0.7859649122807018,0,False,2.0,96.0,95.0,94.0,,,,,,,False
+EIF1,待新模態 (無已知遞送方式),mixed,0.6189873417721519,0,False,389.0,343.0,732.0,505.0,,,,,,,False
+EIF1AX,待新模態 (無已知遞送方式),repressor,0.793067770305225,0,False,1288.0,1289.0,2577.0,47.0,,,,,,,False
+EIF2AK1,待新模態 (無已知遞送方式),mixed,0.4065040650406504,0,False,122.0,1.0,1.0,123.0,,,,,,,False
+EIF3L,待新模態 (無已知遞送方式),mixed,0.6153846153846154,0,False,64.0,142.0,198.0,206.0,,,False,False,,,False
+EIF4B,待新模態 (無已知遞送方式),mixed,0.5951417004048583,0,False,49.0,103.0,54.0,90.0,,,,,,,False
+EIF4G2,待新模態 (無已知遞送方式),mixed,0.6397866331973643,0,False,516.0,2014.0,2530.0,1830.0,0.1226951830624844,,,,,,False
+EIF4H,待新模態 (無已知遞送方式),repressor,0.8495297805642633,0,False,131.0,94.0,225.0,25.0,,,,,,,False
+ELAVL1,待新模態 (無已知遞送方式),mixed,0.380479344055503,0,False,156.0,2164.0,2170.0,2008.0,,,,,,,False
+ELF4,待新模態 (無已知遞送方式),mixed,0.49673202614379086,0,False,74.0,86.0,67.0,12.0,,,,,,,False
+ELOB,待新模態 (無已知遞送方式),repressor,0.7150951619933169,0,False,1561.0,1491.0,3052.0,2340.0,0.6023557757549423,,False,False,,,False
+ELOC,小分子 (胞內可成藥口袋),repressor,0.8960244648318043,0,False,199.0,64.0,263.0,6.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME;TRANSCRIPTION FACTOR,False
+ELP3,待新模態 (無已知遞送方式),mixed,0.5275675675675676,0,False,478.0,666.0,996.0,188.0,,,,,,,False
+ELP5,待新模態 (無已知遞送方式),mixed,0.6331914893617021,0,False,190.0,397.0,571.0,207.0,,,False,False,,,False
+ELP6,待新模態 (無已知遞送方式),mixed,0.5658914728682171,0,False,35.0,73.0,56.0,38.0,,,False,False,0.0,,False
+EMB,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6333333333333333,0,False,51.0,9.0,60.0,46.0,,,True,True,228.0,,False
+EMC3,抗體 (表面但胞外域有限),repressor,0.6540284360189573,0,False,145.0,12.0,54.0,157.0,,,True,False,0.0,,False
+EMC4,抗體 (表面但胞外域有限),repressor,0.6514459665144596,0,False,535.0,61.0,39.0,596.0,,,True,False,0.0,,False
+EMC9,待新模態 (無已知遞送方式),mixed,0.4318181818181818,0,False,138.0,38.0,176.0,23.0,,,False,False,,,False
+EML2,待新模態 (無已知遞送方式),repressor,0.7580872011251758,0,False,284.0,59.0,343.0,309.0,,,False,False,0.0,,False
+ENDOG,待新模態 (無已知遞送方式),repressor,0.852017937219731,0,False,280.0,287.0,159.0,7.0,,,,,,,False
+EOLA1,待新模態 (無已知遞送方式),repressor,0.9448818897637795,0,False,72.0,75.0,52.0,3.0,,,,,,,False
+EP300,待新模態 (無已知遞送方式),mixed,0.5669099756690997,0,False,104.0,74.0,159.0,178.0,,,,,,,False
+EPB41L3,待新模態 (無已知遞送方式),mixed,0.649375,0,False,2397.0,2399.0,801.0,2.0,0.5592822688724435,,False,False,0.0,,False
+EPC1,待新模態 (無已知遞送方式),mixed,0.5339308578745199,0,False,197.0,247.0,444.0,90.0,,,,,,,False
+ERCC1,待新模態 (無已知遞送方式),mixed,0.6476624857468644,0,False,191.0,225.0,236.0,416.0,,,,,,,False
+ERCC6L,待新模態 (無已知遞送方式),repressor,0.6896551724137931,0,False,41.0,117.0,76.0,97.0,,,False,False,,,False
+ERCC6L2,待新模態 (無已知遞送方式),mixed,0.6416666666666667,0,False,231.0,9.0,240.0,17.0,,,False,False,,,False
+ERF,待新模態 (無已知遞送方式),repressor,0.9038461538461539,0,False,51.0,52.0,1.0,3.0,,,False,False,,,False
+ERGIC1,抗體 (表面但胞外域有限),mixed,0.5362318840579711,0,False,58.0,11.0,69.0,6.0,,,True,False,0.0,,False
+ERGIC3,抗體 (表面但胞外域有限),mixed,0.6308724832214765,0,False,89.0,67.0,156.0,75.0,,,True,False,0.0,,False
+ERN1,小分子 (胞內可成藥口袋),activator,0.07913669064748201,0,False,52.0,124.0,117.0,176.0,,,False,False,0.0,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+ETNK1,待新模態 (無已知遞送方式),repressor,0.65,0,False,280.0,300.0,34.0,20.0,,,False,False,,,False
+EXT1,小分子 (胞內可成藥口袋),mixed,0.5760869565217391,0,False,91.0,92.0,2.0,1.0,,,False,False,0.0,CLINICALLY ACTIONABLE;ENZYME,False
+EXT2,小分子 (胞內可成藥口袋),mixed,0.4723618090452261,0,False,395.0,398.0,8.0,3.0,,,False,False,0.0,CLINICALLY ACTIONABLE;ENZYME,False
+EXTL2,小分子 (胞內可成藥口袋),repressor,0.84,0,False,31.0,19.0,50.0,15.0,,,False,False,0.0,DRUGGABLE GENOME,False
+FAM118A,待新模態 (無已知遞送方式),mixed,0.6481481481481481,0,False,36.0,18.0,54.0,4.0,,,False,False,0.0,,False
+FAM118B,待新模態 (無已知遞送方式),mixed,0.49137931034482757,0,False,342.0,6.0,8.0,348.0,,,,,,,False
+FAM161A,待新模態 (無已知遞送方式),repressor,0.6927592954990215,0,False,363.0,74.0,437.0,12.0,,,,,,,False
+FAM161B,待新模態 (無已知遞送方式),mixed,0.6402569593147751,0,False,265.0,29.0,294.0,173.0,,,,,,,False
+FAM20B,待新模態 (無已知遞送方式),mixed,0.3862433862433862,0,False,167.0,22.0,189.0,14.0,,,False,False,0.0,,False
+FAM3C,小分子 (胞內可成藥口袋),mixed,0.5754716981132075,0,False,185.0,212.0,31.0,27.0,,,False,False,,DRUGGABLE GENOME,False
+FAM98B,待新模態 (無已知遞送方式),mixed,0.5306881587104774,0,False,535.0,893.0,905.0,1428.0,,,False,False,,,False
+FAM98C,待新模態 (無已知遞送方式),activator,0.20253164556962025,0,False,78.0,79.0,1.0,2.0,,,,,,,False
+FANCC,小分子 (胞內可成藥口袋),repressor,0.7402597402597403,0,False,76.0,1.0,8.0,77.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR,False
+FANCD2,小分子 (胞內可成藥口袋),repressor,0.6649214659685864,0,False,88.0,107.0,84.0,19.0,,,False,False,,CLINICALLY ACTIONABLE,False
+FANCE,待新模態 (無已知遞送方式),repressor,0.7058823529411765,0,False,14.0,51.0,37.0,40.0,,,,,,,False
+FANCF,待新模態 (無已知遞送方式),mixed,0.5490196078431373,0,False,72.0,81.0,9.0,72.0,,,,,,,False
+FARS2,小分子 (胞內可成藥口袋),mixed,0.46462264150943394,0,False,420.0,4.0,6.0,424.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+FBRS,待新模態 (無已知遞送方式),repressor,0.678030303030303,0,False,148.0,40.0,188.0,76.0,,,,,,,False
+FBXL15,待新模態 (無已知遞送方式),repressor,0.8047276464542652,0,False,1598.0,1709.0,126.0,111.0,1.1826789436555596,,,,,,False
+FBXL3,待新模態 (無已知遞送方式),repressor,0.6814285714285714,0,False,213.0,211.0,424.0,65.0,,,,,,,False
+FBXO11,小分子 (胞內可成藥口袋),activator,0.14545454545454545,0,False,66.0,47.0,113.0,107.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+FBXO28,待新模態 (無已知遞送方式),activator,0.34959349593495936,0,False,277.0,302.0,67.0,25.0,,,,,,,False
+FBXO3,待新模態 (無已知遞送方式),mixed,0.42386831275720166,0,False,179.0,179.0,64.0,0.0,,,,,,,False
+FBXO32,待新模態 (無已知遞送方式),mixed,0.5080321285140562,0,False,968.0,1355.0,748.0,387.0,,,,,,,False
+FBXO38,待新模態 (無已知遞送方式),repressor,0.7540983606557377,0,False,120.0,122.0,17.0,2.0,,,,,,,False
+FBXO42,待新模態 (無已知遞送方式),repressor,0.7274401473296501,0,False,306.0,69.0,99.0,375.0,,,,,,,False
+FBXW2,待新模態 (無已知遞送方式),mixed,0.5403225806451613,0,False,108.0,16.0,124.0,1.0,,,False,False,,,False
+FBXW7,小分子 (胞內可成藥口袋),repressor,0.6957547169811321,0,False,142.0,50.0,192.0,182.0,,,False,False,0.0,CLINICALLY ACTIONABLE;DNA REPAIR,False
+FCHO1,待新模態 (無已知遞送方式),mixed,0.508130081300813,0,False,244.0,2.0,18.0,246.0,,,False,False,,,False
+FEM1A,待新模態 (無已知遞送方式),mixed,0.42105263157894735,0,False,49.0,46.0,95.0,6.0,,,,,,,False
+FIGNL1,待新模態 (無已知遞送方式),mixed,0.5683615819209039,0,False,512.0,539.0,27.0,346.0,,,,,,,False
+FITM1,抗體 (表面但胞外域有限),activator,0.29634831460674155,0,False,705.0,712.0,7.0,21.0,,,True,False,0.0,,False
+FITM2,抗體 (表面但胞外域有限),repressor,0.7692830445124023,0,True,2586.0,21.0,2607.0,336.0,1.0450714524369302,,True,False,0.0,,True
+FLCN,待新模態 (無已知遞送方式),mixed,0.5612745098039216,0,False,400.0,8.0,7.0,408.0,,,,,,,False
+FLI1,待新模態 (無已知遞送方式),mixed,0.5113122171945701,0,False,250.0,315.0,283.0,65.0,,,,,,,False
+FLT1,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6790123456790124,0,False,322.0,324.0,5.0,2.0,,,True,True,732.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;TYROSINE KINASE,False
+FN3K,待新模態 (無已知遞送方式),mixed,0.640625,0,False,117.0,11.0,11.0,128.0,,,,,,,False
+FNBP4,待新模態 (無已知遞送方式),repressor,0.7460861056751468,0,False,263.0,621.0,884.0,539.0,,,,,,,False
+FOSL2,待新模態 (無已知遞送方式),mixed,0.5220883534136547,1,False,163.0,35.0,51.0,198.0,,,False,False,,,True
+FOXK1,待新模態 (無已知遞送方式),repressor,0.71415770609319,0,False,662.0,157.0,819.0,140.0,,,,,,,False
+FOXN2,待新模態 (無已知遞送方式),repressor,0.9723320158102767,0,False,52.0,255.0,301.0,203.0,,,,,,,False
+FOXO1,待新模態 (無已知遞送方式),mixed,0.627721335268505,0,False,747.0,1328.0,847.0,581.0,,,,,,,False
+FPGS,小分子 (胞內可成藥口袋),repressor,0.6697247706422018,0,False,100.0,9.0,33.0,109.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+FRS3,待新模態 (無已知遞送方式),mixed,0.5637583892617449,0,False,444.0,3.0,24.0,447.0,,,,,,,False
+FUBP1,待新模態 (無已知遞送方式),mixed,0.519839946648883,0,False,700.0,553.0,1193.0,1253.0,,,,,,,False
+GAB2,待新模態 (無已知遞送方式),mixed,0.4642857142857143,0,False,53.0,3.0,23.0,56.0,,,,,,,False
+GABPB1,待新模態 (無已知遞送方式),mixed,0.5440917107583775,0,False,552.0,1030.0,1582.0,790.0,,,,,,,False
+GADD45GIP1,待新模態 (無已知遞送方式),mixed,0.5321252059308073,0,True,527.0,10.0,70.0,537.0,,,,,,,True
+GALNT6,待新模態 (無已知遞送方式),mixed,0.43953488372093025,0,False,294.0,68.0,39.0,362.0,,,False,False,0.0,,False
+GANAB,小分子 (胞內可成藥口袋),mixed,0.5788253477588872,0,False,609.0,623.0,671.0,14.0,,,False,False,0.0,DRUGGABLE GENOME;ENZYME,False
+GAS2L1,待新模態 (無已知遞送方式),mixed,0.4989059080962801,0,False,437.0,20.0,2.0,457.0,,,,,,,False
+GATA3,待新模態 (無已知遞送方式),mixed,0.4443786982248521,1,False,365.0,888.0,1239.0,1253.0,,,,,,,True
+GBA1,小分子 (胞內可成藥口袋),repressor,0.8214285714285714,0,False,55.0,56.0,1.0,1.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+GCN1,待新模態 (無已知遞送方式),mixed,0.6222222222222222,0,False,220.0,58.0,69.0,278.0,,,False,False,,,False
+GDAP1,抗體 (表面但胞外域有限),repressor,0.8070175438596491,0,False,54.0,3.0,25.0,57.0,,,True,False,0.0,,False
+GGA3,待新模態 (無已知遞送方式),mixed,0.5419254658385093,0,False,1112.0,1113.0,1.0,175.0,,,,,,,False
+GID8,待新模態 (無已知遞送方式),repressor,0.6871212121212121,0,False,624.0,348.0,972.0,13.0,,,,,,,False
+GIGYF2,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,158.0,158.0,234.0,316.0,,,False,False,,,False
+GLI1,待新模態 (無已知遞送方式),repressor,0.8603351955307262,0,False,175.0,4.0,179.0,6.0,,,,,,,False
+GLIPR2,待新模態 (無已知遞送方式),mixed,0.6338773709748566,0,False,616.0,745.0,1361.0,161.0,,,,,,,False
+GLS,待新模態 (無已知遞送方式),mixed,0.5678391959798995,0,False,292.0,28.0,320.0,78.0,,,False,False,,,False
+GMEB1,待新模態 (無已知遞送方式),activator,0.27716643741403024,0,False,407.0,244.0,651.0,559.0,,,,,,,False
+GNA13,待新模態 (無已知遞送方式),repressor,0.7008652657601978,0,False,745.0,759.0,14.0,50.0,,,,,,,False
+GNAZ,待新模態 (無已知遞送方式),repressor,0.6643356643356644,0,False,48.0,55.0,7.0,88.0,,,,,,,False
+GNE,待新模態 (無已知遞送方式),activator,0.33608815426997246,0,False,362.0,1.0,4.0,363.0,,,False,False,,,False
+GNLY,待新模態 (無已知遞送方式),repressor,0.660377358490566,0,False,49.0,53.0,46.0,4.0,,,,,,,False
+GNMT,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,44.0,60.0,54.0,16.0,,,,,,,False
+GNPAT,待新模態 (無已知遞送方式),repressor,0.8829268292682927,0,False,181.0,24.0,205.0,2.0,,,False,False,,,False
+GNPDA2,待新模態 (無已知遞送方式),mixed,0.3592814371257485,0,False,166.0,167.0,1.0,1.0,,,,,,,False
+GNS,小分子 (胞內可成藥口袋),mixed,0.37567567567567567,0,False,349.0,370.0,21.0,36.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+GPAA1,抗體 (表面但胞外域有限),repressor,0.8587570621468926,0,False,139.0,38.0,177.0,3.0,,,True,False,0.0,,False
+GPATCH3,待新模態 (無已知遞送方式),repressor,0.8918918918918919,0,False,73.0,74.0,18.0,1.0,,,,,,,False
+GPATCH8,待新模態 (無已知遞送方式),mixed,0.5448577680525164,0,False,163.0,58.0,178.0,221.0,,,,,,,False
+GPI,小分子 (胞內可成藥口袋),mixed,0.5384615384615384,0,False,1551.0,229.0,955.0,1780.0,0.9229446089984256,,False,False,,DRUGGABLE GENOME;ENZYME;GROWTH FACTOR,False
+GPR146,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.4857142857142857,0,False,86.0,2.0,88.0,52.0,,,True,True,93.0,DRUGGABLE GENOME;G PROTEIN COUPLED RECEPTOR,False
+GPR15,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.9028132992327366,0,False,251.0,70.0,321.0,14.0,,,True,True,109.0,DRUGGABLE GENOME;G PROTEIN COUPLED RECEPTOR,False
+GPS2,待新模態 (無已知遞送方式),mixed,0.4280821917808219,0,False,233.0,317.0,475.0,84.0,,,,,,,False
+GPT2,待新模態 (無已知遞送方式),mixed,0.47474747474747475,0,False,97.0,2.0,99.0,5.0,,,,,,,False
+GRAP,待新模態 (無已知遞送方式),mixed,0.5633802816901409,0,False,69.0,71.0,2.0,8.0,,,,,,,False
+GRK6,小分子 (胞內可成藥口袋),mixed,0.46153846153846156,0,False,101.0,3.0,1.0,104.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+GRSF1,待新模態 (無已知遞送方式),mixed,0.4186046511627907,0,True,1847.0,2.0,22.0,1849.0,1.238268357002918,,,,,,True
+GTF2H5,待新模態 (無已知遞送方式),mixed,0.44140625,0,False,209.0,47.0,256.0,30.0,,,,,,,False
+GTPBP10,待新模態 (無已知遞送方式),mixed,0.36354581673306774,0,True,1002.0,2.0,1.0,1004.0,,,False,False,,,True
+GYPC,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.40625,0,False,22.0,61.0,39.0,67.0,,,True,True,57.0,DRUGGABLE GENOME,False
+GZMB,小分子 (胞內可成藥口袋),repressor,0.7582562747688243,1,False,255.0,261.0,496.0,6.0,,,False,False,,DRUGGABLE GENOME;ENZYME;PROTEASE,True
+H2AZ1,待新模態 (無已知遞送方式),mixed,0.46482122260668973,0,False,321.0,121.0,304.0,442.0,,,False,False,,,False
+HACD2,抗體 (表面但胞外域有限),mixed,0.48946629213483145,0,True,1420.0,4.0,10.0,1424.0,0.7454421044138124,,True,False,0.0,,True
+HACD4,抗體 (表面但胞外域有限),repressor,0.870201096892139,0,True,542.0,5.0,547.0,5.0,,,True,False,0.0,,True
+HAPSTR1,待新模態 (無已知遞送方式),mixed,0.48345259391771017,0,False,503.0,650.0,433.0,1153.0,,,,,,,False
+HCCS,待新模態 (無已知遞送方式),repressor,0.6968660968660969,0,False,467.0,906.0,1373.0,1231.0,,,,,,,False
+HDAC1,待新模態 (無已知遞送方式),repressor,0.7155963302752294,0,False,21.0,69.0,90.0,59.0,,,,,,,False
+HDAC3,小分子 (胞內可成藥口袋),mixed,0.5181771633384537,0,False,843.0,944.0,908.0,101.0,,,False,False,,DRUGGABLE GENOME;ENZYME;TRANSCRIPTION FACTOR,False
+HDAC7,待新模態 (無已知遞送方式),repressor,0.6714801444043321,0,False,50.0,85.0,57.0,135.0,,,,,,,False
+HDHD3,待新模態 (無已知遞送方式),repressor,0.8617021276595744,0,False,48.0,70.0,118.0,33.0,,,,,,,False
+HELZ,抗體 (表面但胞外域有限),repressor,0.8333333333333334,0,False,55.0,60.0,6.0,5.0,,,True,False,0.0,,False
+HEXIM1,待新模態 (無已知遞送方式),mixed,0.5972471573907839,0,False,1293.0,65.0,248.0,1358.0,,,,,,,False
+HIBADH,待新模態 (無已知遞送方式),repressor,0.9117647058823529,0,False,67.0,68.0,1.0,2.0,,,False,False,,,False
+HIF1A,待新模態 (無已知遞送方式),activator,0.27906976744186046,1,False,127.0,2.0,3.0,129.0,,,,,,,True
+HIP1R,待新模態 (無已知遞送方式),repressor,0.7954545454545454,0,False,202.0,227.0,81.0,25.0,,,,,,,False
+HK2,待新模態 (無已知遞送方式),mixed,0.5169491525423728,0,False,232.0,4.0,7.0,236.0,,,False,False,,,False
+HMBS,待新模態 (無已知遞送方式),mixed,0.6279271465741544,0,False,512.0,535.0,1047.0,724.0,,,,,,,False
+HMGB3,待新模態 (無已知遞送方式),activator,0.25925925925925924,0,False,37.0,17.0,29.0,54.0,,,,,,,False
+HNRNPA2B1,待新模態 (無已知遞送方式),mixed,0.5226757369614512,0,False,232.0,148.0,380.0,354.0,,,,,,,False
+HNRNPD,待新模態 (無已知遞送方式),mixed,0.5005727376861397,0,False,576.0,66.0,165.0,642.0,,,,,,,False
+HOXB2,待新模態 (無已知遞送方式),mixed,0.6430769230769231,0,False,622.0,802.0,180.0,318.0,,,,,,,False
+HP1BP3,待新模態 (無已知遞送方式),mixed,0.4730077120822622,0,False,387.0,389.0,5.0,2.0,,,,,,,False
+HPF1,待新模態 (無已知遞送方式),repressor,0.6610169491525424,0,False,46.0,13.0,59.0,3.0,,,,,,,False
+HPRT1,小分子 (胞內可成藥口袋),mixed,0.6216216216216216,0,False,72.0,74.0,4.0,2.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+HPS1,待新模態 (無已知遞送方式),mixed,0.6475095785440613,0,False,54.0,249.0,303.0,231.0,,,,,,,False
+HRAS,待新模態 (無已知遞送方式),mixed,0.40714285714285714,0,False,139.0,1.0,2.0,140.0,,,,,,,False
+HS3ST3B1,待新模態 (無已知遞送方式),mixed,0.3574660633484163,0,False,219.0,2.0,5.0,221.0,,,False,False,0.0,,False
+HSD17B10,小分子 (胞內可成藥口袋),mixed,0.6034934497816594,0,False,555.0,125.0,680.0,340.0,,,False,False,,DRUGGABLE GENOME;ENZYME;SHORT CHAIN DEHYDROGENASE REDUCTASE,False
+HSDL2,小分子 (胞內可成藥口袋),repressor,0.7794759825327511,0,False,191.0,56.0,247.0,155.0,,,False,False,,DRUGGABLE GENOME;SHORT CHAIN DEHYDROGENASE REDUCTASE,False
+HSP90B1,小分子 (胞內可成藥口袋),repressor,0.7419354838709677,0,False,60.0,2.0,3.0,62.0,,,False,False,,DRUGGABLE GENOME,False
+HSPA8,待新模態 (無已知遞送方式),repressor,0.7833333333333333,0,False,28.0,32.0,60.0,7.0,,,False,False,,,False
+HSPH1,待新模態 (無已知遞送方式),repressor,0.673469387755102,0,False,76.0,46.0,74.0,122.0,,,,,,,False
+HTT,小分子 (胞內可成藥口袋),mixed,0.4253731343283582,0,False,123.0,11.0,6.0,134.0,,,False,False,,DRUGGABLE GENOME;PROTEIN PHOSPHATASE,False
+HUWE1,抗體 (表面但胞外域有限),mixed,0.35755813953488375,0,False,686.0,688.0,9.0,2.0,,,True,False,0.0,,False
+HYKK,待新模態 (無已知遞送方式),repressor,0.7819548872180451,0,False,265.0,266.0,1.0,1.0,,,False,False,,,False
+IBA57,待新模態 (無已知遞送方式),mixed,0.534466477809254,0,True,906.0,13.0,140.0,919.0,,,,,,,True
+ICE2,待新模態 (無已知遞送方式),mixed,0.35294117647058826,0,False,82.0,3.0,1.0,85.0,,,,,,,False
+ICMT,抗體 (表面但胞外域有限),repressor,0.859375,0,,,,,64.0,,,True,False,0.0,DRUGGABLE GENOME;ENZYME,False
+ICOS,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7176470588235294,2,False,669.0,739.0,211.0,70.0,,,True,True,120.0,DRUGGABLE GENOME;SERINE THREONINE KINASE,True
+ID2,待新模態 (無已知遞送方式),mixed,0.6155378486055777,0,False,357.0,431.0,74.0,499.0,,,,,,,False
+IFFO2,待新模態 (無已知遞送方式),repressor,0.7478260869565218,0,False,21.0,64.0,51.0,43.0,,,,,,,False
+IFI30,小分子 (胞內可成藥口袋),repressor,0.8487394957983193,0,False,33.0,59.0,60.0,26.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+IFNAR1,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.3157894736842105,1,False,11.0,46.0,57.0,39.0,,,True,True,409.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE,True
+IFNGR1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.4090909090909091,1,False,109.0,1.0,110.0,3.0,,,True,True,228.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME,True
+IFNGR2,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.1,1,False,66.0,4.0,70.0,2.0,,,True,True,220.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME,True
+IFT172,待新模態 (無已知遞送方式),mixed,0.6290322580645161,0,False,50.0,12.0,6.0,62.0,,,,,,,False
+IKBKB,小分子 (胞內可成藥口袋),mixed,0.6109215017064846,1,False,292.0,1.0,5.0,293.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,True
+IKZF1,小分子 (胞內可成藥口袋),repressor,0.7321428571428571,0,False,141.0,27.0,168.0,33.0,,,False,False,,CLINICALLY ACTIONABLE;TRANSCRIPTION FACTOR,False
+IL12RB2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6371603856266433,0,False,521.0,230.0,751.0,160.0,,,True,True,599.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TYROSINE KINASE,False
+IL21,小分子 (胞內可成藥口袋),mixed,0.6323296354992076,0,False,294.0,402.0,121.0,108.0,,,False,False,,DRUGGABLE GENOME,False
+IL21R,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.521978021978022,0,False,103.0,4.0,75.0,107.0,,,True,True,213.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+IL23R,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.609375,1,False,256.0,256.0,0.0,5.0,,,True,True,332.0,,True
+IL4I1,小分子 (胞內可成藥口袋),mixed,0.5286195286195287,0,False,295.0,2.0,16.0,297.0,,,False,False,,DRUGGABLE GENOME,False
+IL4R,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5252837977296182,1,True,726.0,3.0,240.0,729.0,,,True,True,207.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,True
+IL7R,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.32711306256860595,1,,,,812.0,99.0,,,True,True,219.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TYROSINE KINASE,True
+IMMP2L,待新模態 (無已知遞送方式),mixed,0.4767726161369193,0,False,140.0,57.0,155.0,197.0,,,False,False,0.0,,False
+IMPA2,小分子 (胞內可成藥口袋),repressor,0.7091703056768559,0,False,1143.0,1145.0,11.0,2.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+ING3,待新模態 (無已知遞送方式),repressor,0.783625730994152,0,False,110.0,9.0,52.0,119.0,,,,,,,False
+INIP,待新模態 (無已知遞送方式),mixed,0.5714285714285714,0,False,52.0,70.0,47.0,18.0,,,False,False,,,False
+INO80B,待新模態 (無已知遞送方式),mixed,0.6241872561768531,0,False,262.0,166.0,428.0,175.0,,,,,,,False
+INO80C,待新模態 (無已知遞送方式),mixed,0.5042662116040956,0,False,277.0,219.0,496.0,457.0,,,False,False,,,False
+INPP5D,小分子 (胞內可成藥口袋),repressor,0.6548507462686567,0,True,533.0,3.0,12.0,536.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE,True
+INPP5F,抗體 (表面但胞外域有限),repressor,0.7936507936507936,0,False,87.0,39.0,126.0,41.0,,,True,False,0.0,,False
+INPPL1,小分子 (胞內可成藥口袋),mixed,0.45098039215686275,0,False,46.0,51.0,5.0,7.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE,False
+INSIG1,抗體 (表面但胞外域有限),mixed,0.6233766233766234,0,True,709.0,22.0,116.0,731.0,,,True,False,0.0,,True
+INSR,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5573230938014262,0,False,1275.0,1366.0,91.0,366.0,,,True,True,925.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE;TRANSCRIPTION FACTOR;TRANSPORTER;TYROSINE KINASE,False
+INTS10,待新模態 (無已知遞送方式),repressor,0.6520612485276797,0,False,1361.0,715.0,1454.0,2076.0,,,False,False,,,False
+INTS14,待新模態 (無已知遞送方式),repressor,0.7250650477016479,0,False,96.0,810.0,782.0,714.0,,,False,False,0.0,,False
+INTS15,待新模態 (無已知遞送方式),repressor,0.666077738515901,0,False,266.0,30.0,296.0,270.0,,,False,False,,,False
+INTS6,待新模態 (無已知遞送方式),repressor,0.6754966887417219,0,False,24.0,68.0,44.0,83.0,,,,,,,False
+IRF1,待新模態 (無已知遞送方式),activator,0.3131115459882583,2,False,213.0,271.0,182.0,58.0,,,,,,,True
+IRF2BP1,待新模態 (無已知遞送方式),mixed,0.4483695652173913,0,False,146.0,58.0,204.0,106.0,,,,,,,False
+IRF4,待新模態 (無已知遞送方式),mixed,0.6402877697841727,1,False,242.0,325.0,567.0,498.0,,,,,,,True
+IRF8,待新模態 (無已知遞送方式),repressor,0.8068181818181818,0,False,85.0,3.0,88.0,7.0,,,,,,,False
+ISCA1,待新模態 (無已知遞送方式),mixed,0.5930232558139535,0,False,63.0,86.0,24.0,23.0,,,,,,,False
+ISG15,待新模態 (無已知遞送方式),repressor,0.8389261744966443,0,False,147.0,149.0,2.0,5.0,,,,,,,False
+IST1,待新模態 (無已知遞送方式),mixed,0.5912106135986733,0,False,377.0,554.0,475.0,177.0,,,False,False,,,False
+ITGB2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5674846625766872,0,False,65.0,134.0,123.0,69.0,,,True,True,678.0,CELL SURFACE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+ITK,待新模態 (無已知遞送方式),mixed,0.5913743916764558,1,True,3391.0,2.0,3393.0,2566.0,0.6583348217168689,,,,,,True
+ITM2A,待新模態 (無已知遞送方式),repressor,0.9358974358974359,0,False,61.0,17.0,78.0,1.0,,,False,False,0.0,,False
+ITM2B,小分子 (胞內可成藥口袋),repressor,0.7702702702702703,0,False,147.0,148.0,1.0,2.0,,,False,False,0.0,DRUGGABLE GENOME,False
+ITPR1,抗體 (表面但胞外域有限),mixed,0.6326530612244898,0,False,391.0,1.0,1.0,392.0,,,True,False,0.0,DRUGGABLE GENOME;ION CHANNEL;KINASE;TRANSPORTER,False
+ITSN1,待新模態 (無已知遞送方式),mixed,0.5581395348837209,0,False,78.0,154.0,114.0,76.0,,,False,False,0.0,,False
+IWS1,待新模態 (無已知遞送方式),mixed,0.5022497187851519,0,False,276.0,686.0,682.0,410.0,,,,,,,False
+JOSD2,待新模態 (無已知遞送方式),repressor,0.726775956284153,0,False,81.0,104.0,23.0,79.0,,,False,False,,,False
+JUNB,待新模態 (無已知遞送方式),mixed,0.46938775510204084,0,False,94.0,49.0,102.0,143.0,,,,,,,False
+KAT6A,待新模態 (無已知遞送方式),mixed,0.6332417582417582,0,False,427.0,79.0,506.0,143.0,,,,,,,False
+KBTBD2,小分子 (胞內可成藥口袋),repressor,0.8452380952380952,0,False,82.0,84.0,5.0,2.0,,,False,False,,DRUGGABLE GENOME,False
+KCNA2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.39156626506024095,0,False,319.0,332.0,32.0,13.0,,,True,True,74.0,DRUGGABLE GENOME;ION CHANNEL,False
+KDM1A,小分子 (胞內可成藥口袋),repressor,0.6656526548672567,0,False,895.0,2018.0,2301.0,2913.0,0.5683288227507527,,False,False,,CELL SURFACE;DRUGGABLE GENOME;ENZYME;TRANSCRIPTION FACTOR COMPLEX,False
+KDM2A,待新模態 (無已知遞送方式),activator,0.34993446920052423,0,False,68.0,258.0,315.0,190.0,,,,,,,False
+KDM3B,待新模態 (無已知遞送方式),mixed,0.5506607929515418,0,False,57.0,87.0,140.0,30.0,,,,,,,False
+KDM5C,小分子 (胞內可成藥口袋),repressor,0.7158469945355191,0,False,,68.0,115.0,,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME,False
+KDM6A,小分子 (胞內可成藥口袋),mixed,0.3869346733668342,0,False,89.0,137.0,62.0,48.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+KDM8,待新模態 (無已知遞送方式),mixed,0.6384039900249376,0,False,63.0,109.0,172.0,120.0,,,False,False,,,False
+KHDRBS1,待新模態 (無已知遞送方式),mixed,0.5984251968503937,0,False,766.0,170.0,936.0,164.0,,,,,,,False
+KIF14,待新模態 (無已知遞送方式),activator,0.2840909090909091,0,False,81.0,7.0,2.0,88.0,,,,,,,False
+KIF16B,待新模態 (無已知遞送方式),repressor,0.8952618453865336,0,False,400.0,1.0,401.0,1.0,,,False,False,,,False
+KIF5C,待新模態 (無已知遞送方式),activator,0.2746478873239437,0,False,137.0,5.0,2.0,142.0,,,,,,,False
+KIFAP3,待新模態 (無已知遞送方式),mixed,0.6340415373597518,0,False,328.0,1585.0,1347.0,1257.0,,,False,False,,,False
+KLF10,待新模態 (無已知遞送方式),repressor,0.8875,0,False,48.0,32.0,80.0,9.0,,,,,,,False
+KLF2,待新模態 (無已知遞送方式),mixed,0.5762385762385762,0,False,809.0,987.0,914.0,178.0,,,,,,,False
+KLHDC10,待新模態 (無已知遞送方式),repressor,0.9073482428115016,0,False,204.0,237.0,76.0,33.0,,,False,False,,,False
+KMT2B,小分子 (胞內可成藥口袋),mixed,0.3867403314917127,0,False,89.0,35.0,124.0,57.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+KMT2C,小分子 (胞內可成藥口袋),mixed,0.3903436988543372,0,False,146.0,453.0,307.0,462.0,,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;ENZYME;NUCLEAR HORMONE RECEPTOR,False
+KMT2E,待新模態 (無已知遞送方式),mixed,0.3929733246584255,0,False,559.0,337.0,304.0,896.0,,,False,False,0.0,,False
+KMT5B,待新模態 (無已知遞送方式),mixed,0.535958904109589,0,False,326.0,614.0,782.0,940.0,,,,,,,False
+KPNA1,待新模態 (無已知遞送方式),repressor,0.8358848744641764,0,False,432.0,531.0,963.0,139.0,,,False,False,,,False
+KPNA4,抗體 (表面但胞外域有限),repressor,0.7887323943661971,0,False,70.0,1.0,71.0,2.0,,,True,False,0.0,,False
+KRBA2,待新模態 (無已知遞送方式),repressor,0.6799568965517241,0,False,750.0,752.0,176.0,2.0,,,False,False,,,False
+KRCC1,待新模態 (無已知遞送方式),repressor,0.9161073825503355,0,False,211.0,214.0,84.0,3.0,,,,,,,False
+KTI12,待新模態 (無已知遞送方式),mixed,0.5180722891566265,0,False,58.0,768.0,826.0,730.0,,,,,,,False
+KTN1,小分子 (胞內可成藥口袋),mixed,0.46296296296296297,0,False,103.0,5.0,108.0,1.0,,,False,False,0.0,CLINICALLY ACTIONABLE,False
+L2HGDH,待新模態 (無已知遞送方式),mixed,0.5630498533724341,0,False,8.0,110.0,113.0,118.0,,,False,False,,,False
+L3MBTL2,待新模態 (無已知遞送方式),repressor,0.7553017944535073,0,False,133.0,364.0,365.0,497.0,,,False,False,,,False
+LAIR2,待新模態 (無已知遞送方式),mixed,0.4595959595959596,0,False,198.0,0.0,0.0,198.0,,,,,,,False
+LAMP1,小分子 (胞內可成藥口袋),repressor,0.8739495798319328,0,False,225.0,238.0,13.0,32.0,,,False,False,0.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+LAMTOR2,待新模態 (無已知遞送方式),mixed,0.6200588043123162,0,False,1658.0,405.0,593.0,2063.0,,,,,,,False
+LAMTOR3,待新模態 (無已知遞送方式),repressor,0.7313084112149533,0,False,95.0,87.0,182.0,159.0,,,,,,,False
+LAMTOR4,待新模態 (無已知遞送方式),repressor,0.6768172888015717,0,True,657.0,27.0,334.0,684.0,,,False,False,,,True
+LARP4,待新模態 (無已知遞送方式),activator,0.16417910447761194,0,False,66.0,1.0,1.0,67.0,,,,,,,False
+LARS2,小分子 (胞內可成藥口袋),repressor,0.6634114583333334,0,False,691.0,122.0,813.0,601.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+LAT,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6522985211509802,1,True,5532.0,4.0,5536.0,3187.0,,7.0,True,True,4.0,,True
+LAT2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7439446366782007,0,False,62.0,193.0,254.0,131.0,,,True,True,5.0,,False
+LEO1,待新模態 (無已知遞送方式),mixed,0.5211512717536814,0,False,1224.0,3015.0,2664.0,1791.0,0.5628212243588973,,,,,,False
+LETM2,待新模態 (無已知遞送方式),repressor,0.6658031088082902,0,False,368.0,18.0,47.0,386.0,,,False,False,0.0,,False
+LIG3,待新模態 (無已知遞送方式),mixed,0.49447748513169076,0,True,1175.0,2.0,2.0,1177.0,,,,,,,True
+LIG4,待新模態 (無已知遞送方式),repressor,0.7830188679245284,0,False,104.0,2.0,106.0,6.0,,,,,,,False
+LIN37,待新模態 (無已知遞送方式),repressor,0.9228855721393034,0,False,118.0,143.0,259.0,25.0,,,,,,,False
+LMNA,小分子 (胞內可成藥口袋),activator,0.3448275862068966,0,False,54.0,58.0,4.0,10.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME,False
+LMTK2,抗體 (表面但胞外域有限),mixed,0.5251479289940828,0,False,524.0,76.0,600.0,24.0,,,True,False,0.0,DRUGGABLE GENOME;KINASE;SERINE THREONINE KINASE;TYROSINE KINASE,False
+LPCAT3,抗體 (表面但胞外域有限),repressor,0.6941747572815534,0,False,144.0,144.0,62.0,0.0,,,True,False,0.0,DRUGGABLE GENOME;ENZYME,False
+LRBA,待新模態 (無已知遞送方式),repressor,0.7459577114427861,0,True,2988.0,5.0,2993.0,223.0,0.6044274850704704,,False,False,0.0,,True
+LRIG1,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.8920863309352518,0,False,138.0,1.0,139.0,1.0,,,True,True,760.0,,False
+LRP5,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6610169491525424,0,False,284.0,11.0,5.0,295.0,,,True,True,1353.0,,False
+LRPPRC,待新模態 (無已知遞送方式),mixed,0.5690400691842029,0,False,1154.0,772.0,771.0,1926.0,,,,,,,False
+LRRC8A,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6919642857142857,0,False,429.0,19.0,11.0,448.0,,,True,True,106.0,,False
+LRRC8B,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6896551724137931,0,False,26.0,32.0,28.0,58.0,,,True,True,98.0,,False
+LSM12,待新模態 (無已知遞送方式),mixed,0.5492857142857143,0,False,190.0,535.0,345.0,520.0,,,,,,,False
+LSM14A,待新模態 (無已知遞送方式),mixed,0.583941605839416,0,False,102.0,35.0,22.0,137.0,,,,,,,False
+LYRM2,待新模態 (無已知遞送方式),mixed,0.6186440677966102,0,False,50.0,63.0,55.0,13.0,,,,,,,False
+LZTS1,待新模態 (無已知遞送方式),repressor,0.7644444444444445,0,False,169.0,163.0,332.0,180.0,,,,,,,False
+MAEA,待新模態 (無已知遞送方式),mixed,0.63709961281239,0,False,1645.0,1651.0,1190.0,6.0,0.6806142487031202,,False,False,,,False
+MAF,待新模態 (無已知遞送方式),mixed,0.391304347826087,0,False,128.0,10.0,13.0,138.0,,,,,,,False
+MAGEH1,待新模態 (無已知遞送方式),repressor,0.9130434782608695,0,False,91.0,92.0,19.0,1.0,,,False,False,,,False
+MALT1,待新模態 (無已知遞送方式),mixed,0.5923984272608126,1,True,1637.0,3.0,1640.0,1412.0,0.5559133450604872,,,,,,True
+MAN1A2,待新模態 (無已知遞送方式),repressor,0.7320954907161804,0,False,375.0,377.0,2.0,2.0,,,False,False,0.0,,False
+MAN2A1,小分子 (胞內可成藥口袋),repressor,0.9642857142857143,0,False,77.0,84.0,28.0,7.0,,,False,False,0.0,DRUGGABLE GENOME,False
+MANEA,待新模態 (無已知遞送方式),repressor,0.7892857142857143,0,False,278.0,280.0,2.0,2.0,,,False,False,0.0,,False
+MAP1LC3B,待新模態 (無已知遞送方式),repressor,0.7305389221556886,0,False,161.0,167.0,17.0,6.0,,,,,,,False
+MAP3K1,小分子 (胞內可成藥口袋),repressor,0.7444444444444445,0,False,89.0,1.0,90.0,2.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+MAP3K13,待新模態 (無已知遞送方式),repressor,0.8076923076923077,0,False,28.0,32.0,52.0,4.0,,,,,,,False
+MAP3K5,小分子 (胞內可成藥口袋),repressor,0.6545454545454545,0,False,161.0,38.0,199.0,76.0,,,False,False,,DRUGGABLE GENOME;ENZYME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+MAP4K1,小分子 (胞內可成藥口袋),mixed,0.648936170212766,0,False,80.0,14.0,94.0,5.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+MAPK14,小分子 (胞內可成藥口袋),repressor,0.7830188679245284,0,False,94.0,12.0,20.0,106.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+MAPKAP1,待新模態 (無已知遞送方式),mixed,0.6311475409836066,0,False,164.0,101.0,16.0,265.0,,,False,False,,,False
+MARK2,小分子 (胞內可成藥口袋),mixed,0.5909090909090909,0,False,63.0,3.0,66.0,1.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+MAU2,待新模態 (無已知遞送方式),mixed,0.4554913294797688,0,False,315.0,428.0,324.0,113.0,,,False,False,,,False
+MAX,待新模態 (無已知遞送方式),mixed,0.6300745650372825,0,False,2133.0,90.0,2223.0,101.0,0.3484073260389697,,,,,,False
+MBIP,待新模態 (無已知遞送方式),mixed,0.43908629441624364,0,False,297.0,11.0,86.0,308.0,,,,,,,False
+MBTPS1,小分子 (胞內可成藥口袋),mixed,0.5738213399503722,0,False,1210.0,61.0,280.0,1271.0,,,False,False,0.0,DRUGGABLE GENOME;ENZYME;PROTEASE;TRANSCRIPTION FACTOR,False
+MCM8,待新模態 (無已知遞送方式),mixed,0.5759162303664922,0,False,316.0,40.0,217.0,356.0,,,,,,,False
+MCTS1,待新模態 (無已知遞送方式),mixed,0.597612958226769,0,False,387.0,974.0,1361.0,1184.0,,,,,,,False
+MCUR1,抗體 (表面但胞外域有限),mixed,0.3660130718954248,0,False,152.0,1.0,1.0,153.0,,,True,False,0.0,,False
+MED1,待新模態 (無已知遞送方式),mixed,0.501151189562548,0,False,567.0,252.0,819.0,232.0,,,,,,,False
+MED12,小分子 (胞內可成藥口袋),mixed,0.6138855054811205,0,False,1299.0,2843.0,4142.0,2046.0,0.0954812775147903,2.0,False,False,,CLINICALLY ACTIONABLE;KINASE;TRANSCRIPTION FACTOR,False
+MED13,待新模態 (無已知遞送方式),repressor,0.6843345111896348,0,True,586.0,43.0,220.0,629.0,,,False,False,,,True
+MED14,待新模態 (無已知遞送方式),repressor,0.6655948553054662,0,False,247.0,120.0,367.0,135.0,,,,,,,False
+MED15,待新模態 (無已知遞送方式),mixed,0.43265042748830457,0,False,1466.0,2807.0,2051.0,1341.0,0.4480506233470686,,,,,,False
+MED23,待新模態 (無已知遞送方式),mixed,0.5661861074705111,0,False,865.0,147.0,1012.0,367.0,,,False,False,,,False
+MED24,待新模態 (無已知遞送方式),mixed,0.43073556640296246,0,False,1256.0,1539.0,2795.0,1607.0,0.755814149616394,,False,False,,,False
+MEST,抗體 (表面但胞外域有限),mixed,0.6032745591939547,0,False,744.0,825.0,682.0,81.0,,,True,False,0.0,,False
+METAP2,待新模態 (無已知遞送方式),mixed,0.5495226730310262,0,False,396.0,772.0,376.0,528.0,,,,,,,False
+METTL1,待新模態 (無已知遞送方式),mixed,0.6362038664323374,0,False,768.0,515.0,1047.0,1283.0,,,False,False,,,False
+METTL17,待新模態 (無已知遞送方式),activator,0.33962264150943394,0,False,45.0,8.0,5.0,53.0,,,,,,,False
+MFHAS1,待新模態 (無已知遞送方式),repressor,0.8081896551724138,0,False,270.0,64.0,334.0,66.0,,,,,,,False
+MGA,待新模態 (無已知遞送方式),repressor,0.964516129032258,0,False,75.0,56.0,131.0,123.0,,,False,False,,,False
+MIA2,待新模態 (無已知遞送方式),mixed,0.5176034589252625,0,False,1513.0,53.0,19.0,1566.0,0.8770834710616209,,False,False,0.0,,False
+MICOS13,待新模態 (無已知遞送方式),mixed,0.39552238805970147,0,False,133.0,1.0,2.0,134.0,,,,,,,False
+MIDN,待新模態 (無已知遞送方式),mixed,0.5932203389830508,0,False,37.0,22.0,59.0,4.0,,,False,False,,,False
+MIEN1,待新模態 (無已知遞送方式),mixed,0.3673469387755102,0,False,96.0,98.0,2.0,3.0,,,,,,,False
+MIPEP,小分子 (胞內可成藥口袋),mixed,0.5523985239852398,0,False,1992.0,152.0,414.0,2144.0,1.0550293896792875,,False,False,,DRUGGABLE GENOME;ENZYME;PROTEASE,False
+MITD1,待新模態 (無已知遞送方式),mixed,0.464,0,False,239.0,11.0,1.0,250.0,,,,,,,False
+MLKL,待新模態 (無已知遞送方式),mixed,0.55,0,False,47.0,33.0,37.0,80.0,,,,,,,False
+MLST8,待新模態 (無已知遞送方式),mixed,0.5075528700906344,0,False,266.0,298.0,131.0,564.0,,,,,,,False
+MLYCD,待新模態 (無已知遞送方式),mixed,0.44412607449856734,0,False,342.0,178.0,7.0,520.0,,,,,,,False
+MMAB,待新模態 (無已知遞送方式),repressor,0.6938188787733589,0,False,331.0,837.0,506.0,744.0,,,,,,,False
+MMGT1,抗體 (表面但胞外域有限),mixed,0.6490566037735849,0,True,699.0,31.0,65.0,730.0,,,True,False,0.0,,True
+MOB1A,待新模態 (無已知遞送方式),repressor,0.7513368983957219,0,False,373.0,374.0,3.0,1.0,,,,,,,False
+MOGS,待新模態 (無已知遞送方式),mixed,0.6415094339622641,0,False,30.0,23.0,53.0,24.0,,,False,False,0.0,,False
+MORC2,待新模態 (無已知遞送方式),mixed,0.4209714726291442,0,False,388.0,413.0,801.0,83.0,,,,,,,False
+MORF4L1,待新模態 (無已知遞送方式),mixed,0.6,0,False,212.0,9.0,221.0,59.0,,,,,,,False
+MOSMO,抗體 (表面但胞外域有限),activator,0.3350253807106599,0,False,184.0,197.0,20.0,13.0,,,True,False,0.0,,False
+MOSPD1,抗體 (表面但胞外域有限),mixed,0.35064935064935066,0,False,153.0,154.0,1.0,1.0,,,True,False,0.0,,False
+MOV10,待新模態 (無已知遞送方式),mixed,0.6149903907751442,0,False,469.0,956.0,741.0,1425.0,,,,,,,False
+MPG,待新模態 (無已知遞送方式),mixed,0.4189189189189189,0,,,,56.0,166.0,,,False,False,0.0,,False
+MPI,小分子 (胞內可成藥口袋),mixed,0.6135517498138496,0,False,2051.0,244.0,2295.0,147.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+MRC2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6169802219006271,0,False,1214.0,137.0,585.0,1351.0,,,True,True,1384.0,DRUGGABLE GENOME,False
+MSL2,待新模態 (無已知遞送方式),activator,0.3481624758220503,0,False,235.0,321.0,86.0,110.0,,,,,,,False
+MTA2,待新模態 (無已知遞送方式),repressor,0.6732986660637577,0,False,350.0,1522.0,1729.0,1172.0,,,,,,,False
+MTA3,待新模態 (無已知遞送方式),repressor,0.818018018018018,0,True,1051.0,2.0,1053.0,57.0,,,,,,,True
+MTCH2,抗體 (表面但胞外域有限),mixed,0.5887445887445888,0,True,687.0,6.0,2.0,693.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,True
+MTERF2,待新模態 (無已知遞送方式),repressor,0.75,0,False,39.0,60.0,21.0,32.0,,,,,,,False
+MTG1,待新模態 (無已知遞送方式),mixed,0.4582893347412883,0,True,1884.0,10.0,8.0,1894.0,,,,,,,True
+MTG2,待新模態 (無已知遞送方式),mixed,0.4533333333333333,0,False,73.0,75.0,2.0,2.0,,,False,False,,,False
+MTHFD1L,待新模態 (無已知遞送方式),repressor,0.6703910614525139,0,True,707.0,9.0,31.0,716.0,,,False,False,,,True
+MTHFD2,待新模態 (無已知遞送方式),mixed,0.6165413533834586,0,True,797.0,1.0,3.0,798.0,,,False,False,,,True
+MTIF2,待新模態 (無已知遞送方式),mixed,0.4212218649517685,0,False,308.0,3.0,5.0,311.0,,,,,,,False
+MTMR10,待新模態 (無已知遞送方式),mixed,0.4818181818181818,0,False,174.0,213.0,39.0,117.0,,,False,False,,,False
+MTMR3,待新模態 (無已知遞送方式),repressor,0.8566009104704098,0,False,882.0,218.0,1100.0,23.0,,,,,,,False
+MTRR,小分子 (胞內可成藥口袋),mixed,0.5887850467289719,0,False,75.0,32.0,14.0,107.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME,False
+MVB12B,待新模態 (無已知遞送方式),repressor,0.7225368063420159,0,False,533.0,574.0,309.0,41.0,,,,,,,False
+MYB,待新模態 (無已知遞送方式),mixed,0.6019036954087346,0,False,300.0,1325.0,1025.0,1222.0,,,,,,,False
+MYC,小分子 (胞內可成藥口袋),mixed,0.6109467455621301,1,True,637.0,39.0,676.0,41.0,,,False,False,0.0,CLINICALLY ACTIONABLE;TRANSCRIPTION FACTOR,True
+MYH9,小分子 (胞內可成藥口袋),repressor,0.8068181818181818,0,False,113.0,119.0,57.0,6.0,,,False,False,,CELL SURFACE;CLINICALLY ACTIONABLE,False
+MYO18A,待新模態 (無已知遞送方式),repressor,0.8674698795180723,0,False,77.0,94.0,72.0,17.0,,,,,,,False
+MYO9A,待新模態 (無已知遞送方式),mixed,0.6471014492753623,0,False,123.0,488.0,365.0,527.0,,,False,False,0.0,,False
+N6AMT1,待新模態 (無已知遞送方式),mixed,0.5853227232537578,0,False,161.0,350.0,270.0,511.0,,,,,,,False
+NAA40,待新模態 (無已知遞送方式),repressor,0.6572668112798264,0,False,148.0,89.0,135.0,237.0,,,,,,,False
+NAB2,待新模態 (無已知遞送方式),repressor,0.7152317880794702,0,False,301.0,1.0,302.0,7.0,,,,,,,False
+NABP1,待新模態 (無已知遞送方式),repressor,0.8782961460446247,0,False,353.0,70.0,423.0,11.0,,,,,,,False
+NADK2,待新模態 (無已知遞送方式),repressor,0.6923076923076923,0,False,79.0,12.0,26.0,91.0,,,,,,,False
+NARS2,待新模態 (無已知遞送方式),mixed,0.5847953216374269,0,False,159.0,12.0,32.0,171.0,,,False,False,,,False
+NASP,待新模態 (無已知遞送方式),mixed,0.4087193460490463,0,False,242.0,243.0,124.0,1.0,,,,,,,False
+NATD1,待新模態 (無已知遞送方式),repressor,0.7891566265060241,0,True,828.0,2.0,830.0,32.0,,,,,,,True
+NCAPG2,待新模態 (無已知遞送方式),repressor,0.6915703411333521,0,False,1026.0,671.0,1697.0,1179.0,,,False,False,,,False
+NCBP3,待新模態 (無已知遞送方式),mixed,0.5748930099857347,0,False,360.0,565.0,632.0,205.0,,,,,,,False
+NCKAP1L,待新模態 (無已知遞送方式),repressor,0.6535947712418301,0,False,2357.0,2947.0,1359.0,590.0,0.4785320751053298,,False,False,0.0,,False
+NCOA6,待新模態 (無已知遞送方式),activator,0.29896907216494845,0,False,73.0,97.0,28.0,24.0,,,,,,,False
+NCR3,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.13414634146341464,0,False,78.0,4.0,82.0,3.0,,,True,True,117.0,DRUGGABLE GENOME,False
+NDFIP2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.715472481827622,0,True,833.0,2.0,835.0,128.0,,,True,True,33.0,,True
+NDRG1,小分子 (胞內可成藥口袋),repressor,0.8235294117647058,0,False,111.0,55.0,166.0,25.0,,,False,False,,CLINICALLY ACTIONABLE,False
+NDST2,待新模態 (無已知遞送方式),mixed,0.5379746835443038,0,False,157.0,158.0,5.0,1.0,,,False,False,0.0,,False
+NDUFA10,待新模態 (無已知遞送方式),repressor,0.7441860465116279,0,False,128.0,129.0,1.0,1.0,,,False,False,,,False
+NDUFA3,待新模態 (無已知遞送方式),mixed,0.6,0,False,59.0,1.0,4.0,60.0,,,False,False,0.0,,False
+NDUFA6,待新模態 (無已知遞送方式),activator,0.32653061224489793,0,False,242.0,3.0,9.0,245.0,,,,,,,False
+NDUFA8,待新模態 (無已知遞送方式),mixed,0.5187393526405452,0,False,902.0,136.0,17.0,1038.0,,,,,,,False
+NDUFA9,待新模態 (無已知遞送方式),mixed,0.4894433781190019,0,True,517.0,4.0,17.0,521.0,,,False,False,,,True
+NDUFAF3,待新模態 (無已知遞送方式),mixed,0.4175767030681227,0,True,1917.0,6.0,3.0,1923.0,1.3390337239482806,,,,,,True
+NDUFAF5,待新模態 (無已知遞送方式),repressor,0.8055555555555556,0,False,66.0,6.0,72.0,8.0,,,,,,,False
+NDUFAF6,待新模態 (無已知遞送方式),activator,0.3492063492063492,0,False,58.0,5.0,1.0,63.0,,,,,,,False
+NDUFB2,待新模態 (無已知遞送方式),mixed,0.4887640449438202,0,False,172.0,6.0,8.0,178.0,,,False,False,,,False
+NDUFB4,待新模態 (無已知遞送方式),mixed,0.4366812227074236,0,False,205.0,24.0,8.0,229.0,,,False,False,0.0,,False
+NDUFB6,待新模態 (無已知遞送方式),mixed,0.47058823529411764,0,False,140.0,13.0,3.0,153.0,,,False,False,0.0,,False
+NDUFC1,待新模態 (無已知遞送方式),mixed,0.3901098901098901,0,False,175.0,7.0,1.0,182.0,,,False,False,0.0,,False
+NDUFS2,待新模態 (無已知遞送方式),mixed,0.45161290322580644,0,False,81.0,12.0,2.0,93.0,,,False,False,,,False
+NDUFS5,待新模態 (無已知遞送方式),mixed,0.38205980066445183,0,False,299.0,2.0,6.0,301.0,,,,,,,False
+NDUFS7,待新模態 (無已知遞送方式),mixed,0.5925925925925926,0,False,50.0,4.0,14.0,54.0,,,False,False,,,False
+NDUFS8,待新模態 (無已知遞送方式),mixed,0.5659655831739961,0,False,792.0,91.0,72.0,883.0,,,False,False,,,False
+NEB,待新模態 (無已知遞送方式),mixed,0.4494949494949495,0,False,122.0,132.0,10.0,66.0,,,,,,,False
+NEIL1,待新模態 (無已知遞送方式),mixed,0.6347305389221557,0,False,81.0,9.0,77.0,90.0,,,,,,,False
+NEK1,小分子 (胞內可成藥口袋),mixed,0.43283582089552236,0,False,66.0,67.0,1.0,1.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TYROSINE KINASE,False
+NEK3,小分子 (胞內可成藥口袋),mixed,0.6451612903225806,0,False,61.0,1.0,1.0,62.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+NEMP2,抗體 (表面但胞外域有限),repressor,0.8904109589041096,0,False,62.0,73.0,42.0,11.0,,,True,False,0.0,,False
+NFAT5,待新模態 (無已知遞送方式),mixed,0.5548029556650246,0,False,1623.0,1624.0,1.0,2.0,0.2512521224755644,,,,,,False
+NFATC2,待新模態 (無已知遞送方式),mixed,0.6395348837209303,1,False,170.0,2.0,172.0,27.0,,,,,,,True
+NFATC2IP,待新模態 (無已知遞送方式),repressor,0.9411764705882353,0,False,44.0,51.0,30.0,7.0,,,,,,,False
+NFE2L1,待新模態 (無已知遞送方式),mixed,0.4859437751004016,0,False,58.0,65.0,61.0,123.0,,,False,False,0.0,,False
+NFKB1,小分子 (胞內可成藥口袋),mixed,0.6312849162011173,1,False,115.0,90.0,205.0,63.0,,,False,False,,DRUGGABLE GENOME;KINASE;TRANSCRIPTION FACTOR;TRANSCRIPTION FACTOR COMPLEX,True
+NFKB2,待新模態 (無已知遞送方式),mixed,0.6167522718293165,0,False,907.0,443.0,1350.0,738.0,,,,,,,False
+NFKBIL1,待新模態 (無已知遞送方式),repressor,0.7330143540669857,0,False,863.0,91.0,954.0,33.0,,,,,,,False
+NFRKB,待新模態 (無已知遞送方式),mixed,0.4928842504743833,0,False,500.0,3020.0,2892.0,2520.0,0.5645913204101243,,,,,,False
+NFU1,待新模態 (無已知遞送方式),mixed,0.5780141843971631,0,False,277.0,5.0,16.0,282.0,,,,,,,False
+NGRN,待新模態 (無已知遞送方式),mixed,0.5,0,False,175.0,1.0,3.0,176.0,,,,,,,False
+NIPBL,待新模態 (無已知遞送方式),repressor,0.6640190627482129,0,False,226.0,358.0,317.0,584.0,,,False,False,,,False
+NIPSNAP3A,待新模態 (無已知遞送方式),activator,0.22807017543859648,0,False,56.0,1.0,57.0,1.0,,,,,,,False
+NKAPD1,待新模態 (無已知遞送方式),repressor,0.7270865335381465,0,False,290.0,529.0,605.0,819.0,,,,,,,False
+NLGN2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6666666666666666,0,False,47.0,48.0,1.0,60.0,,,True,True,663.0,CELL SURFACE;DRUGGABLE GENOME,False
+NLRX1,待新模態 (無已知遞送方式),mixed,0.556237218813906,0,False,474.0,489.0,15.0,25.0,,,False,False,,,False
+NMT2,待新模態 (無已知遞送方式),activator,0.33076923076923076,0,False,85.0,45.0,130.0,19.0,,,,,,,False
+NONO,待新模態 (無已知遞送方式),mixed,0.42857142857142855,0,False,40.0,16.0,56.0,14.0,,,,,,,False
+NPHP4,待新模態 (無已知遞送方式),repressor,0.9130434782608695,0,False,101.0,76.0,177.0,6.0,,,False,False,,,False
+NPRL3,待新模態 (無已知遞送方式),mixed,0.6363636363636364,0,False,54.0,55.0,4.0,1.0,,,False,False,,,False
+NR2C2,小分子 (胞內可成藥口袋),mixed,0.37844940867279897,0,False,72.0,285.0,263.0,213.0,,,False,False,,DRUGGABLE GENOME;NUCLEAR HORMONE RECEPTOR;TRANSCRIPTION FACTOR,False
+NR4A3,待新模態 (無已知遞送方式),mixed,0.5404040404040404,0,False,396.0,0.0,32.0,396.0,,,,,,,False
+NRAS,待新模態 (無已知遞送方式),repressor,0.8181818181818182,0,False,149.0,226.0,375.0,147.0,,,,,,,False
+NRBP1,待新模態 (無已知遞送方式),mixed,0.5527210884353742,0,False,366.0,385.0,628.0,751.0,,,,,,,False
+NSD1,待新模態 (無已知遞送方式),mixed,0.4356469002695418,0,False,408.0,1767.0,1994.0,2175.0,,,,,,,False
+NSD2,小分子 (胞內可成藥口袋),mixed,0.6018099547511312,0,False,96.0,178.0,182.0,82.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+NSUN4,待新模態 (無已知遞送方式),mixed,0.5392070484581498,0,True,989.0,37.0,109.0,1026.0,,,,,,,True
+NUBPL,待新模態 (無已知遞送方式),activator,0.3024523160762943,0,False,366.0,1.0,4.0,367.0,,,,,,,False
+NUDT19,待新模態 (無已知遞送方式),repressor,0.7814569536423841,0,False,119.0,151.0,32.0,37.0,,,,,,,False
+NUFIP2,待新模態 (無已知遞送方式),mixed,0.43636363636363634,0,False,53.0,55.0,3.0,2.0,,,,,,,False
+NUP42,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,72.0,18.0,11.0,90.0,,,False,False,,,False
+NXT1,待新模態 (無已知遞送方式),mixed,0.47058823529411764,0,False,96.0,6.0,5.0,102.0,,,,,,,False
+OAZ3,待新模態 (無已知遞送方式),mixed,0.48372093023255813,0,False,215.0,0.0,0.0,215.0,,,,,,,False
+ORAI1,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7143933685003768,0,True,1247.0,3.0,1250.0,77.0,,,True,True,54.0,,True
+ORMDL2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6559139784946236,0,False,371.0,372.0,1.0,1.0,,,True,True,27.0,,False
+OST4,待新模態 (無已知遞送方式),mixed,0.6291079812206573,0,False,105.0,10.0,98.0,115.0,,,False,False,0.0,,False
+OTUB1,待新模態 (無已知遞送方式),repressor,0.66991643454039,0,False,185.0,305.0,293.0,120.0,,,False,False,,,False
+OTUD1,待新模態 (無已知遞送方式),mixed,0.5150244584206848,0,False,1099.0,1110.0,321.0,11.0,,,,,,,False
+OXA1L,抗體 (表面但胞外域有限),mixed,0.5439417576703068,0,False,1275.0,267.0,114.0,1542.0,,,True,False,0.0,,False
+P4HB,小分子 (胞內可成藥口袋),repressor,0.878345498783455,0,False,102.0,191.0,89.0,131.0,,,False,False,,DRUGGABLE GENOME;ENZYME;EXTERNAL SIDE OF PLASMA MEMBRANE;THIOREDOXIN,False
+PA2G4,小分子 (胞內可成藥口袋),mixed,0.43137254901960786,0,False,26.0,51.0,28.0,25.0,,,False,False,,DRUGGABLE GENOME;PROTEASE,False
+PABIR1,待新模態 (無已知遞送方式),repressor,0.7615894039735099,0,False,47.0,32.0,72.0,79.0,,,,,,,False
+PACS2,待新模態 (無已知遞送方式),repressor,0.7278911564625851,0,False,123.0,24.0,29.0,147.0,,,,,,,False
+PACSIN2,待新模態 (無已知遞送方式),repressor,0.6740506329113924,0,False,631.0,632.0,1.0,2.0,,,,,,,False
+PAGR1,待新模態 (無已知遞送方式),mixed,0.5170648464163823,0,False,391.0,501.0,561.0,110.0,,,,,,,False
+PAICS,待新模態 (無已知遞送方式),mixed,0.5227272727272727,0,False,87.0,1.0,4.0,88.0,,,,,,,False
+PAK1,小分子 (胞內可成藥口袋),repressor,0.8232044198895028,0,False,275.0,278.0,265.0,3.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+PAK2,小分子 (胞內可成藥口袋),repressor,0.6983606557377049,0,False,87.0,147.0,98.0,60.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+PAN3,待新模態 (無已知遞送方式),mixed,0.6032,0,False,260.0,90.0,185.0,350.0,,,,,,,False
+PAPOLA,抗體 (表面但胞外域有限),mixed,0.5535714285714286,0,False,42.0,14.0,56.0,38.0,,,True,False,0.0,,False
+PAPSS1,待新模態 (無已知遞送方式),mixed,0.388,0,False,248.0,250.0,6.0,2.0,,,False,False,,,False
+PARD6A,待新模態 (無已知遞送方式),mixed,0.46853146853146854,0,False,140.0,143.0,3.0,7.0,,,,,,,False
+PARK7,待新模態 (無已知遞送方式),repressor,0.6842105263157895,0,False,88.0,7.0,7.0,95.0,,,False,False,,,False
+PARL,抗體 (表面但胞外域有限),activator,0.3498542274052478,0,False,341.0,2.0,1.0,343.0,,,True,False,0.0,,False
+PARP14,小分子 (胞內可成藥口袋),repressor,0.7561915244909191,0,False,955.0,374.0,1329.0,114.0,,,False,False,,DRUGGABLE GENOME,False
+PARS2,待新模態 (無已知遞送方式),mixed,0.5636083269082498,0,False,553.0,98.0,651.0,548.0,,,,,,,False
+PATL1,待新模態 (無已知遞送方式),mixed,0.5240963855421686,0,False,161.0,166.0,7.0,5.0,,,False,False,,,False
+PAXIP1,待新模態 (無已知遞送方式),mixed,0.5108958837772397,0,False,170.0,1071.0,992.0,1241.0,,,,,,,False
+PCBP2,待新模態 (無已知遞送方式),repressor,0.6837060702875399,0,False,421.0,523.0,627.0,102.0,,,False,False,,,False
+PCBP4,待新模態 (無已知遞送方式),repressor,0.6851851851851852,0,False,28.0,54.0,30.0,26.0,,,False,False,,,False
+PCGF1,待新模態 (無已知遞送方式),repressor,0.6868314275175212,0,False,395.0,684.0,948.0,1079.0,,,False,False,,,False
+PCGF3,待新模態 (無已知遞送方式),mixed,0.5882352941176471,0,False,44.0,7.0,27.0,51.0,,,False,False,0.0,,False
+PCGF6,待新模態 (無已知遞送方式),repressor,0.9158878504672897,0,False,36.0,18.0,54.0,53.0,,,,,,,False
+PCNX3,抗體 (表面但胞外域有限),repressor,0.7402597402597403,0,False,31.0,67.0,66.0,98.0,,,True,False,0.0,,False
+PCNX4,抗體 (表面但胞外域有限),mixed,0.35208333333333336,0,False,476.0,480.0,4.0,5.0,,,True,False,0.0,,False
+PCYT2,待新模態 (無已知遞送方式),repressor,0.6830576665176575,0,False,143.0,828.0,724.0,685.0,,,,,,,False
+PDCD10,待新模態 (無已知遞送方式),repressor,0.6963470319634704,0,False,271.0,27.0,140.0,298.0,,,,,,,False
+PDCD2L,待新模態 (無已知遞送方式),mixed,0.5960890087660148,0,False,994.0,1046.0,385.0,52.0,,,,,,,False
+PDCD5,待新模態 (無已知遞送方式),mixed,0.5665188470066519,0,True,872.0,30.0,38.0,902.0,,,,,,,True
+PDCL,待新模態 (無已知遞送方式),mixed,0.464984406010774,0,False,749.0,753.0,1272.0,1502.0,,,,,,,False
+PDHB,待新模態 (無已知遞送方式),repressor,0.7374301675977654,0,False,174.0,5.0,8.0,179.0,,,False,False,,,False
+PDIA3,小分子 (胞內可成藥口袋),repressor,0.8649350649350649,0,False,235.0,75.0,310.0,25.0,,,False,False,,CELL SURFACE;DRUGGABLE GENOME;THIOREDOXIN,False
+PDIA6,小分子 (胞內可成藥口袋),repressor,0.9084158415841584,0,False,49.0,151.0,151.0,102.0,,,False,False,,DRUGGABLE GENOME;THIOREDOXIN,False
+PDLIM2,待新模態 (無已知遞送方式),repressor,0.8067226890756303,0,False,171.0,73.0,244.0,159.0,,,,,,,False
+PDS5B,待新模態 (無已知遞送方式),repressor,0.6779661016949152,0,False,35.0,24.0,59.0,42.0,,,,,,,False
+PDSS1,待新模態 (無已知遞送方式),mixed,0.5963855421686747,0,False,353.0,32.0,385.0,113.0,,,False,False,,,False
+PDSS2,待新模態 (無已知遞送方式),mixed,0.5747501086484137,0,False,1284.0,943.0,2227.0,1432.0,,,False,False,,,False
+PELO,待新模態 (無已知遞送方式),repressor,0.773972602739726,0,False,120.0,163.0,43.0,275.0,,,,,,,False
+PEX5,待新模態 (無已知遞送方式),mixed,0.5654450261780105,0,False,214.0,3.0,165.0,217.0,,,,,,,False
+PFDN5,待新模態 (無已知遞送方式),repressor,0.7887323943661971,0,False,211.0,218.0,66.0,7.0,,,,,,,False
+PGP,待新模態 (無已知遞送方式),mixed,0.44693877551020406,0,False,489.0,1.0,2.0,490.0,,,,,,,False
+PHACTR4,待新模態 (無已知遞送方式),mixed,0.6212121212121212,0,False,63.0,66.0,3.0,4.0,,,,,,,False
+PHF12,待新模態 (無已知遞送方式),repressor,0.673469387755102,0,False,138.0,188.0,326.0,123.0,,,False,False,,,False
+PHF20,待新模態 (無已知遞送方式),activator,0.15254237288135594,0,False,168.0,9.0,10.0,177.0,,,,,,,False
+PHF20L1,待新模態 (無已知遞送方式),mixed,0.38571428571428573,0,False,65.0,5.0,70.0,5.0,,,,,,,False
+PHF3,待新模態 (無已知遞送方式),mixed,0.42829457364341084,0,False,139.0,220.0,81.0,215.0,,,,,,,False
+PHF6,小分子 (胞內可成藥口袋),mixed,0.5707547169811321,0,False,197.0,15.0,19.0,212.0,,,False,False,,CLINICALLY ACTIONABLE,False
+PHF8,待新模態 (無已知遞送方式),mixed,0.4528301886792453,0,False,304.0,11.0,56.0,315.0,,,,,,,False
+PHIP,待新模態 (無已知遞送方式),repressor,0.65,0,False,115.0,5.0,12.0,120.0,,,,,,,False
+PIAS1,待新模態 (無已知遞送方式),repressor,0.7282608695652174,0,False,92.0,92.0,0.0,1.0,,,,,,,False
+PIK3C2B,待新模態 (無已知遞送方式),repressor,0.6986301369863014,0,False,72.0,73.0,1.0,1.0,,,,,,,False
+PIK3R4,小分子 (胞內可成藥口袋),repressor,0.6832579185520362,0,False,127.0,139.0,82.0,12.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;PHOSPHATIDYLINOSITOL 3 KINASE;SERINE THREONINE KINASE,False
+PKM,待新模態 (無已知遞送方式),mixed,0.6247619047619047,0,False,1784.0,57.0,1841.0,202.0,0.536419057150002,,,,,,False
+PKN1,小分子 (胞內可成藥口袋),repressor,0.8725490196078431,0,False,101.0,102.0,1.0,1.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+PKN3,小分子 (胞內可成藥口袋),mixed,0.4418604651162791,0,False,85.0,1.0,2.0,86.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+PKNOX1,待新模態 (無已知遞送方式),mixed,0.40110650069156295,0,False,92.0,183.0,265.0,275.0,,,,,,,False
+PLA2G4A,小分子 (胞內可成藥口袋),repressor,0.9090909090909091,0,False,71.0,28.0,99.0,7.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+PLCG1,小分子 (胞內可成藥口袋),repressor,0.6567370017928562,1,True,5030.0,3.0,5033.0,2218.0,0.4865636818969194,7.0,,,,,True
+PMVK,小分子 (胞內可成藥口袋),mixed,0.542080501829587,0,False,3318.0,210.0,88.0,3528.0,0.8927935405880859,2.0,,,,,False
+PNPT1,待新模態 (無已知遞送方式),mixed,0.610746513535685,0,False,1107.0,131.0,1238.0,1069.0,,,,,,,False
+POGK,待新模態 (無已知遞送方式),mixed,0.36293436293436293,0,False,258.0,259.0,8.0,1.0,,,,,,,False
+POGLUT3,待新模態 (無已知遞送方式),mixed,0.5598322230446583,0,False,1602.0,875.0,2477.0,701.0,1.1236447812473118,,False,False,,,False
+POGZ,待新模態 (無已知遞送方式),mixed,0.5416666666666666,0,False,95.0,1.0,3.0,96.0,,,False,False,,,False
+POLG,待新模態 (無已知遞送方式),mixed,0.5281199785752544,0,True,1561.0,40.0,266.0,1601.0,0.8291352903695456,,False,False,,,True
+PPCDC,待新模態 (無已知遞送方式),repressor,0.6814589665653495,0,False,288.0,591.0,751.0,303.0,,,False,False,,,False
+PPDPF,待新模態 (無已知遞送方式),repressor,0.8900047824007652,0,False,683.0,816.0,1142.0,133.0,,,False,False,,,False
+PPIF,待新模態 (無已知遞送方式),repressor,0.7077625570776256,0,False,211.0,219.0,29.0,8.0,,,,,,,False
+PPIH,待新模態 (無已知遞送方式),mixed,0.47649122807017547,0,False,716.0,161.0,877.0,387.0,,,,,,,False
+PPIL1,待新模態 (無已知遞送方式),mixed,0.6233221476510067,0,False,457.0,571.0,507.0,114.0,,,,,,,False
+PPM1D,待新模態 (無已知遞送方式),mixed,0.37460913070669166,0,False,1321.0,1390.0,140.0,69.0,,,False,False,,,False
+PPP1R12A,待新模態 (無已知遞送方式),repressor,0.6933333333333334,0,False,65.0,93.0,57.0,28.0,,,False,False,,,False
+PPP1R12C,待新模態 (無已知遞送方式),mixed,0.6267605633802817,0,False,137.0,142.0,6.0,5.0,,,,,,,False
+PPP1R13L,待新模態 (無已知遞送方式),mixed,0.36824324324324326,0,False,184.0,215.0,377.0,31.0,,,,,,,False
+PPP1R3B,待新模態 (無已知遞送方式),repressor,0.6698717948717948,0,False,298.0,312.0,14.0,25.0,,,,,,,False
+PPP3R1,待新模態 (無已知遞送方式),repressor,0.7024647887323944,0,True,612.0,1.0,613.0,523.0,,,,,,,True
+PPP6C,小分子 (胞內可成藥口袋),repressor,0.8048433048433048,0,False,172.0,126.0,298.0,278.0,,,False,False,,CLINICALLY ACTIONABLE;KINASE,False
+PPP6R2,待新模態 (無已知遞送方式),mixed,0.5,0,False,123.0,124.0,1.0,2.0,,,False,False,,,False
+PPRC1,待新模態 (無已知遞送方式),mixed,0.46153846153846156,0,False,30.0,70.0,40.0,86.0,,,,,,,False
+PQBP1,待新模態 (無已知遞送方式),repressor,0.6595744680851063,0,False,35.0,56.0,85.0,21.0,,,,,,,False
+PRCP,小分子 (胞內可成藥口袋),repressor,0.8598130841121495,0,False,103.0,107.0,4.0,6.0,,,False,False,,DRUGGABLE GENOME;ENZYME;PROTEASE,False
+PRDM15,待新模態 (無已知遞送方式),mixed,0.4262295081967213,0,False,33.0,28.0,61.0,41.0,,,,,,,False
+PRDX3,待新模態 (無已知遞送方式),repressor,0.75,0,False,54.0,56.0,2.0,3.0,,,,,,,False
+PRKD2,小分子 (胞內可成藥口袋),mixed,0.52,0,False,70.0,2.0,53.0,72.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+PRKRA,待新模態 (無已知遞送方式),repressor,0.7032967032967034,0,False,18.0,57.0,50.0,75.0,,,,,,,False
+PRORP,待新模態 (無已知遞送方式),repressor,0.6782608695652174,0,False,110.0,5.0,6.0,115.0,,,False,False,,,False
+PRPF39,待新模態 (無已知遞送方式),mixed,0.6075085324232082,0,False,273.0,53.0,326.0,207.0,,,,,,,False
+PRR12,待新模態 (無已知遞送方式),mixed,0.4423076923076923,0,False,27.0,52.0,25.0,36.0,,,,,,,False
+PRRC2A,待新模態 (無已知遞送方式),activator,0.2946859903381642,0,False,90.0,32.0,122.0,85.0,,,,,,,False
+PRSS21,小分子 (胞內可成藥口袋),repressor,0.6778523489932886,0,False,224.0,242.0,18.0,56.0,,,False,False,,DRUGGABLE GENOME;PROTEASE,False
+PRXL2B,待新模態 (無已知遞送方式),mixed,0.5876288659793815,0,False,94.0,97.0,3.0,5.0,,,False,False,,,False
+PSIP1,待新模態 (無已知遞送方式),repressor,0.7376861397479955,0,False,364.0,123.0,263.0,487.0,,,,,,,False
+PSMB9,待新模態 (無已知遞送方式),repressor,0.863905325443787,0,False,37.0,88.0,125.0,125.0,,,,,,,False
+PSMF1,待新模態 (無已知遞送方式),mixed,0.4947478991596639,0,False,273.0,399.0,427.0,126.0,,,,,,,False
+PTCD2,待新模態 (無已知遞送方式),mixed,0.4533333333333333,0,True,650.0,50.0,43.0,700.0,,,,,,,True
+PTCH1,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7747252747252747,0,False,364.0,364.0,0.0,1.0,,,True,True,610.0,CLINICALLY ACTIONABLE;TRANSPORTER,False
+PTDSS1,抗體 (表面但胞外域有限),mixed,0.4675324675324675,0,False,67.0,10.0,11.0,77.0,,,True,False,0.0,,False
+PTDSS2,抗體 (表面但胞外域有限),activator,0.32298136645962733,0,False,52.0,49.0,101.0,60.0,,,True,False,0.0,,False
+PTEN,小分子 (胞內可成藥口袋),mixed,0.5730471079308289,0,False,2466.0,2929.0,1639.0,463.0,0.5972332460642497,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;ENZYME;KINASE;PROTEIN PHOSPHATASE;PTEN FAMILY,False
+PTGER3,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.82,0,False,99.0,100.0,1.0,8.0,,,True,True,122.0,DRUGGABLE GENOME;G PROTEIN COUPLED RECEPTOR,False
+PTPA,待新模態 (無已知遞送方式),mixed,0.5318782309017805,0,False,761.0,344.0,292.0,1105.0,,,False,False,,,False
+PTPN11,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,52.0,8.0,4.0,60.0,,,,,,,False
+PTPN2,小分子 (胞內可成藥口袋),mixed,0.6031567080045096,0,False,312.0,414.0,102.0,371.0,,,False,False,0.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;PROTEIN PHOSPHATASE,False
+PTPRC,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.6071170520231214,0,False,3171.0,55.0,2255.0,3226.0,,,True,True,552.0,CELL SURFACE;CLINICALLY ACTIONABLE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE;PROTEIN PHOSPHATASE;TUMOR SUPPRESSOR,False
+PUM1,待新模態 (無已知遞送方式),mixed,0.5561594202898551,0,False,157.0,84.0,227.0,241.0,,,,,,,False
+PUS3,待新模態 (無已知遞送方式),repressor,0.8,0,False,32.0,36.0,65.0,4.0,,,False,False,,,False
+PXMP4,抗體 (表面但胞外域有限),repressor,0.7780678851174935,0,False,62.0,103.0,165.0,115.0,,,True,False,0.0,,False
+PYGM,小分子 (胞內可成藥口袋),repressor,0.6938775510204082,0,False,82.0,110.0,28.0,184.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+QRICH1,待新模態 (無已知遞送方式),mixed,0.4430379746835443,0,False,41.0,38.0,79.0,20.0,,,False,False,,,False
+QRSL1,待新模態 (無已知遞送方式),mixed,0.4876712328767123,0,False,251.0,18.0,96.0,269.0,,,False,False,,,False
+R3HCC1L,待新模態 (無已知遞送方式),repressor,0.8806818181818182,0,False,104.0,224.0,120.0,184.0,,,,,,,False
+RAB11FIP1,待新模態 (無已知遞送方式),repressor,0.7551219512195122,0,False,369.0,219.0,588.0,218.0,,,,,,,False
+RAB21,待新模態 (無已知遞送方式),mixed,0.53125,0,False,115.0,13.0,9.0,128.0,,,,,,,False
+RAB27B,待新模態 (無已知遞送方式),mixed,0.5485436893203883,0,False,28.0,85.0,64.0,57.0,,,,,,,False
+RAB2B,待新模態 (無已知遞送方式),mixed,0.5230769230769231,0,False,42.0,23.0,29.0,65.0,,,,,,,False
+RABGEF1,待新模態 (無已知遞送方式),mixed,0.5703125,0,False,86.0,42.0,13.0,128.0,,,,,,,False
+RAC2,待新模態 (無已知遞送方式),mixed,0.48026315789473684,0,True,1060.0,35.0,121.0,1095.0,,,,,,,True
+RAD50,小分子 (胞內可成藥口袋),mixed,0.5624270711785297,0,False,641.0,108.0,18.0,749.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR;KINASE,False
+RAD51B,小分子 (胞內可成藥口袋),mixed,0.5549132947976878,0,False,139.0,34.0,37.0,173.0,,,False,False,,CLINICALLY ACTIONABLE;DNA REPAIR,False
+RALGAPB,待新模態 (無已知遞送方式),mixed,0.5903614457831325,0,False,77.0,83.0,24.0,6.0,,,False,False,,,False
+RANBP3,待新模態 (無已知遞送方式),repressor,0.7325,0,False,64.0,148.0,168.0,84.0,,,,,,,False
+RASA2,待新模態 (無已知遞送方式),repressor,0.6757912745936698,0,False,481.0,700.0,250.0,219.0,,,False,False,,,False
+RASAL3,待新模態 (無已知遞送方式),mixed,0.5193014705882353,0,False,884.0,102.0,11.0,986.0,,,False,False,,,False
+RASGRP1,待新模態 (無已知遞送方式),repressor,0.7642563198118754,0,False,594.0,399.0,993.0,309.0,,,False,False,,,False
+RB1CC1,待新模態 (無已知遞送方式),repressor,0.696,0,False,510.0,392.0,902.0,581.0,,,,,,,False
+RBFA,待新模態 (無已知遞送方式),mixed,0.6295731707317073,0,True,1152.0,14.0,146.0,1166.0,,,,,,,True
+RBM15,待新模態 (無已知遞送方式),mixed,0.46875,0,False,62.0,2.0,18.0,64.0,,,,,,,False
+RBM27,待新模態 (無已知遞送方式),mixed,0.5978994748687172,0,False,289.0,437.0,726.0,170.0,,,,,,,False
+RBM33,待新模態 (無已知遞送方式),repressor,0.7577741407528642,0,False,650.0,165.0,815.0,242.0,,,,,,,False
+RBM5,待新模態 (無已知遞送方式),mixed,0.42736842105263156,0,False,278.0,29.0,168.0,307.0,,,,,,,False
+RBPJ,待新模態 (無已知遞送方式),repressor,0.7563025210084033,0,False,59.0,61.0,57.0,120.0,,,,,,,False
+RC3H1,待新模態 (無已知遞送方式),mixed,0.6490384615384616,0,False,227.0,114.0,169.0,341.0,,,,,,,False
+RCC1L,待新模態 (無已知遞送方式),mixed,0.4506122448979592,0,False,1109.0,58.0,2.0,1167.0,,,,,,,False
+RCOR1,待新模態 (無已知遞送方式),repressor,0.7214170692431562,0,False,433.0,293.0,223.0,726.0,,,,,,,False
+RCOR3,待新模態 (無已知遞送方式),activator,0.30153846153846153,0,False,320.0,325.0,5.0,16.0,,,,,,,False
+RDH13,小分子 (胞內可成藥口袋),repressor,0.68,0,False,91.0,34.0,125.0,10.0,,,False,False,,DRUGGABLE GENOME;ENZYME;SHORT CHAIN DEHYDROGENASE REDUCTASE,False
+REL,待新模態 (無已知遞送方式),mixed,0.475,1,False,77.0,3.0,80.0,2.0,,,,,,,True
+RELA,待新模態 (無已知遞送方式),activator,0.3490566037735849,1,False,102.0,4.0,106.0,38.0,,,,,,,True
+RESF1,待新模態 (無已知遞送方式),repressor,0.8,0,False,35.0,50.0,15.0,23.0,,,,,,,False
+RFX1,待新模態 (無已知遞送方式),repressor,0.9235474006116208,0,False,99.0,195.0,294.0,165.0,,,False,False,,,False
+RHBDF2,抗體 (表面但胞外域有限),repressor,0.6538461538461539,0,False,17.0,35.0,33.0,52.0,,,True,False,0.0,,False
+RHEB,待新模態 (無已知遞送方式),repressor,0.79,0,False,701.0,159.0,860.0,81.0,,,,,,,False
+RHOC,待新模態 (無已知遞送方式),repressor,0.6613418530351438,0,False,309.0,313.0,6.0,4.0,,,,,,,False
+RHOF,待新模態 (無已知遞送方式),mixed,0.6232758620689656,0,False,186.0,476.0,394.0,290.0,,,,,,,False
+RIC8B,待新模態 (無已知遞送方式),mixed,0.5901639344262295,0,False,60.0,1.0,5.0,61.0,,,,,,,False
+RICTOR,小分子 (胞內可成藥口袋),repressor,0.702258726899384,0,False,179.0,218.0,39.0,269.0,,,False,False,,CLINICALLY ACTIONABLE;SERINE THREONINE KINASE,False
+RIPK1,待新模態 (無已知遞送方式),mixed,0.5282522996057819,0,False,356.0,438.0,241.0,82.0,,,,,,,False
+RIPOR1,待新模態 (無已知遞送方式),mixed,0.5529411764705883,0,False,147.0,166.0,89.0,19.0,,,,,,,False
+RMND5A,待新模態 (無已知遞送方式),repressor,0.6858006042296072,0,False,280.0,284.0,378.0,4.0,,,False,False,,,False
+RNASEH1,待新模態 (無已知遞送方式),mixed,0.5141643059490085,0,False,550.0,78.0,12.0,628.0,,,,,,,False
+RNF111,待新模態 (無已知遞送方式),activator,0.3448275862068966,0,False,313.0,319.0,7.0,6.0,,,,,,,False
+RNF145,抗體 (表面但胞外域有限),activator,0.18840579710144928,0,False,66.0,3.0,69.0,17.0,,,True,False,0.0,,False
+RNF181,待新模態 (無已知遞送方式),repressor,0.6585365853658537,0,False,57.0,72.0,51.0,15.0,,,,,,,False
+RNF19B,抗體 (表面但胞外域有限),repressor,0.8055555555555556,0,False,444.0,8.0,452.0,124.0,,,True,False,0.0,,False
+RNF8,抗體 (表面但胞外域有限),mixed,0.5111731843575419,0,False,108.0,125.0,26.0,233.0,,,True,False,0.0,,False
+RNFT1,抗體 (表面但胞外域有限),repressor,0.75,0,False,393.0,21.0,414.0,110.0,,,True,False,0.0,,False
+RNFT2,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5126811594202898,0,True,1075.0,29.0,35.0,1104.0,,,True,True,295.0,,True
+ROBO3,CAR-T / ADC / 抗體 (細胞表面+胞外域),activator,0.2923076923076923,0,False,65.0,0.0,2.0,65.0,,,True,True,871.0,,False
+RP9,待新模態 (無已知遞送方式),repressor,0.6504854368932039,0,False,102.0,1.0,1.0,103.0,,,,,,,False
+RPE,待新模態 (無已知遞送方式),repressor,0.6817155756207675,0,False,317.0,9.0,117.0,326.0,,,False,False,,,False
+RPRD2,待新模態 (無已知遞送方式),mixed,0.588892540256326,0,False,1247.0,1508.0,1823.0,2755.0,,,,,,,False
+RPTOR,小分子 (胞內可成藥口袋),repressor,0.7474860335195531,1,False,517.0,639.0,1029.0,122.0,,,False,False,,CLINICALLY ACTIONABLE;KINASE;SERINE THREONINE KINASE,True
+RPUSD3,待新模態 (無已知遞送方式),mixed,0.4079159935379645,0,True,1225.0,13.0,1.0,1238.0,,,,,,,True
+RRAGA,待新模態 (無已知遞送方式),mixed,0.5558558558558558,0,False,1602.0,130.0,358.0,1732.0,0.8864753653087472,,,,,,False
+RRAGC,待新模態 (無已知遞送方式),mixed,0.5458422174840085,0,True,1270.0,49.0,88.0,1319.0,,,,,,,True
+RREB1,待新模態 (無已知遞送方式),repressor,0.7142857142857143,0,False,29.0,48.0,77.0,35.0,,,,,,,False
+RRM2B,小分子 (胞內可成藥口袋),mixed,0.48846960167714887,0,False,326.0,28.0,123.0,354.0,,,False,False,0.0,DNA REPAIR;DRUGGABLE GENOME;ENZYME,False
+RSBN1L,待新模態 (無已知遞送方式),activator,0.20670391061452514,0,False,175.0,4.0,179.0,40.0,,,,,,,False
+RWDD2B,待新模態 (無已知遞送方式),repressor,0.7736263736263737,0,False,530.0,190.0,720.0,1.0,,,,,,,False
+RXRB,待新模態 (無已知遞送方式),mixed,0.541371158392435,0,False,192.0,308.0,116.0,422.0,,,,,,,False
+SACM1L,抗體 (表面但胞外域有限),mixed,0.6411483253588517,0,False,700.0,707.0,129.0,7.0,,,True,False,0.0,,False
+SAMD1,待新模態 (無已知遞送方式),repressor,0.7829083390764989,0,False,200.0,383.0,485.0,583.0,,,,,,,False
+SAP130,待新模態 (無已知遞送方式),mixed,0.6189848384970337,0,False,246.0,349.0,595.0,573.0,,,,,,,False
+SAP30,待新模態 (無已知遞送方式),mixed,0.6078431372549019,0,False,113.0,40.0,9.0,153.0,,,,,,,False
+SARS2,待新模態 (無已知遞送方式),mixed,0.4172297297297297,0,False,340.0,77.0,417.0,98.0,,,False,False,,,False
+SBDS,待新模態 (無已知遞送方式),repressor,0.6923076923076923,0,False,44.0,34.0,7.0,78.0,,,,,,,False
+SBF1,待新模態 (無已知遞送方式),repressor,0.6813186813186813,0,False,177.0,182.0,9.0,5.0,,,False,False,,,False
+SCAF4,待新模態 (無已知遞送方式),mixed,0.6097804391217565,0,False,433.0,167.0,235.0,600.0,,,,,,,False
+SCAF8,待新模態 (無已知遞送方式),mixed,0.46153846153846156,0,False,37.0,82.0,59.0,119.0,,,False,False,,,False
+SCD,抗體 (表面但胞外域有限),repressor,0.6985294117647058,0,False,135.0,1.0,2.0,136.0,,,True,False,0.0,DRUGGABLE GENOME;ENZYME,False
+SCYL3,小分子 (胞內可成藥口袋),repressor,0.740718198417529,0,False,662.0,220.0,541.0,882.0,,,False,False,,DRUGGABLE GENOME;KINASE;SERINE THREONINE KINASE,False
+SDHAF4,待新模態 (無已知遞送方式),repressor,0.6721311475409836,0,False,59.0,2.0,61.0,8.0,,,,,,,False
+SEC14L2,待新模態 (無已知遞送方式),mixed,0.5007610350076104,0,False,1070.0,1141.0,71.0,102.0,,,False,False,,,False
+SEC24A,待新模態 (無已知遞送方式),mixed,0.5543672014260249,0,False,495.0,497.0,2.0,64.0,,,False,False,,,False
+SEC31A,待新模態 (無已知遞送方式),repressor,0.65,0,False,59.0,1.0,11.0,60.0,,,,,,,False
+SEC62,抗體 (表面但胞外域有限),activator,0.29577464788732394,0,False,139.0,142.0,3.0,7.0,,,True,False,0.0,,False
+SEC63,抗體 (表面但胞外域有限),repressor,0.6934189406099518,0,False,354.0,293.0,306.0,647.0,,,True,False,0.0,,False
+SEMA4C,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5569620253164557,0,False,77.0,79.0,4.0,2.0,,,True,True,643.0,,False
+SENP5,小分子 (胞內可成藥口袋),repressor,0.6512965749181343,0,False,1843.0,3329.0,5172.0,2798.0,0.4073313098017,2.0,,,,,False
+SERGEF,待新模態 (無已知遞送方式),mixed,0.5,0,False,88.0,2.0,14.0,90.0,,,False,False,,,False
+SESTD1,待新模態 (無已知遞送方式),activator,0.295,0,False,194.0,200.0,6.0,8.0,,,,,,,False
+SET,小分子 (胞內可成藥口袋),mixed,0.5217391304347826,0,False,83.0,9.0,8.0,92.0,,,False,False,,CLINICALLY ACTIONABLE,False
+SETD7,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,69.0,0.0,17.0,69.0,,,,,,,False
+SETDB1,待新模態 (無已知遞送方式),repressor,0.657190635451505,0,False,1107.0,2291.0,1309.0,1184.0,0.3043910358837762,,False,False,,,False
+SFXN1,抗體 (表面但胞外域有限),mixed,0.6370370370370371,0,False,660.0,53.0,179.0,713.0,,,True,False,0.0,,False
+SGF29,小分子 (胞內可成藥口袋),repressor,0.7061630540278228,0,False,1422.0,3447.0,4048.0,4869.0,0.6060002377116417,3.0,,,,,False
+SH3D21,待新模態 (無已知遞送方式),repressor,0.6884057971014492,0,False,137.0,138.0,1.0,2.0,,,,,,,False
+SH3GL1,待新模態 (無已知遞送方式),mixed,0.40725806451612906,0,False,318.0,325.0,7.0,171.0,,,,,,,False
+SHLD1,待新模態 (無已知遞送方式),mixed,0.6020761245674741,0,False,202.0,285.0,487.0,384.0,,,,,,,False
+SHMT2,待新模態 (無已知遞送方式),repressor,0.7287234042553191,0,False,179.0,9.0,23.0,188.0,,,False,False,,,False
+SIAH2,待新模態 (無已知遞送方式),repressor,0.8515625,0,False,47.0,22.0,59.0,69.0,,,,,,,False
+SIK2,小分子 (胞內可成藥口袋),repressor,0.9727891156462585,0,False,136.0,147.0,38.0,11.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+SIK3,小分子 (胞內可成藥口袋),mixed,0.6139839766933721,0,False,1353.0,457.0,479.0,1810.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+SIMC1,待新模態 (無已知遞送方式),mixed,0.4716981132075472,0,False,38.0,53.0,26.0,15.0,,,,,,,False
+SIN3A,待新模態 (無已知遞送方式),repressor,0.7222222222222222,0,False,159.0,162.0,32.0,3.0,,,False,False,,,False
+SIN3B,待新模態 (無已知遞送方式),mixed,0.544861704519901,0,False,359.0,1255.0,1578.0,1614.0,,,False,False,,,False
+SINHCAF,待新模態 (無已知遞送方式),repressor,0.7208333333333333,0,False,1153.0,58.0,1211.0,411.0,,,,,,,False
+SIRT7,待新模態 (無已知遞送方式),repressor,0.7142857142857143,0,False,103.0,120.0,111.0,17.0,,,,,,,False
+SKA2,待新模態 (無已知遞送方式),mixed,0.4403409090909091,0,False,266.0,8.0,274.0,78.0,,,,,,,False
+SLAMF7,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.8518518518518519,0,False,63.0,45.0,108.0,2.0,,,True,True,204.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+SLC16A1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.4289405684754522,0,False,382.0,5.0,1.0,387.0,,,True,True,42.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TRANSPORTER,False
+SLC17A5,抗體 (表面但胞外域有限),repressor,0.8888888888888888,0,False,232.0,237.0,267.0,5.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A1,抗體 (表面但胞外域有限),mixed,0.6142241379310345,0,False,367.0,10.0,87.0,377.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A10,抗體 (表面但胞外域有限),mixed,0.5965732087227414,0,False,167.0,148.0,179.0,315.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A26,抗體 (表面但胞外域有限),repressor,0.7342657342657343,0,False,191.0,12.0,83.0,203.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A28,抗體 (表面但胞外域有限),mixed,0.47183098591549294,0,False,136.0,6.0,20.0,142.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A3,抗體 (表面但胞外域有限),mixed,0.6447368421052632,0,False,71.0,76.0,26.0,5.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A32,抗體 (表面但胞外域有限),repressor,0.7894736842105263,0,False,73.0,3.0,2.0,76.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC25A51,抗體 (表面但胞外域有限),mixed,0.6401098901098901,0,False,125.0,193.0,68.0,103.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC27A3,待新模態 (無已知遞送方式),repressor,0.7606382978723404,0,False,188.0,188.0,0.0,1.0,,,False,False,0.0,,False
+SLC35A2,抗體 (表面但胞外域有限),mixed,0.53125,0,False,56.0,64.0,9.0,8.0,,,True,False,0.0,,False
+SLC35D2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6629213483146067,0,False,88.0,89.0,1.0,2.0,,,True,True,24.0,,False
+SLC3A2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.72562893081761,0,True,2489.0,3.0,2492.0,52.0,0.8854389501607435,,True,True,425.0,CELL SURFACE;DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TRANSPORTER,True
+SLC4A7,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7635135135135135,0,False,133.0,15.0,46.0,148.0,,,True,True,815.0,DRUGGABLE GENOME;TRANSPORTER,False
+SLC5A3,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.4647058823529412,0,False,169.0,1.0,10.0,170.0,,,True,True,229.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TRANSPORTER,False
+SLC7A6,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7938931297709924,0,False,256.0,6.0,262.0,6.0,,,True,True,95.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE;TRANSPORTER,False
+SLC9A6,抗體 (表面但胞外域有限),repressor,0.6612903225806451,0,False,42.0,20.0,12.0,62.0,,,True,False,0.0,DRUGGABLE GENOME;EXCHANGER;TRANSPORTER,False
+SLF1,待新模態 (無已知遞送方式),mixed,0.5398230088495575,0,False,95.0,18.0,113.0,9.0,,,False,False,,,False
+SLTM,待新模態 (無已知遞送方式),mixed,0.5947521865889213,0,False,311.0,32.0,32.0,343.0,,,,,,,False
+SMAD3,小分子 (胞內可成藥口袋),repressor,0.7351891506067095,0,False,128.0,529.0,471.0,401.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;TRANSCRIPTION FACTOR COMPLEX,False
+SMAD4,小分子 (胞內可成藥口袋),mixed,0.5904255319148937,0,False,89.0,114.0,25.0,74.0,,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE;KINASE;TRANSCRIPTION FACTOR COMPLEX,False
+SMAD7,待新模態 (無已知遞送方式),activator,0.32238805970149254,0,False,335.0,335.0,0.0,3.0,,,,,,,False
+SMAGP,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.75,0,False,56.0,72.0,28.0,16.0,,,True,True,36.0,,False
+SMARCA4,小分子 (胞內可成藥口袋),mixed,0.4570815450643777,1,False,261.0,40.0,165.0,301.0,,,False,False,,CLINICALLY ACTIONABLE,True
+SMARCA5,待新模態 (無已知遞送方式),mixed,0.5091500610004067,0,False,2650.0,2786.0,1996.0,136.0,0.1901104812110659,,False,False,,,False
+SMARCB1,小分子 (胞內可成藥口袋),mixed,0.5595518867924528,0,False,1093.0,2130.0,1921.0,1037.0,,,False,False,,CLINICALLY ACTIONABLE,False
+SMARCC1,待新模態 (無已知遞送方式),mixed,0.4276595744680851,0,False,63.0,138.0,131.0,201.0,,,,,,,False
+SMARCD1,待新模態 (無已知遞送方式),mixed,0.6359832635983264,0,False,47.0,101.0,54.0,84.0,,,,,,,False
+SMARCD2,待新模態 (無已知遞送方式),activator,0.32786885245901637,0,False,50.0,61.0,24.0,11.0,,,,,,,False
+SMG1,小分子 (胞內可成藥口袋),repressor,0.7829674606881519,0,False,650.0,2034.0,2684.0,1705.0,0.0748237416869631,,False,False,,DNA REPAIR;DRUGGABLE GENOME;ENZYME;KINASE;PHOSPHATIDYLINOSITOL 3 KINASE;SERINE THREONINE KINASE,False
+SMG7,待新模態 (無已知遞送方式),repressor,0.7614107883817427,0,False,763.0,1668.0,1765.0,905.0,,,False,False,,,False
+SMG8,待新模態 (無已知遞送方式),repressor,0.7066262013151239,0,False,180.0,576.0,756.0,645.0,,,False,False,,,False
+SMG9,待新模態 (無已知遞送方式),repressor,0.7201854193004635,0,False,592.0,420.0,941.0,1012.0,,,False,False,,,False
+SMIM7,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5227272727272727,0,,,,46.0,132.0,,,True,True,36.0,,False
+SMS,待新模態 (無已知遞送方式),mixed,0.6062992125984252,0,False,42.0,74.0,53.0,32.0,,,,,,,False
+SNAP23,小分子 (胞內可成藥口袋),repressor,0.7463768115942029,0,False,100.0,88.0,36.0,188.0,,,False,False,0.0,DRUGGABLE GENOME,False
+SND1,待新模態 (無已知遞送方式),mixed,0.4252136752136752,0,False,337.0,26.0,105.0,363.0,,,,,,,False
+SNPH,待新模態 (無已知遞送方式),repressor,0.6961325966850829,0,False,171.0,181.0,10.0,12.0,,,False,False,0.0,,False
+SNRPB2,待新模態 (無已知遞送方式),mixed,0.43506493506493504,0,False,142.0,12.0,154.0,48.0,,,,,,,False
+SNTB1,待新模態 (無已知遞送方式),mixed,0.38578680203045684,0,False,,197.0,16.0,,,,False,False,,,False
+SNX1,待新模態 (無已知遞送方式),mixed,0.46875,0,False,63.0,64.0,3.0,1.0,,,False,False,,,False
+SOD2,小分子 (胞內可成藥口袋),repressor,0.7671232876712328,0,False,67.0,6.0,73.0,7.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME,False
+SOS2,待新模態 (無已知遞送方式),repressor,0.7553516819571865,0,False,321.0,6.0,327.0,2.0,,,False,False,,,False
+SP1,待新模態 (無已知遞送方式),repressor,0.6715039577836411,0,False,278.0,129.0,222.0,407.0,,,,,,,False
+SP100,待新模態 (無已知遞送方式),mixed,0.5082956259426847,0,False,104.0,230.0,307.0,126.0,,,,,,,False
+SP140L,待新模態 (無已知遞送方式),repressor,0.6512820512820513,0,False,1168.0,1170.0,3.0,2.0,,,,,,,False
+SP2,待新模態 (無已知遞送方式),mixed,0.49056603773584906,0,False,1289.0,382.0,1671.0,1021.0,,,,,,,False
+SP3,待新模態 (無已知遞送方式),activator,0.26548672566371684,0,False,97.0,16.0,14.0,113.0,,,,,,,False
+SPAG7,待新模態 (無已知遞送方式),repressor,0.7704918032786885,0,False,55.0,6.0,61.0,21.0,,,,,,,False
+SPOP,待新模態 (無已知遞送方式),mixed,0.6403940886699507,0,False,125.0,149.0,54.0,24.0,,,,,,,False
+SPSB2,待新模態 (無已知遞送方式),repressor,0.8846153846153846,0,False,49.0,52.0,35.0,3.0,,,,,,,False
+SRD5A3,抗體 (表面但胞外域有限),mixed,0.5925925925925926,0,False,45.0,54.0,9.0,9.0,,,True,False,0.0,DRUGGABLE GENOME;ENZYME,False
+SREBF2,抗體 (表面但胞外域有限),mixed,0.3763440860215054,0,False,86.0,7.0,12.0,93.0,,,True,False,0.0,DRUGGABLE GENOME;TRANSCRIPTION FACTOR,False
+SRM,小分子 (胞內可成藥口袋),repressor,0.6608695652173913,0,False,109.0,6.0,115.0,29.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+SRP9,待新模態 (無已知遞送方式),repressor,0.723404255319149,0,False,233.0,2.0,235.0,3.0,,,False,False,,,False
+SRR,待新模態 (無已知遞送方式),repressor,0.8259473346178549,0,False,347.0,466.0,813.0,278.0,,,False,False,,,False
+SRRD,待新模態 (無已知遞送方式),mixed,0.5359281437125748,0,False,164.0,37.0,133.0,201.0,,,,,,,False
+SRSF10,待新模態 (無已知遞送方式),mixed,0.6175468483816013,0,False,770.0,377.0,1147.0,824.0,,,,,,,False
+SRSF11,待新模態 (無已知遞送方式),repressor,0.7626112759643917,0,False,428.0,507.0,79.0,88.0,,,,,,,False
+SRSF6,待新模態 (無已知遞送方式),mixed,0.5986842105263158,0,False,87.0,12.0,53.0,99.0,,,,,,,False
+SS18L2,待新模態 (無已知遞送方式),repressor,0.7222222222222222,0,False,424.0,8.0,4.0,432.0,,,,,,,False
+SSBP1,待新模態 (無已知遞送方式),mixed,0.598283612586841,0,False,1231.0,132.0,952.0,1363.0,,,,,,,False
+SSR2,小分子 (胞內可成藥口袋),repressor,0.7647058823529411,0,False,32.0,82.0,50.0,72.0,,,False,False,0.0,DRUGGABLE GENOME,False
+SSR3,抗體 (表面但胞外域有限),repressor,0.8939393939393939,0,False,35.0,66.0,31.0,31.0,,,True,False,0.0,,False
+STAG2,小分子 (胞內可成藥口袋),mixed,0.5184590690208668,0,False,106.0,271.0,165.0,187.0,,,False,False,,CLINICALLY ACTIONABLE;DRUG RESISTANCE,False
+STAP1,待新模態 (無已知遞送方式),mixed,0.5675675675675675,0,False,74.0,74.0,0.0,1.0,,,,,,,False
+STARD7,待新模態 (無已知遞送方式),mixed,0.5033557046979866,0,False,147.0,2.0,4.0,149.0,,,,,,,False
+STAT3,小分子 (胞內可成藥口袋),mixed,0.5643004115226338,1,False,668.0,925.0,1370.0,1593.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;NUCLEAR HORMONE RECEPTOR;TRANSCRIPTION FACTOR COMPLEX;TUMOR SUPPRESSOR,True
+STAT5A,待新模態 (無已知遞送方式),mixed,0.578544061302682,1,False,252.0,9.0,19.0,261.0,,,,,,,True
+STAT6,小分子 (胞內可成藥口袋),mixed,0.5025716385011021,1,True,1125.0,3.0,233.0,1128.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;KINASE;TRANSCRIPTION FACTOR,True
+STIM1,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.8271604938271605,0,False,76.0,5.0,81.0,10.0,,,True,True,191.0,,False
+STIP1,待新模態 (無已知遞送方式),mixed,0.5845535457938559,0,False,417.0,1029.0,1008.0,1446.0,,,,,,,False
+STK11,小分子 (胞內可成藥口袋),repressor,0.7329075882794891,0,False,681.0,1086.0,1171.0,405.0,,,False,False,0.0,CLINICALLY ACTIONABLE;DRUG RESISTANCE;DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TUMOR SUPPRESSOR,False
+STK35,小分子 (胞內可成藥口袋),mixed,0.5473684210526316,0,False,61.0,95.0,34.0,37.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+STOM,待新模態 (無已知遞送方式),repressor,0.7189542483660131,0,False,52.0,59.0,94.0,7.0,,,False,False,0.0,,False
+STRAP,待新模態 (無已知遞送方式),mixed,0.6287838555496548,0,False,850.0,1700.0,1216.0,850.0,,,,,,,False
+STX16,待新模態 (無已知遞送方式),repressor,0.7615507169410515,0,False,929.0,216.0,1145.0,522.0,,,False,False,0.0,,False
+SUCLG1,待新模態 (無已知遞送方式),mixed,0.5698324022346368,0,False,108.0,2.0,110.0,69.0,,,,,,,False
+SUGP1,待新模態 (無已知遞送方式),mixed,0.5148514851485149,0,False,79.0,95.0,107.0,16.0,,,,,,,False
+SUPT20H,小分子 (胞內可成藥口袋),repressor,0.6927022841656988,0,False,876.0,3072.0,3948.0,3312.0,0.8022851299965428,2.0,,,,,False
+SUPT3H,待新模態 (無已知遞送方式),repressor,0.6827956989247311,0,False,557.0,558.0,1.0,2.0,,,,,,,False
+SYNCRIP,待新模態 (無已知遞送方式),activator,0.2909090909090909,0,False,23.0,37.0,14.0,55.0,,,,,,,False
+SYVN1,抗體 (表面但胞外域有限),repressor,0.6691176470588235,0,False,87.0,114.0,201.0,93.0,,,True,False,0.0,,False
+SZRD1,待新模態 (無已知遞送方式),mixed,0.47665847665847666,0,False,283.0,36.0,88.0,319.0,,,,,,,False
+TADA1,小分子 (胞內可成藥口袋),repressor,0.7138147728443391,0,False,705.0,2944.0,3649.0,3114.0,0.8285647409891969,2.0,,,,,False
+TADA2A,待新模態 (無已知遞送方式),mixed,0.5029940119760479,0,False,272.0,9.0,53.0,281.0,,,,,,,False
+TADA2B,小分子 (胞內可成藥口袋),repressor,0.7078998802093185,0,False,1239.0,4681.0,5920.0,5260.0,0.5988324325843294,2.0,,,,,False
+TAF13,待新模態 (無已知遞送方式),mixed,0.5622379454926625,0,False,1152.0,2190.0,3342.0,2100.0,,,,,,,False
+TAF6L,待新模態 (無已知遞送方式),repressor,0.7000783085356304,0,False,1271.0,3368.0,4639.0,3486.0,,,False,False,,,False
+TARS2,待新模態 (無已知遞送方式),mixed,0.6372549019607843,0,False,1161.0,663.0,1824.0,777.0,,,False,False,,,False
+TASOR,待新模態 (無已知遞送方式),repressor,0.7401960784313726,0,False,88.0,286.0,374.0,360.0,,,,,,,False
+TASP1,待新模態 (無已知遞送方式),mixed,0.4411764705882353,0,False,45.0,23.0,35.0,68.0,,,,,,,False
+TATDN2,待新模態 (無已知遞送方式),mixed,0.47619047619047616,0,False,167.0,199.0,53.0,32.0,,,,,,,False
+TBC1D10A,待新模態 (無已知遞送方式),repressor,0.96,0,False,122.0,125.0,6.0,3.0,,,False,False,,,False
+TBC1D14,待新模態 (無已知遞送方式),repressor,0.7961165048543689,0,False,102.0,103.0,1.0,2.0,,,False,False,,,False
+TBC1D31,待新模態 (無已知遞送方式),repressor,0.7794117647058824,0,False,50.0,18.0,68.0,10.0,,,False,False,,,False
+TBL1X,待新模態 (無已知遞送方式),repressor,0.792156862745098,0,False,72.0,61.0,133.0,61.0,,,,,,,False
+TBL1XR1,抗體 (表面但胞外域有限),mixed,0.5181950509461426,0,False,292.0,135.0,125.0,427.0,,,True,False,0.0,CLINICALLY ACTIONABLE;NUCLEAR HORMONE RECEPTOR;TRANSCRIPTION FACTOR,False
+TBPL1,待新模態 (無已知遞送方式),activator,0.3448275862068966,0,False,34.0,24.0,26.0,58.0,,,False,False,,,False
+TBX21,待新模態 (無已知遞送方式),mixed,0.5471167369901547,1,False,363.0,40.0,308.0,403.0,,,,,,,True
+TCEAL1,待新模態 (無已知遞送方式),mixed,0.6168100595632032,0,False,543.0,484.0,1027.0,25.0,,,,,,,False
+TCEAL3,待新模態 (無已知遞送方式),mixed,0.40748898678414097,0,False,454.0,454.0,0.0,44.0,,,,,,,False
+TEFM,待新模態 (無已知遞送方式),mixed,0.5923566878980892,0,False,58.0,30.0,69.0,88.0,,,False,False,,,False
+TENT2,待新模態 (無已知遞送方式),repressor,0.7663492063492063,0,False,1202.0,156.0,1358.0,61.0,,,False,False,,,False
+TENT5C,待新模態 (無已知遞送方式),repressor,0.815028901734104,0,False,59.0,48.0,107.0,66.0,,,,,,,False
+TEP1,待新模態 (無已知遞送方式),mixed,0.6463022508038585,0,False,1359.0,1363.0,192.0,4.0,,,False,False,,,False
+TESK2,待新模態 (無已知遞送方式),mixed,0.4507042253521127,0,False,62.0,9.0,7.0,71.0,,,,,,,False
+TESPA1,待新模態 (無已知遞送方式),repressor,0.7206225680933852,0,False,1521.0,454.0,1975.0,141.0,0.7618234638627701,,,,,,False
+TET2,小分子 (胞內可成藥口袋),activator,0.13807531380753138,0,False,69.0,125.0,58.0,56.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+TFAM,待新模態 (無已知遞送方式),mixed,0.5449029126213593,0,False,2620.0,341.0,818.0,2961.0,0.6748343213970932,,,,,,False
+TFAP4,待新模態 (無已知遞送方式),repressor,0.6594387755102041,0,False,359.0,113.0,199.0,472.0,,,,,,,False
+TFB1M,待新模態 (無已知遞送方式),mixed,0.4122401847575058,0,True,865.0,1.0,7.0,866.0,,,,,,,True
+TFDP1,待新模態 (無已知遞送方式),repressor,0.66270783847981,0,False,160.0,280.0,440.0,122.0,,,,,,,False
+TFG,小分子 (胞內可成藥口袋),mixed,0.5966101694915255,0,False,427.0,7.0,434.0,156.0,,,False,False,,CLINICALLY ACTIONABLE,False
+TGFBRAP1,待新模態 (無已知遞送方式),repressor,0.803921568627451,0,False,49.0,2.0,3.0,51.0,,,,,,,False
+TGIF2,待新模態 (無已知遞送方式),repressor,0.8018867924528302,0,False,102.0,4.0,2.0,106.0,,,,,,,False
+THAP11,待新模態 (無已知遞送方式),repressor,0.7444478247642227,0,False,1105.0,1547.0,1298.0,442.0,,,,,,,False
+THAP5,待新模態 (無已知遞送方式),repressor,0.9551282051282052,0,False,85.0,90.0,5.0,66.0,,,,,,,False
+THRA,待新模態 (無已知遞送方式),mixed,0.589041095890411,0,False,334.0,337.0,3.0,101.0,,,,,,,False
+THRAP3,待新模態 (無已知遞送方式),mixed,0.49825783972125437,0,False,940.0,1200.0,836.0,260.0,,,,,,,False
+TIA1,待新模態 (無已知遞送方式),repressor,0.706081081081081,0,False,160.0,68.0,228.0,5.0,,,,,,,False
+TIAL1,待新模態 (無已知遞送方式),mixed,0.5826771653543307,0,False,184.0,54.0,216.0,238.0,,,,,,,False
+TIGAR,待新模態 (無已知遞送方式),repressor,0.7598814229249012,0,False,1010.0,1012.0,2.0,8.0,,,False,False,,,False
+TIMM10,待新模態 (無已知遞送方式),repressor,0.8073430714567706,0,False,1227.0,1352.0,1056.0,125.0,,,,,,,False
+TIMMDC1,抗體 (表面但胞外域有限),mixed,0.575,0,False,117.0,3.0,5.0,120.0,,,True,False,0.0,,False
+TIPARP,待新模態 (無已知遞送方式),mixed,0.45695364238410596,0,False,345.0,364.0,19.0,89.0,,,,,,,False
+TIPRL,待新模態 (無已知遞送方式),mixed,0.45821997668091724,0,False,505.0,894.0,1290.0,389.0,,,False,False,,,False
+TM2D1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.590215675960021,0,False,803.0,382.0,334.0,1185.0,,,True,True,122.0,DRUGGABLE GENOME;G PROTEIN COUPLED RECEPTOR,False
+TM9SF3,抗體 (表面但胞外域有限),mixed,0.6084905660377359,0,False,45.0,96.0,51.0,65.0,,,True,False,0.0,,False
+TMED10,小分子 (胞內可成藥口袋),repressor,0.6687543493389004,0,False,247.0,534.0,616.0,287.0,,,False,False,0.0,DRUGGABLE GENOME;G PROTEIN COUPLED RECEPTOR,False
+TMED2,待新模態 (無已知遞送方式),repressor,0.7420924574209246,0,False,30.0,129.0,159.0,123.0,,,False,False,0.0,,False
+TMED4,待新模態 (無已知遞送方式),mixed,0.5668449197860963,0,False,51.0,92.0,95.0,41.0,,,False,False,0.0,,False
+TMEM123,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.6869158878504673,0,False,70.0,72.0,142.0,35.0,,,True,True,140.0,DRUGGABLE GENOME;EXTERNAL SIDE OF PLASMA MEMBRANE,False
+TMEM126B,抗體 (表面但胞外域有限),mixed,0.5132382892057027,0,False,413.0,28.0,50.0,441.0,,,True,False,0.0,,False
+TMEM131,待新模態 (無已知遞送方式),repressor,0.8901098901098901,0,False,79.0,91.0,12.0,33.0,,,False,False,0.0,,False
+TMEM131L,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.9562841530054644,0,False,179.0,83.0,204.0,262.0,,,True,True,829.0,,False
+TMEM140,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5869565217391305,0,False,218.0,12.0,11.0,230.0,,,True,True,60.0,,False
+TMEM167A,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5624142661179699,0,False,414.0,55.0,205.0,469.0,,,True,True,27.0,,False
+TMEM185A,抗體 (表面但胞外域有限),mixed,0.6153846153846154,0,False,37.0,65.0,34.0,28.0,,,True,False,0.0,,False
+TMEM205,抗體 (表面但胞外域有限),repressor,0.9269662921348315,0,False,63.0,68.0,110.0,5.0,,,True,False,0.0,,False
+TMEM214,抗體 (表面但胞外域有限),repressor,0.6730515191545574,0,False,645.0,110.0,649.0,755.0,,,True,False,0.0,,False
+TMEM245,抗體 (表面但胞外域有限),repressor,0.7821782178217822,0,False,199.0,202.0,12.0,3.0,,,True,False,0.0,,False
+TMEM263,抗體 (表面但胞外域有限),mixed,0.4860557768924303,0,False,244.0,7.0,13.0,251.0,,,True,False,0.0,,False
+TMEM265,抗體 (表面但胞外域有限),mixed,0.6474820143884892,0,False,263.0,278.0,23.0,15.0,,,True,False,0.0,,False
+TMEM30A,抗體 (表面但胞外域有限),repressor,0.6607301869991096,0,False,459.0,332.0,791.0,44.0,,,True,False,0.0,CLINICALLY ACTIONABLE;TRANSPORTER,False
+TMEM33,抗體 (表面但胞外域有限),mixed,0.6162790697674418,0,False,61.0,25.0,5.0,86.0,,,True,False,0.0,,False
+TMEM44,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.45454545454545453,0,False,55.0,0.0,4.0,55.0,,,True,True,72.0,,False
+TMEM79,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.8785942492012779,0,False,379.0,251.0,630.0,58.0,,,True,True,59.0,,False
+TMEM86A,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5766129032258065,0,False,60.0,59.0,70.0,119.0,,,True,True,15.0,,False
+TMEM87B,抗體 (表面但胞外域有限),repressor,0.675,0,False,119.0,120.0,34.0,1.0,,,True,False,0.0,,False
+TMX1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5964708613884374,0,True,2346.0,1.0,2347.0,1960.0,0.953116590555264,,True,True,154.0,DRUGGABLE GENOME;THIOREDOXIN,True
+TMX2,CAR-T / ADC / 抗體 (細胞表面+胞外域),repressor,0.7478991596638656,0,False,80.0,39.0,119.0,0.0,,,True,True,54.0,DRUGGABLE GENOME;THIOREDOXIN,False
+TNFRSF10B,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.38202247191011235,0,False,266.0,267.0,8.0,1.0,,,True,True,155.0,CELL SURFACE;DRUGGABLE GENOME,False
+TNPO1,待新模態 (無已知遞送方式),mixed,0.5517241379310345,0,False,738.0,711.0,769.0,1449.0,,,,,,,False
+TNRC6A,待新模態 (無已知遞送方式),mixed,0.5423940149625935,0,False,1490.0,57.0,45.0,1547.0,0.2557160301054788,,,,,,False
+TOP2B,待新模態 (無已知遞送方式),mixed,0.42424242424242425,0,False,95.0,99.0,4.0,4.0,,,,,,,False
+TOR1A,待新模態 (無已知遞送方式),repressor,0.8467153284671532,0,False,49.0,78.0,29.0,59.0,,,False,False,,,False
+TP53INP2,待新模態 (無已知遞送方式),mixed,0.49344838606583574,0,False,1184.0,509.0,927.0,1693.0,,,,,,,False
+TP53RK,待新模態 (無已知遞送方式),repressor,0.9230769230769231,0,False,,3.0,78.0,,,,,,,,False
+TP73,待新模態 (無已知遞送方式),mixed,0.44336569579288027,0,False,7.0,103.0,110.0,96.0,,,,,,,False
+TPD52,待新模態 (無已知遞送方式),mixed,0.6111111111111112,0,False,341.0,434.0,121.0,93.0,,,,,,,False
+TPRG1L,待新模態 (無已知遞送方式),activator,0.3220338983050847,0,False,50.0,9.0,7.0,59.0,,,,,,,False
+TRAF3,待新模態 (無已知遞送方式),repressor,0.698071009225608,0,False,737.0,1344.0,1626.0,607.0,,,,,,,False
+TRAPPC13,待新模態 (無已知遞送方式),repressor,0.6666666666666666,0,False,123.0,3.0,126.0,6.0,,,,,,,False
+TRIB2,小分子 (胞內可成藥口袋),repressor,0.8995215311004785,0,False,105.0,108.0,101.0,3.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR,False
+TRIM14,待新模態 (無已知遞送方式),activator,0.1223021582733813,0,False,127.0,139.0,12.0,21.0,,,,,,,False
+TRIM25,小分子 (胞內可成藥口袋),activator,0.3,0,False,23.0,27.0,50.0,44.0,,,False,False,,B30_2 SPRY DOMAIN;DRUGGABLE GENOME;TRANSCRIPTION FACTOR,False
+TRIM39,待新模態 (無已知遞送方式),activator,0.09433962264150944,0,False,14.0,53.0,39.0,39.0,,,,,,,False
+TRIP12,待新模態 (無已知遞送方式),mixed,0.5348382895593662,0,False,1249.0,2013.0,1830.0,764.0,,,False,False,,,False
+TRMT10C,待新模態 (無已知遞送方式),mixed,0.5994152046783626,0,False,333.0,9.0,10.0,342.0,,,,,,,False
+TRMT61A,待新模態 (無已知遞送方式),repressor,0.7676537585421412,0,False,98.0,148.0,241.0,50.0,,,,,,,False
+TRRAP,小分子 (胞內可成藥口袋),repressor,0.7008219178082192,0,False,689.0,568.0,1257.0,35.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE;PHOSPHATIDYLINOSITOL 3 KINASE;SERINE THREONINE KINASE;TRANSCRIPTION FACTOR;TUMOR SUPPRESSOR,False
+TRUB1,待新模態 (無已知遞送方式),repressor,0.7155963302752294,0,False,108.0,109.0,2.0,1.0,,,False,False,,,False
+TSC1,小分子 (胞內可成藥口袋),mixed,0.5251396648044693,0,False,1329.0,1676.0,347.0,1199.0,,,False,False,,CLINICALLY ACTIONABLE;KINASE;TUMOR SUPPRESSOR,False
+TSFM,待新模態 (無已知遞送方式),mixed,0.4822888283378747,0,False,366.0,1.0,4.0,367.0,,,False,False,,,False
+TSPYL1,待新模態 (無已知遞送方式),activator,0.3,0,False,48.0,2.0,7.0,50.0,,,,,,,False
+TSPYL5,待新模態 (無已知遞送方式),repressor,0.7184500533238536,0,False,434.0,1799.0,2233.0,1594.0,,,,,,,False
+TTC39C,待新模態 (無已知遞送方式),mixed,0.6246246246246246,0,False,331.0,333.0,4.0,2.0,,,False,False,,,False
+TTC5,待新模態 (無已知遞送方式),mixed,0.6384039900249376,0,False,145.0,170.0,231.0,25.0,,,,,,,False
+TTC7A,待新模態 (無已知遞送方式),repressor,0.7727272727272727,0,False,106.0,4.0,110.0,2.0,,,,,,,False
+TWF1,待新模態 (無已知遞送方式),repressor,0.6581196581196581,0,False,233.0,234.0,117.0,1.0,,,,,,,False
+TWNK,待新模態 (無已知遞送方式),mixed,0.5363128491620112,0,False,570.0,232.0,219.0,802.0,,,,,,,False
+TXNIP,待新模態 (無已知遞送方式),mixed,0.6491228070175439,0,False,35.0,22.0,48.0,57.0,,,,,,,False
+TXNL1,待新模態 (無已知遞送方式),repressor,0.8128342245989305,0,False,170.0,173.0,201.0,3.0,,,,,,,False
+TYK2,小分子 (胞內可成藥口袋),activator,0.1111111111111111,0,False,20.0,34.0,29.0,54.0,,,False,False,,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;KINASE;TYROSINE KINASE,False
+U2SURP,待新模態 (無已知遞送方式),mixed,0.6470588235294118,0,False,58.0,68.0,15.0,10.0,,,,,,,False
+UBAC1,待新模態 (無已知遞送方式),repressor,0.896551724137931,0,False,36.0,22.0,58.0,22.0,,,,,,,False
+UBC,待新模態 (無已知遞送方式),mixed,0.5130699088145897,0,False,1223.0,1272.0,373.0,49.0,,,,,,,False
+UBE2E1,待新模態 (無已知遞送方式),repressor,0.7916666666666666,0,False,96.0,60.0,27.0,156.0,,,,,,,False
+UBE2E2,待新模態 (無已知遞送方式),repressor,0.7978208232445521,0,True,1520.0,4.0,1524.0,128.0,0.4786828092559536,,False,False,,,True
+UBE2F,待新模態 (無已知遞送方式),mixed,0.5588235294117647,0,False,94.0,8.0,102.0,27.0,,,False,False,,,False
+UBE2G2,待新模態 (無已知遞送方式),repressor,0.8819599109131403,0,False,115.0,130.0,245.0,74.0,,,,,,,False
+UBE2H,待新模態 (無已知遞送方式),repressor,0.780373831775701,0,False,229.0,237.0,191.0,8.0,,,,,,,False
+UBE2I,待新模態 (無已知遞送方式),repressor,0.6771819137749737,0,False,296.0,438.0,730.0,734.0,,,,,,,False
+UBE2J1,待新模態 (無已知遞送方式),mixed,0.6226415094339622,0,False,51.0,2.0,14.0,53.0,,,False,False,0.0,,False
+UBE2L3,待新模態 (無已知遞送方式),repressor,0.6976068376068376,0,False,969.0,1905.0,2874.0,1071.0,0.266852087256841,,,,,,False
+UBE2V2,待新模態 (無已知遞送方式),mixed,0.6149584487534626,0,True,1401.0,43.0,32.0,1444.0,,,,,,,True
+UBIAD1,抗體 (表面但胞外域有限),mixed,0.5614754098360656,0,False,150.0,4.0,90.0,154.0,,,True,False,0.0,,False
+UBL3,待新模態 (無已知遞送方式),mixed,0.6133333333333333,0,False,67.0,75.0,8.0,10.0,,,,,,,False
+UBL7,待新模態 (無已知遞送方式),repressor,0.9493243243243243,0,False,295.0,1.0,296.0,1.0,,,False,False,,,False
+UBR4,待新模態 (無已知遞送方式),mixed,0.4835069444444444,0,False,699.0,1209.0,585.0,510.0,,,False,False,,,False
+UBR5,抗體 (表面但胞外域有限),mixed,0.5456490727532097,0,False,509.0,1197.0,1706.0,1303.0,,,True,False,0.0,CLINICALLY ACTIONABLE;DNA REPAIR,False
+UBXN1,小分子 (胞內可成藥口袋),mixed,0.5884377967711301,0,False,3900.0,4440.0,3444.0,540.0,0.7192906263671383,2.0,,,,,False
+UBXN6,待新模態 (無已知遞送方式),repressor,0.8024691358024691,0,False,135.0,27.0,21.0,162.0,,,,,,,False
+UFC1,待新模態 (無已知遞送方式),mixed,0.5853658536585366,0,False,112.0,123.0,31.0,11.0,,,False,False,,,False
+UFL1,待新模態 (無已知遞送方式),mixed,0.5589648798521257,0,False,671.0,650.0,1321.0,734.0,,,False,False,,,False
+UFM1,待新模態 (無已知遞送方式),mixed,0.489501312335958,0,False,609.0,1670.0,2279.0,1385.0,1.0211132528084477,,,,,,False
+UGDH,待新模態 (無已知遞送方式),mixed,0.5413793103448276,0,False,954.0,966.0,194.0,12.0,,,False,False,,,False
+UGGT1,小分子 (胞內可成藥口袋),repressor,0.8461538461538461,0,False,34.0,52.0,22.0,18.0,,,False,False,,DRUGGABLE GENOME,False
+ULK4,小分子 (胞內可成藥口袋),repressor,0.826530612244898,0,False,59.0,39.0,98.0,3.0,,,False,False,,DRUGGABLE GENOME;ENZYME;KINASE;SERINE THREONINE KINASE,False
+UQCC1,待新模態 (無已知遞送方式),repressor,0.673202614379085,0,False,,3.0,153.0,,,,False,False,,,False
+UQCRB,待新模態 (無已知遞送方式),repressor,0.6584481508339376,0,False,219.0,360.0,440.0,579.0,,,,,,,False
+UQCRQ,待新模態 (無已知遞送方式),mixed,0.6037735849056604,0,False,106.0,267.0,208.0,161.0,,,False,False,0.0,,False
+URM1,待新模態 (無已知遞送方式),mixed,0.5607375271149675,0,False,378.0,431.0,438.0,53.0,,,,,,,False
+USF2,待新模態 (無已知遞送方式),mixed,0.5353535353535354,0,False,55.0,44.0,99.0,25.0,,,False,False,,,False
+USP10,待新模態 (無已知遞送方式),mixed,0.46557377049180326,0,False,38.0,112.0,119.0,74.0,,,,,,,False
+USP13,待新模態 (無已知遞送方式),mixed,0.5959849435382685,0,False,795.0,797.0,2.0,2.0,,,False,False,,,False
+USP22,待新模態 (無已知遞送方式),repressor,0.6725428238815899,0,False,598.0,1783.0,2381.0,1849.0,0.461151726275716,,,,,,False
+USP24,待新模態 (無已知遞送方式),mixed,0.436241610738255,0,False,144.0,5.0,3.0,149.0,,,False,False,,,False
+USP28,待新模態 (無已知遞送方式),mixed,0.6425339366515838,0,False,183.0,38.0,19.0,221.0,,,,,,,False
+USP4,待新模態 (無已知遞送方式),repressor,0.75,0,False,63.0,13.0,18.0,76.0,,,,,,,False
+UXS1,待新模態 (無已知遞送方式),mixed,0.5,0,False,161.0,172.0,28.0,11.0,,,False,False,0.0,,False
+VARS2,小分子 (胞內可成藥口袋),mixed,0.5768261964735516,0,False,1093.0,54.0,784.0,1147.0,,,False,False,,DRUGGABLE GENOME;ENZYME,False
+VAV1,小分子 (胞內可成藥口袋),mixed,0.6162940419056537,1,False,4828.0,70.0,4898.0,3575.0,0.3444029706478581,5.0,,,,,True
+VBP1,待新模態 (無已知遞送方式),mixed,0.4807692307692308,0,False,41.0,11.0,14.0,52.0,,,,,,,False
+VHL,小分子 (胞內可成藥口袋),repressor,0.8002528445006322,0,False,94.0,240.0,217.0,334.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME;TRANSCRIPTION FACTOR,False
+VPS13A,待新模態 (無已知遞送方式),repressor,0.8571428571428571,0,False,83.0,1.0,1.0,84.0,,,False,False,,,False
+VPS29,待新模態 (無已知遞送方式),repressor,0.6702025072324012,0,False,183.0,277.0,460.0,300.0,,,False,False,,,False
+VPS4A,待新模態 (無已知遞送方式),mixed,0.54,0,False,49.0,1.0,5.0,50.0,,,,,,,False
+VPS8,待新模態 (無已知遞送方式),repressor,0.702048417132216,0,True,535.0,2.0,4.0,537.0,,,False,False,,,True
+WAC,待新模態 (無已知遞送方式),mixed,0.43578154425612053,0,False,1311.0,1165.0,2476.0,1669.0,,,False,False,,,False
+WARS2,待新模態 (無已知遞送方式),mixed,0.5487804878048781,0,False,880.0,59.0,68.0,939.0,,,,,,,False
+WAS,待新模態 (無已知遞送方式),repressor,0.7131313131313132,0,False,462.0,33.0,495.0,44.0,,,,,,,False
+WASF2,待新模態 (無已知遞送方式),mixed,0.49887892376681614,0,False,681.0,723.0,42.0,169.0,,,,,,,False
+WASHC4,待新模態 (無已知遞送方式),mixed,0.484375,0,False,61.0,64.0,7.0,3.0,,,False,False,,,False
+WASL,待新模態 (無已知遞送方式),repressor,0.92,0,False,12.0,38.0,50.0,31.0,,,,,,,False
+WBP4,待新模態 (無已知遞送方式),repressor,0.6956521739130435,0,False,101.0,142.0,203.0,41.0,,,,,,,False
+WDFY1,待新模態 (無已知遞送方式),repressor,0.8909090909090909,0,False,49.0,6.0,20.0,55.0,,,,,,,False
+WDR54,待新模態 (無已知遞送方式),repressor,0.8029739776951673,0,False,156.0,10.0,103.0,166.0,,,False,False,,,False
+WDR59,待新模態 (無已知遞送方式),mixed,0.6217765042979942,0,False,740.0,547.0,958.0,1287.0,,,,,,,False
+WDR82,待新模態 (無已知遞送方式),mixed,0.6156684027777778,0,False,539.0,1253.0,1792.0,1563.0,,,,,,,False
+WIZ,待新模態 (無已知遞送方式),mixed,0.5208681135225376,0,False,421.0,232.0,653.0,313.0,,,,,,,False
+WNK1,小分子 (胞內可成藥口袋),repressor,0.7004950495049505,0,False,233.0,332.0,377.0,99.0,,,False,False,,DRUGGABLE GENOME;ENZYME;EXTERNAL SIDE OF PLASMA MEMBRANE;KINASE;SERINE THREONINE KINASE,False
+WRN,小分子 (胞內可成藥口袋),repressor,0.7758620689655172,0,False,46.0,58.0,31.0,12.0,,,False,False,,CLINICALLY ACTIONABLE;ENZYME,False
+XBP1,小分子 (胞內可成藥口袋),activator,0.20549450549450549,0,False,312.0,180.0,238.0,492.0,,,False,False,0.0,CLINICALLY ACTIONABLE;DRUGGABLE GENOME;ENZYME;TRANSCRIPTION FACTOR,False
+XPR1,CAR-T / ADC / 抗體 (細胞表面+胞外域),mixed,0.5414551607445008,0,False,541.0,273.0,814.0,95.0,,,True,True,23.0,,False
+XRN1,待新模態 (無已知遞送方式),repressor,0.8461538461538461,0,False,372.0,76.0,448.0,100.0,,,False,False,,,False
+YEATS2,待新模態 (無已知遞送方式),mixed,0.5107871720116618,0,False,186.0,512.0,505.0,698.0,,,,,,,False
+YIPF1,抗體 (表面但胞外域有限),repressor,0.6956521739130435,0,False,82.0,10.0,92.0,36.0,,,True,False,0.0,,False
+YIPF3,抗體 (表面但胞外域有限),mixed,0.48663101604278075,0,False,184.0,3.0,28.0,187.0,,,True,False,0.0,,False
+YME1L1,待新模態 (無已知遞送方式),mixed,0.38271604938271603,0,False,66.0,15.0,15.0,81.0,,,False,False,0.0,,False
+YPEL2,待新模態 (無已知遞送方式),repressor,0.6587301587301587,0,False,104.0,22.0,126.0,31.0,,,,,,,False
+YPEL5,待新模態 (無已知遞送方式),mixed,0.3684210526315789,0,False,53.0,57.0,38.0,4.0,,,,,,,False
+YTHDF2,待新模態 (無已知遞送方式),mixed,0.6384892086330936,0,False,1716.0,902.0,1484.0,2618.0,,,,,,,False
+YY1,待新模態 (無已知遞送方式),mixed,0.45604113110539846,0,False,451.0,510.0,961.0,474.0,,,,,,,False
+ZBTB33,待新模態 (無已知遞送方式),mixed,0.48214285714285715,0,False,39.0,17.0,15.0,56.0,,,,,,,False
+ZBTB39,待新模態 (無已知遞送方式),repressor,0.728421052631579,0,False,129.0,130.0,259.0,86.0,,,False,False,,,False
+ZBTB7A,待新模態 (無已知遞送方式),mixed,0.5916230366492147,0,False,497.0,543.0,221.0,46.0,,,,,,,False
+ZBTB9,待新模態 (無已知遞送方式),repressor,0.7135183527305282,0,False,1117.0,1117.0,3.0,0.0,,,,,,,False
+ZC3H10,待新模態 (無已知遞送方式),repressor,0.7340225563909775,0,False,58.0,381.0,323.0,360.0,,,,,,,False
+ZC3H12A,待新模態 (無已知遞送方式),mixed,0.4911147011308562,0,False,615.0,181.0,261.0,796.0,,,,,,,False
+ZC3H14,待新模態 (無已知遞送方式),activator,0.29850746268656714,0,False,66.0,1.0,26.0,67.0,,,,,,,False
+ZC3H4,待新模態 (無已知遞送方式),repressor,0.8353510895883777,0,False,141.0,136.0,277.0,37.0,,,,,,,False
+ZC3HC1,待新模態 (無已知遞送方式),repressor,0.66875,0,False,42.0,59.0,25.0,101.0,,,,,,,False
+ZCCHC8,待新模態 (無已知遞送方式),repressor,0.7327935222672065,0,False,86.0,42.0,119.0,128.0,,,,,,,False
+ZDHHC12,抗體 (表面但胞外域有限),mixed,0.4420289855072464,0,False,135.0,138.0,8.0,3.0,,,True,False,0.0,,False
+ZEB1,待新模態 (無已知遞送方式),repressor,0.7638418079096045,0,False,163.0,253.0,216.0,416.0,,,,,,,False
+ZFAT,待新模態 (無已知遞送方式),activator,0.24468085106382978,0,False,49.0,45.0,94.0,31.0,,,,,,,False
+ZFP82,待新模態 (無已知遞送方式),mixed,0.6181818181818182,0,False,42.0,13.0,55.0,12.0,,,,,,,False
+ZHX3,待新模態 (無已知遞送方式),mixed,0.43724696356275305,0,False,124.0,127.0,3.0,120.0,,,,,,,False
+ZMAT1,待新模態 (無已知遞送方式),repressor,0.8689883913764511,0,False,53.0,190.0,170.0,243.0,,,False,False,,,False
+ZMYM2,小分子 (胞內可成藥口袋),mixed,0.6493604213694507,0,False,2003.0,2178.0,305.0,175.0,0.4298169675674165,,False,False,,CLINICALLY ACTIONABLE;TRANSCRIPTION FACTOR,False
+ZMYND19,待新模態 (無已知遞送方式),activator,0.25,0,False,120.0,24.0,144.0,28.0,,,,,,,False
+ZMYND8,待新模態 (無已知遞送方式),mixed,0.5607476635514018,0,False,15.0,52.0,55.0,37.0,,,,,,,False
+ZNF148,待新模態 (無已知遞送方式),mixed,0.5010233319688907,0,False,862.0,1355.0,595.0,493.0,,,,,,,False
+ZNF18,待新模態 (無已知遞送方式),mixed,0.578125,0,False,125.0,128.0,4.0,3.0,,,,,,,False
+ZNF200,待新模態 (無已知遞送方式),repressor,0.9459459459459459,0,False,47.0,10.0,54.0,57.0,,,,,,,False
+ZNF221,待新模態 (無已知遞送方式),repressor,0.6817496229260935,0,False,663.0,663.0,0.0,0.0,,,,,,,False
+ZNF254,待新模態 (無已知遞送方式),repressor,0.782051282051282,0,False,77.0,78.0,1.0,2.0,,,,,,,False
+ZNF274,待新模態 (無已知遞送方式),repressor,0.9570135746606335,0,False,6.0,146.0,152.0,144.0,,,,,,,False
+ZNF280D,待新模態 (無已知遞送方式),repressor,0.8450292397660819,0,False,80.0,66.0,146.0,130.0,,,,,,,False
+ZNF304,待新模態 (無已知遞送方式),repressor,0.7764127764127764,0,False,813.0,814.0,1.0,1.0,,,False,False,,,False
+ZNF330,待新模態 (無已知遞送方式),repressor,0.704,0,False,121.0,4.0,2.0,125.0,,,,,,,False
+ZNF35,待新模態 (無已知遞送方式),activator,0.17272727272727273,0,False,110.0,110.0,0.0,0.0,,,,,,,False
+ZNF384,待新模態 (無已知遞送方式),mixed,0.4125874125874126,0,False,37.0,73.0,36.0,70.0,,,,,,,False
+ZNF470,待新模態 (無已知遞送方式),mixed,0.5830985915492958,0,False,354.0,355.0,25.0,1.0,,,,,,,False
+ZNF507,待新模態 (無已知遞送方式),repressor,0.9166666666666666,0,False,56.0,16.0,37.0,72.0,,,False,False,,,False
+ZNF512B,待新模態 (無已知遞送方式),mixed,0.6105476673427992,0,False,491.0,493.0,2.0,3.0,,,,,,,False
+ZNF554,待新模態 (無已知遞送方式),repressor,0.7899280575539568,0,False,293.0,512.0,219.0,659.0,,,,,,,False
+ZNF589,待新模態 (無已知遞送方式),repressor,0.9056603773584906,0,False,40.0,53.0,14.0,13.0,,,,,,,False
+ZNF613,待新模態 (無已知遞送方式),repressor,0.7738172391445236,0,False,832.0,789.0,1621.0,676.0,,,,,,,False
+ZNF622,待新模態 (無已知遞送方式),mixed,0.5882352941176471,0,False,64.0,4.0,22.0,68.0,,,,,,,False
+ZNF627,待新模態 (無已知遞送方式),repressor,0.9814814814814815,0,False,53.0,54.0,3.0,1.0,,,,,,,False
+ZNF641,待新模態 (無已知遞送方式),mixed,0.4532608695652174,0,False,708.0,58.0,96.0,766.0,,,,,,,False
+ZNF644,待新模態 (無已知遞送方式),mixed,0.5878260869565217,0,False,156.0,431.0,275.0,444.0,,,,,,,False
+ZNF649,待新模態 (無已知遞送方式),mixed,0.5717948717948718,0,False,1069.0,105.0,281.0,1174.0,,,,,,,False
+ZNF653,待新模態 (無已知遞送方式),mixed,0.5041322314049587,0,False,119.0,121.0,5.0,2.0,,,,,,,False
+ZNF655,待新模態 (無已知遞送方式),mixed,0.5294117647058824,0,False,49.0,19.0,36.0,68.0,,,,,,,False
+ZNF70,待新模態 (無已知遞送方式),repressor,0.8413391557496361,0,False,683.0,687.0,19.0,4.0,,,,,,,False
+ZNF785,待新模態 (無已知遞送方式),mixed,0.4838709677419355,0,False,238.0,10.0,6.0,248.0,,,,,,,False
+ZNF790,待新模態 (無已知遞送方式),repressor,0.9458483754512635,0,False,276.0,1.0,277.0,2.0,,,,,,,False
+ZNF837,待新模態 (無已知遞送方式),mixed,0.5422163588390502,0,True,758.0,0.0,0.0,758.0,,,,,,,True
+ZNF92,待新模態 (無已知遞送方式),mixed,0.6488011283497884,0,False,220.0,122.0,342.0,245.0,,,,,,,False
+ZRANB2,待新模態 (無已知遞送方式),mixed,0.40728476821192056,0,False,133.0,39.0,130.0,172.0,,,,,,,False
+ZRSR2,待新模態 (無已知遞送方式),mixed,0.46853146853146854,0,False,263.0,291.0,424.0,28.0,,,,,,,False
+ZSCAN2,待新模態 (無已知遞送方式),repressor,0.8071065989847716,0,False,194.0,197.0,28.0,3.0,,,,,,,False
+ZSCAN25,待新模態 (無已知遞送方式),repressor,0.7225806451612903,0,False,153.0,155.0,4.0,2.0,,,,,,,False
+ZSWIM4,待新模態 (無已知遞送方式),mixed,0.559322033898305,0,False,453.0,472.0,19.0,19.0,,,,,,,False
