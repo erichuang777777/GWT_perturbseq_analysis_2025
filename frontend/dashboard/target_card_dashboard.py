@@ -10,6 +10,8 @@ import pandas as pd
 import requests
 import streamlit as st
 
+from ui_chips import format_concept_chips  # shared unknown!=0-safe concept flattener (FE-3/FE-4)
+
 
 API_BASE = os.getenv("GWT_API_BASE", "http://127.0.0.1:8000").rstrip("/")
 DEFAULT_DE = "metadata/suppl_tables/DE_stats.suppl_table.csv"
@@ -178,6 +180,34 @@ def _genetic_double_support(dataset_id: str, min_grade: int = 2, trait: str = "l
 @st.cache_data(ttl=60)
 def _triage(dataset_id: str, top_n: int = 100) -> Dict[str, Any]:
     return _api_get(f"/api/triage/{dataset_id}", params={"top_n": top_n})
+
+
+def _selectable_table_with_dossier_link(df: pd.DataFrame, table_key: str) -> None:
+    """Render a single-row-selectable table (FE-1 sender). When a row is picked,
+    offer a button that deep-links to the target dossier page for that target via
+    query params + st.switch_page. Read-only; frontend stays isolated."""
+    disp = df.reset_index(drop=True)
+    event = st.dataframe(
+        disp,
+        use_container_width=True,
+        hide_index=True,
+        selection_mode="single-row",
+        on_select="rerun",
+        key=table_key,
+    )
+    rows = []
+    try:
+        sel = getattr(event, "selection", None)
+        rows = list(sel.rows) if sel is not None else []
+    except Exception:
+        rows = []
+    if not rows:
+        st.caption("↑ 選一列以開啟該標的的完整檔案(target dossier)。")
+        return
+    target = str(disp.iloc[rows[0]].get("target", "")).strip()
+    if target and st.button(f"開啟標的檔案:{target} →", key=f"{table_key}_open"):
+        st.query_params.update({"dataset_id": st.session_state.get("dataset_id", ""), "target": target})
+        st.switch_page("pages/2_標的檔案_target_dossier.py")
 
 
 def _compatibility_banner(dataset_id: str) -> None:
@@ -557,7 +587,19 @@ except Exception as e:
 
 summary = summary_payload.get("summary", {})
 _compatibility_banner(dataset_id)
-tabs = st.tabs(["Overview", "Target Explorer", "Pathway + Clinical", "Imports", "Export", "Disease Translator", "免疫優先 Immune Priority", "整合 Triage"])
+# Tab order (FE-2): the composite 整合 Triage front-door + the immune/disease
+# discovery views come right after Overview; the raw explorer/pathway/io tabs
+# follow. Indices below map each `with tabs[i]:` block to its slot here.
+tabs = st.tabs([
+    "Overview",              # 0
+    "整合 Triage",            # 1  (was 7)
+    "免疫優先 Immune Priority",  # 2  (was 6)
+    "Disease Translator",    # 3  (was 5) + 遺傳雙證據
+    "Target Explorer",       # 4  (was 1)
+    "Pathway + Clinical",    # 5  (was 2)
+    "Imports",               # 6  (was 3)
+    "Export",                # 7  (was 4)
+])
 
 with tabs[0]:
     cols = st.columns(6)
@@ -659,7 +701,7 @@ with tabs[0]:
     except Exception as e:
         st.info(f"Robustness scatter not available: {e}")
 
-with tabs[1]:
+with tabs[4]:
     filter_cols = st.columns([1, 1, 1, 1])
     condition_options = [""] + opts.get("conditions", [])
     pathway_options = [""] + opts.get("pathway_axis", [])
@@ -828,7 +870,7 @@ with tabs[1]:
             footer_bits.append(f"source_name={lineage.get('source_name', 'NA')}")
         st.caption(" · ".join(footer_bits))
 
-with tabs[2]:
+with tabs[5]:
     module_df = _modules(dataset_id)
     clinical_chart = _count_chart(summary_payload.get("clinical_counts", []), "clinical_axis")
     panel_cols = st.columns(2)
@@ -847,10 +889,10 @@ with tabs[2]:
     st.subheader("Module hit table")
     st.dataframe(module_df, use_container_width=True, hide_index=True)
 
-with tabs[3]:
+with tabs[6]:
     _render_imports_tab()
 
-with tabs[4]:
+with tabs[7]:
     report_top_n = st.slider("report top_n", min_value=10, max_value=500, value=50, step=10)
     report = _summary(dataset_id, top_n=int(report_top_n))
     st.write(report.get("summary", {}))
@@ -885,7 +927,7 @@ with tabs[4]:
             mime="text/markdown",
         )
 
-with tabs[5]:
+with tabs[3]:
     st.subheader("Disease Translator")
     st.caption(
         "Ranks target cards by real Open Targets genetic-association evidence for a chosen indication. "
@@ -927,7 +969,7 @@ with tabs[5]:
                 st.bar_chart(chart_df)
 
 
-with tabs[6]:
+with tabs[2]:
     st.subheader("免疫優先排序 — Immune-concept priority")
     st.caption(
         "Re-orders targets by CD4 immune-concept interest (membership in the 20 "
@@ -955,14 +997,8 @@ with tabs[6]:
             st.info("No targets matched (try turning off the stimulation-gated filter).")
         else:
             ip_df = pd.DataFrame(rows)
-            # flatten concept_modules (list of dicts) -> readable chip string
-            def _chips(mods: Any) -> str:
-                if not isinstance(mods, list):
-                    return ""
-                return ", ".join(f"{m.get('module_id', '')}·{m.get('module_name', '')}" for m in mods)
-
             if "concept_modules" in ip_df.columns:
-                ip_df["concept_modules"] = ip_df["concept_modules"].map(_chips)
+                ip_df["concept_modules"] = ip_df["concept_modules"].map(format_concept_chips)
             display_cols = [
                 c
                 for c in [
@@ -978,7 +1014,7 @@ with tabs[6]:
                 ]
                 if c in ip_df.columns
             ]
-            st.dataframe(ip_df[display_cols], use_container_width=True, hide_index=True)
+            _selectable_table_with_dossier_link(ip_df[display_cols], "immune_table")
     except Exception as e:
         st.info(f"Immune-priority view not available: {e}")
 
@@ -1007,15 +1043,13 @@ with tabs[6]:
             else:
                 sw_df = pd.DataFrame(sw_rows)
                 if "concept_modules" in sw_df.columns:
-                    sw_df["concept_modules"] = sw_df["concept_modules"].map(
-                        lambda v: ", ".join(v) if isinstance(v, list) else ""
-                    )
+                    sw_df["concept_modules"] = sw_df["concept_modules"].map(format_concept_chips)
                 st.dataframe(sw_df, use_container_width=True, hide_index=True)
     except Exception as e:
         st.info(f"Switches view not available: {e}")
 
 
-with tabs[5]:
+with tabs[3]:  # renders into the Disease Translator tab, below the translator
     st.divider()
     st.subheader("遺傳雙證據 — Genetic double-support (disease × population)")
     st.caption(
@@ -1050,7 +1084,7 @@ with tabs[5]:
         st.info(f"Double-support view not available: {e}")
 
 
-with tabs[7]:
+with tabs[1]:
     st.subheader("整合多軸 Triage — composite descriptive shortlist")
     st.caption(
         "One row per target, scored across independent descriptive axes: immune "
@@ -1075,10 +1109,8 @@ with tabs[7]:
             if tri_rows:
                 tri_df = pd.DataFrame(tri_rows)
                 if "concept_modules" in tri_df.columns:
-                    tri_df["concept_modules"] = tri_df["concept_modules"].map(
-                        lambda v: ", ".join(m.get("module_id", "") for m in v) if isinstance(v, list) else ""
-                    )
-                st.dataframe(tri_df, use_container_width=True, hide_index=True)
+                    tri_df["concept_modules"] = tri_df["concept_modules"].map(format_concept_chips)
+                _selectable_table_with_dossier_link(tri_df, "triage_table")
     except Exception as e:
         st.info(f"Triage view not available: {e}")
 
