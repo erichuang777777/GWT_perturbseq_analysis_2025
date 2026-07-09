@@ -1,0 +1,28 @@
+gene,avoid_tier,n_avoid_flags,avoid_flags,loeuf,pli,breadth_max_de,is_ctx_specific
+MED12,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.10); 劑量敏感(pLI 1.00),0.0954812775147903,1.0,4142.0,False
+SETDB1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.3043910358837762,0.9999999999998964,2291.0,False
+SMARCA5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.19); 劑量敏感(pLI 1.00),0.1901104812110659,1.0,2786.0,False
+SMG1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.07); 劑量敏感(pLI 1.00),0.0748237416869631,1.0,2684.0,False
+ARF1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.263708322947604,0.99917045222594,1754.0,False
+MAX,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.35); 劑量敏感(pLI 1.00),0.3484073260389697,0.9988528450920444,2223.0,False
+EIF4G2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.12); 劑量敏感(pLI 1.00),0.1226951830624844,1.0,2530.0,False
+TNRC6A,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.26); 劑量敏感(pLI 1.00),0.2557160301054788,1.0,1547.0,False
+CREBBP,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.11); 劑量敏感(pLI 1.00),0.1051924869763193,1.0,2969.0,False
+CPSF6,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.30); 劑量敏感(pLI 1.00),0.2992907577699072,0.9999997861097684,2487.0,False
+BHLHE40,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.22); 劑量敏感(pLI 1.00),0.2171883786993017,0.99999860099106,1997.0,False
+UBE2L3,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.27); 劑量敏感(pLI 1.00),0.266852087256841,0.9990778906806628,2874.0,False
+ATP2A2,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.20); 劑量敏感(pLI 1.00),0.2003169158021933,0.9999999999999998,3519.0,False
+VAV1,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.34); 劑量敏感(pLI 1.00),0.3444029706478581,0.9999999998734816,4898.0,True
+NFAT5,avoid,3,泛效應(breadth top10%); 高遺傳約束(LOEUF 0.25); 劑量敏感(pLI 1.00),0.2512521224755644,1.0,1624.0,False
+UBE2E2,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.99),0.4786828092559536,0.9869808341742088,1524.0,True
+USP22,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.461151726275716,0.9982519239682268,2381.0,False
+ACLY,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.400071926771869,0.9999997939567736,2432.0,True
+SENP5,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4073313098017,0.9999757537024356,5172.0,False
+NCKAP1L,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.98),0.4785320751053298,0.9780942101857696,2947.0,False
+MED15,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4480506233470686,0.999749051257536,2807.0,False
+DHX36,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4553339341486281,0.999362616857637,2327.0,False
+DENR,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3874194075618192,0.9992814483738396,3637.0,False
+BCL10,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 0.94),0.5462126708195334,0.9432447077010372,3456.0,True
+ARNT,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.3873464603285701,0.9999996812420346,2947.0,False
+ARHGAP30,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4528866412654388,0.9991164905958896,1840.0,False
+ZMYM2,high_risk,2,泛效應(breadth top10%); 劑量敏感(pLI 1.00),0.4298169675674165,0.9999929398943758,2178.0,False
