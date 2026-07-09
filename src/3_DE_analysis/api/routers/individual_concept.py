@@ -30,7 +30,7 @@ from upload.import_manager import utc_now
 
 import individual_concept_profile as icp
 
-router = APIRouter(tags=["individual-concept"])
+router = APIRouter(tags=["Concept profile (demo)"])
 
 
 @router.post("/api/individual-concept-profile")

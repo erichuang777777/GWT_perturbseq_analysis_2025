@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from api import deps
 from evidence.mechanism_graph import build_mechanism_graph
 
-router = APIRouter(tags=["mechanism"])
+router = APIRouter(tags=["Mechanism graph"])
 
 
 @router.get("/api/mechanism-graph/{gene}")

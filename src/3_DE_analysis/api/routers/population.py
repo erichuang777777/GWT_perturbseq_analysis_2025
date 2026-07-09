@@ -10,7 +10,7 @@ from fastapi import APIRouter, Query
 from api import deps
 from evidence.population import CAVEAT_TEXT, build_population_hypothesis_card
 
-router = APIRouter(tags=["population"])
+router = APIRouter(tags=["Population genetics"])
 
 
 @router.get("/api/population-hypothesis/{gene}")

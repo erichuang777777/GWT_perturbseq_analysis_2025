@@ -41,29 +41,23 @@ narrower pharmacological safety window under systemic inhibition; it is
 NOT the same claim as pharmacological (small-molecule/antibody) LoF
 intolerance, so (exactly like ``safety_window_from_gtex``) this stays a
 descriptive annotation and never caps ``readiness_call``/
-``overall_readiness_stage``.
+``overall_readiness_stage``. The loss-intolerant flag fires when LOEUF is
+below ``LOEUF_LOSS_INTOLERANT_THRESHOLD`` -- now 0.6, gnomAD **v4**'s
+"constrained" cutoff (broadened from the v2.1.1-era 0.35 once the seed was
+refreshed to real v4 LOEUF/pLI values; see ``common/overlay_lookup.py``).
 
-The sandbox this module was developed in has no network egress to gnomAD
-(policy-blocked, same as Open Targets -- see
-``external_evidence_cache.py``'s docstring), so there is no full-genome
-gnomAD snapshot checked in yet. What IS real and checked in is
-``docs/mvp-research/connector_enrichment_demo.csv``, which carries
-independently-verified gnomAD LOEUF/pLI values for 8 genes (CD3E, LAT,
-TADA2B, SENP5, PLCG1, VAV1, SGF29, UBXN1). ``load_gnomad_constraint_overlay``
-reads a small derived seed file built from those 8 real rows --
+``load_gnomad_constraint_overlay`` reads
 ``sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv``
-(columns ``ensembl_id``, ``gene_symbol``, ``loeuf``, ``pli``) -- with each
+(columns ``ensembl_id``, ``gene_symbol``, ``loeuf``, ``pli``), with each
 gene symbol resolved to its real Ensembl gene ID via
-``gene_identifier_resolver.load_resolver()`` (no invented IDs). This is
-explicitly an 8-gene seed for testing/demo, exactly analogous to how
-``docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md`` documents the GTEx
-file's provenance: a full-genome gnomAD download (via gnomAD's GraphQL API
-or the ``mcp-variants`` connector's ``gene_constraint`` tool, per
-``docs/mvp-research/ENHANCEMENT_連結器加強建議.md`` §2) is deployment-time
-work the project owner supplies later by dropping a wider file at the same
-path -- the loader's honest-fallback contract (below) is what makes that
-swap safe: a missing/malformed file degrades to ``available: False``, never
-a fabricated LOEUF/pLI value.
+``gene_identifier_resolver.load_resolver()`` (no invented IDs). The seed now
+carries **real gnomAD v4 constraint values for the 15 shortlist genes**
+(a networked run supplied them, unblocking the earlier 8-gene demo seed --
+the original sandbox had no egress to gnomAD, policy-blocked like Open
+Targets). A full-genome gnomAD snapshot can widen coverage further by
+dropping a larger file at the same path; the loader's honest-fallback
+contract (below) is what makes that swap safe: a missing/malformed file
+degrades to ``available: False``, never a fabricated LOEUF/pLI value.
 """
 
 from __future__ import annotations
@@ -75,11 +69,13 @@ import pandas as pd
 
 from common import degrade
 from common.overlay_lookup import (
+    BREADTH_BROAD_THRESHOLD,
     LOEUF_LOSS_INTOLERANT_THRESHOLD,
     MODALITY_ANTIBODY_BIOLOGIC,
     MODALITY_ANTIBODY_SURFACE,
     MODALITY_SMALL_MOLECULE,
     UNKNOWN,
+    composite_safety_liability,
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
     tractability_from_membrane_overlay,
@@ -202,8 +198,11 @@ def load_gnomad_constraint_overlay(path: Optional[Path] = None) -> Dict[str, Any
     return {"available": True, "reason": None, "table": df}
 
 
-# tractability_from_membrane_overlay, safety_window_from_gtex, and
-# gnomad_flag_from_constraint (the pure overlay-interpretation functions)
-# are imported above from common.overlay_lookup and re-exported under their
-# original names here -- see this module's docstring and
-# common/overlay_lookup.py's docstring (architecture refactor Phase 3).
+# tractability_from_membrane_overlay, safety_window_from_gtex,
+# gnomad_flag_from_constraint, and composite_safety_liability (the pure
+# overlay-interpretation functions) are imported above from
+# common.overlay_lookup and re-exported under their original names here -- see
+# this module's docstring and common/overlay_lookup.py's docstring
+# (architecture refactor Phase 3). composite_safety_liability (roadmap P1.3)
+# composes gnomAD constraint + GTEx breadth into one disclosed on-target
+# safety-LIABILITY tier -- never a de-risking signal.

@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 from api import deps
 
-router = APIRouter(tags=["build"])
+router = APIRouter(tags=["Build"])
 
 
 @dataclass

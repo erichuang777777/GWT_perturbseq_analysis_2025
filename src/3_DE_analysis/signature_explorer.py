@@ -15,9 +15,14 @@ opposing?" This is **purely exploratory, no clinical claim** (plan doc:
 "純研究探索,無臨床宣稱") -- see ``COMBINATION_CAVEAT_TEXT``.
 
 **What this explicitly does NOT do:**
-- A1b (matching against LINCS/CMap *compound* reference signatures) is
-  **not implemented**. ``match_reference_compounds`` is a stub that always
-  returns the honest-unavailable shape -- see its docstring for why.
+- A1b (matching against LINCS/CMap *compound* reference signatures) is now
+  **wired but honestly unavailable**: ``match_reference_compounds`` routes to
+  the compound-reversal ranking in ``evidence.lincs_reference_cache``
+  (``load_compound_signatures`` + ``compound_reversal_matches``) whenever a
+  committed COMPOUND signature matrix exists, and otherwise returns the honest
+  ``source_status: unavailable`` shape. No compound matrix is committed (only
+  genetic-knockdown signatures are), so today it always degrades to
+  unavailable -- see its docstring and ``COMPOUND_SIGNATURES_PATH``.
 - Never feeds ``readiness_call`` / ``overall_readiness_stage`` /
   ``statistical_evidence_grade``. Nothing here writes back into
   ``readiness_engine.py`` or ``target_card_api.py`` -- this module is fully
@@ -411,35 +416,109 @@ def score_target_against_reference(
     }
 
 
-# --- A1b stub: honestly unavailable, no compound matching implemented ----------
+# --- A1b: compound-reversal matching (routes to the compound half when data lands)
 
 
-def match_reference_compounds(target: str, **kwargs: Any) -> Dict[str, Any]:
-    """A1b stub: match ``target``'s query signature against LINCS L1000 /
-    CMap **compound** reference signatures to find compounds whose signature
-    reverses the target's downstream signature.
+def match_reference_compounds(
+    target: str,
+    query_signature: Optional[Dict[str, float]] = None,
+    compound_signatures: Any = None,
+    top_n: int = 25,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """A1b: match ``target``'s signature against LINCS L1000 / CMap
+    **compound** reference signatures to find compounds whose profile
+    **reverses** the target's signature (drug-repurposing / signature-reversal).
 
-    **Not implemented.** LINCS/CMap reference signatures do not exist
-    anywhere in this repo (confirmed by inspection -- no L1000/CMap file
-    under ``sources/``, ``metadata/``, or anywhere else), and this sandbox's
-    egress to LINCS/CLUE is blocked (same class of restriction as the
-    Open Targets/gnomAD connectors noted elsewhere in
-    ``docs/next_phases_plan.md``). Per this repo's honest-fallback
-    contract, this function always returns the explicit
-    ``{"source_status": "unavailable", ...}`` shape (via
-    ``common.degrade.unavailable_source``) -- it never fabricates a
-    compound match. A real implementation would need a researcher to
-    download an L1000 Level 5 subset locally, or a deployed environment
-    with CLUE API access, and would reuse ``connectivity_score`` above
-    unchanged (it already accepts arbitrary ``{gene: score}`` reference
-    signatures).
+    This now genuinely routes to the compound-reversal path in
+    ``evidence.lincs_reference_cache`` (``load_compound_signatures`` +
+    ``compound_reversal_matches``, which reuses the shared
+    ``lincs_connectivity_score`` -- connectivity is never reimplemented here).
+    But that path is **only** taken when a committed COMPOUND signature matrix
+    exists. It does NOT today: the LINCS data that landed in the repo
+    (``sources/target_tool_cache/_lincs/``) is genetic-PERTURBATION (shRNA
+    knockdown) signal from GSE106127, NOT compound signal. Answering "which
+    compound reverses this target's signature" needs COMPOUND reference
+    signatures (LINCS GSE92742 / GSE70138 or CLUE), which are not committed and
+    cannot be fetched in this sandbox (see ``COMPOUND_SIGNATURES_PATH`` and
+    docs/sandbox_blocked_tasks.md §F). So per the honest-fallback contract this
+    still returns the explicit ``{"source_status": "unavailable", ...}`` shape
+    with a precise reason pointing at ``COMPOUND_SIGNATURES_PATH`` -- it never
+    fabricates a compound match.
+
+    Query substrate: a compound-reversal comparison needs a query in L1000
+    978-landmark space. Callers may pass ``query_signature`` (a
+    ``{landmark_gene: signed_score}`` vector) directly; otherwise this falls
+    back to the target's own LINCS knockdown signature
+    (``lincs_reference_cache.knockdown_reference``) as the landmark-space query
+    -- i.e. "find compounds that reverse this gene's knockdown response". The
+    single-gene, on-target-only in-repo query signatures produced by
+    ``build_query_signature`` are NOT in landmark space and are deliberately
+    not used here (that genetic-vs-compound distinction is preserved, not
+    conflated).
+
+    Note the separate, weaker capability already available for the 4 covered
+    genes (PLCG1, SENP5, CCNC, PMVK): knockdown-vs-knockdown cross-referencing
+    via ``knockdown_reference`` -- that is not compound matching and lives in
+    the evidence layer, not this compound-specific entry point.
     """
-    return unavailable_source(
-        reason=(
-            "LINCS/CMap reference signatures not present in this repo; requires "
-            "external L1000 data or CLUE API access not available in this sandbox"
-        )
+    from evidence.lincs_reference_cache import (
+        COMPOUND_CAVEAT_TEXT,
+        COMPOUND_SIGNATURES_PATH,
+        compound_reversal_matches,
+        knockdown_reference,
+        load_compound_signatures,
     )
+
+    compounds = (
+        compound_signatures
+        if compound_signatures is not None
+        else load_compound_signatures()
+    )
+    available = (
+        (not compounds.empty)
+        if isinstance(compounds, pd.DataFrame)
+        else compounds.get("available", False)
+    )
+    if not available:
+        reason = (
+            compounds.get("reason") if isinstance(compounds, dict) else None
+        ) or (
+            f"compound reference signatures (LINCS GSE92742/GSE70138 or CLUE) not "
+            f"present in this repo (expected at {COMPOUND_SIGNATURES_PATH}); the "
+            "committed LINCS data is genetic-perturbation (knockdown) signal only "
+            "-- see evidence.lincs_reference_cache."
+        )
+        return unavailable_source(reason=reason)
+
+    # Compound data is present -> genuinely route to the reversal ranking.
+    if query_signature is None:
+        kd = knockdown_reference(target)
+        if not kd["available"]:
+            return unavailable_source(
+                reason=(
+                    f"compound matrix is available but no landmark-space query "
+                    f"signature for '{target}': {kd['reason']}. Pass query_signature "
+                    "explicitly (a {landmark_gene: signed_score} vector)."
+                )
+            )
+        query_signature = kd["signature"]
+
+    ranked = compound_reversal_matches(
+        query_signature, compound_signatures=compounds, top_n=top_n
+    )
+    if not ranked["available"]:
+        return unavailable_source(reason=ranked["reason"])
+
+    return {
+        "source_status": "available",
+        "reason": None,
+        "target": target,
+        "method": ranked["method"],
+        "items": ranked["matches"],
+        "n_compounds_scored": ranked["n_compounds_scored"],
+        "caveat": COMPOUND_CAVEAT_TEXT,
+    }
 
 
 # --- A4: pairwise combination explorer ------------------------------------------

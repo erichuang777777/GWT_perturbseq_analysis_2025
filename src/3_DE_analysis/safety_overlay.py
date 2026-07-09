@@ -12,11 +12,13 @@ from __future__ import annotations
 
 from evidence.safety_overlay import *  # noqa: F401,F403
 from evidence.safety_overlay import (  # noqa: F401
+    BREADTH_BROAD_THRESHOLD,
     GNOMAD_REQUIRED_COLUMNS,
     GTEX_REQUIRED_COLUMNS,
     LOEUF_LOSS_INTOLERANT_THRESHOLD,
     MEMBRANE_OVERLAY_REQUIRED_COLUMNS,
     UNKNOWN,
+    composite_safety_liability,
     gnomad_flag_from_constraint,
     load_gnomad_constraint_overlay,
     load_gtex_safety_overlay,

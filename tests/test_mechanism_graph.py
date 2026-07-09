@@ -218,13 +218,17 @@ def test_mechanism_graph_api_endpoint_no_dataset():
     import target_card_api as api
 
     client = TestClient(api.app)
-    # No cached snapshot exists for this gene under the real cache dir in this
-    # checkout -- the endpoint must return an honest unavailable response
-    # (never a 500, never a fabricated graph).
-    resp = client.get("/api/mechanism-graph/CD3E")
+    # ZAP70 resolves via the gene resolver but has no committed _pathway
+    # snapshot in this checkout (the 15 shortlist snapshots added in PR #11 do
+    # not include it) -- so the endpoint must return an honest unavailable
+    # response (never a 500, never a fabricated graph). Uses a snapshot-less
+    # gene deliberately: CD3E and the other shortlist genes now DO have real
+    # cached snapshots, so the available path is covered separately by
+    # test_mechanism_graph_api_endpoint_reads_real_cache_dir.
+    resp = client.get("/api/mechanism-graph/ZAP70")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["gene_query"] == "CD3E"
+    assert body["gene_query"] == "ZAP70"
     assert "resolution" in body
     assert body["available"] is False
     assert "reason" in body

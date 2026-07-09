@@ -61,13 +61,31 @@ from core.cards import (
     load_gene_set,
 )
 from common import coerce
+from common.evidence_grading import (
+    genetic_support_confidence_from_evidence,
+    trait_liability_similarity,
+)
 from common.overlay_lookup import (
+    composite_safety_liability,
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
     tractability_from_membrane_overlay,
 )
 
 UNKNOWN = "unknown"
+
+# Repo root, anchored to this file's location (core -> 3_DE_analysis -> src ->
+# repo root), NOT to the process cwd. The CLI __main__ block below anchors its
+# default overlay paths here so that `python -m core.readiness cards.csv` loads
+# the druggability/essentials/broad-effect gene sets regardless of which
+# directory it is invoked from. Matches ``api/deps.py``'s ``ROOT`` (same
+# parents[3]) so the CLI and the API resolve the same files. Previously these
+# defaults were cwd-relative (``Path("metadata/gene_lists")``), so running from
+# anywhere but the repo root silently loaded ZERO overlays and collapsed the
+# advance tier -- with no error, since missing overlay files degrade to
+# "unknown" by design. Anchoring removes the silent-misconfiguration footgun
+# without changing the honest-degradation contract for genuinely-absent files.
+_REPO_ROOT = Path(__file__).resolve().parents[3]
 
 # Ordered from least to most advanced; used for red-flag capping via min().
 CALL_ORDER = ["deprioritize", "watchlist", "validate", "advance"]
@@ -351,6 +369,30 @@ def compute_readiness(
     It is never read by ``_stage()`` or ``_red_flags()`` and therefore can
     never change ``readiness_call``/``overall_readiness_stage``; omitting it
     leaves every existing column completely unchanged.
+
+    Five further purely additive, DESCRIPTIVE columns are always emitted
+    (roadmap Phase 1):
+
+    * ``genetic_support_confidence`` + ``genetic_support_max_genetic_score``
+      (P1.1/P1.2) -- an honest tier for the target's germline genetic support,
+      graded from the injected Open Targets snapshot's
+      ``associated_diseases[].genetic_association_score``
+      (``strong``/``moderate``/``no``-genetic-association, or ``"unknown"`` when
+      no snapshot was fetched). Graded, not authoritative (see
+      ``common/evidence_grading.py``).
+    * ``composite_safety_liability`` (P1.3) -- a disclosed on-target safety
+      LIABILITY tier (``high``/``moderate``/``low``/``"unknown"``) composing the
+      gnomAD constraint flag + GTEx off-context breadth; higher constraint +
+      broader expression = MORE concern, never de-risking (see
+      ``common/overlay_lookup.composite_safety_liability``).
+    * ``trait_liability_similarity`` + ``trait_liability_similarity_reason``
+      (P1.3) -- an honest-fallback stub that returns ``"unknown"`` + a reason,
+      because this repo commits no adverse-event reference vocabulary to match
+      associated traits against.
+
+    Like the gnomAD columns, none of these five is read by ``_stage()`` /
+    ``_red_flags()``, so none can change ``readiness_call`` /
+    ``overall_readiness_stage``.
     """
     if cards.empty:
         return cards.copy()
@@ -394,6 +436,15 @@ def compute_readiness(
         safety = safety_window_from_gtex(gene_ensembl, gtex_overlay) if gtex_overlay else UNKNOWN
         gnomad_flag = gnomad_flag_from_constraint(gene_ensembl, gnomad_overlay) if gnomad_overlay else UNKNOWN
         gnomad_loeuf, gnomad_pli = _gnomad_loeuf_pli(gene_ensembl, gnomad_overlay)
+        # Descriptive genetic-support tiering (roadmap P1.1/P1.2) and the
+        # composite safety-LIABILITY view + trait-similarity liability stub
+        # (P1.3). All three are graded/disclosed annotations only: they are NOT
+        # passed to _stage()/_red_flags() and therefore cannot move
+        # readiness_call/overall_readiness_stage -- the exact causal-independence
+        # property already enforced for safety_window_score and gnomad_*.
+        genetic_support_confidence, genetic_support_max_score = genetic_support_confidence_from_evidence(evidence)
+        composite_liability = composite_safety_liability(gnomad_flag, safety)
+        trait_similarity, trait_similarity_reason = trait_liability_similarity(evidence)
         immune_flags = []
         if bool(row.get("offtarget_flag")):
             immune_flags.append("offtarget")
@@ -417,6 +468,11 @@ def compute_readiness(
             "gnomad_constraint_flag": gnomad_flag,
             "gnomad_loeuf": gnomad_loeuf,
             "gnomad_pli": gnomad_pli,
+            "genetic_support_confidence": genetic_support_confidence,
+            "genetic_support_max_genetic_score": genetic_support_max_score,
+            "composite_safety_liability": composite_liability,
+            "trait_liability_similarity": trait_similarity,
+            "trait_liability_similarity_reason": trait_similarity_reason,
             "cd4_immune_red_flags": ",".join(immune_flags) if immune_flags else "none",
             "biomarker_score": biomarker,
             "translation_score": translation,
@@ -486,10 +542,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Compute readiness calls from a target-cards CSV.")
     parser.add_argument("cards", type=Path)
-    parser.add_argument("--gene-lists", type=Path, default=Path("metadata/gene_lists"))
-    parser.add_argument("--essentials", type=Path, default=Path("metadata/gene_lists/core_essentials_hart.tsv"))
-    parser.add_argument("--broad-effect", type=Path, default=Path("sources/broad_effect_genes.txt"))
-    parser.add_argument("--evidence-dir", type=Path, default=Path("sources/target_tool_cache/_evidence"))
+    # Defaults are anchored to _REPO_ROOT (this file's location), NOT the cwd,
+    # so the CLI loads the overlay/essentials/broad-effect files from any
+    # working directory. An explicit --gene-lists (etc.) still wins.
+    parser.add_argument("--gene-lists", type=Path, default=_REPO_ROOT / "metadata" / "gene_lists")
+    parser.add_argument("--essentials", type=Path, default=_REPO_ROOT / "metadata" / "gene_lists" / "core_essentials_hart.tsv")
+    parser.add_argument("--broad-effect", type=Path, default=_REPO_ROOT / "sources" / "broad_effect_genes.txt")
+    parser.add_argument("--evidence-dir", type=Path, default=_REPO_ROOT / "sources" / "target_tool_cache" / "_evidence")
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
@@ -497,6 +556,24 @@ if __name__ == "__main__":
     ov = load_overlays(args.gene_lists)
     ess = load_gene_set(args.essentials)
     broad = load_gene_set(args.broad_effect)
+    # Loud (but non-fatal) guard, scoped to the CLI call site ONLY -- never
+    # inside the shared load_overlays(), which the API also calls and which must
+    # stay quiet under its honest-degradation contract. Keyed on "loaded zero
+    # overlays" regardless of whether the directory exists, so it also catches a
+    # wrong-but-present cwd directory. Zero overlays means every druggability /
+    # genetics domain reads "unknown" and the advance tier is under-called; this
+    # turns that previously-silent misconfiguration into a visible warning.
+    if not ov:
+        import warnings
+
+        warnings.warn(
+            f"load_overlays returned 0 gene sets from {args.gene_lists!s} -- "
+            "druggability/genetics domains will all read 'unknown' and the "
+            "advance tier will be under-called. Pass --gene-lists pointing at "
+            "the repo's metadata/gene_lists directory.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
     evidence_dir = args.evidence_dir
     result = compute_readiness(
         cards_df,

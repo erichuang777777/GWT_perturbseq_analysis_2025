@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from api import deps
 from evidence.external_cache import build_evidence_for_genes, load_snapshot as load_evidence_snapshot
 
-router = APIRouter(tags=["evidence"])
+router = APIRouter(tags=["External evidence"])
 
 
 class EvidenceBuildRequest(BaseModel):
