@@ -1,0 +1,97 @@
+gene,n_known_drugs,tractability_summary,novelty_flag,ot_status
+ACACA,4,"SM: 5 bucket(s) [Advanced Clinical, Structure with Ligand, High-Quality Ligand...]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",druggable_known,ok
+ACAD9,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 1 bucket(s) [UniProt loc high conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ACLY,1,"SM: 5 bucket(s) [Approved Drug, Structure with Ligand, High-Quality Ligand...]; AB: 1 bucket(s) [GO CC high conf]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+ACOT7,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+AEBP2,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Small Molecule Binder]",novel_untapped,ok
+AMBRA1,0,"PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ANKRD61,0,no positive tractability buckets,novel_undruggable,ok
+ARHGAP27,0,"SM: 1 bucket(s) [Med-Quality Pocket]; AB: 2 bucket(s) [UniProt loc med conf, GO CC med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ATAD3A,0,"AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+BCL10,0,"PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+CALCOCO2,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 1 bucket(s) [UniProt loc high conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+CBLB,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Ligand]; AB: 1 bucket(s) [GO CC med conf]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+CBX5,0,"PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+CCND3,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Druggable Family]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Small Molecule Binder]",novel_untapped,ok
+CD2,2,"AB: 5 bucket(s) [Advanced Clinical, UniProt loc high conf, GO CC high conf...]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]; OC: 1 bucket(s) [Approved Drug]",druggable_known,ok
+CD247,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 3 bucket(s) [GO CC high conf, UniProt loc med conf, UniProt SigP or TMHMM]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+CD28,2,"SM: 1 bucket(s) [Structure with Ligand]; AB: 5 bucket(s) [Advanced Clinical, UniProt loc high conf, GO CC high conf...]; PR: 1 bucket(s) [Database Ubiquitination]",druggable_known,ok
+CD3E,22,"SM: 2 bucket(s) [Structure with Ligand, Med-Quality Pocket]; AB: 5 bucket(s) [Approved Drug, UniProt loc high conf, GO CC high conf...]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]; OC: 1 bucket(s) [Advanced Clinical]",druggable_known,ok
+CD5,1,"SM: 1 bucket(s) [Med-Quality Pocket]; AB: 3 bucket(s) [GO CC high conf, UniProt loc med conf, UniProt SigP or TMHMM]; PR: 1 bucket(s) [Database Ubiquitination]; OC: 1 bucket(s) [Advanced Clinical]",druggable_known,ok
+COA7,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+COQ6,0,"AB: 1 bucket(s) [UniProt loc med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+DLAT,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Pocket]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+DPH6,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ECSIT,0,"PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+EGR2,0,PR: 1 bucket(s) [UniProt Ubiquitination],novel_untapped,ok
+FITM2,0,AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 1 bucket(s) [Half-life Data],novel_untapped,ok
+FOSL2,0,"PR: 2 bucket(s) [UniProt Ubiquitination, Database Ubiquitination]",novel_untapped,ok
+GADD45GIP1,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+GATA3,0,PR: 1 bucket(s) [Database Ubiquitination],novel_untapped,ok
+GRSF1,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+GTPBP10,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+GZMB,0,"SM: 2 bucket(s) [Med-Quality Pocket, Druggable Family]; AB: 3 bucket(s) [UniProt loc high conf, UniProt SigP or TMHMM, GO CC med conf]; PR: 2 bucket(s) [Half-life Data, Small Molecule Binder]",novel_untapped,ok
+HACD2,0,AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 1 bucket(s) [Database Ubiquitination],novel_untapped,ok
+HACD4,0,AB: 1 bucket(s) [UniProt SigP or TMHMM],novel_untapped,ok
+HIF1A,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Druggable Family]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Small Molecule Binder]",novel_untapped,ok
+IBA57,0,SM: 1 bucket(s) [Structure with Ligand]; PR: 1 bucket(s) [Half-life Data],novel_untapped,ok
+ICOS,4,"AB: 5 bucket(s) [Advanced Clinical, UniProt loc high conf, GO CC high conf...]; PR: 1 bucket(s) [Small Molecule Binder]",druggable_known,ok
+IFNAR1,12,"AB: 4 bucket(s) [Approved Drug, UniProt loc high conf, GO CC high conf...]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Small Molecule Binder]; OC: 1 bucket(s) [Approved Drug]",druggable_known,ok
+IFNGR1,1,"SM: 2 bucket(s) [Structure with Ligand, Med-Quality Pocket]; AB: 4 bucket(s) [UniProt loc high conf, GO CC high conf, UniProt SigP or TMHMM...]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]; OC: 1 bucket(s) [Approved Drug]",druggable_known,ok
+IFNGR2,1,"SM: 1 bucket(s) [Structure with Ligand]; AB: 3 bucket(s) [UniProt loc high conf, GO CC high conf, UniProt SigP or TMHMM]; PR: 1 bucket(s) [Database Ubiquitination]; OC: 1 bucket(s) [Approved Drug]",druggable_known,ok
+IKBKB,6,"SM: 4 bucket(s) [Advanced Clinical, Structure with Ligand, High-Quality Ligand...]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+IL23R,0,"AB: 3 bucket(s) [UniProt loc high conf, GO CC high conf, UniProt SigP or TMHMM]; PR: 1 bucket(s) [Small Molecule Binder]",novel_untapped,ok
+IL4R,2,"AB: 5 bucket(s) [Approved Drug, GO CC high conf, UniProt loc med conf...]; PR: 1 bucket(s) [Database Ubiquitination]; OC: 1 bucket(s) [Advanced Clinical]",druggable_known,ok
+IL7R,0,"AB: 4 bucket(s) [GO CC high conf, UniProt loc med conf, UniProt SigP or TMHMM...]; PR: 2 bucket(s) [UniProt Ubiquitination, Database Ubiquitination]",novel_untapped,ok
+INPP5D,1,"SM: 2 bucket(s) [Advanced Clinical, Structure with Ligand]; AB: 3 bucket(s) [UniProt loc high conf, UniProt loc med conf, GO CC med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",druggable_known,ok
+INSIG1,0,"AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 2 bucket(s) [UniProt Ubiquitination, Database Ubiquitination]",novel_untapped,ok
+IRF1,0,"PR: 2 bucket(s) [UniProt Ubiquitination, Database Ubiquitination]",novel_untapped,ok
+IRF4,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ITK,4,"SM: 5 bucket(s) [Approved Drug, Structure with Ligand, High-Quality Ligand...]; AB: 1 bucket(s) [GO CC med conf]; PR: 5 bucket(s) [Literature, UniProt Ubiquitination, Database Ubiquitination...]",druggable_known,ok
+LAMTOR4,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+LAT,0,"AB: 4 bucket(s) [UniProt loc high conf, GO CC high conf, UniProt SigP or TMHMM...]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+LIG3,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Pocket]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+LRBA,0,"SM: 1 bucket(s) [High-Quality Pocket]; AB: 3 bucket(s) [UniProt loc med conf, UniProt SigP or TMHMM, GO CC med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MALT1,1,"SM: 3 bucket(s) [Approved Drug, Structure with Ligand, High-Quality Ligand]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",druggable_known,ok
+MED13,0,PR: 1 bucket(s) [Database Ubiquitination],novel_untapped,ok
+MMGT1,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 2 bucket(s) [UniProt SigP or TMHMM, GO CC med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MTA3,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MTCH2,0,"AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MTG1,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 1 bucket(s) [UniProt loc high conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MTHFD1L,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+MTHFD2,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Ligand]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+MYC,0,"SM: 2 bucket(s) [Structure with Ligand, High-Quality Ligand]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Small Molecule Binder]",novel_untapped,ok
+NATD1,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+NDFIP2,0,"AB: 2 bucket(s) [UniProt loc high conf, UniProt SigP or TMHMM]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+NDUFA9,3,"SM: 2 bucket(s) [Approved Drug, Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",druggable_known,ok
+NDUFAF3,3,SM: 1 bucket(s) [Approved Drug]; PR: 1 bucket(s) [Half-life Data],druggable_known,ok
+NFATC2,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+NFKB1,1,"SM: 4 bucket(s) [Advanced Clinical, Structure with Ligand, High-Quality Ligand...]; AB: 1 bucket(s) [GO CC high conf]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+NSUN4,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ORAI1,0,"SM: 1 bucket(s) [High-Quality Ligand]; AB: 4 bucket(s) [UniProt loc high conf, UniProt loc med conf, UniProt SigP or TMHMM...]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+PDCD5,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+PLCG1,0,"SM: 1 bucket(s) [High-Quality Ligand]; AB: 2 bucket(s) [GO CC high conf, Human Protein Atlas loc]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+POLG,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Med-Quality Pocket]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+PPP3R1,0,"SM: 2 bucket(s) [Structure with Ligand, Med-Quality Pocket]; AB: 4 bucket(s) [UniProt loc high conf, UniProt loc med conf, GO CC med conf...]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+PTCD2,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+RAC2,0,"SM: 2 bucket(s) [Structure with Ligand, Med-Quality Pocket]; AB: 1 bucket(s) [GO CC high conf]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+RBFA,0,SM: 1 bucket(s) [Structure with Ligand]; PR: 1 bucket(s) [Half-life Data],novel_untapped,ok
+REL,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+RELA,1,"SM: 4 bucket(s) [Advanced Clinical, Structure with Ligand, High-Quality Ligand...]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+RNFT2,0,"AB: 1 bucket(s) [UniProt SigP or TMHMM]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+RPTOR,1,"SM: 3 bucket(s) [Advanced Clinical, Structure with Ligand, High-Quality Ligand]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+RPUSD3,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+RRAGC,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+SLC3A2,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 4 bucket(s) [UniProt loc high conf, GO CC high conf, UniProt loc med conf...]; PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+SMARCA4,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Med-Quality Pocket]; PR: 5 bucket(s) [Literature, UniProt Ubiquitination, Database Ubiquitination...]",novel_untapped,ok
+STAT3,1,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Druggable Family]; AB: 1 bucket(s) [GO CC med conf]; PR: 4 bucket(s) [Literature, Database Ubiquitination, Half-life Data...]",druggable_known,ok
+STAT5A,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Druggable Family]; PR: 4 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data...]",novel_untapped,ok
+STAT6,0,"SM: 3 bucket(s) [Structure with Ligand, High-Quality Ligand, Druggable Family]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+TBX21,0,"PR: 3 bucket(s) [UniProt Ubiquitination, Database Ubiquitination, Half-life Data]",novel_untapped,ok
+TFB1M,0,SM: 1 bucket(s) [Structure with Ligand]; PR: 1 bucket(s) [Half-life Data],novel_untapped,ok
+TMX1,0,"AB: 3 bucket(s) [UniProt loc high conf, UniProt SigP or TMHMM, GO CC med conf]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+UBE2E2,0,"PR: 2 bucket(s) [UniProt Ubiquitination, Database Ubiquitination]",novel_untapped,ok
+UBE2V2,0,"SM: 1 bucket(s) [Structure with Ligand]; PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+VAV1,0,"SM: 1 bucket(s) [Structure with Ligand]; AB: 1 bucket(s) [GO CC high conf]; PR: 3 bucket(s) [Database Ubiquitination, Half-life Data, Small Molecule Binder]",novel_untapped,ok
+VPS8,0,"PR: 2 bucket(s) [Database Ubiquitination, Half-life Data]",novel_untapped,ok
+ZNF837,0,no positive tractability buckets,novel_undruggable,ok
