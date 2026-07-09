@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 
+import concept_annotation
+import stimulation_switch_explorer
 from api import deps
 from report.generate import build_report_payload, write_report
 
@@ -25,6 +27,12 @@ def list_targets(
     replicate_pass: Optional[bool] = None,
     off_target: Optional[bool] = None,
     min_de_genes: Optional[int] = Query(default=None, ge=0),
+    annotate_concepts: bool = Query(
+        default=False,
+        description="Additively tag each row with CD4 immune concept modules "
+        "(concept_modules / n_concept_modules / stimulation_gated). Descriptive "
+        "only -- never affects readiness_call. Default off = unchanged response.",
+    ),
     max_rows: Optional[int] = 500,
 ) -> List[Dict[str, Any]]:
     out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
@@ -55,7 +63,59 @@ def list_targets(
         ascending=[False, False, False],
     )
     df = deps._safe_limit(df, max_rows)
+    if annotate_concepts:
+        # additive: annotate AFTER limiting so we only tag the returned page.
+        df = concept_annotation.annotate_targets(df)
     return deps._json_records(df)
+
+
+@router.get("/api/immune_ranked/{dataset_id}", summary="Targets ranked by CD4 immune-concept interest (descriptive)")
+def immune_ranked(
+    dataset_id: str,
+    top_n: int = Query(default=100, ge=1, le=1000),
+    stimulation_gated_only: bool = Query(default=False, description="Keep only targets flagged stimulation-gated (quiet at Rest, active on Stim)."),
+) -> Dict[str, Any]:
+    """One row per target, ranked by immune interest (concept-module membership,
+    then on-target effect), deduplicated to each target's strongest condition.
+
+    This is a purely descriptive re-ordering VIEW built to surface the
+    immunologically meaningful hits (TCR signalosome, checkpoint/exhaustion,
+    cytokine axes) that a default DE-breadth sort buries under pleiotropic
+    chromatin/housekeeping knockdowns. It NEVER changes any readiness call --
+    the concept tags are annotation, not a scoring input. Provenance
+    (concept_set_version) is returned alongside so a consumer can tell which
+    seed-module revision produced the tags.
+    """
+    out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    df = deps._normalize_cell_values(deps._load_cards(out_csv))
+    ranked = concept_annotation.immune_interest_rank(df)
+    if stimulation_gated_only:
+        ranked = ranked[ranked["stimulation_gated"] == True]  # noqa: E712 -- None/False both excluded
+    ranked = deps._safe_limit(ranked, top_n)
+    return {
+        "provenance": concept_annotation.annotation_provenance(),
+        "n_targets": int(df["target"].nunique()),
+        "returned": len(ranked),
+        "targets": deps._json_records(ranked),
+    }
+
+
+@router.get("/api/switches/{dataset_id}", summary="Stimulation-dependent switch targets (direction flips across Rest/Stim, descriptive)")
+def stimulation_switches(dataset_id: str, top_n: int = Query(default=100, ge=1, le=1000)) -> Dict[str, Any]:
+    """Targets whose knockdown effect changes with activation state: true sign
+    flips (IKZF1, NFATC2, RHOH, SMAD3, ...) and on/off switches across
+    Rest / Stim8hr / Stim48hr, with per-condition signed ``median_logFC`` and
+    concept-module tags. Reads the pre-existing ``effect_direction_flip_flag``
+    column -- purely descriptive, never a readiness input. Honest-fallback
+    (``available: false``) if the source cards lack the required columns.
+    """
+    out_csv = deps._dataset_path(dataset_id) / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    df = deps._normalize_cell_values(deps._load_cards(out_csv))
+    return stimulation_switch_explorer.switch_report(df, top_n=top_n)
 
 
 @router.get("/api/summary/{dataset_id}")
