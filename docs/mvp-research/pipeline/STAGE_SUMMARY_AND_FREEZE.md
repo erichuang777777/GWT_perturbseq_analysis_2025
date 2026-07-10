@@ -14,7 +14,7 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| DE_stats.suppl_table.csv | `11c6348b-f46d-48a3-8c22-7ae328f40c6c` | `f5cf2e070bc8…` | (8,) |
+| DE_stats.suppl_table.csv | `11c6348b-f46d-48a3-8c22-7ae328f40c6c` | `f5cf2e070bc8…` | 33983x16 |
 
 ## Stage 02 - Curated
 
@@ -24,8 +24,8 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| curated_targets.csv | `506b62e3-4ad0-42a0-ac4d-b779a31f8121` | `5346cdd6e272…` | (8,) |
-| gate_passing_targets.csv | `024cefa5-3a8f-4e4e-b82a-51f356a03960` | `5efd16dec06b…` | (8,) |
+| curated_targets.csv | `506b62e3-4ad0-42a0-ac4d-b779a31f8121` | `5346cdd6e272…` | 33983x18 |
+| gate_passing_targets.csv | `024cefa5-3a8f-4e4e-b82a-51f356a03960` | `5efd16dec06b…` | 2131x18 |
 
 ## Stage 03 - Processed
 
@@ -35,8 +35,8 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| effect_matrix.csv | `e168ccb9-6d5d-427c-a5cf-93f388492f2f` | `dfb61e0c3a65…` | (8,) |
-| de_matrix.csv | `a58b4ba0-da04-46b9-9ad2-21a3e632615c` | `3e6c03522620…` | (8,) |
+| effect_matrix.csv | `e168ccb9-6d5d-427c-a5cf-93f388492f2f` | `dfb61e0c3a65…` | 11526x4 |
+| de_matrix.csv | `a58b4ba0-da04-46b9-9ad2-21a3e632615c` | `3e6c03522620…` | 11526x4 |
 
 ## Stage 04 - Statistical
 
@@ -46,8 +46,8 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| summary_statistics.csv | `419a18fa-4229-4b87-a373-1de23f79952d` | `f562a9c49313…` | (8,) |
-| condition_stats.csv | `aeb64a9d-02e2-4e32-98d4-0c49a525db1c` | `5ffe137dffe3…` | (8,) |
+| summary_statistics.csv | `419a18fa-4229-4b87-a373-1de23f79952d` | `f562a9c49313…` | 18x2 |
+| condition_stats.csv | `aeb64a9d-02e2-4e32-98d4-0c49a525db1c` | `5ffe137dffe3…` | 3x4 |
 
 ## Work package - Blindspot fixes
 
@@ -57,9 +57,9 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| gene_gate_diagnosis.csv | `8fd09c08-3ac6-48cc-99c9-95f78c0a1eb2` | `228c68bf4b46…` | (8,) |
-| novelty_flags.csv | `a7aa43c7-512f-49d8-bbf4-3f335329302c` | `ef693e5e6853…` | (8,) |
-| evidence_strength.csv | `240e5948-6d34-4c5d-b974-c02800ffccc5` | `2a0064ec4093…` | (8,) |
+| gene_gate_diagnosis.csv | `8fd09c08-3ac6-48cc-99c9-95f78c0a1eb2` | `228c68bf4b46…` | 11526x10 |
+| novelty_flags.csv | `a7aa43c7-512f-49d8-bbf4-3f335329302c` | `ef693e5e6853…` | 96x5 |
+| evidence_strength.csv | `240e5948-6d34-4c5d-b974-c02800ffccc5` | `2a0064ec4093…` | 96x6 |
 
 ## Work package - Methodological validation
 
@@ -69,9 +69,9 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| benchmark_results.csv | `b5899e1f-e6ae-4de8-8438-7be8def535dd` | `4de9797db023…` | (8,) |
-| dropout_diagnosis.csv | `a76505a5-a3d7-4d2b-b6c7-0d6d2689b88f` | `1573a70a7873…` | (8,) |
-| context_specific_corrected.csv | `26f49368-549f-4923-bf86-f02ca670180f` | `6ba620783550…` | (8,) |
+| benchmark_results.csv | `b5899e1f-e6ae-4de8-8438-7be8def535dd` | `4de9797db023…` | 1225x4 |
+| dropout_diagnosis.csv | `a76505a5-a3d7-4d2b-b6c7-0d6d2689b88f` | `1573a70a7873…` | 11526x8 |
+| context_specific_corrected.csv | `26f49368-549f-4923-bf86-f02ca670180f` | `6ba620783550…` | 96x6 |
 
 ## Work package - Reproducibility audit
 
@@ -81,11 +81,11 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 | asset | version_id | md5 | shape |
 |---|---|---|---|
-| cross_validation_results_en.csv | `f7ad6ebe-09ef-45e8-89aa-a5d1041fd512` | `3c9f21204854…` | (8,) |
-| parity_01_02.csv | `14e94a94-1868-41db-b26d-8c22cbeaabc8` | `181be5d62b93…` | (8,) |
-| parity_03.csv | `fbc97a90-bde1-4662-a515-31c6e858aeca` | `c502b9d74fe8…` | (8,) |
-| figure_registry.csv | `af9b6263-e6d9-43f0-89b8-614761a4cce7` | `d125a1e62ee3…` | (8,) |
-| reproducibility_bundle_v2.tar.gz | `1ccbbc49-2d43-4e2d-8706-05bd23f8c424` | `aef56de3d1c2…` | (8,) |
+| cross_validation_results_en.csv | `f7ad6ebe-09ef-45e8-89aa-a5d1041fd512` | `3c9f21204854…` | 24x7 |
+| parity_01_02.csv | `14e94a94-1868-41db-b26d-8c22cbeaabc8` | `181be5d62b93…` | 25x7 |
+| parity_03.csv | `fbc97a90-bde1-4662-a515-31c6e858aeca` | `c502b9d74fe8…` | 4x10 |
+| figure_registry.csv | `af9b6263-e6d9-43f0-89b8-614761a4cce7` | `d125a1e62ee3…` | 8x8 |
+| reproducibility_bundle_v2.tar.gz | `1ccbbc49-2d43-4e2d-8706-05bd23f8c424` | `aef56de3d1c2…` | (binary) |
 
 ---
 ## Freeze integrity
