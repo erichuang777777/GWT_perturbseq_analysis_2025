@@ -50,7 +50,7 @@ Three independent public resources, each interrogating a different axis of biolo
 - **Result:** flagship TCR-signalling hubs recover a large fraction of their known partners, reconstructing the canonical TCR-signalling network from perturbation data alone:
   - **VAV1** — 53/86 partners recovered (62%).
   - **CD3E** — 38/65 (58%).
-  - **PLCG1** 40%, **BCL10** 39%, **STAT3** 36%.
+  - **PLCG1** 40%, **BCL10** 39%, **STAT3** 35%.
   - Novel primary top-10 targets recover much less (max 4.3%, most 0%).
 - **Limitations:**
   - **Literature bias is the dominant confound.** STRING interaction coverage scales with how much a gene has been studied. Flagship hubs (VAV1, CD3E) have hundreds of curated interactions; a novel target such as **FOXN2** has **one** known partner. **Low recovery for a novel target is NOT evidence against it** — it reflects sparse prior literature, not a weak perturbation signal. This caveat is annotated directly in the figure panel.
