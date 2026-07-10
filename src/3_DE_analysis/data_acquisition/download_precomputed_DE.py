@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""
+只下載任務 A 真正需要的檔案：原始資料提供者已預先算好的
+target×gene 帶符號 DE 矩陣（GWCD4i.DE_stats.h5ad），而非重跑 1.67TB
+單細胞原始資料的三步 pipeline。
+
+發現：GWCD4i.DE_stats.h5ad 本身就含有 obs=33,983 target×condition、
+var=10,282 genes，layers 有 log_fc/p_value/adj_p_value/baseMean/lfcSE/zscore
+——正是 TASK_A_RUNBOOK_GB10.md 要重跑產出的東西。只要 15.63GB，不必動 1.67TB。
+
+用多段 range request 並發下載（純 requests，非 boto3——實測 boto3 單流
+0.9MB/s、32併發僅4.5MB/s；同一檔案用 requests 24 併發可達 ~15.5MB/s）。
+"""
+
+import requests
+import time
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+BUCKET_URL = "https://genome-scale-tcell-perturb-seq.s3.amazonaws.com/marson2025_data"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+LOCAL_DIR = REPO_ROOT / "data" / "marson2025_data"
+
+# 只抓這幾個檔案——不是全部 14 個 h5ad
+FILES = [
+    "GWCD4i.DE_stats.h5ad",                                  # 15.63 GB - 核心：target×gene signed DE 矩陣
+    "suppl_tables/DE_stats.suppl_table.csv",                 # 4.8 MB  - 對照用的聚合表（已在 repo 有，驗證一致性用）
+    "suppl_tables/sample_metadata.suppl_table.csv",          # 2.9 KB
+    "suppl_tables/sgrna_library_metadata.suppl_table.csv",   # 9.9 MB  - guide/target 別名解析
+    "data_sharing_readme.md",                                # 27 KB   - schema 說明
+]
+
+N_WORKERS = 24          # 實測本沙盒此區間吞吐最佳（~15.5 MB/s；40 併發反而略降）
+CHUNK_SIZE = 20 * 1024 * 1024  # 20 MB per range request
+
+
+def format_size(n):
+    for unit in ["B", "KB", "MB", "GB"]:
+        if n < 1024:
+            return f"{n:.1f}{unit}"
+        n /= 1024
+    return f"{n:.1f}TB"
+
+
+def get_remote_size(url):
+    r = requests.head(url, timeout=30)
+    r.raise_for_status()
+    return int(r.headers["Content-Length"])
+
+
+def fetch_range_write(url, start, end, fh, lock):
+    """抓取一段 range，立刻 seek 寫入目標檔案的對應位置——不在記憶體累積整檔"""
+    r = requests.get(url, headers={"Range": f"bytes={start}-{end}"}, timeout=120)
+    r.raise_for_status()
+    content = r.content
+    with lock:
+        fh.seek(start)
+        fh.write(content)
+    return len(content)
+
+
+def download_file(key):
+    import threading
+
+    url = f"{BUCKET_URL}/{key}"
+    local_path = LOCAL_DIR / key
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+
+    total_size = get_remote_size(url)
+
+    if local_path.exists() and local_path.stat().st_size == total_size:
+        print(f"✓ 已存在且完整: {key} ({format_size(total_size)})", flush=True)
+        return
+
+    print(f"⬇ 開始: {key} ({format_size(total_size)})", flush=True)
+    start_t = time.time()
+
+    n_chunks = max(1, (total_size + CHUNK_SIZE - 1) // CHUNK_SIZE)
+    ranges = [(i * CHUNK_SIZE, min(i * CHUNK_SIZE + CHUNK_SIZE - 1, total_size - 1)) for i in range(n_chunks)]
+
+    tmp_path = local_path.with_suffix(local_path.suffix + ".part")
+    # 預先配置檔案大小，讓各執行緒可安全 seek+write 到自己的區段
+    with open(tmp_path, "wb") as f:
+        f.truncate(total_size)
+
+    lock = threading.Lock()
+    downloaded = 0
+    with open(tmp_path, "r+b") as fh:
+        with ThreadPoolExecutor(max_workers=N_WORKERS) as ex:
+            futures = {ex.submit(fetch_range_write, url, s, e, fh, lock): (s, e) for s, e in ranges}
+            done = 0
+            for fut in as_completed(futures):
+                downloaded += fut.result()
+                done += 1
+                if done % 10 == 0 or done == n_chunks:
+                    pct = done / n_chunks * 100
+                    elapsed = time.time() - start_t
+                    speed = downloaded / elapsed if elapsed > 0 else 0
+                    print(f"  {key}: {pct:.0f}% ({format_size(downloaded)}/{format_size(total_size)}, {format_size(speed)}/s)", flush=True)
+
+    tmp_path.rename(local_path)
+
+    elapsed = time.time() - start_t
+    print(f"✅ 完成: {key} — {format_size(total_size)} in {elapsed/60:.1f} min ({format_size(total_size/elapsed)}/s)\n", flush=True)
+
+
+def main():
+    LOCAL_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"目標檔案（{len(FILES)} 個，非全部 14 個原始 h5ad）：")
+    for f in FILES:
+        print(f"  - {f}")
+    print()
+
+    for key in FILES:
+        try:
+            download_file(key)
+        except Exception as e:
+            print(f"❌ {key}: {e}")
+
+    print("全部完成。位置：", LOCAL_DIR)
+
+
+if __name__ == "__main__":
+    main()

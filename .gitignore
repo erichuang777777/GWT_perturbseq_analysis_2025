@@ -192,6 +192,12 @@ cython_debug/
 *.tar
 *.gz
 
+# Intentional exception: gate-passing signed DE long table (task A extract).
+# Committed gzipped because the uncompressed CSV (~130MB) exceeds GitHub's
+# 100MB hard file-size limit; gzip brings it to ~48MB. See
+# docs/mvp-research/TASK_A_GB10_HANDOFF.md for provenance.
+!metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz
+
 # Transient runtime target-card caches produced by the target_card_api service.
 # Keep the intentional _evidence seed snapshots and any already-tracked demo
 # datasets tracked; ignore new per-run dataset/import dirs so test/runtime

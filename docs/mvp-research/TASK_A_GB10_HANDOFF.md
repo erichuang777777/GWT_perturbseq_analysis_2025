@@ -1,79 +1,76 @@
 # 任務 A 交接紀錄 — sandbox 端已完成的準備工作
 
-**對應手冊：** [`TASK_A_RUNBOOK_GB10.md`](TASK_A_RUNBOOK_GB10.md)（完整規格、三步 pipeline、時間估計都在那份，本檔只記錄 sandbox 這邊做了什麼、發現了什麼、GB10 接手時該注意什麼）
+**對應手冊：** [`TASK_A_RUNBOOK_GB10.md`](TASK_A_RUNBOOK_GB10.md)（原始規格：假設要重跑 1.67TB 單細胞資料的三步 pipeline）
 
 **最後更新：** 2026-07-10
 
 ---
 
-## 這份文件要解決什麼問題
+## 🎯 重大進展：不需要重跑 1.67TB 原始資料
 
-`TASK_A_RUNBOOK_GB10.md` 原本假設 GB10 從 Stanford OAK 直接掛載讀資料。本次在 sandbox 端額外驗證了「改用公開 S3 桶（匿名可讀）取得同一批資料」這條路，把可重用的下載工具、配置與**一個重要的頻寬限制發現**留給 GB10 端執行者。
+原始手冊假設任務 A 必須在 GB10 從頭跑三步 pipeline（pseudobulk → DESeq2 → merge），因為以為 repo 內只有聚合後的計數（`DE_stats.suppl_table.csv` 只有 `n_up_genes/n_down_genes`，沒有基因身分）。
 
-## 資料來源確認
+**但實際檢查 S3 桶 `genome-scale-tcell-perturb-seq/marson2025_data/` 後發現：原始資料提供者已經把 per-target × gene 帶符號 DE 矩陣算好並公開了**——檔案 `GWCD4i.DE_stats.h5ad`（僅 **15.63 GB**，不是 1.67TB）：
 
-實測 S3 桶 `genome-scale-tcell-perturb-seq` 下 `marson2025_data/` 前綴，取得與手冊一致的 14 個檔案：
+- `obs` = 33,983 列（每個 target×culture_condition 一列，與 repo 現有 `DE_stats.suppl_table.csv` 的列完全對應）
+- `var` = 10,282 個基因
+- `.layers` 含 `log_fc` / `p_value` / `adj_p_value` / `baseMean` / `lfcSE` / `zscore` —— **這正是手冊 Step 3 要產出的「帶符號、帶基因身分」矩陣**
 
-| 檔案 | 大小 |
-|---|---|
-| D1/D2/D3/D4 × Rest/Stim8hr/Stim48hr（12 個）`*.assigned_guide.h5ad` | 各 110–161 GB |
-| `GWCD4i.DE_stats.h5ad` | 15.63 GB |
-| `GWCD4i.pseudobulk_merged.h5ad` | 41.51 GB |
-| **合計** | **~1,673.8 GB (1.67 TB)** |
+也就是說，`TASK_A_RUNBOOK_GB10.md` 描述的三步 pipeline，Marson lab 自己已經跑過一次並公開結果。GB10 要做的不是重跑 DESeq2，**而是下載這一個檔案再萃取**。
 
-匿名讀取指令（免 AWS 憑證）：
-```bash
-aws s3 ls --no-sign-request s3://genome-scale-tcell-perturb-seq/marson2025_data/
-```
+## sandbox 端已完成的工作
 
-## ⚠️ 關鍵發現：本 sandbox 對外頻寬有硬上限，GB10 需自行實測
+### 1. 確認資料來源與 schema
+讀取桶內的 `data_sharing_readme.md` 確認上述 schema（也一併下載進 repo，見下）。桶內除了 14 個原始 h5ad 外還有：
+- `GWCD4i.DE_stats.h5ad`（15.63GB）— **本次任務唯一需要的核心檔**
+- `GWCD4i.DE_stats.by_guide.h5mu`（29.4GB）、`GWCD4i.DE_stats.by_donors.h5mu`（16.8GB）— per-guide/per-donor-pair 顆粒度，可解鎖更細的 cross-guide/cross-donor 分析，但非本次任務必要，**故未下載**
+- 幾個小的 suppl_tables CSV（各數 MB）
 
-在 sandbox 內對這個 S3 桶做了頻寬階梯測試（`GetObject` + `Range`，量測純下載吞吐，非 TCP 理論值）：
+### 2. 找到「1,235 個通過 MVP 門檻標的」的名單
+就在 repo 內：`docs/mvp-research/pipeline/03_processed/data/gate_passing_targets.csv`
+- 2,131 列（target×condition），`passes_gate=True` 的唯一 `target_contrast`（Ensembl ID）= **1,235**，與手冊數字完全吻合
+- 有 `target_contrast_gene_name` / `culture_condition` / `passes_gate` 等欄位可直接篩選
 
-| 併發串流數 | 總吞吐 |
-|---|---|
-| 1 | 0.9 MB/s |
-| 16 | 3.1 MB/s |
-| 32 | 4.5 MB/s |
+### 3. 頻寬優化（重要，若 GB10 也要抓 S3 請直接複用）
+一開始用 **boto3** 匿名下載器（`download_s3_data.py`）測到吞吐見頂在 ~4.5MB/s（1/16/32 併發：0.9/3.1/4.5 MB/s，不隨併發線性成長）。用戶質疑這不合理後重新排查，發現：
+- **不是網路頻寬的硬限制**，是 boto3 client 本身開銷大
+- 改用裸 `requests` + HTTP Range header 做多段並發，同樣的沙盒環境可以拉到 **~15.5 MB/s**（24 併發時最佳；40 併發反而略降，見 `download_precomputed_DE.py` 內建的分析）
+- 目標檔案從「全部 14 個 h5ad（1.67TB）」收斂成「只抓真正需要的 5 個小檔（~15.7GB）」，兩個優化疊加後，下載時間從**估計 4.4 天降到實測 21 分鐘**（`GWCD4i.DE_stats.h5ad` 15.6GB @ 12.8MB/s + 4 個小檔）
 
-**吞吐不隨併發數線性增長，代表這是總頻寬帽（很可能是 sandbox 的 agent proxy 限速），不是單純連線延遲問題。** 以 ~4.5 MB/s 上限估算，下載全部 1.67 TB 需要 **~105 小時（4.4 天）**，不切實際，因此本 sandbox 只下載了驗證用的少量資料（見下），**沒有嘗試在此跑完整下載**。
-
-**行動建議：** GB10 若走 S3 路徑（而非 OAK 直接掛載），請先用同樣的階梯測試法（見 `data_acquisition/download_s3_data.py` 內的邏輯，或自行起 1/16/32 併發各抓 100–500MB 量測）確認 GB10 自己的出口頻寬上限,再決定：
-- 頻寬夠(例如 >100MB/s)→ 直接用本工具或 `aws s3 sync --no-sign-request` 全量拉取,數小時內可完成。
-- 頻寬同樣受限 → 優先走 OAK 直接掛載（手冊原案），不要用 S3 當主路徑。
-
-## sandbox 端已產出的可重用工具
-
-都在 `src/3_DE_analysis/`：
+### 4. 下載與萃取工具（`src/3_DE_analysis/data_acquisition/`）
 
 | 檔案 | 用途 |
 |---|---|
-| `data_acquisition/download_s3_data.py` | 匿名 S3 並行下載器，**支援斷點續傳**（比對本地/遠端檔案大小，不重下已完成部分）。預設 `MAX_WORKERS=16`（sandbox 實測頻寬帽下的合理值；GB10 應依自己的頻寬階梯測試結果調整）。 |
-| `data_acquisition/check_download_progress.sh` | 每 30 秒刷新一次的下載進度監視（總大小/檔案數/百分比/最近檔案）。 |
-| `DE_config_local.yaml` | 對照 `DE_config_full.yaml` 的本地化版本：`datadir` 指向 repo 內 `data/marson2025_data/`（相對路徑，免改 `src/utils.py::_convert_oak_path`），其餘參數（`chunk_size=50`、`design_formula`、feature selection 門檻）與全量版一致，供縮減版 pipeline 直接使用。 |
+| `download_precomputed_DE.py` | **本次實際使用的下載器**：只抓 `GWCD4i.DE_stats.h5ad` + 4 個小檔（suppl_tables + readme），用 requests + Range header 併發（24 workers），逐段直接 `seek()` 寫入磁碟對應位置（不在記憶體累積整檔——第一版曾把所有 chunk bytes 留在記憶體才寫檔，在只有 21GB 可用記憶體的環境下對 15.6GB 檔案有 OOM 風險，已修正）。 |
+| `extract_gate_passing_signed_DE.py` | **已執行完成**：篩出 1,235 標的對應的 2,131 個 target×condition 列，抓出 `adj_p_value < 0.1` 的顯著 target×gene 配對，輸出長表到 `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`。 |
+| `download_s3_data.py` | 舊版全量下載器（boto3，較慢），**保留供 GB10 若真的需要全部 14 個原始 h5ad 時參考**（例如要做本 repo 尚未涵蓋的全新分析）。 |
+| `check_download_progress.sh` | 進度監視腳本。 |
 
-用法（若 GB10 決定沿用 S3 路徑）：
-```bash
-cd src/3_DE_analysis/data_acquisition
-python3 download_s3_data.py                    # 背景執行；可安全中斷/重啟，會自動續傳
-bash check_download_progress.sh                # 另開一個 terminal 監看進度
-```
+**踩過的坑（`extract_gate_passing_signed_DE.py` 內有註解說明）：** `GWCD4i.DE_stats.h5ad` 的 `.X` 是刻意留空的 null dataset（真正資料都在 `.layers`），`anndata` 的 `adata[mask].to_memory()` 會嘗試一併 subset `.X` 而丟出 `"Empty datasets cannot be sliced"`。解法是跳過 anndata 的 subsetting，改用 `h5py` 直接對 `layers` group 做行索引讀取（`obs`/`var` 仍用 anndata 讀，因為那兩個一開始就是全量載入、不受影響）。
 
-下載目標目錄：repo 根目錄下的 `data/marson2025_data/`（已在 `.gitignore` 的 `**/*.h5ad` 規則涵蓋，**不會被 git 追蹤**，符合手冊「全量 `.h5ad` 不進 git」的原則）。
+### 5. Python 環境
+本沙盒沒有裝任何科學計算套件（無 numpy/pandas/h5py/anndata），且系統 pip 被鎖定（PEP 668 externally-managed）。建了一個本地 venv `.venv/`（已在 `.gitignore` 既有規則涵蓋範圍內，不進 git），內裝 `h5py numpy pandas scipy anndata`，只夠跑萃取腳本，**不是完整的 `environment.yaml` 環境**（少了 scanpy/pertpy/pydeseq2 等，因為這次不需要重跑 DESeq2）。
 
-## sandbox 端這次實際做了什麼（誠實記錄，避免誤解為「已完成下載」）
+### 6. 產出結果（已萃取、已驗證可讀）
 
-- ✅ 確認 S3 桶內容與手冊描述一致（14 檔、~1.67TB）
-- ✅ 寫好、測過斷點續傳下載器與監視腳本
-- ✅ 產出本地化 `DE_config_local.yaml`
-- ✅ 做了頻寬階梯測試，**發現 sandbox 出口頻寬 ~4.5MB/s 見頂**
-- 🟡 背景下載程序仍在跑，抓取少量資料（個位數 GB 等級）作為腳本驗證用，**未完成、也不預期在合理時間內完成**——因為前述頻寬限制。這不是資料本身的問題，是這個沙盒環境的網路限制。
-- ❌ 未執行三步 pipeline（Step 1–3）——需要完整資料才有意義，等 GB10 端資料到位後照 `TASK_A_RUNBOOK_GB10.md` 執行即可，本檔工具可直接複用或參考。
+`metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`：
 
-## GB10 接手時的檢查清單
+- **1,067,181 列**，欄位：`target_gene, target_ensembl_id, culture_condition, downstream_gene, downstream_ensembl_id, log_fc, adj_p_value, baseMean, zscore`
+- 涵蓋 **1,235 個標的 × 3 個培養條件 × 10,271 個下游基因身分**（僅保留 `adj_p_value < 0.1` 的顯著配對，否則全叉積會有 ~3,700 萬列）
+- 未壓縮 130MB（超過 GitHub 100MB 硬限制），gzip 後 **48MB**，已加入 `.gitignore` 的例外規則（原本 `*.gz` 被全域忽略，見 `.gitignore` 第 199 行的 `!metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`）
+- 依 `culture_condition` 分布：Stim8hr 413,044 / Stim48hr 349,743 / Rest 304,394 列
 
-1. 確認 OAK 直接掛載是否可用（`src/utils.py::_convert_oak_path` 原生支援），若可用優先用這條路，跳過 S3。
-2. 若走 S3：跑一次頻寬階梯測試（1/16/32 併發），確認吞吐足夠後再 `download_s3_data.py` 全量跑，並依測得頻寬調整 `MAX_WORKERS`。
-3. 資料就位後，把 `DE_config_local.yaml` 的 `datadir` 改成實際路徑（OAK 轉換路徑或本地資料夾），其餘沿用。
-4. 照 `TASK_A_RUNBOOK_GB10.md` 的三步 pipeline 執行,先跑縮減版(1,235 gate-passing 標的,~25 chunk × 3 條件)。
-5. 完成後只 commit 萃取表 + provenance,全量 `.h5ad` 留在原地,並跑 `pytest tests/ -q` 確認 golden-file 測試仍綠。
+## GB10 接手檢查清單
+
+1. **不需要 OAK 掛載、不需要重算 DESeq2** —— 除非 GB10 之後要做手冊原本設想的「全量 11,526 標的 全基因組」分析（目前只有 1,235 gate-passing + 顯著基因，沒有全叉積）。
+2. 若要擴大到全部 33,983 target×condition 列（即手冊說的「全量」）：`extract_gate_passing_signed_DE.py` 拿掉 gate 篩選、直接對全部 `adata.obs` 做同樣的顯著性篩選即可，**同一個 15.63GB 檔案已經夠用，不必再抓任何東西**（此檔已在 `data/marson2025_data/GWCD4i.DE_stats.h5ad`，但**不在 git**，需重新用 `download_precomputed_DE.py` 抓一次或從 OAK 取得）。
+3. 若要更細的 cross-guide / cross-donor 訊號（repo 現有 `guide_correlation_*` / `donor_correlation_*` 欄位背後的原始每 guide/每 donor-pair 數值）：才需要額外抓 `GWCD4i.DE_stats.by_guide.h5mu`（29.4GB）/ `GWCD4i.DE_stats.by_donors.h5mu`（16.8GB）——用同一套 `download_precomputed_DE.py` 的模式（改 `FILES` 清單）即可，預期速度同樣是分鐘級而非天級。
+4. 萃取出的 `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz` 就是 `signature_explorer.py` 需要的查詢 signature 來源（取代目前的單基因 proxy），也是 LINCS(F) 比對的我方 query。
+5. 完成後跑 `pytest tests/ -q` 確認 golden-file 測試仍綠。
+
+## 誠實記錄：這次沒做的事
+
+- 沒有下載 14 個原始單細胞 h5ad（不需要——見上）
+- 沒有跑手冊原本的 Step 1/2/3 pipeline（不需要——結果已經在 `GWCD4i.DE_stats.h5ad` 裡）
+- 沒有處理 by_guide/by_donors 的細粒度資料（非本次任務範圍，見上方「GB10 接手檢查清單」第 3 點）
+- 下載的原始 `GWCD4i.DE_stats.h5ad`（16GB）與其他小檔留在本地 `data/marson2025_data/`，**未進 git**（符合「大檔不進 repo」原則），下次要重跑萃取需要重新下載或改用 OAK 路徑
