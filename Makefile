@@ -9,7 +9,7 @@
 API_PORT ?= 8000
 API_BASE := http://127.0.0.1:$(API_PORT)
 
-.PHONY: install-api install-dashboard install api dashboard dev test
+.PHONY: install-api install-dashboard install api dashboard dev test validate-pipeline
 
 install-api:
 	pip install -r src/3_DE_analysis/requirements.txt
@@ -38,3 +38,11 @@ dev: install
 
 test:
 	pytest
+
+# Read-only collector that prints the live numbers docs/human_validation_protocol.md
+# has a human sign off on (active dataset + column count, validate_cards results,
+# raw-file row counts, dtypes, thresholds, and auto-detected open-finding lines).
+# It is a collector, not a validator -- it decides nothing; tests/ + contracts/
+# are the authority. Safe to run anytime; it never writes or rebuilds anything.
+validate-pipeline:
+	python scripts/validate_pipeline.py
