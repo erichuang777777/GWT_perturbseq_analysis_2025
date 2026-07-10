@@ -211,6 +211,15 @@ def test_overview_page_has_persona_wayfinding_note():
     assert "整合 Triage" in src
 
 
+def test_overview_page_has_standard_limitations_text():
+    src = (PAGES / "01_研究者_總覽_overview.py").read_text(encoding="utf-8")
+    assert "primary human CD4⁺ T cell CRISPRi" in src
+    assert "Rest/Stim8hr/Stim48hr" in src
+    assert "hypothesis-generating interpretation only" in src
+    assert "independent guides" in src
+    assert "disease-context models" in src
+
+
 def test_dossier_page_renders_offline():
     appt = pytest.importorskip("streamlit.testing.v1")
     at = appt.AppTest.from_file(str(PAGES / DOSSIER_PAGE), default_timeout=60)

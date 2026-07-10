@@ -11,6 +11,15 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 
+LIMITATIONS_PARAGRAPH = (
+    "Limitations: This platform is based on primary human CD4⁺ T cell CRISPRi "
+    "Perturb-seq across Rest/Stim8hr/Stim48hr conditions, with limited donors, "
+    "transcriptomic readouts, and hypothesis-generating interpretation only. "
+    "Results require orthogonal validation such as independent guides, donor "
+    "replication, protein/functional assays, and disease-context models before "
+    "therapeutic interpretation."
+)
+
 CORE_COLUMNS = [
     "target",
     "condition",
@@ -143,6 +152,7 @@ def build_report_payload(
             "biological claims whenever possible."
         ),
         "watchlist": _safe_records(watch, CORE_COLUMNS),
+        "limitations": LIMITATIONS_PARAGRAPH,
         "next_steps": [
             "Treat Top Candidates as primary DE signal; prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True as guide-robust high-confidence signal for biological claims.",
             "Treat high score_cap_reason burden as an experiment-design issue before biology interpretation.",
@@ -185,6 +195,10 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         f"- grade 3-4 rows: {summary['n_grade_3_or_4']}",
         f"- replicate-pass rows: {summary['n_replicate_pass']}",
         f"- watchlist rows: {summary['n_watchlist']}",
+        "",
+        "## Limitations",
+        "",
+        payload.get("limitations", LIMITATIONS_PARAGRAPH),
         "",
         "## Top Candidates",
         "",
@@ -246,6 +260,8 @@ def render_html(payload: Dict[str, Any]) -> str:
 <body>
   <h1>GWT Target Card Report</h1>
   <div class="metrics">{metrics}</div>
+  <h2>Limitations</h2>
+  <p>{payload.get("limitations", LIMITATIONS_PARAGRAPH)}</p>
   <h2>Top Candidates</h2>
   <p>{payload.get("top_candidates_note", "")}</p>
   {top_html}

@@ -30,6 +30,14 @@ opts, summary_payload, summary = load_summary(dataset_id)
 
 st.title("研究者 · Program overview")
 
+st.info(
+    "**Limitations:** This platform is based on primary human CD4⁺ T cell CRISPRi "
+    "Perturb-seq across Rest/Stim8hr/Stim48hr conditions, with limited donors, "
+    "transcriptomic readouts, and hypothesis-generating interpretation only. "
+    "Results require orthogonal validation such as independent guides, donor replication, "
+    "protein/functional assays, and disease-context models before therapeutic interpretation."
+)
+
 # UX-flow fix: wayfinding starts here, before any page or gene is chosen.
 # Both personas used to have to discover the right tab by trial and error;
 # this is a one-line map from "who you are" to "where to click first".
