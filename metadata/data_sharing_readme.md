@@ -77,6 +77,18 @@ Filename: `GWCD4i.DE_stats.h5ad`
 
 This AnnData object contains genome-wide differential expression results from a perturb-seq experiment in CD4+ T cells. Each observation represents a single perturbation (perturbed gene) tested in a specific culture condition (`n_obs = 33,983`). Each variable is a measured gene in the transcriptome (`n_vars = 10,282`).
 
+### Primary DE model
+
+The primary DE results estimate **target-level perturbation effects** using DESeq2 on guide-by-donor-by-condition pseudobulk samples. The model used for the primary target contrast is explicitly:
+
+```yaml
+design_formula: '~ log10_n_cells + donor_id + target'
+```
+
+Here, `target` is the target-level perturbation term, while `log10_n_cells` and `donor_id` adjust for pseudobulk cell yield and donor effects. Guide identity is not included as a primary random or fixed effect in this DE model. Guide-level variability is evaluated downstream through robustness and QC fields, including `crossguide_correlation`, `replicate_pass_flag`, `offtarget_flag`, `keep_effective_guides`, and guide knockdown summaries in `guide_kd_efficiency.suppl_table.csv`.
+
+For target ranking and biological interpretation, treat `n_total_de_genes`, `ontarget_effect_size`, and layer-level log fold changes as the **primary DE signal**. Treat rows that also pass the high-confidence / replicate-pass filters as **guide-robust high-confidence signal**; top targets used for biological claims should be interpreted from that high-confidence / `replicate_pass_flag=True` subset whenever possible.
+
 ### Observation Metadata (`.obs`)
 Annotations for each perturbation-condition pair:
 

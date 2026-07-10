@@ -42,6 +42,8 @@ layers) and `DE_stats.suppl_table.csv` columns.
   a pseudobulk sample is only used for DE if `keep_for_DE == True`. This toolkit's own
   `min_cells`/`min_de_genes` gates (`build_target_cards.py`) are a *second*, coarser filter applied on
   top of whatever passed the upstream `keep_for_DE` gate — they do not replace it.
+- **Primary DE model**: target-level effects are estimated with `design_formula: '~ log10_n_cells + donor_id + target'`. In this formula, `target` is the perturbation effect of interest; `donor_id` and `log10_n_cells` are covariates for donor baseline and pseudobulk cell yield. Guide identity is intentionally not a primary fixed or random effect in the DE model.
+- **Primary DE signal vs guide-robust signal**: `n_total_de_genes`, gene-level log fold changes, and `ontarget_effect_size` describe the primary target-level DE signal. Guide-level variability is evaluated downstream using `crossguide_correlation`, `replicate_pass_flag`, `offtarget_flag`, upstream inclusion flags such as `keep_effective_guides`, and guide knockdown summaries; target-ranking narratives should reserve biological claims for the high-confidence / replicate-pass subset when possible.
 - **On-target effect size** (`ontarget_effect_size` in `DE_stats.suppl_table.csv`): the DESeq2 log2FC
   of the target gene itself, in the target's own knockdown contrast vs the condition-matched NTC
   pseudobulk baseline described in §1.
