@@ -1,6 +1,10 @@
 # Configuration for Differential Expression Analysis
 experiment_name: "CD4i_final" 
 datadir: "/oak/stanford/groups/pritch/users/emma/data/GWT/"
+# Pseudobulk merge inputs. Relative paths are resolved under {datadir}/{experiment_name}.
+pseudobulk_input_globs:
+  - "tmp/*DE_pseudobulk.h5ad"
+
 run_name: "all_confounders"
 
 # Perturbation selection params

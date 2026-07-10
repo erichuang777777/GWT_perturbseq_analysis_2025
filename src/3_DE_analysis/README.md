@@ -24,12 +24,37 @@ sbatch \
 done
 ```
 
-Merge pseudobulks for each sample
+Merge pseudobulks for each sample. The merge step reads input locations from the DE YAML config, so another machine only needs the same relative directory layout or an explicit list of input globs. Relative `pseudobulk_input_globs` entries are resolved under `{datadir}/{experiment_name}`.
+
+Example config (`DE_config_pseudobulk_merge.yaml`):
+```yaml
+experiment_name: "CD4i_final"
+datadir: "/path/to/data/GWT"
+run_name: "all_confounders"
+
+# Use the default output layout from `make_pseudobulk.py aggregate`:
+# /path/to/data/GWT/CD4i_final/tmp/*DE_pseudobulk.h5ad
+pseudobulk_input_globs:
+  - "tmp/*DE_pseudobulk.h5ad"
+
+# If the pseudobulks live outside datadir/experiment_name, use absolute globs:
+# pseudobulk_input_globs:
+#   - "/path/to/CD4iR1_Psomagen/tmp/*DE_pseudobulk.h5ad"
+#   - "/path/to/CD4iR2_Psomagen/tmp/*DE_pseudobulk.h5ad"
+```
+
+Run locally from `src/3_DE_analysis`:
+```bash
+conda activate gwt-env
+python make_pseudobulk.py merge CD4i_R2_D4_Stim8hr_CD4i_R2_Ultima --DE_config DE_config_pseudobulk_merge.yaml
+```
+
+Or submit with SLURM:
 ```bash
 for SAMPLE_ID in CD4i_R2_D4_Stim8hr_CD4i_R2_Ultima; do
     sbatch \
         --partition=pritch \
-        --job-name=pbulk_merge_${s} \
+        --job-name=pbulk_merge_${SAMPLE_ID} \
         --output=$GROUP_SCRATCH/emma/slurm-pbulk_%j.out \
         --error=$GROUP_SCRATCH/emma/slurm-pbulk_%j.err \
         --nodes=1 \
@@ -37,7 +62,7 @@ for SAMPLE_ID in CD4i_R2_D4_Stim8hr_CD4i_R2_Ultima; do
         --cpus-per-task=1 \
         --mem=20G \
         --time=0:30:00 \
-        --wrap="python make_pseudobulk.py merge $SAMPLE_ID"
+        --wrap="python make_pseudobulk.py merge $SAMPLE_ID --DE_config DE_config_pseudobulk_merge.yaml"
 done
 ```
 
