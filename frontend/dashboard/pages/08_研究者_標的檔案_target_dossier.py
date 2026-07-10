@@ -350,6 +350,18 @@ def _triage_target(dataset_id: str, target: str) -> Tuple[Optional[Dict[str, Any
         return None, True
 
 
+@st.cache_data(ttl=300, show_spinner=False)
+def _coverage(dataset_id: str) -> Tuple[Optional[Dict[str, Any]], bool]:
+    """Real, computed coverage counts for the sparse safety/genetics overlays
+    (Wave 1c, docs/ux_trust_fix_plan.md) from GET /api/meta/coverage/{dataset_id}.
+    Never a hardcoded number -- the badge below reflects this dataset's actual
+    overlap, not a value copied from a doc that could drift."""
+    try:
+        return _api_get(f"/api/meta/coverage/{dataset_id}"), False
+    except Exception:
+        return None, True
+
+
 def _first(*values: Any) -> Any:
     """First non-unknown value — lets a field be pulled from card OR readiness row."""
     for v in values:
@@ -484,6 +496,14 @@ st.caption(
     "N≈3 位捐贈者。所有以下判定都建立在這一次篩選之上,屬於**假設生成 (hypothesis-generating)** "
     "用途,非臨床或個人醫療決策依據。詳見 REPRODUCIBILITY.md。"
 )
+# Wave 1d (docs/ux_trust_fix_plan.md): the underlying screen is a bioRxiv
+# preprint pin, not yet peer-reviewed -- that fact is easy to lose track of
+# once a user is looking at confident-looking chips. Shown from the real
+# per-dataset version string when available, never a hardcoded guess.
+_ds_meta_for_version = next((d for d in datasets if d.get("dataset_id") == dataset_id), {})
+_data_version = _ds_meta_for_version.get("data_version") or _ds_meta_for_version.get("dataset_version")
+if not _is_unknown(_data_version) and "biorxiv" in str(_data_version).lower():
+    st.caption(f"📄 資料版本 `{_data_version}` 為 **preprint,尚未經同行評審(not peer-reviewed)**。")
 
 # ----- (Quick-answer headline, persona fast-path) --------------------------- #
 # UX-flow fix: the readiness call + next validation step were originally only
@@ -619,6 +639,21 @@ st.caption(
     "⚠️ **框架很重要**:人類遺傳限制 + 廣泛表現 = **安全性負擔(liability)訊號**,"
     "**不是**「此標的安全」的背書。任一元件 unknown 時,合成負擔即 unknown(不當作無風險)。"
 )
+# Wave 1c (docs/ux_trust_fix_plan.md): the chips below can look equally
+# confident regardless of how sparse their underlying overlay is (gnomAD
+# constraint covers ~0.1% of targets, GTEx ~46%). This badge shows the REAL,
+# computed-at-request-time coverage for this dataset, not a static hint.
+_cov_payload, _cov_sample = _coverage(dataset_id)
+if _cov_payload and not _cov_sample:
+    _gnomad_cov = _cov_payload.get("domains", {}).get("gnomad_constraint", {})
+    _gtex_cov = _cov_payload.get("domains", {}).get("gtex_tissue_breadth", {})
+    if _gnomad_cov.get("available") and _gtex_cov.get("available"):
+        st.caption(
+            f"📊 此資料集的真實覆蓋率:gnomAD constraint {_gnomad_cov.get('covered')}/{_gnomad_cov.get('total')} "
+            f"({_gnomad_cov.get('pct')}%) · GTEx tissue breadth {_gtex_cov.get('covered')}/{_gtex_cov.get('total')} "
+            f"({_gtex_cov.get('pct')}%) —— 大多數標的落在**未覆蓋**的那一側,"
+            f"下面的 chip 顯示 unknown 是正常情況,不是資料缺失。"
+        )
 sg = [
     _labeled(
         "composite_safety_liability",
@@ -833,6 +868,17 @@ else:
         _labeled("tractability", _val_chip(rrow.get("tractability_score"))),
     ]
     _fields_row(rcols)
+    # Wave 1b (docs/ux_trust_fix_plan.md): translation_score alone can't tell a
+    # reader "we couldn't measure cross-donor robustness" from "we measured it
+    # and it was weak" -- both cap the score identically. translation_capped_by
+    # disambiguates the two without changing the score or the call.
+    capped_by = rrow.get("translation_capped_by")
+    if capped_by == "missing_crossdonor_data":
+        st.caption("⚠️ translation 未達 5:**因缺少測量而下修**(cross-donor 未檢查,非測得偏低)。")
+    elif capped_by == "measured_low_crossdonor":
+        st.caption("translation 未達 5:cross-donor 穩健度**已測得**,但低於 0.3 門檻(測得偏低)。")
+    elif capped_by == "replicate_not_passed":
+        st.caption("translation 未達 5:replicate 未通過。")
     reasons = str(rrow.get("readiness_reasons", "") or "")
     if reasons.strip():
         st.markdown("**判定理由 readiness_reasons**")
