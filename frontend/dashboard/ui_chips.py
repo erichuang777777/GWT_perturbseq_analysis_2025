@@ -1,7 +1,7 @@
 """Shared evidence-chip primitives for the frontend dashboard + dossier pages.
 
 Extracted verbatim (behaviour-preserving) from
-``pages/2_標的檔案_target_dossier.py`` so BOTH the main dashboard and the target
+``pages/08_研究者_標的檔案_target_dossier.py`` so BOTH the main dashboard and the target
 dossier render fields with the same honest visual grammar:
 
     * ``unknown != 0`` — an unmeasured / unchecked field renders as a distinct
