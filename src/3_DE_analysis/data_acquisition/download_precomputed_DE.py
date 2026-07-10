@@ -28,6 +28,7 @@ FILES = [
     "suppl_tables/sample_metadata.suppl_table.csv",          # 2.9 KB
     "suppl_tables/sgrna_library_metadata.suppl_table.csv",   # 9.9 MB  - guide/target 別名解析
     "data_sharing_readme.md",                                # 27 KB   - schema 說明
+    "GWCD4i.pseudobulk_merged.h5ad",                          # 41.51 GB - GEARS 需要真實表現量矩陣，非 DE 統計
 ]
 
 N_WORKERS = 24          # 實測本沙盒此區間吞吐最佳（~15.5 MB/s；40 併發反而略降）

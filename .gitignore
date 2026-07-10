@@ -208,3 +208,10 @@ sources/target_tool_cache/[0-9a-f]*-[0-9a-f]*/
 
 # Keep the committed explainer site (overrides **/*.html above)
 !docs/explainer/index.html
+
+# Isolated ML exploration space (src/10_ml_perturbation_prediction/README.md):
+# `data/` is a local feature-cache derived from metadata/suppl_tables/, safe to
+# rebuild, not provenance. `results/` (benchmark reports) IS committed.
+src/10_ml_perturbation_prediction/data/*
+!src/10_ml_perturbation_prediction/data/.gitkeep
+src/10_ml_perturbation_prediction/.venv_ml/

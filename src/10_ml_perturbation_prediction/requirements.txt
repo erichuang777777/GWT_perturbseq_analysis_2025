@@ -1,0 +1,20 @@
+# Isolated dependency manifest for src/10_ml_perturbation_prediction/ ONLY.
+# Deliberately separate from the repo's environment.yaml (heavy conda env for
+# the upstream scanpy/pertpy pipeline) and from src/3_DE_analysis/requirements.txt
+# (light FastAPI/pandas API deps) -- see README.md "為何獨立出來". Install into
+# its own venv (e.g. src/10_ml_perturbation_prediction/.venv_ml/), never the
+# repo-root .venv used for the task-A data_acquisition scripts.
+
+# Shared data handling
+numpy
+pandas
+pyarrow
+scipy
+
+# genept_baseline/: simple embedding + regularized regression / gradient boosting
+scikit-learn
+
+# gears_model/: GNN over a gene-gene knowledge graph (heavier, added when that
+# stage is actually implemented -- see gears_model/README.md for status)
+# torch
+# torch_geometric

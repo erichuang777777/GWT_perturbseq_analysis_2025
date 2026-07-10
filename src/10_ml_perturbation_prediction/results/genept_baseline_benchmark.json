@@ -1,0 +1,49 @@
+{
+  "method": "GenePT ada-002 embeddings (PCA-128) + multi-output Ridge regression",
+  "baseline": "mean training-set response profile (ignores which gene was perturbed)",
+  "elapsed_seconds": 32.42697834968567,
+  "per_condition": [
+    {
+      "condition": "Rest",
+      "n_targets": 11161,
+      "n_response_genes": 10185,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "model_mean_corr": 0.17873649378448184,
+      "model_median_corr": 0.18902578949928284,
+      "baseline_mean_corr": 0.18229908044921236,
+      "baseline_median_corr": 0.19397671520709991,
+      "model_beats_baseline": false,
+      "n_nan_model": 0,
+      "n_nan_baseline": 0
+    },
+    {
+      "condition": "Stim8hr",
+      "n_targets": 11287,
+      "n_response_genes": 10185,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "model_mean_corr": 0.19136200113187513,
+      "model_median_corr": 0.19716455042362213,
+      "baseline_mean_corr": 0.19431884215756953,
+      "baseline_median_corr": 0.20175716280937195,
+      "model_beats_baseline": false,
+      "n_nan_model": 0,
+      "n_nan_baseline": 0
+    },
+    {
+      "condition": "Stim48hr",
+      "n_targets": 11157,
+      "n_response_genes": 10185,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "model_mean_corr": 0.1673083560971749,
+      "model_median_corr": 0.1692592203617096,
+      "baseline_mean_corr": 0.1699389486528957,
+      "baseline_median_corr": 0.17375418543815613,
+      "model_beats_baseline": false,
+      "n_nan_model": 0,
+      "n_nan_baseline": 0
+    }
+  ]
+}
