@@ -720,6 +720,19 @@ _provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": datas
 
 # ----- (⑥) GWT evidence -------------------------------------------------------#
 st.subheader("⑥ GWT 篩選證據(statistical / robustness)")
+_cell_state_cols = ["responder_fraction", "n_cells_classified", "n_donors_classified"]
+_cell_state_values = {col: summary.get(col) for col in _cell_state_cols if col in summary}
+if _cell_state_values:
+    st.caption("Exploratory integrated-state evidence; not primary DE evidence.")
+    st.caption(
+        "Integrated cell-state summaries are descriptive aids for visualization, "
+        "state matching, and hypothesis generation; they should not supersede "
+        "pseudobulk/raw-count DE evidence."
+    )
+    _fields_row([
+        _labeled(col, _val_chip(value), hint="exploratory/descriptive")
+        for col, value in _cell_state_values.items()
+    ])
 if not summary:
     _not_available("此標的的 target card", "target 不在此資料集,或資料集未建置")
 else:
