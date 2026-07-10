@@ -148,6 +148,28 @@ def _translation(row: pd.Series) -> int:
     return 0
 
 
+def _translation_capped_by(row: pd.Series, translation_score: int) -> str:
+    """Purely descriptive explanation for why ``translation_score`` fell short
+    of 5, when it did. NEVER read by ``_stage()``/``_red_flags()`` -- this
+    cannot change ``readiness_call``/``overall_readiness_stage``, it only
+    disambiguates a real blind spot in the raw score: a NaN
+    ``crossdonor_correlation_mean`` (the field is unmeasured for ~86% of rows,
+    see REPRODUCIBILITY.md) caps translation at 3 the exact same way a
+    measured-but-low value does, and the bare integer can't tell a reader
+    which one happened. "we couldn't measure this" and "we measured it and it
+    was weak" are different findings; conflating them under-calls the vast
+    majority of targets for a reason that looks identical to genuine weakness.
+    """
+    if translation_score >= 5:
+        return "not_capped"
+    if not bool(row.get("replicate_pass_flag")):
+        return "replicate_not_passed"
+    cd = row.get("crossdonor_correlation_mean")
+    if pd.isna(cd):
+        return "missing_crossdonor_data"
+    return "measured_low_crossdonor"
+
+
 def _biomarker(row: pd.Series) -> int:
     return 3 if _num(row.get("n_total_de_genes")) >= 50 else 0
 
@@ -390,6 +412,19 @@ def compute_readiness(
       because this repo commits no adverse-event reference vocabulary to match
       associated traits against.
 
+    A sixth additive, DESCRIPTIVE column (docs/ux_trust_fix_plan.md Wave 1b):
+
+    * ``translation_capped_by`` -- disambiguates WHY ``translation_score`` is
+      below 5, when it is: ``"missing_crossdonor_data"`` (a NaN
+      ``crossdonor_correlation_mean`` -- unmeasured for ~86% of rows, see
+      REPRODUCIBILITY.md) vs. ``"measured_low_crossdonor"`` (a real value that
+      just didn't clear the 0.3 gate) vs. ``"replicate_not_passed"`` vs.
+      ``"not_capped"``. The raw integer alone cannot tell a reader "we
+      couldn't measure this" from "we measured it and it was weak" -- both
+      cap translation at 3 identically. Computed from ``translation_score``
+      and the row's own fields; never read by ``_stage()``/``_red_flags()``,
+      so it cannot change ``readiness_call``/``overall_readiness_stage``.
+
     Like the gnomAD columns, none of these five is read by ``_stage()`` /
     ``_red_flags()``, so none can change ``readiness_call`` /
     ``overall_readiness_stage``.
@@ -416,6 +451,7 @@ def compute_readiness(
 
         biology = _biology_causality(row)
         translation = _translation(row)
+        translation_capped_by = _translation_capped_by(row, translation)
         biomarker = _biomarker(row)
         disease = _disease_relevance(row)
         clinical = _clinical_feasibility(row, evidence)
@@ -476,6 +512,7 @@ def compute_readiness(
             "cd4_immune_red_flags": ",".join(immune_flags) if immune_flags else "none",
             "biomarker_score": biomarker,
             "translation_score": translation,
+            "translation_capped_by": translation_capped_by,
             "clinical_feasibility_score": clinical,
         }
         records.append(

@@ -128,6 +128,13 @@ def render_sidebar() -> None:
                     st.error(f"Run failed: {e}")
 
 
+# The git-tracked reference dataset shipped in this repo (sources/target_tool_cache/
+# e7ecd8d5-.../target_cards.csv) -- a fresh clone already has this built and
+# committed, so a first-time visitor never has to run a build or wait on
+# anything just to see real data. docs/ux_trust_fix_plan.md Wave 2 (cold-start).
+SHIPPED_REFERENCE_DATASET_ID = "e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137"
+
+
 def require_dataset_id() -> str:
     """Return the active dataset_id, or st.stop() with guidance if none is
     selected. Previously this fell back to an inline Imports-only tab; in the
@@ -136,8 +143,9 @@ def require_dataset_id() -> str:
     dataset_id = st.session_state.get("dataset_id", "").strip()
     if not dataset_id:
         st.info(
-            "Run a build, paste an existing dataset_id in the sidebar, or use the "
-            "「研究者_資料集上傳合併」page (left sidebar) to stage external sources."
+            f"還沒有選擇資料集。**最快的方式**:在左側側邊欄的「dataset_id」欄位貼上 "
+            f"`{SHIPPED_REFERENCE_DATASET_ID}`(這是本 repo 已經內建、可直接使用的參考資料集,"
+            "不需要重新建置)。也可以自行 Run a build,或用「研究者_資料集上傳合併」頁面上傳自己的資料。"
         )
         st.stop()
     return dataset_id

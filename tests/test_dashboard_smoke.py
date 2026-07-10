@@ -103,6 +103,23 @@ def test_researcher_pages_render_offline_without_exception(page):
     assert not at.exception, f"{page} raised offline: {at.exception}"
 
 
+def test_empty_dataset_state_points_to_the_shipped_reference_dataset():
+    """Wave 2 (docs/ux_trust_fix_plan.md, cold-start): a fresh clone already
+    ships a built, git-tracked reference dataset
+    (sources/target_tool_cache/e7ecd8d5-.../target_cards.csv) -- a first-time
+    visitor should never have to run a build or wait on anything just to see
+    real data. The empty-dataset message must say so by name, not just
+    abstractly describe "run a build" / "paste a dataset_id"."""
+    from dataset_context import SHIPPED_REFERENCE_DATASET_ID
+
+    appt = pytest.importorskip("streamlit.testing.v1")
+    at = appt.AppTest.from_file(str(PAGES / "01_研究者_總覽_overview.py"), default_timeout=60)
+    at.run()
+    assert not at.exception
+    info_texts = " ".join(i.value for i in at.info)
+    assert SHIPPED_REFERENCE_DATASET_ID in info_texts
+
+
 @pytest.mark.parametrize("page", CLINICAL_PAGES)
 def test_clinical_pages_render_offline_without_exception(page):
     appt = pytest.importorskip("streamlit.testing.v1")
@@ -224,6 +241,20 @@ def test_dossier_page_shows_glossary_and_structural_limits_banner():
     assert any("CRISPRi screen" in t and "N≈3" in t for t in caption_texts), (
         "structural-limits banner did not render"
     )
+
+
+def test_dossier_page_shows_preprint_disclosure_when_dataset_version_is_a_biorxiv_pin():
+    """Wave 1d (docs/ux_trust_fix_plan.md): the reference dataset is pinned to a
+    bioRxiv preprint (not yet peer-reviewed), a fact easy to lose track of once
+    a user is looking at confident-looking chips. Sourced from the real
+    per-dataset version string (never a hardcoded guess), so this is a source
+    check for the logic + the exact string it looks for, not an offline AppTest
+    render (the offline SAMPLE_DATASETS fixture carries no version field, so
+    the disclosure only actually renders against a live dataset -- confirmed by
+    manual verification against the running API during development)."""
+    src = (PAGES / DOSSIER_PAGE).read_text(encoding="utf-8")
+    assert "biorxiv" in src.lower()
+    assert "peer-reviewed" in src.lower() or "同行評審" in src
 
 
 def test_dossier_page_shows_quick_answer_headline_before_the_evidence_walkthrough():

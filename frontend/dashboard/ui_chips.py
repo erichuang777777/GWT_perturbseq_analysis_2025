@@ -22,6 +22,7 @@ layer.
 from __future__ import annotations
 
 import math
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 import streamlit as st
@@ -97,12 +98,48 @@ def fields_row(items: List[str]) -> None:
     st.markdown('<div class="gwt-fields">' + "".join(items) + "</div>", unsafe_allow_html=True)
 
 
+# Wave 1d (docs/ux_trust_fix_plan.md): a raw fetched_at timestamp doesn't tell
+# a reader whether the evidence is fresh or months old. STALE_TTL_DAYS mirrors
+# the external-evidence cache's own re-fetch TTL (evidence/external_cache.py),
+# so "stale" here means the same thing it means to the backend that built the
+# snapshot -- not an arbitrary new threshold invented for display purposes.
+STALE_TTL_DAYS = 30
+
+
+def _parse_timestamp(value: Any) -> Optional[datetime]:
+    if not isinstance(value, str):
+        return None
+    text = value.strip().split(" (")[0]  # sample fixtures append " (SAMPLE)"
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def age_label(fetched_at: Any) -> Optional[str]:
+    """Human-readable age + staleness flag for a fetched_at timestamp, or None
+    when it isn't a parseable real timestamp (e.g. a SAMPLE placeholder)."""
+    dt = _parse_timestamp(fetched_at)
+    if dt is None:
+        return None
+    now = datetime.now(timezone.utc) if dt.tzinfo is not None else datetime.now()
+    age_days = (now - dt).days
+    if age_days < 0:
+        return None
+    if age_days > STALE_TTL_DAYS:
+        return f"⚠ {age_days} 天前(可能過期,已超過 {STALE_TTL_DAYS} 天 TTL)"
+    return f"{age_days} 天前"
+
+
 def provenance_line(source: str, *, version: Any = None, fetched_at: Any = None, extra: Optional[Dict[str, Any]] = None) -> None:
     bits = [f"來源 source: {source}"]
     if version is not None and not is_unknown(version):
         bits.append(f"version: {version}")
     if fetched_at is not None and not is_unknown(fetched_at):
         bits.append(f"fetched_at: {fetched_at}")
+        age = age_label(fetched_at)
+        if age:
+            bits.append(age)
     for k, v in (extra or {}).items():
         if not is_unknown(v):
             bits.append(f"{k}: {v}")

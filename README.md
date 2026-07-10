@@ -17,6 +17,36 @@ Analysis of genome-wide perturb-seq screen on primary T cells (see our [manuscri
 
 Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analysis_2025/blob/master/metadata/figure_map.md) to find which scripts were used to generate a specific figure in the manuscript.
 
+## Target-discovery toolkit quickstart
+
+On top of the manuscript analysis code above, this repo also ships a **target-discovery toolkit**:
+a FastAPI service (`src/3_DE_analysis/target_card_api.py`) serving prioritized, evidence-integrated
+target cards over the CRISPRi screen, and a Streamlit dashboard (`frontend/dashboard/`) with a
+researcher workspace and a clinical-evidence lookup workspace. **Research / hypothesis-generating
+use only — not clinical software.**
+
+This toolkit runtime is deliberately **lighter** than the conda environment above — it does not need
+scanpy/pertpy/anndata, and a fresh clone already ships a built, git-tracked reference dataset, so
+there's nothing to build before you can see real data.
+
+```bash
+# One-command run (starts the API in the background, the dashboard in the foreground;
+# Ctrl-C stops both — see Makefile)
+make dev
+
+# Or run each piece separately, in two terminals:
+make api          # http://127.0.0.1:8000 — Swagger UI at /docs
+make dashboard     # opens the Streamlit dashboard in your browser
+```
+
+Once the dashboard is open, paste `e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137` into the sidebar's
+`dataset_id` field — that's the pre-built reference dataset already committed to this repo.
+
+For the full data-provenance/reproducibility record (what's real vs. sparse/seed-only, exact
+coverage numbers, versioning) see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — the
+dashboard's own `unknown != 0` discipline and `advance`/`grade` glossary are explained there and
+inside the app itself (look for the ℹ️ 名詞解釋 expander).
+
 ## Set-up compute environment
 
 ```
