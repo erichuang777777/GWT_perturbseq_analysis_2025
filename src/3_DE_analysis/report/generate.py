@@ -136,9 +136,15 @@ def build_report_payload(
         "pathway_counts": pathway_counts,
         "clinical_counts": clinical_counts,
         "top_candidates": _safe_records(top, CORE_COLUMNS),
+        "top_candidates_note": (
+            "Top Candidates are ranked by the primary DE signal with replicate_pass_flag used as a "
+            "sort key, not as a hard filter. Distinguish this from the guide-robust "
+            "high-confidence signal; use the high-confidence / replicate-pass subset for "
+            "biological claims whenever possible."
+        ),
         "watchlist": _safe_records(watch, CORE_COLUMNS),
         "next_steps": [
-            "Prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True.",
+            "Treat Top Candidates as primary DE signal; prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True as guide-robust high-confidence signal for biological claims.",
             "Treat high score_cap_reason burden as an experiment-design issue before biology interpretation.",
             "Use h5ad-level validation for selected targets: donor-aware pseudobulk, module scoring, and batch sensitivity checks.",
             "Map short-listed targets to clinical mechanism, safety liability, and assay feasibility before drug discovery handoff.",
@@ -181,6 +187,8 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         f"- watchlist rows: {summary['n_watchlist']}",
         "",
         "## Top Candidates",
+        "",
+        payload.get("top_candidates_note", ""),
         "",
         _markdown_table(payload["top_candidates"], CORE_COLUMNS),
         "",
@@ -239,6 +247,7 @@ def render_html(payload: Dict[str, Any]) -> str:
   <h1>GWT Target Card Report</h1>
   <div class="metrics">{metrics}</div>
   <h2>Top Candidates</h2>
+  <p>{payload.get("top_candidates_note", "")}</p>
   {top_html}
   <h2>Watchlist</h2>
   {watch_html}

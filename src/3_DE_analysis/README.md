@@ -65,6 +65,21 @@ Merge outputs in AnnData object
 python merge_DE_results.py --config DE_config_full.yaml
 ```
 
+
+### Primary DE model and guide-level robustness interpretation
+
+The primary differential-expression (DE) analysis estimates **target-level effects** from guide-by-donor-by-condition pseudobulk samples. Within each culture condition and DE chunk, the DESeq2 design is:
+
+```yaml
+design_formula: '~ log10_n_cells + donor_id + target'
+```
+
+In this formulation, `target` is the perturbation contrast of interest, `donor_id` adjusts for donor-level baseline differences, and `log10_n_cells` adjusts for the number of cells contributing to each pseudobulk. The primary DE signal reported in `DE_stats` (for example `n_total_de_genes`, `ontarget_effect_size`, and gene-level log fold changes) should therefore be read as a target-level effect against the non-targeting-control baseline, not as a guide-specific coefficient.
+
+Guide-level variability is evaluated downstream rather than modeled as a primary random or fixed effect in the DE formula. The downstream confidence layer uses fields such as `crossguide_correlation`, `replicate_pass_flag`, `offtarget_flag`, upstream pseudobulk inclusion flags including `keep_effective_guides`, and guide knockdown summaries from `guide_kd_efficiency.suppl_table.csv` to distinguish target-level signal from guide-robust evidence.
+
+When ranking targets or writing biological claims, distinguish the **primary DE signal** (magnitude and breadth of the target-level DE result) from the **guide-robust high-confidence signal** (DE signal that also passes guide/donor/off-target/knockdown robustness checks). Interpret top targets through the high-confidence / `replicate_pass_flag=True` subset whenever making biological claims, and treat high primary-DE ranks without guide-robust support as hypotheses requiring follow-up validation.
+
 ## Analysing DE results
 
 - `DE_results_analysis_full.ipynb` - exploratory analysis of DE results 
