@@ -7,6 +7,10 @@
 # DE_config_full.template.yaml for full-screen analyses.
 experiment_name: "CD4i_final"
 datadir: "../../data/marson2025_data"  # 本地路径（相对 src/3_DE_analysis/ 執行位置）
+# Pseudobulk merge inputs. Relative paths are resolved under {datadir}/{experiment_name}.
+pseudobulk_input_globs:
+  - "tmp/*DE_pseudobulk.h5ad"
+
 run_name: "all_confounders_reduced"
 
 # Perturbation selection params

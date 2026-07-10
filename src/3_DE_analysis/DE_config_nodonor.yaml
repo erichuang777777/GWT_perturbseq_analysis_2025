@@ -1,6 +1,10 @@
 # Configuration for Differential Expression Analysis
 experiment_name: "CRiCD4_Run1_Illumina" 
 datadir: "/oak/stanford/groups/pritch/users/emma/data/GWT/"
+# Pseudobulk merge inputs. Relative paths are resolved under {datadir}/{experiment_name}.
+pseudobulk_input_globs:
+  - "tmp/*DE_pseudobulk.h5ad"
+
 run_name: 'no_donor'
 
 # Perturbation selection params

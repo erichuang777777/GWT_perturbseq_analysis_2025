@@ -85,6 +85,29 @@ def merge_pseudobulks(h5ad_files, sample_cols = ['cell_sample_id', 'guide_id']):
     merged_adata.obs['n_cells'] = n_cells_merged.loc[merged_adata.obs_names]
     return(merged_adata)
 
+
+
+def _resolve_config_path(path, datadir):
+    """Resolve a config path/glob relative to the experiment data directory."""
+    path = os.path.expandvars(os.path.expanduser(str(path)))
+    path = _convert_oak_path(path)
+    if os.path.isabs(path):
+        return path
+    return os.path.join(datadir, path)
+
+
+def _get_pseudobulk_input_globs(config, datadir):
+    """Return pseudobulk input glob patterns from config or a reproducible default."""
+    globs = config.get('pseudobulk_input_globs')
+    if globs is None:
+        globs = [os.path.join('tmp', '*DE_pseudobulk.h5ad')]
+    elif isinstance(globs, str):
+        globs = [globs]
+    elif not isinstance(globs, list):
+        raise TypeError('pseudobulk_input_globs must be a string or list of strings')
+
+    return [_resolve_config_path(g, datadir) for g in globs]
+
 def main_aggregate(args):
     # Remove the parser creation - args are already parsed
     sample_metadata = pd.read_csv(args.sample_metadata_csv, index_col=0)
@@ -103,11 +126,20 @@ def main_merge(args):
     # Extract parameters from config
     datadir = _convert_oak_path(config['datadir'])
     experiment_name = config['experiment_name']
-    datadir = f'{datadir}/{experiment_name}'
+    datadir = os.path.join(datadir, experiment_name)
 
-    # Find all pseudobulk files
-    pseudobulk_files = glob.glob('/mnt/oak/users/emma/data/GWT/CD4iR1_Psomagen/tmp/*DE_pseudobulk.h5ad') + glob.glob('/mnt/oak/users/emma/data/GWT/CD4iR2_Psomagen/tmp/*DE_pseudobulk.h5ad')
+    # Find all pseudobulk files from config. Patterns may be absolute or
+    # relative to the experiment data directory ({datadir}/{experiment_name}).
+    pseudobulk_globs = _get_pseudobulk_input_globs(config, datadir)
+    pseudobulk_files = sorted({f for pattern in pseudobulk_globs for f in glob.glob(pattern)})
+    print(f"Searching pseudobulk inputs with globs: {pseudobulk_globs}")
     print(f"Found {len(pseudobulk_files)} pseudobulk files")
+    if len(pseudobulk_files) == 0:
+        raise FileNotFoundError(
+            "No pseudobulk files found. Set pseudobulk_input_globs in the DE config "
+            "or place *DE_pseudobulk.h5ad files under the experiment tmp/ directory."
+        )
+
     sample2files = {}
     for f in pseudobulk_files:
         sample_id = os.path.basename(f).split('.')[0]
@@ -116,6 +148,10 @@ def main_merge(args):
         sample2files[sample_id].append(f)
     
     s = args.sample_id
+    if s not in sample2files:
+        available = ', '.join(sorted(sample2files))
+        raise KeyError(f"Sample ID '{s}' was not found in pseudobulk inputs. Available sample IDs: {available}")
+
     pbulk_adata = merge_pseudobulks(sample2files[s])
     pbulk_adata.write_h5ad(f'{datadir}/{experiment_name}_{s}.DE_pseudobulk.h5ad')
 
