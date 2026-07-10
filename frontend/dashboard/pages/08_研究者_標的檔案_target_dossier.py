@@ -50,6 +50,7 @@ import streamlit as st
 # byte-for-byte identical in behaviour to before the extraction.
 from glossary import render_glossary_expander
 from nav import seed_dossier_session
+from evidence_type_guide import evidence_type_caption, render_evidence_type_guide
 from ui_chips import format_concept_chips
 from ui_chips import (
     descriptive_note as _descriptive_note,
@@ -548,6 +549,7 @@ st.caption(
     "🔬 **研究者快速路徑**:GWT 統計證據(見下方 ⑥)、多軸描述性摘要(見下方 ②)、"
     "CD4 概念剖面 + 機制圖(見下方 ⑦⑧)。"
 )
+render_evidence_type_guide()
 
 # ----- (②) Descriptive multi-axis summary (triage) ------------------------- #
 st.subheader("② 多軸描述性摘要(descriptive axes at a glance)")
@@ -584,6 +586,7 @@ else:
 # ----- (③) External evidence ------------------------------------------------ #
 st.subheader("③ 外部證據(trials / literature / genetics)")
 _descriptive_note()
+st.caption(evidence_type_caption("genetics", "tractability"))
 evidence, ev_sample = _evidence(canonical)
 if evidence is None:
     _not_available(
@@ -686,6 +689,7 @@ if not _is_unknown(safety_note) and str(safety_note).strip():
 
 # Population LoF-burden hypothesis
 st.markdown("**群體 LoF-burden 假設(UK Biobank)**")
+st.caption(evidence_type_caption("lof"))
 pop, pop_sample = _population(canonical)
 if not pop.get("available"):
     _not_available("群體遺傳假設", pop.get("reason") or "本地 burden 表無此資料")
@@ -711,6 +715,7 @@ _provenance(
 
 # ----- (⑤) Tractability ------------------------------------------------------ #
 st.subheader("⑤ 成藥性(tractability)")
+st.caption(evidence_type_caption("tractability"))
 tcols = [
     _labeled("tractability_modality", _val_chip(summary.get("tractability_modality")), hint="推測 modality"),
     _labeled("druggable_class", _val_chip(summary.get("druggable_class"))),
@@ -720,6 +725,7 @@ _provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": datas
 
 # ----- (⑥) GWT evidence -------------------------------------------------------#
 st.subheader("⑥ GWT 篩選證據(statistical / robustness)")
+st.caption(evidence_type_caption("perturbseq"))
 _cell_state_cols = ["responder_fraction", "n_cells_classified", "n_donors_classified"]
 _cell_state_values = {col: summary.get(col) for col in _cell_state_cols if col in summary}
 if _cell_state_values:
@@ -868,6 +874,7 @@ st.caption(
     "這是本工具的**決定性**輸出(decision);上面的描述性區塊不改變它。"
     "「advance / validate / watchlist / deprioritize」代表什麼、不代表什麼 → 見頁首「ℹ️ 名詞解釋」。"
 )
+st.caption(evidence_type_caption("readiness"))
 if not rrow:
     _not_available("此標的的 readiness 記錄", "target 不在 readiness 表")
 else:

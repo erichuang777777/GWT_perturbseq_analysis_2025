@@ -20,6 +20,44 @@ LIMITATIONS_PARAGRAPH = (
     "therapeutic interpretation."
 )
 
+EVIDENCE_TYPE_GUIDE = [
+    {
+        "label": "Perturb-seq screen evidence",
+        "caveat": (
+            "Experimental CD4 CRISPRi transcriptomic evidence; supports a "
+            "target-condition perturbation hypothesis, not therapeutic efficacy."
+        ),
+    },
+    {
+        "label": "Human genetic association",
+        "caveat": (
+            "External association support for disease relevance; not direct "
+            "perturbation validation and not proof of causal drug response."
+        ),
+    },
+    {
+        "label": "Population LoF evidence",
+        "caveat": (
+            "Population-level loss-of-function burden evidence; not patient-level "
+            "prediction and not a substitute for disease-context validation."
+        ),
+    },
+    {
+        "label": "Drug / tractability precedent",
+        "caveat": (
+            "Evidence that a target class or nearby mechanism may be druggable; "
+            "not evidence that modulating this target is safe or efficacious here."
+        ),
+    },
+    {
+        "label": "Heuristic readiness triage",
+        "caveat": (
+            "Internal prioritization heuristic for follow-up planning; not a "
+            "clinical recommendation or validation endpoint."
+        ),
+    },
+]
+
 CORE_COLUMNS = [
     "target",
     "condition",
@@ -153,6 +191,7 @@ def build_report_payload(
         ),
         "watchlist": _safe_records(watch, CORE_COLUMNS),
         "limitations": LIMITATIONS_PARAGRAPH,
+        "evidence_type_guide": EVIDENCE_TYPE_GUIDE,
         "next_steps": [
             "Treat Top Candidates as primary DE signal; prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True as guide-robust high-confidence signal for biological claims.",
             "Treat high score_cap_reason burden as an experiment-design issue before biology interpretation.",
@@ -200,6 +239,13 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         "",
         payload.get("limitations", LIMITATIONS_PARAGRAPH),
         "",
+        "## Evidence Type Guide",
+        "",
+    ]
+    for item in payload.get("evidence_type_guide", EVIDENCE_TYPE_GUIDE):
+        lines.append(f"- **{item['label']}** — {item['caveat']}")
+    lines.extend([
+        "",
         "## Top Candidates",
         "",
         payload.get("top_candidates_note", ""),
@@ -212,7 +258,7 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         "",
         "## Next Steps",
         "",
-    ]
+    ])
     lines.extend(f"- {item}" for item in payload["next_steps"])
     lines.append("")
     provenance = payload.get("provenance") or {}
@@ -240,6 +286,10 @@ def render_html(payload: Dict[str, Any]) -> str:
     if provenance:
         provenance_items = "".join(f"<li><code>{k}</code>: {v}</li>" for k, v in provenance.items())
         provenance_section = f"<h2>Provenance</h2>\n  <ul>{provenance_items}</ul>"
+    evidence_items = "".join(
+        f"<li><strong>{item['label']}:</strong> {item['caveat']}</li>"
+        for item in payload.get("evidence_type_guide", EVIDENCE_TYPE_GUIDE)
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -262,6 +312,8 @@ def render_html(payload: Dict[str, Any]) -> str:
   <div class="metrics">{metrics}</div>
   <h2>Limitations</h2>
   <p>{payload.get("limitations", LIMITATIONS_PARAGRAPH)}</p>
+  <h2>Evidence Type Guide</h2>
+  <ul>{evidence_items}</ul>
   <h2>Top Candidates</h2>
   <p>{payload.get("top_candidates_note", "")}</p>
   {top_html}

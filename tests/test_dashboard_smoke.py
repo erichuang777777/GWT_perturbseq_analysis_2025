@@ -220,6 +220,24 @@ def test_overview_page_has_standard_limitations_text():
     assert "disease-context models" in src
 
 
+def test_evidence_type_caveats_are_shared_not_page_copy_pasted():
+    guide_src = (DASH / "evidence_type_guide.py").read_text(encoding="utf-8")
+    assert "Perturb-seq screen evidence" in guide_src
+    assert "Human genetic association" in guide_src
+    assert "Population LoF evidence" in guide_src
+    assert "Drug / tractability precedent" in guide_src
+    assert "Heuristic readiness triage" in guide_src
+
+    overview_src = (PAGES / "01_研究者_總覽_overview.py").read_text(encoding="utf-8")
+    explorer_src = (PAGES / "04_研究者_標的探索_target_explorer.py").read_text(encoding="utf-8")
+    dossier_src = (PAGES / DOSSIER_PAGE).read_text(encoding="utf-8")
+    for src in [overview_src, explorer_src, dossier_src]:
+        assert "render_evidence_type_guide" in src
+    assert "evidence_type_caption(\"perturbseq\")" in explorer_src
+    assert "evidence_type_caption(\"genetics\", \"tractability\")" in dossier_src
+    assert "evidence_type_caption(\"readiness\")" in dossier_src
+
+
 def test_dossier_page_renders_offline():
     appt = pytest.importorskip("streamlit.testing.v1")
     at = appt.AppTest.from_file(str(PAGES / DOSSIER_PAGE), default_timeout=60)

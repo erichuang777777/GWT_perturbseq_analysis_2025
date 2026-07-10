@@ -21,6 +21,7 @@ import streamlit as st
 
 from api_client import _count_chart, _metric_value, _readiness
 from dataset_context import configure_page, load_summary, render_sidebar, require_dataset_id
+from evidence_type_guide import render_evidence_type_guide
 from glossary import render_glossary_expander
 
 configure_page("GWT Target Evidence Browser — Overview")
@@ -37,6 +38,8 @@ st.info(
     "Results require orthogonal validation such as independent guides, donor replication, "
     "protein/functional assays, and disease-context models before therapeutic interpretation."
 )
+
+render_evidence_type_guide()
 
 # UX-flow fix: wayfinding starts here, before any page or gene is chosen.
 # Both personas used to have to discover the right tab by trial and error;
@@ -73,6 +76,10 @@ with chart_cols[2]:
         st.bar_chart(pathway_chart)
 
 st.subheader("Top candidates")
+st.caption(
+    "Top candidates 主要是 primary DE signal 排序; robust biological interpretation "
+    "應優先看 replicate-pass / guide-donor robustness 欄位,不要把高 DE breadth 直接解讀成已驗證標的。"
+)
 top_df = pd.DataFrame(summary_payload.get("top_candidates", []))
 st.dataframe(top_df, use_container_width=True, hide_index=True)
 

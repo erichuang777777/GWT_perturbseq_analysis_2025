@@ -23,6 +23,7 @@ import streamlit as st
 
 from api_client import DOSSIER_PAGE_PATH, _dataset_status, _target_detail, _targets
 from dataset_context import configure_page, load_summary, render_sidebar, require_dataset_id
+from evidence_type_guide import evidence_type_caption, render_evidence_type_guide
 
 configure_page("GWT Target Evidence Browser — Target Explorer")
 render_sidebar()
@@ -30,6 +31,7 @@ dataset_id = require_dataset_id()
 opts, summary_payload, summary = load_summary(dataset_id)
 
 st.title("Target explorer")
+render_evidence_type_guide()
 
 filter_cols = st.columns([1, 1, 1, 1])
 condition_options = [""] + opts.get("conditions", [])
@@ -73,6 +75,7 @@ if exclude_offtarget:
     params["off_target"] = False
 
 df = _targets(dataset_id, params)
+st.caption(evidence_type_caption("perturbseq"))
 _cell_state_cols = {"responder_fraction", "n_cells_classified", "n_donors_classified"}
 if _cell_state_cols.intersection(df.columns):
     st.caption("Exploratory integrated-state evidence; not primary DE evidence.")
