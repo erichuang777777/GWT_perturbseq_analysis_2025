@@ -11,6 +11,28 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 
+EVIDENCE_TYPE_NOTES = {
+    "Perturb-seq screen evidence": (
+        "Shows target-condition knockdown-associated transcriptomic effects, robustness, and QC support; "
+        "it cannot by itself prove disease efficacy, clinical safety, or pharmacologic equivalence."
+    ),
+    "Human genetic association": (
+        "Links a target to disease risk through population genetic association; it is not direct perturbation validation "
+        "and does not prove that modulating the target will treat disease."
+    ),
+    "Population LoF evidence": (
+        "Summarizes population-level loss-of-function burden signals; it is not patient-level prediction and cannot determine "
+        "individual response or safety."
+    ),
+    "Drug/tractability precedent": (
+        "Indicates known modality, druggability, or clinical precedent for the target class; it cannot prove that this target, "
+        "direction, indication, or dose is feasible."
+    ),
+    "Heuristic readiness triage": (
+        "Combines available evidence into a transparent prioritization call; it is not regulatory, clinical, or nomination-ready proof."
+    ),
+}
+
 CORE_COLUMNS = [
     "target",
     "condition",
@@ -137,6 +159,7 @@ def build_report_payload(
         "clinical_counts": clinical_counts,
         "top_candidates": _safe_records(top, CORE_COLUMNS),
         "watchlist": _safe_records(watch, CORE_COLUMNS),
+        "evidence_type_notes": EVIDENCE_TYPE_NOTES,
         "next_steps": [
             "Prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True.",
             "Treat high score_cap_reason burden as an experiment-design issue before biology interpretation.",
@@ -180,17 +203,33 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         f"- replicate-pass rows: {summary['n_replicate_pass']}",
         f"- watchlist rows: {summary['n_watchlist']}",
         "",
+        "## Evidence-type labels",
+        "",
+    ]
+    lines.extend(
+        f"- **{label}.** {note}" for label, note in payload["evidence_type_notes"].items()
+    )
+    lines.extend([
+        "",
         "## Top Candidates",
+        "",
+        "**Evidence type: Perturb-seq screen evidence.** " + payload["evidence_type_notes"]["Perturb-seq screen evidence"],
+        "",
+        "**Evidence type: Drug/tractability precedent.** " + payload["evidence_type_notes"]["Drug/tractability precedent"],
+        "",
+        "**Evidence type: Heuristic readiness triage.** " + payload["evidence_type_notes"]["Heuristic readiness triage"],
         "",
         _markdown_table(payload["top_candidates"], CORE_COLUMNS),
         "",
         "## Watchlist",
         "",
+        "**Evidence type: Heuristic readiness triage.** " + payload["evidence_type_notes"]["Heuristic readiness triage"],
+        "",
         _markdown_table(payload["watchlist"], CORE_COLUMNS),
         "",
         "## Next Steps",
         "",
-    ]
+    ])
     lines.extend(f"- {item}" for item in payload["next_steps"])
     lines.append("")
     provenance = payload.get("provenance") or {}
@@ -209,6 +248,13 @@ def render_html(payload: Dict[str, Any]) -> str:
     top_html = top_df.to_html(index=False, escape=True) if not top_df.empty else "<p>No records.</p>"
     watch_html = watch_df.to_html(index=False, escape=True) if not watch_df.empty else "<p>No records.</p>"
     next_steps = "".join(f"<li>{step}</li>" for step in payload["next_steps"])
+    notes = payload.get("evidence_type_notes", EVIDENCE_TYPE_NOTES)
+    evidence_notes = "".join(f"<li><strong>{label}.</strong> {note}</li>" for label, note in notes.items())
+    top_notes = "".join(
+        f"<p><strong>Evidence type: {label}.</strong> {notes[label]}</p>"
+        for label in ["Perturb-seq screen evidence", "Drug/tractability precedent", "Heuristic readiness triage"]
+    )
+    watch_notes = f"<p><strong>Evidence type: Heuristic readiness triage.</strong> {notes['Heuristic readiness triage']}</p>"
     metrics = "".join(
         f"<div class='metric'><span>{k}</span><strong>{v}</strong></div>"
         for k, v in summary.items()
@@ -238,9 +284,13 @@ def render_html(payload: Dict[str, Any]) -> str:
 <body>
   <h1>GWT Target Card Report</h1>
   <div class="metrics">{metrics}</div>
+  <h2>Evidence-type labels</h2>
+  <ul>{evidence_notes}</ul>
   <h2>Top Candidates</h2>
+  {top_notes}
   {top_html}
   <h2>Watchlist</h2>
+  {watch_notes}
   {watch_html}
   <h2>Next Steps</h2>
   <ul>{next_steps}</ul>

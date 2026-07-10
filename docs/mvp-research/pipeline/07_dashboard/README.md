@@ -101,6 +101,17 @@ flowchart LR
 - **readiness 領域欄位**（見 `connector_enrichment_demo.csv`）：`tractable_SM`、`tractable_AB`（可成藥性，來源 ChEMBL/Open Targets tractability）、`OT_genetic_assoc`＋`OT_n_assoc_diseases`（`human_genetic_support`，來源 Open Targets `genetic_association`）、`safety_window`（來源 gnomAD LOEUF/pLI）、`flag`（`immune_candidate` / `broad_effect`）。
 - **紅旗依據**：`core_essentials_hart.tsv` + CORUM 染色質/轉錄複合體。**驗收案例（引自 `MVP_開發目標與資料簡報.md` §4 item 1）**：MED12/CREBBP/KDM1A 不再 advance，PLCG1/CD247/ITK 仍可。（Top-15 shortlist 中其他 `broad_effect` 基因如 CCNC/TADA2B/SGF29 同樣封頂於 watchlist，CD3E/LAT/VAV1 等 `immune_candidate` 可 advance，見 `candidate_shortlist_top15.csv` 的 `flag` 欄。）
 
+### Evidence-type labels and caveats
+Major evidence blocks in generated reports and dashboard views must show these labels near top-candidate tables and individual target details, not only in narrative docs:
+
+| Evidence-type label | One-sentence caveat |
+|---|---|
+| Perturb-seq screen evidence | Shows target-condition knockdown-associated transcriptomic effects, robustness, and QC support; it cannot by itself prove disease efficacy, clinical safety, or pharmacologic equivalence. |
+| Human genetic association | Links a target to disease risk through population genetic association; it is not direct perturbation validation and does not prove that modulating the target will treat disease. |
+| Population LoF evidence | Summarizes population-level loss-of-function burden signals; it is not patient-level prediction and cannot determine individual response or safety. |
+| Drug/tractability precedent | Indicates known modality, druggability, or clinical precedent for the target class; it cannot prove that this target, direction, indication, or dose is feasible. |
+| Heuristic readiness triage | Combines available evidence into a transparent prioritization call; it is not regulatory, clinical, or nomination-ready proof. |
+
 ### ③ 證據匹配面板
 把標的對應到人類遺傳、可成藥性、臨床試驗、文獻證據。
 - **讀取層**：`04_statistical/_evidence/<gene>.json`（15 基因，cache-first 快照）。

@@ -65,6 +65,18 @@ with chart_cols[2]:
         st.bar_chart(pathway_chart)
 
 st.subheader("Top candidates")
+st.markdown(
+    "**Evidence type: Perturb-seq screen evidence.** Shows target-condition knockdown-associated transcriptomic effects, robustness, and QC support; "
+    "it cannot by itself prove disease efficacy, clinical safety, or pharmacologic equivalence."
+)
+st.markdown(
+    "**Evidence type: Drug/tractability precedent.** Indicates known modality, druggability, or clinical precedent for the target class; "
+    "it cannot prove that this target, direction, indication, or dose is feasible."
+)
+st.markdown(
+    "**Evidence type: Heuristic readiness triage.** Combines available evidence into a transparent prioritization call; "
+    "it is not regulatory, clinical, or nomination-ready proof."
+)
 top_df = pd.DataFrame(summary_payload.get("top_candidates", []))
 st.dataframe(top_df, use_container_width=True, hide_index=True)
 
@@ -73,6 +85,10 @@ watch_df = pd.DataFrame(summary_payload.get("watchlist", []))
 st.dataframe(watch_df, use_container_width=True, hide_index=True)
 
 st.subheader("Readiness")
+st.markdown(
+    "**Evidence type: Heuristic readiness triage.** Combines available evidence into a transparent prioritization call; "
+    "it is not regulatory, clinical, or nomination-ready proof."
+)
 render_glossary_expander(keys=["advance", "validate", "watchlist", "deprioritize", "grade"])
 try:
     readiness_payload = _readiness(dataset_id)

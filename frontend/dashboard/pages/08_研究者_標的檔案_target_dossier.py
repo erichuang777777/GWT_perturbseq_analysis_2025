@@ -551,6 +551,10 @@ st.caption(
 
 # ----- (②) Descriptive multi-axis summary (triage) ------------------------- #
 st.subheader("② 多軸描述性摘要(descriptive axes at a glance)")
+st.markdown(
+    "**Evidence type: Heuristic readiness triage.** Combines available evidence into a transparent prioritization call; "
+    "it is not regulatory, clinical, or nomination-ready proof."
+)
 _descriptive_note()
 _triage_payload, _triage_sample = _triage_target(dataset_id, canonical)
 if _triage_sample or not _triage_payload:
@@ -583,6 +587,14 @@ else:
 
 # ----- (③) External evidence ------------------------------------------------ #
 st.subheader("③ 外部證據(trials / literature / genetics)")
+st.markdown(
+    "**Evidence type: Human genetic association.** Links a target to disease risk through population genetic association; "
+    "it is not direct perturbation validation and does not prove that modulating the target will treat disease."
+)
+st.markdown(
+    "**Evidence type: Drug/tractability precedent.** Indicates known modality, druggability, or clinical precedent for the target class; "
+    "it cannot prove that this target, direction, indication, or dose is feasible."
+)
 _descriptive_note()
 evidence, ev_sample = _evidence(canonical)
 if evidence is None:
@@ -685,6 +697,7 @@ if not _is_unknown(safety_note) and str(safety_note).strip():
     st.markdown("**安全性註記 safety_note:** " + str(safety_note).replace(";", "; "))
 
 # Population LoF-burden hypothesis
+st.markdown("**Evidence type: Population LoF evidence.** Summarizes population-level loss-of-function burden signals; it is not patient-level prediction and cannot determine individual response or safety.")
 st.markdown("**群體 LoF-burden 假設(UK Biobank)**")
 pop, pop_sample = _population(canonical)
 if not pop.get("available"):
@@ -711,6 +724,10 @@ _provenance(
 
 # ----- (⑤) Tractability ------------------------------------------------------ #
 st.subheader("⑤ 成藥性(tractability)")
+st.markdown(
+    "**Evidence type: Drug/tractability precedent.** Indicates known modality, druggability, or clinical precedent for the target class; "
+    "it cannot prove that this target, direction, indication, or dose is feasible."
+)
 tcols = [
     _labeled("tractability_modality", _val_chip(summary.get("tractability_modality")), hint="推測 modality"),
     _labeled("druggable_class", _val_chip(summary.get("druggable_class"))),
@@ -720,6 +737,10 @@ _provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": datas
 
 # ----- (⑥) GWT evidence -------------------------------------------------------#
 st.subheader("⑥ GWT 篩選證據(statistical / robustness)")
+st.markdown(
+    "**Evidence type: Perturb-seq screen evidence.** Shows target-condition knockdown-associated transcriptomic effects, robustness, and QC support; "
+    "it cannot by itself prove disease efficacy, clinical safety, or pharmacologic equivalence."
+)
 if not summary:
     _not_available("此標的的 target card", "target 不在此資料集,或資料集未建置")
 else:
@@ -851,6 +872,10 @@ _provenance(
 
 # ----- (⑨) Readiness call + next validation step ---------------------------- #
 st.subheader("⑨ Readiness 判定 + 下一步驗證")
+st.markdown(
+    "**Evidence type: Heuristic readiness triage.** Combines available evidence into a transparent prioritization call; "
+    "it is not regulatory, clinical, or nomination-ready proof."
+)
 st.caption(
     "這是本工具的**決定性**輸出(decision);上面的描述性區塊不改變它。"
     "「advance / validate / watchlist / deprioritize」代表什麼、不代表什麼 → 見頁首「ℹ️ 名詞解釋」。"

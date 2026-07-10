@@ -26,6 +26,10 @@ dataset_id = require_dataset_id()
 opts, summary_payload, summary = load_summary(dataset_id)
 
 st.title("Disease Translator")
+st.markdown(
+    "**Evidence type: Human genetic association.** Links a target to disease risk through population genetic association; "
+    "it is not direct perturbation validation and does not prove that modulating the target will treat disease."
+)
 st.caption(
     "Ranks target cards by real Open Targets genetic-association evidence for a chosen indication. "
     "Coverage is restricted to diseases already present in the local association table -- "
@@ -67,6 +71,14 @@ else:
 
 st.divider()
 st.subheader("遺傳雙證據 — Genetic double-support (disease × population)")
+st.markdown(
+    "**Evidence type: Human genetic association.** Links a target to disease risk through population genetic association; "
+    "it is not direct perturbation validation and does not prove that modulating the target will treat disease."
+)
+st.markdown(
+    "**Evidence type: Population LoF evidence.** Summarizes population-level loss-of-function burden signals; "
+    "it is not patient-level prediction and cannot determine individual response or safety."
+)
 st.caption(
     "Targets that are BOTH a genetic-association top target for ≥1 immune "
     "indication AND carry a UK Biobank rare-LoF-burden signal whose 95% CI "

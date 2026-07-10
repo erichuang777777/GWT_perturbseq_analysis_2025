@@ -23,6 +23,10 @@ dataset_id = require_dataset_id()
 opts, summary_payload, summary = load_summary(dataset_id)
 
 st.title("整合多軸 Triage — composite descriptive shortlist")
+st.markdown(
+    "**Evidence type: Heuristic readiness triage.** Combines available evidence into a transparent prioritization call; "
+    "it is not regulatory, clinical, or nomination-ready proof."
+)
 st.caption(
     "One row per target, scored across independent descriptive axes: immune "
     "concept membership, stimulation-gating, direction switches, safety window "
@@ -53,6 +57,10 @@ except Exception as e:
 
 st.divider()
 st.subheader("穩健優先排序 — Robustness-first (filter-then-rank)")
+st.markdown(
+    "**Evidence type: Perturb-seq screen evidence.** Shows target-condition knockdown-associated transcriptomic effects, robustness, and QC support; "
+    "it cannot by itself prove disease efficacy, clinical safety, or pharmacologic equivalence."
+)
 st.caption(
     "Keeps only `high_confidence` rows (all measurable robustness checks pass) "
     "THEN ranks — addressing the calibration finding that the raw-DE shortlist "
