@@ -1,0 +1,5 @@
+matrix,source_pair,shape,n_cells,n_mismatch,max_abs_diff,na_pattern_match,checksum_match,n_na_cells
+effect_matrix,R_vs_Python,11526x4,34578,0,3.552713678800501e-15,True,,595
+effect_matrix,Python_vs_artifact,11526x4,34578,0,0.0,True,True,595
+de_matrix,R_vs_Python,11526x4,34578,0,0.0,True,,595
+de_matrix,Python_vs_artifact,11526x4,34578,0,0.0,True,True,595
