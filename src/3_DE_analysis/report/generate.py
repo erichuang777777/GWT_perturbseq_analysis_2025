@@ -11,6 +11,22 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 
+TOP_CANDIDATE_CAUTION = (
+    "High DE breadth alone is not sufficient; use replicate-pass / donor-guide robustness "
+    "fields for high-confidence interpretation."
+)
+
+DISCOVERY_SIGNAL_NOTE = (
+    "Raw statistical evidence grades and n_total_de_genes are discovery signals; robust "
+    "biological interpretation should prioritize rows passing replicate_pass_flag and available "
+    "donor/guide consistency checks."
+)
+
+
+def robust_ranked_endpoint(dataset_id: str) -> str:
+    return f"/api/robust_ranked/{dataset_id}"
+
+
 CORE_COLUMNS = [
     "target",
     "condition",
@@ -136,6 +152,9 @@ def build_report_payload(
         "pathway_counts": pathway_counts,
         "clinical_counts": clinical_counts,
         "top_candidates": _safe_records(top, CORE_COLUMNS),
+        "top_candidate_note": TOP_CANDIDATE_CAUTION,
+        "interpretation_note": DISCOVERY_SIGNAL_NOTE,
+        "robust_ranked_endpoint": robust_ranked_endpoint(dataset_id),
         "watchlist": _safe_records(watch, CORE_COLUMNS),
         "next_steps": [
             "Prioritize grade 3-4 target-condition pairs with replicate_pass_flag=True.",
@@ -182,6 +201,12 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         "",
         "## Top Candidates",
         "",
+        payload.get("top_candidate_note", TOP_CANDIDATE_CAUTION),
+        "",
+        payload.get("interpretation_note", DISCOVERY_SIGNAL_NOTE),
+        "",
+        f"Robust-ranked shortlist: `{payload.get('robust_ranked_endpoint', robust_ranked_endpoint(summary['dataset_id']))}`",
+        "",
         _markdown_table(payload["top_candidates"], CORE_COLUMNS),
         "",
         "## Watchlist",
@@ -209,6 +234,9 @@ def render_html(payload: Dict[str, Any]) -> str:
     top_html = top_df.to_html(index=False, escape=True) if not top_df.empty else "<p>No records.</p>"
     watch_html = watch_df.to_html(index=False, escape=True) if not watch_df.empty else "<p>No records.</p>"
     next_steps = "".join(f"<li>{step}</li>" for step in payload["next_steps"])
+    top_note = payload.get("top_candidate_note", TOP_CANDIDATE_CAUTION)
+    interpretation_note = payload.get("interpretation_note", DISCOVERY_SIGNAL_NOTE)
+    robust_endpoint = payload.get("robust_ranked_endpoint", robust_ranked_endpoint(summary["dataset_id"]))
     metrics = "".join(
         f"<div class='metric'><span>{k}</span><strong>{v}</strong></div>"
         for k, v in summary.items()
@@ -239,6 +267,8 @@ def render_html(payload: Dict[str, Any]) -> str:
   <h1>GWT Target Card Report</h1>
   <div class="metrics">{metrics}</div>
   <h2>Top Candidates</h2>
+  <p><strong>{top_note}</strong></p>
+  <p>{interpretation_note} Robust-ranked shortlist: <code>{robust_endpoint}</code>.</p>
   {top_html}
   <h2>Watchlist</h2>
   {watch_html}

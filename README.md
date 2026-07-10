@@ -40,7 +40,12 @@ make dashboard     # opens the Streamlit dashboard in your browser
 ```
 
 Once the dashboard is open, paste `e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137` into the sidebar's
-`dataset_id` field — that's the pre-built reference dataset already committed to this repo.
+`dataset_id` field — that's the pre-built reference dataset already committed to this repo. The
+Overview page's top-candidate table is a discovery view: raw statistical evidence grades and
+`n_total_de_genes` are useful signal-breadth indicators, but robust biological interpretation should
+prioritize rows with `replicate_pass_flag=True` and available donor/guide consistency checks. For a
+robustness-first shortlist, use the dashboard's **整合 Triage → Robust-ranked short-list** view or
+call `GET /api/robust_ranked/{dataset_id}` after the main summary quickstart.
 
 For the full data-provenance/reproducibility record (what's real vs. sparse/seed-only, exact
 coverage numbers, versioning) see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — the

@@ -33,6 +33,16 @@ GWT_API_BASE=http://127.0.0.1:8000 streamlit run frontend/dashboard/target_card_
 `API_BASE` constant). Nothing else needs to be configured — this frontend never touches the repo's data
 files, `sources/`, or `metadata/` directly.
 
+
+## Interpretation guardrails
+
+Dashboard top-candidate and report tables are discovery triage views. Raw statistical evidence grades
+and `n_total_de_genes` indicate statistical/signal breadth, but they are not sufficient for robust
+biological interpretation. Prioritize target-condition rows where `replicate_pass_flag` passes and
+where donor/guide consistency fields are available and supportive; use the researcher workspace's
+**整合 Triage → Robust-ranked short-list** view, backed by `GET /api/robust_ranked/{dataset_id}`, for a
+robustness-first shortlist.
+
 ## Adding a new frontend (or replacing this one)
 
 1. Create a new subdirectory here (e.g. `frontend/web/`) with its own dependency manifest and README.

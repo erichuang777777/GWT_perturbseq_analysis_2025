@@ -65,6 +65,17 @@ with chart_cols[2]:
         st.bar_chart(pathway_chart)
 
 st.subheader("Top candidates")
+st.caption(
+    summary_payload.get(
+        "top_candidate_note",
+        "High DE breadth alone is not sufficient; use replicate-pass / donor-guide robustness fields for high-confidence interpretation.",
+    )
+)
+st.caption(
+    "Raw statistical evidence grades and n_total_de_genes are discovery signals; prioritize "
+    "replicate_pass_flag=True and available donor/guide consistency checks. See 整合 Triage → "
+    f"Robust-ranked short-list or /api/robust_ranked/{dataset_id}."
+)
 top_df = pd.DataFrame(summary_payload.get("top_candidates", []))
 st.dataframe(top_df, use_container_width=True, hide_index=True)
 

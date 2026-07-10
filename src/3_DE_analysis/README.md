@@ -111,6 +111,13 @@ curl "http://127.0.0.1:8000/api/reports/{dataset_id}?fmt=json&top_n=50"
 curl "http://127.0.0.1:8000/api/reports/{dataset_id}?fmt=html&top_n=50" -o target_report.html
 ```
 
+Interpret the report and dashboard top-candidate tables as discovery triage. Raw statistical evidence
+grades and `n_total_de_genes` are signal-breadth indicators, not stand-alone biological conclusions;
+for robust interpretation, prioritize rows passing `replicate_pass_flag` and available donor/guide
+consistency checks. For a robustness-first shortlist that filters before ranking, cross-link from the
+summary/report flow to `GET /api/robust_ranked/{dataset_id}` or the dashboard's **整合 Triage →
+Robust-ranked short-list** panel.
+
 Useful API endpoints:
 
 - `GET /api/summary/{dataset_id}`: overview metrics, top candidates, watchlist, count tables.
@@ -119,10 +126,11 @@ Useful API endpoints:
 - `GET /api/targets/{dataset_id}/{target}`: all condition rows for one target.
 - `GET /api/modules/{dataset_id}`: seed-module hits.
 - `GET /api/reports/{dataset_id}`: JSON, HTML, or Markdown evidence report.
+- `GET /api/robust_ranked/{dataset_id}`: robustness-first filter-then-rank shortlist for high-confidence interpretation.
 
 Dashboard views:
 
-- `Overview`: dataset metrics, evidence-grade charts, top candidates, watchlist.
+- `Overview`: dataset metrics, evidence-grade charts, top candidates, watchlist; use top candidates as discovery signals, not final confidence calls.
 - `Target Explorer`: filterable target-condition ranking and target detail page.
 - `Pathway + Clinical`: module hits and clinical-axis summaries.
-- `Export`: CSV plus JSON/HTML/Markdown report downloads.
+- `Export`: CSV plus JSON/HTML/Markdown report downloads with top-candidate caution text; pair exports with the robust-ranked endpoint/view for high-confidence interpretation.
