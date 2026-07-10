@@ -1,0 +1,25 @@
+metric,R_value,Python_value,abs_diff,tolerance,result,calc_logic
+n_rows,33983,33983,0.000000e+00,0 (exact integer),PASS,nrow(de): total rows in raw table
+n_unique_targets,11526,11526,0.000000e+00,0 (exact integer),PASS,n_distinct(target_contrast): unique perturbation targets
+n_ontarget_significant,21216,21216,0.000000e+00,0 (exact integer),PASS,sum(ontarget_significant==TRUE): on-target significant rows
+n_offtarget_flag,2837,2837,0.000000e+00,0 (exact integer),PASS,sum(offtarget_flag==TRUE): off-target flagged rows
+n_gate_passing_rows,2131,2131,0.000000e+00,0 (exact integer),PASS,sum(n_cells_target>=200 & ontarget_significant & !offtarget_flag & n_total_de_genes>=50); NA treated as FALSE
+n_gate_passing_unique_targets,1235,1235,0.000000e+00,0 (exact integer),PASS,n_distinct(target_contrast) among gate-passing rows
+count_Rest,11287,11287,0.000000e+00,0 (exact integer),PASS,sum(culture_condition=='Rest')
+count_Stim8hr,11415,11415,0.000000e+00,0 (exact integer),PASS,sum(culture_condition=='Stim8hr')
+count_Stim48hr,11281,11281,0.000000e+00,0 (exact integer),PASS,sum(culture_condition=='Stim48hr')
+nde_median,2,2,0.000000e+00,0 (exact integer),PASS,median(n_total_de_genes)
+nde_max,5920,5920,0.000000e+00,0 (exact integer),PASS,max(n_total_de_genes)
+effect_min,-58.547976668913336,-58.547976668913336,0.000000e+00,abs<1e-6,PASS,"min(ontarget_effect_size, na.rm=TRUE)"
+effect_median,-6.30463745267495,-6.30463745267495,0.000000e+00,abs<1e-6,PASS,"median(ontarget_effect_size, na.rm=TRUE)"
+effect_max,7.091937721582496,7.091937721582496,0.000000e+00,abs<1e-6,PASS,"max(ontarget_effect_size, na.rm=TRUE)"
+ncells_median,539,539,0.000000e+00,0 (exact integer),PASS,median(n_cells_target)
+corr_nde_ndownstream,0.9999984688704547,0.9999984688704552,4.440892e-16,abs<1e-6,PASS,"cor(n_total_de_genes, n_downstream, method='pearson')"
+frac_logde_lt1,0.7561427772709884,0.7561427772709884,0.000000e+00,abs<1e-6,PASS,mean(log10(n_total_de_genes+1) < 1)
+set_significant_genelevel,7913,7913,0.000000e+00,0 (exact integer),PASS,n_distinct(target_contrast_gene_name) where ontarget_significant==TRUE
+sum_up_Rest,371945,371945,0.000000e+00,0 (exact integer),PASS,sum(n_up_genes) for culture_condition=='Rest'
+sum_down_Rest,227402,227402,0.000000e+00,0 (exact integer),PASS,sum(n_down_genes) for culture_condition=='Rest'
+sum_up_Stim8hr,506326,506326,0.000000e+00,0 (exact integer),PASS,sum(n_up_genes) for culture_condition=='Stim8hr'
+sum_down_Stim8hr,280429,280429,0.000000e+00,0 (exact integer),PASS,sum(n_down_genes) for culture_condition=='Stim8hr'
+sum_up_Stim48hr,392533,392533,0.000000e+00,0 (exact integer),PASS,sum(n_up_genes) for culture_condition=='Stim48hr'
+sum_down_Stim48hr,277789,277789,0.000000e+00,0 (exact integer),PASS,sum(n_down_genes) for culture_condition=='Stim48hr'
