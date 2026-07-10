@@ -1,5 +1,13 @@
 ## Preparing for DE analysis
 
+
+> [!WARNING]
+> `DE_config_local.yaml` is a reduced/demo configuration with `reduced_targets_only: true`.
+> Outputs from reduced-target runs are appropriate for smoke tests and local examples,
+> but they must not be used to claim genome-wide hit rates, genome-wide FDR, or
+> full-screen target rankings. Use `DE_config_full.yaml` or copy
+> `DE_config_full.template.yaml` for manuscript-scale/full-screen analyses.
+
 1. Identify putative ineffective guides (no on-target knockdown with sufficient confidence) - see `src/1_preprocess/estimate_guide_effect.ipynb`
 
 2. Pseudobulk dataset by replicate
