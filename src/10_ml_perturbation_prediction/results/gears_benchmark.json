@@ -1,0 +1,14 @@
+{
+  "method": "GEARS (cell-gears official package): GO co-annotation graph + co-expression graph + GNN",
+  "split": "simulation (zero-shot held-out genes)",
+  "train_gene_set_size": 0.75,
+  "epochs": 10,
+  "seed": 1,
+  "train_elapsed_minutes": 92.44544381300608,
+  "n_test_perturbations": 500,
+  "gears_pearson_all_genes": 0.9916393160820007,
+  "gears_pearson_de_genes": 0.021040453679859638,
+  "max_pert_genes_subsample": 2000,
+  "mean_baseline_pearson_all_genes": 0.9956002831459045,
+  "gears_beats_mean_baseline": false
+}

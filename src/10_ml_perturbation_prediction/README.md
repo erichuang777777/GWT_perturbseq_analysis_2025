@@ -58,3 +58,16 @@ src/10_ml_perturbation_prediction/
 - `metadata/suppl_tables/full_signed_DE/`（全量，205 萬列，parquet）
 - `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`（門檻子集，107 萬列）
 - 兩者 schema 一致：`target_gene, target_ensembl_id, culture_condition, downstream_gene, downstream_ensembl_id, log_fc, adj_p_value, baseMean, zscore`
+
+## 結果摘要（兩條路線都已完成，皆為誠實負面結果）
+
+| 方法 | Pearson（全部基因） | Pearson（顯著差異基因） | 贏了均值基線？ |
+|---|---|---|---|
+| GenePT embedding + Ridge regression | ~0.18（Rest/Stim8hr/Stim48hr 皆未贏） | *(未計算此指標)* | ❌ |
+| GEARS（GO 圖 + GNN，官方套件） | 0.9916 | **0.0210** | ❌ |
+
+兩個架構迥異的方法（簡單線性 vs. 複雜圖神經網路）都誠實地打不過「訓練集
+平均 profile」這個基線，方向一致，呼應 2025-2026 年文獻共識
+（Ahlmann-Eltze et al., *Nature Methods* 2025）。詳細討論見
+`genept_baseline/`（`../results/genept_baseline_README.md`）與
+`gears_model/`（`../results/gears_benchmark_README.md`）。
