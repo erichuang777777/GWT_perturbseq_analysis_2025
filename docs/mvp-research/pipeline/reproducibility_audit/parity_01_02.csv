@@ -1,0 +1,26 @@
+comparison,column,n_compared,n_mismatch,max_abs_diff,exact_match,calc_logic
+R_vs_Python_curated_targets,index,1235,0,,True,pass-through raw row id
+R_vs_Python_curated_targets,target_contrast_gene_name,1235,0,,True,pass-through gene symbol
+R_vs_Python_curated_targets,culture_condition,1235,0,,True,pass-through condition
+R_vs_Python_curated_targets,chunk,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,n_cells_target,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,n_up_genes,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,n_down_genes,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,n_total_de_genes,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,ontarget_effect_size,1235,0,4.440892098500626e-16,True,pass-through
+R_vs_Python_curated_targets,ontarget_significant,1235,0,,True,pass-through
+R_vs_Python_curated_targets,target_baseMean,1235,0,7.105427357601002e-15,True,pass-through
+R_vs_Python_curated_targets,offtarget_flag,1235,0,,True,pass-through
+R_vs_Python_curated_targets,n_total_genes_category,1235,0,,True,pass-through
+R_vs_Python_curated_targets,ontarget_effect_category,1235,0,,True,pass-through
+R_vs_Python_curated_targets,n_downstream,1235,0,0.0,True,pass-through
+R_vs_Python_curated_targets,passes_gate,1235,0,,True,(n_cells_target>=200)&(ontarget_significant==True)&(offtarget_flag==False)&(n_total_de_genes>=50); NA->False
+R_vs_Python_curated_targets,logDE,1235,0,0.0,True,log10(n_total_de_genes+1)
+artifact_md5,__full_curated__,33983,0,,True,"Python md5 vs existing artifact (canonical sort). md5_py=c4fd4f22d15998a6eec391f631d0f8c6, md5_artifact=c4fd4f22d15998a6eec391f631d0f8c6"
+artifact_md5,__full_curated__,33983,0,0.0,False,"R md5 vs existing artifact. md5_r=1741f3da56ad59e8e8fb20be197f9d19. NOTE: byte-level md5 differs due to CSV float serialization only; R==artifact at value level (0 mismatches, tol 1e-9)."
+artifact_value,__full_curated__,33983,0,0.0,True,R vs artifact compared value-by-value with numeric tolerance 1e-9: 0 mismatches (full reproduction).
+gate_passing_md5,__gate_passing__,2131,0,0.0,True,"Python gate_passing (2131 rows) md5 vs existing gate_passing_targets.csv (canonical sort). md5_py=f994bfd33a76e282320fc3612905846a, md5_artifact=f994bfd33a76e282320fc3612905846a. BYTE-IDENTICAL."
+gate_passing_md5,__gate_passing__,2131,0,0.0,False,R gate_passing md5 vs existing artifact. md5_r=dc3be0b01d74e352fc779adaa2f5ea98. Byte-level md5 differs due to CSV float serialization only.
+gate_passing_value,__gate_passing__,2131,0,0.0,True,R gate_passing vs existing artifact compared value-by-value (tol 1e-9): 0 mismatches (full reproduction).
+gate_passing_value,__gate_passing__,2131,0,0.0,True,Python gate_passing vs existing artifact compared value-by-value (tol 1e-9): 0 mismatches.
+gate_passing_value,__gate_passing__,2131,0,0.0,True,R gate_passing vs Python gate_passing compared value-by-value (tol 1e-9): 0 mismatches.
