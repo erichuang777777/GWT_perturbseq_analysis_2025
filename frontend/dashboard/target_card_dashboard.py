@@ -591,6 +591,15 @@ _compatibility_banner(dataset_id)
 
 
 def render_overview() -> None:
+    # UX-flow fix: wayfinding starts here, before any tab or gene is chosen.
+    # Both personas used to have to discover the right tab by trial and error;
+    # this is a one-line map from "who you are" to "where to click first".
+    st.caption(
+        "🧭 **快速導覽**——"
+        "🩺 臨床醫師:先看「整合 Triage」(整體排序)或「Disease Translator」(依疾病找標的);"
+        "🔬 研究者:先看「Target Explorer」(逐標的統計證據)或「Pathway + Clinical」。"
+        "在任一表格選取一列後按「開啟標的檔案:… →」可進入該標的的完整 dossier(含快速結論)。"
+    )
     cols = st.columns(6)
     for col, key, label in zip(
         cols,
