@@ -150,13 +150,47 @@ def test_dossier_page_shows_quick_answer_headline_before_the_evidence_walkthroug
     assert any("臨床醫師快速路徑" in t for t in caption_texts), "clinician routing pointer did not render"
     assert any("研究者快速路徑" in t for t in caption_texts), "researcher routing pointer did not render"
 
-    # Order check: the headline markdown must appear BEFORE section ②'s
-    # subheader in source order, so it isn't just present but actually promoted
-    # above the evidence walkthrough (the whole point of this fix).
+    # Order check: the headline markdown must appear BEFORE the raw statistical
+    # evidence section (now ⑥, see test_dossier_sections_ordered_for_both_personas_below
+    # for the full post-Step-4 order) in source order, so it isn't just present
+    # but actually promoted above the evidence walkthrough (the whole point of
+    # this fix).
     src = (DASH / "pages" / "2_標的檔案_target_dossier.py").read_text(encoding="utf-8")
     headline_pos = src.index("快速結論")
     section2_pos = src.index("GWT 篩選證據")
     assert headline_pos < section2_pos, "quick-answer headline must be placed before the GWT evidence section"
+
+
+def test_dossier_sections_ordered_for_both_personas():
+    """UX-flow fix (docs/ux_flow_stepwise_plan.md, Step 4): the per-target
+    dossier's detail sections used to run in IMPLEMENTATION order (raw stats
+    first, decision-relevant content like external evidence/safety last) --
+    a clinician had to scroll past statistics/concept-profile/mechanism-graph
+    detail to reach the content they actually needed. This locks in the
+    re-ordered, persona-oriented sequence: quick-glance descriptive summary,
+    then the clinically-relevant sections (external evidence, safety,
+    tractability), THEN the statistics/mechanism detail a researcher audits,
+    with the full readiness-call breakdown last before the provenance footer.
+    Every section is independently fetched (verified when reordering: none
+    reads a variable computed by another section), so this is a pure
+    presentation-order change with no behavioural risk.
+    """
+    src = (DASH / "pages" / "2_標的檔案_target_dossier.py").read_text(encoding="utf-8")
+    expected_order = [
+        "① 搜尋 / 選擇標的",
+        "② 多軸描述性摘要",
+        "③ 外部證據",
+        "④ 安全性與遺傳學",
+        "⑤ 成藥性",
+        "⑥ GWT 篩選證據",
+        "⑦ CD4 概念剖面",
+        "⑧ 機制圖",
+        "⑨ Readiness 判定",
+    ]
+    positions = [src.index(label) for label in expected_order]
+    assert positions == sorted(positions), (
+        f"dossier sections are out of the expected persona-oriented order: {expected_order}"
+    )
 
 
 def test_dossier_page_does_not_import_the_il2ra_fixture_waterfall():
