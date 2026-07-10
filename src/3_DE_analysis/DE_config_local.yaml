@@ -1,5 +1,10 @@
-# Configuration for Differential Expression Analysis
-# 本地版本 - 指向项目内下载的数据
+# Reduced/demo configuration for Differential Expression Analysis
+#
+# This local config points at the project-downloaded data and intentionally
+# restricts analysis to the reduced MVP/demo target set. It is useful for
+# smoke tests and local examples only; it is not the authoritative
+# manuscript-scale/genome-scale analysis config. Use DE_config_full.yaml or
+# DE_config_full.template.yaml for full-screen analyses.
 experiment_name: "CD4i_final"
 datadir: "../../data/marson2025_data"  # 本地路径（相对 src/3_DE_analysis/ 執行位置）
 run_name: "all_confounders_reduced"
@@ -32,6 +37,7 @@ file_paths:
   de_test_genes_file: "DE_test_genes.txt"
   target2chunk_file: "DE_target2chunk.csv.gz"
 
-# 缩减版特定参数
-# 只跑通过 MVP 门槛的 1,235 个标的
+# Reduced/demo-specific setting: only run the 1,235 targets that passed the MVP gate.
+# Do not use outputs from this config to report genome-wide hit rates, genome-wide FDR,
+# or full-screen target rankings.
 reduced_targets_only: true
