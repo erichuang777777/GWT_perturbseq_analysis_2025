@@ -205,3 +205,6 @@ cython_debug/
 sources/target_tool_cache/usr_*/
 sources/target_tool_cache/imports/*/
 sources/target_tool_cache/[0-9a-f]*-[0-9a-f]*/
+
+# Keep the committed explainer site (overrides **/*.html above)
+!docs/explainer/index.html

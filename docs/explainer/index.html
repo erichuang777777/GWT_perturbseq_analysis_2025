@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="科普導覽:從零帶完全不懂的讀者理解 CD4 T 細胞 Perturb-seq 專案的每一步與意義,附外部論文/資料庫引用。">
+<title>CD4 T 細胞 Perturb-seq 專案 · 科普導覽</title>
+</head>
+<body>
+<title>CD4 T 細胞 Perturb-seq 專案 · 科普導覽</title>
+<style>
+  :root{
+    --bg:#F5F7F7; --surface:#FFFFFF; --surface-2:#ECF1F1;
+    --ink:#10201F; --ink-soft:#43605C; --muted:#78908D; --line:#D9E1E0;
+    --accent:#0E8F86; --accent-ink:#0A6E67; --accent-2:#B5316F;
+    --glow:rgba(14,143,134,.14);
+    --adv:#0E8F86; --val:#2D6CB5; --watch:#B0761A; --deprio:#7A908E; --flag:#C23A63;
+    --font-display:"Noto Serif TC","Source Han Serif TC","Songti TC","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --font-body:"PingFang TC","Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","Hiragino Sans",sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --maxw:720px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#08120F; --surface:#0E1B18; --surface-2:#13241F;
+      --ink:#E9F2EF; --ink-soft:#AAC3BD; --muted:#6F8983; --line:#20362F;
+      --accent:#34D6C0; --accent-ink:#57E3CF; --accent-2:#E85AA0;
+      --glow:rgba(52,214,192,.22);
+      --adv:#34D6C0; --val:#5FA0E6; --watch:#E0A83C; --deprio:#8AA39D; --flag:#F0648F;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F5F7F7; --surface:#FFFFFF; --surface-2:#ECF1F1;
+    --ink:#10201F; --ink-soft:#43605C; --muted:#78908D; --line:#D9E1E0;
+    --accent:#0E8F86; --accent-ink:#0A6E67; --accent-2:#B5316F; --glow:rgba(14,143,134,.14);
+    --adv:#0E8F86; --val:#2D6CB5; --watch:#B0761A; --deprio:#7A908E; --flag:#C23A63;
+  }
+  :root[data-theme="dark"]{
+    --bg:#08120F; --surface:#0E1B18; --surface-2:#13241F;
+    --ink:#E9F2EF; --ink-soft:#AAC3BD; --muted:#6F8983; --line:#20362F;
+    --accent:#34D6C0; --accent-ink:#57E3CF; --accent-2:#E85AA0; --glow:rgba(52,214,192,.22);
+    --adv:#34D6C0; --val:#5FA0E6; --watch:#E0A83C; --deprio:#8AA39D; --flag:#F0648F;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--font-body); font-size:17px; line-height:1.72;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--accent); color:var(--bg)}
+  a{color:var(--accent-ink); text-underline-offset:3px; text-decoration-thickness:1px}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px}
+
+  /* progress bar */
+  .progress{position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2)); z-index:60; transition:width .1s linear}
+
+  /* top bar */
+  .topbar{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.4) blur(10px);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:1040px; margin:0 auto; padding:11px 22px; display:flex; align-items:center; gap:14px}
+  .brand{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); display:flex; align-items:center; gap:9px}
+  .brand b{color:var(--ink); font-weight:600; letter-spacing:.02em; text-transform:none; font-family:var(--font-body); font-size:13.5px}
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--glow)}
+  .spacer{flex:1}
+  .toggle{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; padding:7px 12px; border-radius:20px; cursor:pointer}
+  .toggle:hover{border-color:var(--accent); color:var(--accent-ink)}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .bleed{max-width:1040px; margin:0 auto; padding:0 22px}
+
+  /* hero */
+  .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line)}
+  .hero-canvas{position:absolute; inset:0; width:100%; height:100%; z-index:0}
+  .hero-in{position:relative; z-index:2; max-width:var(--maxw); margin:0 auto; padding:84px 22px 66px}
+  .eyebrow{font-family:var(--font-mono); font-size:12.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent-ink); margin:0 0 20px}
+  h1{font-family:var(--font-display); font-weight:600; font-size:clamp(2.1rem,6.2vw,3.5rem);
+    line-height:1.14; letter-spacing:-.01em; margin:0 0 22px; text-wrap:balance}
+  .lede{font-size:clamp(1.05rem,2.4vw,1.28rem); color:var(--ink-soft); max-width:60ch; margin:0 0 30px; line-height:1.62}
+  .meta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
+  .tag{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.05em; color:var(--ink-soft);
+    border:1px solid var(--line); background:color-mix(in srgb,var(--surface) 70%, transparent);
+    padding:6px 11px; border-radius:20px}
+
+  /* section + stations */
+  section{padding:56px 0}
+  .kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 26px}
+  .station-head{display:flex; align-items:baseline; gap:16px; margin:0 0 18px}
+  .num{font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--accent-ink);
+    border:1.5px solid var(--accent); border-radius:50%; width:40px; height:40px; min-width:40px;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 5px var(--glow)}
+  h2{font-family:var(--font-display); font-weight:600; font-size:clamp(1.5rem,3.6vw,2.05rem);
+    line-height:1.22; margin:0; letter-spacing:-.005em; text-wrap:balance}
+  h3{font-family:var(--font-body); font-weight:650; font-size:1.06rem; margin:30px 0 8px; color:var(--ink)}
+  p{margin:0 0 18px}
+  .prose > p:first-of-type{margin-top:4px}
+  strong{font-weight:650; color:var(--ink)}
+  em.k{font-style:normal; font-weight:600; color:var(--accent-ink); font-family:var(--font-body)}
+  code{font-family:var(--font-mono); font-size:.86em; background:var(--surface-2); padding:2px 6px; border-radius:5px; color:var(--ink)}
+
+  .divline{height:1px; background:linear-gradient(90deg,var(--line),transparent); border:0; margin:0}
+
+  /* why-it-matters callout */
+  .why{border-left:3px solid var(--accent); background:color-mix(in srgb,var(--accent) 6%, var(--surface));
+    padding:16px 20px; border-radius:0 10px 10px 0; margin:26px 0}
+  .why .lab{font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent-ink); display:block; margin-bottom:6px}
+  .why p{margin:0; color:var(--ink); font-size:15.5px}
+
+  /* citation chips */
+  .cites{display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 4px}
+  .cite{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-family:var(--font-mono);
+    letter-spacing:.01em; text-decoration:none; color:var(--ink-soft);
+    border:1px solid var(--line); background:var(--surface); padding:6px 11px; border-radius:8px; transition:.15s}
+  .cite:hover{border-color:var(--accent); color:var(--accent-ink); background:color-mix(in srgb,var(--accent) 7%, var(--surface))}
+  .cite::after{content:"↗"; font-size:11px; opacity:.6}
+  .cite .src{color:var(--muted)}
+
+  /* callout card */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin:26px 0}
+
+  /* funnel viz */
+  .funnel{display:flex; flex-direction:column; gap:9px; margin:8px 0 4px}
+  .frow{display:flex; align-items:center; gap:14px}
+  .fbar{height:38px; border-radius:8px; display:flex; align-items:center; padding:0 14px; color:#fff;
+    font-family:var(--font-mono); font-size:13px; white-space:nowrap; box-shadow:0 1px 0 rgba(0,0,0,.06)}
+  .flabel{font-size:13.5px; color:var(--ink-soft)}
+  .flabel b{color:var(--ink)}
+
+  /* decision pills */
+  .decisions{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:22px 0}
+  .dcard{border:1px solid var(--line); border-radius:12px; padding:15px 16px; background:var(--surface)}
+  .pill{display:inline-block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
+    padding:4px 10px; border-radius:20px; margin-bottom:9px; color:#fff}
+  .dcard p{margin:0; font-size:14px; color:var(--ink-soft)}
+  .p-adv{background:var(--adv)} .p-val{background:var(--val)} .p-watch{background:var(--watch)} .p-dep{background:var(--deprio)}
+
+  /* flag list */
+  .flags{list-style:none; padding:0; margin:20px 0; display:grid; gap:10px}
+  .flags li{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-left:3px solid var(--flag);
+    border-radius:0 10px 10px 0; padding:13px 16px; background:var(--surface)}
+  .flags .ft{font-family:var(--font-mono); font-size:12.5px; color:var(--flag); min-width:132px; font-weight:600}
+  .flags .fd{font-size:14.5px; color:var(--ink-soft)}
+
+  /* evidence grid */
+  .evgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin:20px 0}
+  .ev{border:1px solid var(--line); border-radius:12px; padding:14px 15px; background:var(--surface); text-decoration:none; color:inherit; display:block; transition:.15s}
+  .ev:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .ev .en{font-weight:650; font-size:14.5px; margin-bottom:3px; color:var(--ink); display:flex; align-items:center; gap:6px}
+  .ev .en::after{content:"↗"; font-size:11px; color:var(--muted)}
+  .ev .ed{font-size:12.5px; color:var(--muted); line-height:1.5}
+
+  /* principles */
+  .prin{display:grid; gap:12px; margin:20px 0}
+  .prin li{list-style:none; display:flex; gap:14px; align-items:flex-start; padding:14px 16px;
+    border:1px solid var(--line); border-radius:12px; background:var(--surface)}
+  .prin .pn{font-family:var(--font-mono); color:var(--accent-ink); font-weight:600; font-size:14px}
+  .prin b{display:block; margin-bottom:2px}
+  .prin span.d{font-size:14.5px; color:var(--ink-soft)}
+
+  /* glossary */
+  dl.gloss{margin:16px 0; display:grid; gap:0}
+  dl.gloss div{padding:14px 0; border-bottom:1px solid var(--line); display:grid; grid-template-columns:150px 1fr; gap:18px}
+  dl.gloss dt{font-weight:650; color:var(--ink); font-size:15px}
+  dl.gloss dd{margin:0; color:var(--ink-soft); font-size:14.5px}
+  dl.gloss .term-en{display:block; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); font-weight:400; margin-top:2px}
+
+  /* references */
+  .refs{columns:2; column-gap:34px; margin:16px 0; font-size:13.5px}
+  .refs a{display:block; break-inside:avoid; margin-bottom:11px; color:var(--ink-soft); text-decoration:none; line-height:1.5}
+  .refs a:hover{color:var(--accent-ink)}
+  .refs a b{color:var(--ink); font-weight:600}
+  .refs a::after{content:" ↗"; color:var(--muted); font-size:11px}
+
+  footer{border-top:1px solid var(--line); padding:44px 0 60px; margin-top:30px; color:var(--muted); font-size:13.5px}
+  footer .fl{display:flex; flex-wrap:wrap; gap:8px 20px; margin-bottom:18px}
+  footer a{color:var(--ink-soft)}
+  .disclaimer{font-size:12.5px; color:var(--muted); line-height:1.6; border:1px dashed var(--line); border-radius:10px; padding:14px 16px; margin-top:8px}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none}}
+
+  @media (max-width:640px){
+    body{font-size:16px}
+    .refs{columns:1}
+    dl.gloss div{grid-template-columns:1fr; gap:4px}
+    .flags .ft{min-width:0}
+    .hero-in{padding:60px 22px 48px}
+    .num{width:34px; height:34px; min-width:34px; font-size:12.5px}
+  }
+</style>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><span class="dot" aria-hidden="true"></span><b>CD4 T 細胞 Perturb-seq 專案</b></span>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeToggle" type="button" aria-label="切換深色／淺色主題">☾ / ☀</button>
+  </div>
+</header>
+
+<div class="hero">
+  <canvas class="hero-canvas" id="cells" aria-hidden="true"></canvas>
+  <div class="hero-in reveal in">
+    <p class="eyebrow">科普導覽 · 給第一次接觸的人</p>
+    <h1>從一管血,到一張<br>藥物標靶的優先順序表</h1>
+    <p class="lede">這個專案做了一件事:在人類的免疫 T 細胞裡,一次關掉上萬個基因、逐一觀察細胞的反應,再把結果整理成「哪些基因最有機會成為新藥的下手點」。這頁會像導遊一樣,從最基本的問題開始,一步一步帶你走完整條路——每一步都告訴你「在做什麼」以及「為什麼要這樣做」。</p>
+    <div class="meta-row">
+      <span class="tag">閱讀時間 ≈ 12 分鐘</span>
+      <span class="tag">不需要生物學背景</span>
+      <span class="tag">12 個步驟</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section id="s1">
+    <p class="kicker">起點 · 我們在乎什麼</p>
+    <div class="station-head"><span class="num">01</span><h2>為什麼從 T 細胞開始?</h2></div>
+    <div class="prose">
+      <p>免疫系統是身體的「維安部隊」,而 <strong>CD4⁺ T 細胞</strong>(一種輔助型 T 細胞)是這支部隊的<strong>指揮官</strong>:它決定何時發動攻擊、召集哪些細胞、火力開到多大。</p>
+      <p>當這位指揮官下錯命令,就會出事:攻擊自己人,造成<strong>自體免疫疾病</strong>(如類風濕性關節炎、紅斑性狼瘡、發炎性腸道疾病);反應不夠,則讓感染或癌症有機可乘。正因為 CD4 T 細胞站在這麼多疾病的十字路口,「搞懂是哪些基因在幕後操控它」就成了開發新藥的關鍵。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>選對細胞,後面所有努力才有意義。這個專案刻意研究<strong>原代人類 CD4 T 細胞</strong>(直接取自捐血者、而非實驗室培養的癌細胞株),因為只有這樣,結論才貼近真實人體。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://platform.opentargets.org/" target="_blank" rel="noopener">Open Targets<span class="src">·疾病與標靶</span></a>
+        <a class="cite" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMID:39657122" target="_blank" rel="noopener">Open Targets 2024<span class="src">·PMID 39657122</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s2">
+    <p class="kicker">核心問題</p>
+    <div class="station-head"><span class="num">02</span><h2>哪些基因是「開關」?能不能當藥物標靶?</h2></div>
+    <div class="prose">
+      <p>細胞裡約有兩萬個基因,像一整面牆的開關與旋鈕。我們想知道:<strong>轉動哪一個旋鈕,細胞的行為會明顯改變?</strong>而且——這個旋鈕能不能被藥物抓住、變成一種治療?</p>
+      <p>傳統做法一次只能測一兩個基因,慢又貴。這個專案的野心是<strong>一次問完所有基因</strong>:對每一個基因都做一次「如果把它調弱,細胞會怎樣?」的實驗。要做到這件事,需要兩項關鍵技術,就是接下來的第 3、4 站。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>藥物開發最貴的錯誤,是<strong>把資源押在錯的標靶</strong>上。與其憑直覺猜,不如先用一張系統性的地圖,把「值得下注的基因」和「看起來熱鬧但其實是陷阱的基因」分開。</p>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s3">
+    <p class="kicker">工具一 · 擾動</p>
+    <div class="station-head"><span class="num">03</span><h2>CRISPRi:把基因「調暗」,而不是剪斷</h2></div>
+    <div class="prose">
+      <p>你可能聽過 CRISPR「基因剪刀」。這個專案用的是它的溫和版——<strong>CRISPRi(CRISPR 干擾)</strong>:不剪斷 DNA,而是像調光開關一樣,把某個基因的音量<strong>轉小</strong>(稱為「敲低 / knockdown」)。</p>
+      <p>做法是設計一小段「導引 RNA(guide RNA)」,像地址一樣把抑制裝置帶到指定基因門口。每個細胞收到不同的地址,就等於在做不同的實驗。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>「調暗」比「剪斷」更接近<strong>藥物的作用方式</strong>——大多數藥物是抑制、而非徹底摧毀一個蛋白。這讓實驗結果對藥物開發更有參考價值(但也不完全等同,後面第 11 站會誠實說明差別)。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/27984732/" target="_blank" rel="noopener">Dixit 2016<span class="src">·Perturb-seq 原理</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s4">
+    <p class="kicker">工具二 · 讀取</p>
+    <div class="station-head"><span class="num">04</span><h2>Perturb-seq:上萬個實驗,逐一個細胞讀出來</h2></div>
+    <div class="prose">
+      <p>把「擾動基因(CRISPRi)」和「逐細胞讀取所有基因的活躍程度(單細胞 RNA 定序)」合在一起,就是 <strong>Perturb-seq</strong>。</p>
+      <p>想像一個超大的池子,裡面幾十萬顆細胞、每顆各被關掉一個不同的基因。定序技術能同時讀出<strong>每一顆細胞裡兩萬個基因各自開到多大</strong>,並且知道這顆細胞被動過哪個手腳。於是「一個基因被調弱後,牽動了哪些下游基因」就一次全部浮現。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>這是把「一次一個」變成「一次全部」的關鍵。沒有 Perturb-seq,要涵蓋整個基因體需要幾萬次獨立實驗;有了它,一場實驗就能把整面開關牆掃過一遍。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/27984732/" target="_blank" rel="noopener">Dixit 2016<span class="src">·Cell</span></a>
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/28099430/" target="_blank" rel="noopener">Datlinger 2017<span class="src">·CROP-seq</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s5">
+    <p class="kicker">這份資料的規模</p>
+    <div class="station-head"><span class="num">05</span><h2>特別之處:真人細胞、全基因體規模</h2></div>
+    <div class="prose">
+      <p>很多同類研究用的是容易培養的癌細胞株。這個專案不一樣——它在<strong>直接來自捐血者的原代人類 CD4 T 細胞</strong>上,做到了<strong>全基因體規模</strong>的擾動。</p>
+      <p>而且它在三種「情境」下各做一遍,因為 T 細胞在休息與被激活時判若兩人:</p>
+      <div class="card">
+        <p style="margin:0 0 8px"><strong>4 位</strong>捐贈者(D1–D4)· <strong>3 種</strong>培養條件 · <strong>2 個</strong>實驗批次</p>
+        <p style="margin:0; font-size:14.5px; color:var(--ink-soft)"><code>Rest</code> 休息 &nbsp;·&nbsp; <code>Stim8hr</code> 激活 8 小時 &nbsp;·&nbsp; <code>Stim48hr</code> 激活 48 小時。同一個基因,在不同情境下的效果可能完全不同——這正是本專案能回答「情境專一調控」的原因。</p>
+      </div>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>用多位捐贈者,結論才不會只是「某個人的特例」;用多種情境,才能分辨「這個基因永遠重要」還是「只有在細胞被激活時才重要」。這兩點大幅提高了結論的<strong>可信度與臨床相關性</strong>。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" target="_blank" rel="noopener">Zhu &amp; Dann 2025<span class="src">·本專案論文</span></a>
+        <a class="cite" href="https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq" target="_blank" rel="noopener">CZI 虛擬細胞平台<span class="src">·公開資料</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s6">
+    <p class="kicker">從細胞到數字</p>
+    <div class="station-head"><span class="num">06</span><h2>差異表現分析:把「反應」變成可比較的數字</h2></div>
+    <div class="prose">
+      <p>拿到幾十萬顆細胞的讀數後,要回答的問題是:<strong>關掉基因 A 之後,哪些基因的活躍程度明顯變了?變多少?</strong>這個比較過程叫<strong>差異表現分析(DE)</strong>。</p>
+      <p>為了讓比較穩定,會先把「同一個擾動、同一位捐贈者、同一情境」的許多細胞<strong>合併成一份代表樣本</strong>(pseudobulk),再用統計方法(DESeq2)算出每個下游基因的變化幅度與可信度。整份資料最後濃縮成一張大表:</p>
+      <div class="funnel" role="img" aria-label="資料規模:33,983 筆擾動×情境結果,涵蓋 10,282 個被測基因">
+        <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 筆</div><span class="flabel"><b>擾動 × 情境</b> 的結果(每一列是一個基因在一種情境下的完整反應)</span></div>
+        <div class="frow"><div class="fbar" style="width:62%;background:var(--val)">10,282 個</div><span class="flabel">被測量到的<b>下游基因</b></span></div>
+        <div class="frow"><div class="fbar" style="width:30%;background:var(--watch)">3 種情境</div><span class="flabel">Rest / Stim8hr / Stim48hr</span></div>
+      </div>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>科學結論不能靠「看起來有變」,而要有<strong>可量化、可比較、附帶不確定性</strong>的數字。這一步把雜亂的細胞讀數,變成後續一切排序與決策的共同語言。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">Love 2014<span class="src">·DESeq2 方法</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s7">
+    <p class="kicker">科學的誠實</p>
+    <div class="station-head"><span class="num">07</span><h2>怎麼知道結果可信?兩道把關</h2></div>
+    <div class="prose">
+      <p>有了漂亮的數字,還不能立刻相信。這個專案設了兩道關卡:</p>
+      <h3>把關一:換人、換工具,答案還一樣嗎?</h3>
+      <p>同一個基因的效果,如果在<strong>不同捐贈者之間</strong>、以及用<strong>不同導引 RNA</strong>時都一致,才算穩健;只在某一個人或某一支 guide 出現的訊號,很可能是雜訊。</p>
+      <h3>把關二:那個基因,真的被關小了嗎?</h3>
+      <p>CRISPRi 的因果邏輯是「<em class="k">先把標靶關小 → 才導致下游改變</em>」。如果連標靶本身有沒有被關小都無法確認,下游的變化就不能歸因給它。所以每個結果都被貼上一個<strong>敲低狀態</strong>:已確認、微弱、或<strong>無法評估</strong>。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>這是整個專案最「不浪漫」卻最關鍵的部分。少了這兩道關,很容易把<strong>偶然的巧合</strong>誤認成<strong>真實的生物學</strong>,讓後面的藥物開發整條走錯路。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/34930414/" target="_blank" rel="noopener">Barry 2021<span class="src">·SCEPTRE 校準</span></a>
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/33649593/" target="_blank" rel="noopener">Papalexi 2021<span class="src">·Mixscape</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s8">
+    <p class="kicker">從資料到決策</p>
+    <div class="station-head"><span class="num">08</span><h2>標靶卡片:把統計變成一句可執行的建議</h2></div>
+    <div class="prose">
+      <p>研究者要的不是一堆數字,而是一句話:<strong>這個基因,值得往下做嗎?</strong>於是專案把每個「基因 × 情境」整理成一張<strong>標靶卡片(target card)</strong>,再交給一個<strong>就緒度引擎</strong>評估。</p>
+      <p>引擎會從 <strong>12 個面向</strong>(訊號強度、跨捐贈者穩健性、敲低是否確認、可成藥性、安全性、人類遺傳學支持、疾病關聯……)打分,排成 <code>R0–R5</code> 的成熟度階梯,最後給出四種決策之一:</p>
+      <div class="decisions">
+        <div class="dcard"><span class="pill p-adv">ADVANCE</span><p><b>推進</b>——證據齊全,值得投入下一步。</p></div>
+        <div class="dcard"><span class="pill p-val">VALIDATE</span><p><b>驗證</b>——有潛力,但需要補做確認實驗。</p></div>
+        <div class="dcard"><span class="pill p-watch">WATCHLIST</span><p><b>觀察</b>——先放進名單,暫不投入。</p></div>
+        <div class="dcard"><span class="pill p-dep">DEPRIORITIZE</span><p><b>降級</b>——目前不建議繼續。</p></div>
+      </div>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>把幾萬列統計濃縮成<strong>一個可辯護、可追溯的決策</strong>,讓不是資料科學家的實驗人員也能直接使用——而且每張卡片都記錄了它是根據哪個版本的資料與規則產生的,結論可回溯。</p>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s9">
+    <p class="kicker">最重要的一課</p>
+    <div class="station-head"><span class="num">09</span><h2>紅旗:為什麼「訊號很強」≠「好標靶」</h2></div>
+    <div class="prose">
+      <p>這是全專案的靈魂。有些基因擾動後,下游天翻地覆、統計超漂亮——但它們正是<strong>最糟的藥物標靶</strong>。因為它們是細胞的「總電源」或「總務」,動了它什麼都會壞,做成藥只會全身中毒。</p>
+      <p>所以引擎設了一組<strong>紅旗(red flag)</strong>:不論統計多強,只要命中就<strong>強制封頂</strong>,不讓它假裝成好標靶:</p>
+      <ul class="flags">
+        <li><span class="ft">essential</span><span class="fd">必需基因——關掉細胞就活不下去,不能當藥。</span></li>
+        <li><span class="ft">broad-effect</span><span class="fd">廣泛影響——染色質/轉錄「總開關」類(專案標注了 239 個),動了會牽動一切。</span></li>
+        <li><span class="ft">off-target</span><span class="fd">脫靶——效果可能來自誤傷旁邊的基因,而非標靶本身。</span></li>
+        <li><span class="ft">kd&nbsp;not&nbsp;confirmed</span><span class="fd">敲低未確認——連標靶有沒有被關小都不確定(見第 7 站)。</span></li>
+      </ul>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>這一步防止最常見、最昂貴的誤判:<strong>被強烈但無意義的訊號牽著走</strong>。它體現了專案的核心態度——寧可謹慎降級,也不要給出華而不實的推薦。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://depmap.org/portal/" target="_blank" rel="noopener">DepMap<span class="src">·必需基因</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s10">
+    <p class="kicker">借助全世界</p>
+    <div class="station-head"><span class="num">10</span><h2>不只看自己的資料:接上全世界的證據</h2></div>
+    <div class="prose">
+      <p>本專案的實驗只是拼圖的一塊。一個基因是否值得做藥,還要問:<strong>人類遺傳學支持它嗎?有藥在試驗中嗎?在正常組織會不會太危險?</strong>於是卡片會自動去查一整排公開資料庫,把外部證據貼上來(並標記查詢時間,定期更新):</p>
+      <div class="evgrid">
+        <a class="ev" href="https://platform.opentargets.org/" target="_blank" rel="noopener"><span class="en">Open Targets</span><span class="ed">標靶—疾病關聯、可成藥性、已知藥物</span></a>
+        <a class="ev" href="https://clinicaltrials.gov/" target="_blank" rel="noopener"><span class="en">ClinicalTrials.gov</span><span class="ed">相關臨床試驗與進度</span></a>
+        <a class="ev" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener"><span class="en">PubMed</span><span class="ed">每個標靶的文獻證據</span></a>
+        <a class="ev" href="https://gnomad.broadinstitute.org/" target="_blank" rel="noopener"><span class="en">gnomAD</span><span class="ed">基因在人群中的耐受度/約束</span></a>
+        <a class="ev" href="https://gtexportal.org/" target="_blank" rel="noopener"><span class="en">GTEx</span><span class="ed">各組織正常表現(安全窗口)</span></a>
+        <a class="ev" href="https://clue.io/" target="_blank" rel="noopener"><span class="en">LINCS / CMap</span><span class="ed">藥物訊號反轉配對</span></a>
+        <a class="ev" href="https://reactome.org/" target="_blank" rel="noopener"><span class="en">Reactome + STRING</span><span class="ed">機制與蛋白交互作用</span></a>
+        <a class="ev" href="https://alphafold.ebi.ac.uk/" target="_blank" rel="noopener"><span class="en">AlphaFold</span><span class="ed">蛋白 3D 結構</span></a>
+      </div>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>單靠一個實驗容易以偏概全。把自家資料放進<strong>全球證據網</strong>裡交叉檢驗,結論才站得住腳,也才知道一個標靶是「全新發現」還是「早有人在做」。</p>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s11">
+    <p class="kicker">對照現實</p>
+    <div class="station-head"><span class="num">11</span><h2>藥物安全的教訓:細胞裡的贏家,不一定是病人身上的贏家</h2></div>
+    <div class="prose">
+      <p>專案刻意保留一份「安全性對照」,提醒使用者:<strong>CRISPRi 不等於藥理學</strong>。真實藥物的歷史充滿這種落差:</p>
+      <p>例如抑制 <strong>JAK</strong> 路徑的藥物(tofacitinib)確實能壓制發炎,但大型試驗顯示它伴隨心血管與癌症風險上升;<strong>抗 CD3</strong>(teplizumab)能延緩第一型糖尿病,卻要面對細胞激素釋放與淋巴球下降;<strong>環孢素</strong>抑制 T 細胞很強,治療窗卻很窄。這些都在提醒:一個在培養皿裡「效果很強」的標靶,到了人體可能因為毒性而失敗。</p>
+      <div class="why">
+        <span class="lab">為什麼這一步重要</span>
+        <p>把這些真實案例放在旁邊,是要讓使用者<strong>謙遜地讀每一張卡片</strong>:體外的強訊號是線索,不是保證。安全性與可成藥性,永遠要拉回人體的證據來看。</p>
+      </div>
+      <div class="cites">
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/35081280/" target="_blank" rel="noopener">ORAL Surveillance 2022<span class="src">·JAK 安全</span></a>
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/31180194/" target="_blank" rel="noopener">Teplizumab 2019<span class="src">·NEJM</span></a>
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/16785475/" target="_blank" rel="noopener">Abatacept<span class="src">·共刺激阻斷</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="s12">
+    <p class="kicker">收尾 · 態度與現況</p>
+    <div class="station-head"><span class="num">12</span><h2>我們堅持的原則,以及現在走到哪</h2></div>
+    <div class="prose">
+      <p>走完整條路,你會發現這個專案的個性不在於「演算法多炫」,而在於<strong>誠實</strong>。四條原則貫穿始終:</p>
+      <ul class="prin">
+        <li><span class="pn">01</span><span><b>「不知道」≠「0 分」</b><span class="d">還沒有證據的面向,一律明確標成「未知」,絕不偷偷當成 0。</span></span></li>
+        <li><span class="pn">02</span><span><b>紅旗優先於統計</b><span class="d">再強的訊號,命中安全紅旗一律封頂。</span></span></li>
+        <li><span class="pn">03</span><span><b>CRISPRi ≠ 藥理學</b><span class="d">體外情境的注意事項,永遠寫在卡片上。</span></span></li>
+        <li><span class="pn">04</span><span><b>可重現、可追溯</b><span class="d">每個結論都帶版本戳記,分享出去的連結永遠回傳同一個答案。</span></span></li>
+      </ul>
+      <p>目前平台已完成從資料處理、標靶卡片、就緒度決策、外部證據到疾病轉譯的完整流程,並持續開發中。想更深入,可以往下讀:</p>
+      <div class="cites">
+        <a class="cite" href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025" target="_blank" rel="noopener">GitHub 原始碼<span class="src">·完整 repo</span></a>
+        <a class="cite" href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/wiki" target="_blank" rel="noopener">專案 Wiki<span class="src">·介紹/手冊/開發說明</span></a>
+      </div>
+    </div>
+  </section>
+  <hr class="divline">
+
+  <section id="glossary">
+    <p class="kicker">附錄 A</p>
+    <div class="station-head"><h2 style="margin-left:0">白話詞彙表</h2></div>
+    <dl class="gloss">
+      <div><dt>CD4⁺ T 細胞<span class="term-en">CD4+ T cell</span></dt><dd>免疫系統的「指揮官」細胞,協調免疫反應;失控時與自體免疫疾病相關。</dd></div>
+      <div><dt>CRISPRi<span class="term-en">CRISPR interference</span></dt><dd>用 CRISPR 技術把某基因「調弱」而非剪斷,類似把音量轉小。</dd></div>
+      <div><dt>Perturb-seq</dt><dd>結合基因擾動與單細胞定序,一次觀察成千上萬個擾動各自的後果。</dd></div>
+      <div><dt>敲低<span class="term-en">knockdown</span></dt><dd>降低某基因的活躍程度;CRISPRi 的核心動作。</dd></div>
+      <div><dt>差異表現<span class="term-en">differential expression</span></dt><dd>比較「擾動後」與「對照」之間,哪些基因活躍度顯著改變。</dd></div>
+      <div><dt>標靶卡片<span class="term-en">target card</span></dt><dd>把一個基因在一種情境下的所有證據,整理成一頁可判讀的摘要。</dd></div>
+      <div><dt>就緒度<span class="term-en">readiness R0–R5</span></dt><dd>標靶成熟度的階梯,分數越高代表證據越完整。</dd></div>
+      <div><dt>紅旗<span class="term-en">red flag</span></dt><dd>會強制封頂決策的警訊,如必需基因、廣泛影響、脫靶。</dd></div>
+      <div><dt>可成藥性<span class="term-en">druggability</span></dt><dd>一個蛋白是否容易被藥物分子抓住的性質。</dd></div>
+    </dl>
+  </section>
+  <hr class="divline">
+
+  <section id="refs">
+    <p class="kicker">附錄 B</p>
+    <div class="station-head"><h2 style="margin-left:0">延伸閱讀與引用</h2></div>
+    <p style="color:var(--ink-soft); font-size:14.5px">以下連結可深入每個主題;論文以 PubMed(PMID)或 DOI 開啟,資料庫連向官方入口。</p>
+    <div class="refs">
+      <a href="https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" target="_blank" rel="noopener"><b>Zhu R., Dann E. et al. (2025)</b> — 本專案論文:原代人類 CD4⁺ T 細胞的全基因體 Perturb-seq(bioRxiv)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/27984732/" target="_blank" rel="noopener"><b>Dixit et al. 2016</b> — Perturb-seq(方法起源,Cell · PMID 27984732)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/28099430/" target="_blank" rel="noopener"><b>Datlinger et al. 2017</b> — CROP-seq(PMID 28099430)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/30449619/" target="_blank" rel="noopener"><b>Shifrut et al. 2018</b> — 原代人類 T 細胞擾動篩選(PMID 30449619)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/35113687/" target="_blank" rel="noopener"><b>Schmidt et al. 2022</b> — 人類 T 細胞 CRISPRa/i 篩選(PMID 35113687)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/34930414/" target="_blank" rel="noopener"><b>Barry et al. 2021</b> — SCEPTRE:單細胞 CRISPR 統計校準(PMID 34930414)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/33649593/" target="_blank" rel="noopener"><b>Papalexi et al. 2021</b> — Mixscape:辨識未反應細胞(PMID 33649593)</a>
+      <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener"><b>Love et al. 2014</b> — DESeq2:差異表現統計方法(DOI)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/29195078/" target="_blank" rel="noopener"><b>Subramanian et al. 2017</b> — LINCS/CMap L1000 藥物訊號(PMID 29195078)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/35081280/" target="_blank" rel="noopener"><b>ORAL Surveillance 2022</b> — JAK 抑制劑安全性(PMID 35081280)</a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/31180194/" target="_blank" rel="noopener"><b>Herold et al. 2019</b> — Teplizumab 延緩第一型糖尿病(PMID 31180194)</a>
+      <a href="https://platform.opentargets.org/" target="_blank" rel="noopener"><b>Open Targets Platform</b> — 標靶—疾病—藥物證據(官方入口)</a>
+      <a href="https://gnomad.broadinstitute.org/" target="_blank" rel="noopener"><b>gnomAD</b> — 人群基因變異與約束(官方入口)</a>
+      <a href="https://gtexportal.org/" target="_blank" rel="noopener"><b>GTEx</b> — 人類組織基因表現(官方入口)</a>
+      <a href="https://cellxgene.cziscience.com/" target="_blank" rel="noopener"><b>CELLxGENE Discover</b> — 單細胞圖譜(CZI · 官方入口)</a>
+      <a href="https://depmap.org/portal/" target="_blank" rel="noopener"><b>DepMap</b> — 基因必需性圖譜(官方入口)</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="bleed">
+    <div class="fl">
+      <a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025" target="_blank" rel="noopener">GitHub Repo</a>
+      <a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/wiki" target="_blank" rel="noopener">專案 Wiki</a>
+      <a href="https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq" target="_blank" rel="noopener">公開資料(CZI VCP)</a>
+    </div>
+    <p class="disclaimer"><strong>閱讀說明</strong>:本頁為科普導覽,為讓初次接觸者理解而簡化。所有專案內數字(如 33,983 筆結果、239 個廣泛影響基因、4 位捐贈者/3 種情境)皆對應 repo 內真實檔案;外部連結指向公開論文與資料庫,供進一步查證。本工具為<strong>研究用標靶優先排序</strong>,並非臨床或用藥建議。內容以 repo 內權威文件(<code>docs/</code>、Wiki)為準。</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var s=localStorage.getItem('gwt-theme'); if(s) root.setAttribute('data-theme',s);}catch(e){}
+  var btn=document.getElementById('themeToggle');
+  btn&&btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){cur=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('gwt-theme',next);}catch(e){}
+  });
+
+  // scroll progress
+  var bar=document.getElementById('progress');
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    bar.style.width=p.toFixed(1)+'%';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // reveal on scroll
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var secs=document.querySelectorAll('section');
+  if(reduce||!('IntersectionObserver' in window)){
+    secs.forEach(function(s){s.classList.add('reveal','in');});
+  }else{
+    secs.forEach(function(s){s.classList.add('reveal');});
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);}});
+    },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+    secs.forEach(function(s){io.observe(s);});
+  }
+
+  // hero: drifting fluorescent cells on dark field
+  var cv=document.getElementById('cells'); if(!cv) return;
+  var ctx=cv.getContext('2d'), W,H,cells,raf,running=true;
+  function accent(){var c=getComputedStyle(root).getPropertyValue('--accent').trim();return c||'#0E8F86';}
+  function accent2(){var c=getComputedStyle(root).getPropertyValue('--accent-2').trim();return c||'#B5316F';}
+  function hex2rgb(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x}).join('');var n=parseInt(h,16);return [(n>>16)&255,(n>>8)&255,n&255];}
+  function resize(){var r=cv.getBoundingClientRect();W=cv.width=r.width*devicePixelRatio;H=cv.height=r.height*devicePixelRatio;init();}
+  function init(){
+    cells=[]; var n=Math.max(14,Math.round(W*H/(150000*devicePixelRatio)));
+    for(var i=0;i<n;i++){cells.push({x:Math.random()*W,y:Math.random()*H,r:(8+Math.random()*26)*devicePixelRatio,
+      vx:(Math.random()-.5)*.18*devicePixelRatio,vy:(Math.random()-.5)*.18*devicePixelRatio,
+      c:Math.random()>.72?accent2():accent(),a:.05+Math.random()*.13,ph:Math.random()*6.28});}
+  }
+  var t=0;
+  function draw(){
+    if(!running)return;
+    ctx.clearRect(0,0,W,H); t+=.006;
+    for(var i=0;i<cells.length;i++){var c=cells[i];
+      c.x+=c.vx; c.y+=c.vy;
+      if(c.x<-40)c.x=W+40; if(c.x>W+40)c.x=-40; if(c.y<-40)c.y=H+40; if(c.y>H+40)c.y=-40;
+      var pulse=c.a*(0.6+0.4*Math.sin(t*2+c.ph));
+      var rgb=hex2rgb(c.c);
+      var g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,c.r);
+      g.addColorStop(0,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+pulse+')');
+      g.addColorStop(.6,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(pulse*.35)+')');
+      g.addColorStop(1,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,6.2832); ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    resize(); // static single frame
+    running=true; draw(); running=false; cancelAnimationFrame(raf);
+    // draw once statically
+    (function(){var keep=cells;ctx.clearRect(0,0,W,H);for(var i=0;i<keep.length;i++){var c=keep[i];var rgb=hex2rgb(c.c);var g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,c.r);g.addColorStop(0,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+c.a+')');g.addColorStop(1,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,6.2832);ctx.fill();}})();
+  }else{
+    resize(); draw();
+    window.addEventListener('resize',resize);
+    document.addEventListener('visibilitychange',function(){running=!document.hidden; if(running)draw();});
+  }
+})();
+</script>
+
+</body>
+</html>
