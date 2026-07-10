@@ -51,3 +51,24 @@ Signed downstream profile (strongest |log2FC| across conditions) vs LINCS demo s
 **Corrected per-target result:** 3/4 targets (SENP5 0.480, PLCG1 0.485, CCNC 0.494) show near-chance sign-agreement (~0.48-0.49) and non-significant Spearman ~0. PMVK shows a higher sign-agreement (0.608) and a weak but statistically significant positive concordance (Spearman rho = 0.219, p = 2.76e-5). The blanket "Spearman~0 (non-significant)" description is withdrawn — it was wrong for PMVK; the four targets are NOT all non-significant.
 
 **Honest interpretation (softened per must-fix 4):** for the 3 near-chance targets, concordance is indistinguishable from chance. LINCS profiles are from non-T-cell immortalised cell lines, so a CD4+ T-cell context-specific signature need not match them. This near-chance result is CONSISTENT WITH context-specificity, but n=4 targets and the 978-landmark restriction preclude a strong conclusion — it is not, on its own, evidence for why context-specific (GB10) data is necessary.
+
+
+## Appendix — CSV column notes (moved from CSV headers for machine-readability)
+
+### signed_ranking_v2.csv
+- signed_ranking_v2 — GB10 CD4+ T-cell KO Perturb-seq signed DE
+- PRIMARY rank = |directionality_index| over the 1,235-gene gate shortlist (rank 1 = most polarised footprint).
+- directionality_index = (n_up - n_down)/(n_up + n_down), bounded [-1,1]; scale-free, NOT confounded by total hit count.
+- binom_p/binom_fdr = two-sided binomial test of n_up vs n_down (H0: p=0.5), BH-FDR across all 10,851 targets; down-weights small-n targets honestly.
+- SECONDARY (coverage-confounded, kept visible): signed_net = n_up - n_down, n_hits = total significant downstream pairs. signed_rank = old coverage-driven rank.
+- footprint_class: net_derepressed_on_KO (signed_net>0), net_reduced_on_KO (signed_net<0), balanced (signed_net=0).
+- CAVEAT: footprint_class is the target's NET transcriptional FOOTPRINT direction in this KO screen (does KO up- or down-regulate more downstream genes),
+- NOT a molecular activator/repressor assignment. A TCR component (e.g. CD3E) is net_derepressed_on_KO without being a transcriptional repressor.
+
+### downstream_enrichment_v2.csv
+- downstream_enrichment_v2 — corrected-background ORA for 5 flagships (CD3E/PLCG1/VAV1/STAT3/BCL10)
+- METHOD: hypergeometric over-representation, universe = DETECTED-GENE BACKGROUND (all downstream_gene symbols ever significant in the matrix, N=10273),
+- NOT whole-genome. Gene sets: Reactome pathways (ReactomePathways.gmt, current release), restricted to the detected background; pathways with >=5 bg genes tested.
+- Query sets: downstream genes per flagship split by MEAN signed log2FC across Rest/Stim8hr/Stim48hr (up = mean>0, down = mean<0). Overlap>=3 required. BH-FDR per flagship x direction.
+- expression_artifact_flag=True marks RNA-metabolism/splicing/rRNA/tRNA/translation/cell-cycle/mitotic pathways — residual highly-expressed-machinery bias that the detected background REDUCES but does not fully eliminate (dominant in the DOWN sets).
+- KEY SURVIVAL CHECKS under corrected background: VAV1->'Differentiation of T cells' SURVIVES (down set FDR 6.9e-3; Th1 1.7e-2, Th2 3.7e-2; up set n.s. FDR 0.85). STAT3->'Signaling by Interleukins' SURVIVES (down FDR 6.8e-9, up FDR 3.5e-2; IL-4/13 down 3.9e-6). Immune System / Innate Immune System / Neutrophil degranulation / Interferon enrich robustly in UP sets.
