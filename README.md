@@ -39,8 +39,24 @@ make api          # http://127.0.0.1:8000 — Swagger UI at /docs
 make dashboard     # opens the Streamlit dashboard in your browser
 ```
 
-Once the dashboard is open, paste `e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137` into the sidebar's
-`dataset_id` field — that's the pre-built reference dataset already committed to this repo.
+Once the dashboard is open, paste `a6bba17b-f194-4a50-8cf8-96e03eededd6` into the sidebar's
+`dataset_id` field. This is the active validated reference dataset: it has the current 39-column
+`card_schema/v2` target-card schema, passes `validate_cards(strict=True)`, and is the canonical
+dataset named in [`docs/human_validation_protocol.md`](docs/human_validation_protocol.md).
+
+The older git-tracked dataset `e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137` remains available only as a
+**legacy/stale** reference. It has the old 31-column schema, fails strict card validation, and is
+missing the eight v2 columns `kd_status`, `kd_threshold_version`, `druggable_class`,
+`tractability_modality`, `safety_note`, `condition_specificity_zscore`,
+`effect_direction_flip_flag`, and `target_baseline_expression`; its metadata also contains stale
+Windows-style source paths. Do not use it for new validation or reviewer-facing demos unless you are
+explicitly reproducing legacy behavior.
+
+**How to identify the active validated dataset:** before sharing a `dataset_id`, check the
+"Active-dataset banner" in [`docs/human_validation_protocol.md`](docs/human_validation_protocol.md)
+and the cache/versioning guidance in [`docs/cache_and_versioning_policy.md`](docs/cache_and_versioning_policy.md).
+The active dataset should match the current schema version, pass strict validation, and have clean
+metadata provenance; older UUIDs are immutable snapshots and may be stale.
 
 For the full data-provenance/reproducibility record (what's real vs. sparse/seed-only, exact
 coverage numbers, versioning) see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — the
