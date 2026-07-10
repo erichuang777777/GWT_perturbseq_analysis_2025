@@ -1,0 +1,17 @@
+# Runtime dependencies for the FastAPI target-card API (target_card_api.py / api/app.py)
+# and the card-building pipeline it wraps (build_target_cards.py, core/, evidence/).
+#
+# This is deliberately a LIGHT, separate manifest from the repo's environment.yaml
+# (which is the heavy conda environment for the upstream scanpy/pertpy analysis
+# pipeline in src/1_preprocess, src/2_embedding, etc.). Verified: the API imports
+# cleanly with none of environment.yaml's heavy packages (scanpy, anndata, pertpy,
+# rapids_singlecell, mudata, scvi, ...) present -- see docs/ux_trust_fix_plan.md
+# Wave 2. A contributor who only wants to run the dashboard/API against the
+# pre-built reference cards never needs the full conda environment.
+fastapi>=0.115
+uvicorn[standard]>=0.34
+pydantic>=2.9
+pandas>=2.2
+numpy>=1.26
+pyyaml>=6.0
+requests>=2.32
