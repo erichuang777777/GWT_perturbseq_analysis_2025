@@ -111,7 +111,12 @@ The pipeline writes:
 
 ## Important Guardrails
 
-Do not treat integrated embeddings as primary differential-expression evidence.
+Do not treat integrated embeddings, integrated-cell-state summaries, or target-card fields
+derived from `bridge_to_card_columns()` as primary differential-expression
+evidence. Fields such as `responder_fraction`, `n_cells_classified`, and
+`n_donors_classified` are **exploratory/descriptive** summaries. They are useful
+for visualization, state matching, and hypothesis generation, but should not
+supersede pseudobulk or raw-count differential-expression evidence.
 
 Use integrated representations for:
 
@@ -146,9 +151,12 @@ Use raw-count or pseudobulk models for target-effect inference.
   rank-based algorithm): `score_cd4_programs()`.
 - ~~bridge integrated cell-state evidence back into target cards~~ -- **done**:
   `summarize_state_specific_effects()` + `merge_donor_condition_summaries()`
-  + `bridge_to_card_columns()` produce `n_cells_classified`,
-  `responder_fraction`, `n_donors_classified` columns, additively joined onto
-  an existing `target_cards.csv` by `(target, condition)`.
+  + `bridge_to_card_columns()` produce **exploratory/descriptive**
+  `n_cells_classified`, `responder_fraction`, and `n_donors_classified`
+  columns, additively joined onto an existing `target_cards.csv` by
+  `(target, condition)`. These integrated-state outputs are intended for
+  visualization, state matching, and hypothesis generation; they should not
+  override pseudobulk/raw-count DE evidence in target prioritization.
 
 See `perturbation_response_analysis.py` for the implementation and
 **`RUN_ON_REAL_DATA.md`** for exact commands to run once real `.h5ad` files

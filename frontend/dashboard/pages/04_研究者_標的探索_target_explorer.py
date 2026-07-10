@@ -73,6 +73,9 @@ if exclude_offtarget:
     params["off_target"] = False
 
 df = _targets(dataset_id, params)
+_cell_state_cols = {"responder_fraction", "n_cells_classified", "n_donors_classified"}
+if _cell_state_cols.intersection(df.columns):
+    st.caption("Exploratory integrated-state evidence; not primary DE evidence.")
 st.dataframe(df, use_container_width=True, hide_index=True)
 
 if not df.empty and "target" in df.columns:
@@ -95,6 +98,8 @@ if not df.empty and "target" in df.columns:
     modality_cols[2].metric("Safety notes", safety_note.replace(";", ", ") if safety_note else "none")
 
     st.subheader(f"{selected} across conditions")
+    if _cell_state_cols.intersection(rows.columns):
+        st.caption("Exploratory integrated-state evidence; not primary DE evidence.")
     st.dataframe(rows, use_container_width=True, hide_index=True)
 
     numeric_view = rows[[c for c in ["condition", "n_total_de_genes", "n_cells_target", "condition_specificity_score"] if c in rows.columns]].copy()

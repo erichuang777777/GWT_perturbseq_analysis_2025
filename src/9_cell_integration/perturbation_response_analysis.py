@@ -463,7 +463,11 @@ def bridge_to_card_columns(cell_summary: pd.DataFrame, cards: pd.DataFrame) -> p
     """Left-join cell-level summary columns onto an existing target_cards.csv frame.
 
     Rows with no cell-level data keep NaN in the new columns -- this is an
-    additive enrichment, never a replacement of the CSV-first card.
+    additive enrichment, never a replacement of the CSV-first card. The added
+    fields (`n_cells_classified`, `responder_fraction`, and
+    `n_donors_classified`) are exploratory/descriptive integrated-state
+    summaries for visualization, state matching, and hypothesis generation;
+    they must not supersede pseudobulk or raw-count DE evidence.
     """
     if cell_summary.empty:
         out = cards.copy()
