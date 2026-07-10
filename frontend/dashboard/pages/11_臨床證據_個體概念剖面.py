@@ -1,13 +1,27 @@
-"""Streamlit page — 個體概念剖面(探索 demo).
+"""Streamlit page — 臨床證據 · 個體概念剖面 (individual concept profile).
 
-COMPASS-style personalized concept waterfall (plan P4 / §2B). This page talks to
-the backend ONLY over HTTP/JSON (POST /api/individual-concept-profile) — it never
-imports backend modules. When the live endpoint is unreachable it renders an
-inline SAMPLE payload (clearly labeled) so the tab stays demonstrable, but real
-data is gated strictly behind the live HTTP call.
+C2 (docs/frontend_design.md §3a/§5.1): "As a clinical reviewer, I want to see
+which immune programs one sample's expression pattern activates, so I can
+generate a transparent, auditable hypothesis — not a black-box score."
+
+Renamed/moved from pages/1_個體概念剖面_探索demo.py into the clinical-evidence
+page group (docs/frontend_design.md §5.1) -- NO BEHAVIOR CHANGE. Still POST
+/api/individual-concept-profile, still request-only/non-persisted/no-
+identifiers, still the forced caveat header (now via the shared
+``guardrails`` module instead of a locally-defined
+``_forced_caveat_header``). The only change is which sidebar group it lives
+in, and dropping the "探索 demo" framing in favor of describing it as what it
+actually is: paste one de-identified sample's expression, get a transparent
+concept-module projection + hypothesis-only target clues.
+
+This page talks to the backend ONLY over HTTP/JSON
+(POST /api/individual-concept-profile) — it never imports backend modules.
+When the live endpoint is unreachable it renders an inline SAMPLE payload
+(clearly labeled) so the page stays demonstrable, but real data is gated
+strictly behind the live HTTP call.
 
 Hard requirements honored here:
-  * forced §0 caveat header — rendered un-hideable at the top, no toggle;
+  * forced caveat header — rendered un-hideable at the top, no toggle;
   * the report's own `caveat` field is surfaced;
   * `unknown != 0` is honored visually (see concept_waterfall.build_waterfall_figure);
   * hypotheses are labeled HYPOTHESES, never recommendations;
@@ -29,6 +43,7 @@ from concept_waterfall import (
     build_waterfall_figure,
     parse_expression_table,
 )
+from guardrails import forced_caveat_header, provenance_footer, render_response_caveat
 
 API_BASE = os.getenv("GWT_API_BASE", "http://127.0.0.1:8000").rstrip("/")
 PROFILE_ENDPOINT = "/api/individual-concept-profile"
@@ -43,12 +58,6 @@ def _post_profile(sample_expression: Dict[str, float]) -> Dict[str, Any]:
     if r.status_code >= 400:
         raise RuntimeError(f"{r.status_code}: {r.text}")
     return r.json()
-
-
-def _forced_caveat_header() -> None:
-    """Plan §0 boundary. Written into the code, rendered every run, un-hideable —
-    there is no branch or toggle that can suppress it."""
-    st.error(f"⚠️ {CAVEAT_TEXT}")
 
 
 def _render_waterfall(report: Dict[str, Any]) -> None:
@@ -98,35 +107,14 @@ def _render_hypotheses(report: Dict[str, Any]) -> None:
     st.dataframe(show, use_container_width=True, hide_index=True)
 
 
-def _render_report_caveat(report: Dict[str, Any]) -> None:
-    caveat = str(report.get("caveat", "") or "").strip()
-    if caveat:
-        st.warning(f"報告內建 caveat: {caveat}")
-    else:
-        # Contract requires a non-empty caveat; make its absence loud rather than silent.
-        st.error("報告缺少 caveat 欄位 — 此輸出不合規,不得使用。")
-
-
-def _render_provenance(report: Dict[str, Any]) -> None:
-    prov: Dict[str, Any] = report.get("provenance", {}) or {}
-    bits = [
-        f"concept_set_version = {prov.get('concept_set_version', 'NA')}",
-        f"screen_data_version = {prov.get('screen_data_version', 'NA')}",
-        f"computed_at = {prov.get('computed_at', 'NA')}",
-        f"api_base = {API_BASE}",
-    ]
-    st.divider()
-    st.caption("Provenance · " + " · ".join(bits))
-
-
 # --------------------------------------------------------------------------- #
 # Page body
 # --------------------------------------------------------------------------- #
-st.set_page_config(page_title="個體概念剖面(探索 demo)", layout="wide")
-st.title("個體概念剖面(探索 demo)")
+st.set_page_config(page_title="臨床證據 · 個體概念剖面", layout="wide")
+st.title("臨床證據 · 個體概念剖面")
 
 # (1) FORCED, non-hideable safety header — first thing on the page, every run.
-_forced_caveat_header()
+forced_caveat_header(CAVEAT_TEXT)
 
 st.markdown(
     "把單一 CD4 樣本的基因表現向量,透明地投影到 20 個免疫概念模組,"
@@ -212,12 +200,12 @@ if report:
             st.warning(f"資料來源:{source_note} — 僅供介面展示,非真實個體結果。")
 
     # (2b) surface the report's OWN caveat field.
-    _render_report_caveat(report)
+    render_response_caveat(report)
     # (1) waterfall: activation / direction / coverage / unknown-not-zero.
     _render_waterfall(report)
     # (3) hypotheses, explicitly labeled.
     _render_hypotheses(report)
     # (4) provenance footer.
-    _render_provenance(report)
+    provenance_footer(report, API_BASE)
 else:
     st.info("貼上或上傳一張表現表後按『投影』,或按『載入示範資料』預覽這個 demo。")

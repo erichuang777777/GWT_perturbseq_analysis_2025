@@ -12,7 +12,7 @@ Isolation (frontend/README.md, NON-NEGOTIABLE):
     any `src/3_DE_analysis` module.
 
     Note: this page does NOT reuse `concept_waterfall`/`SAMPLE_REPORT` (the
-    pasted-expression-table demo on pages/1_個體概念剖面_探索demo.py). It
+    pasted-expression-table demo on pages/11_臨床證據_個體概念剖面.py). It
     previously rendered that IL2RA fixture unconditionally under the "CD4
     concept profile" heading, so every target's dossier showed an identical
     waterfall regardless of which gene was queried. Fixed: this page now shows
@@ -32,7 +32,7 @@ Isolation (frontend/README.md, NON-NEGOTIABLE):
 
 When the live API is unreachable, each fetcher falls back to a small inline
 SAMPLE payload (shaped to match the real endpoint contract) that is LOUDLY
-labeled as a fixture, not real data — mirroring pages/1_個體概念剖面_探索demo.py.
+labeled as a fixture, not real data — mirroring pages/11_臨床證據_個體概念剖面.py.
 """
 
 from __future__ import annotations
@@ -385,7 +385,7 @@ st.caption(
     "灰色虛線「未檢查 (unknown)」徽章代表**未測得,不是 0**。"
 )
 
-# ----- (2) Search / select affordance ------------------------------------- #
+# ----- (①) Search / select affordance -------------------------------------- #
 st.subheader("① 搜尋 / 選擇標的")
 datasets, ds_sample = _datasets()
 dataset_ids = [d.get("dataset_id") for d in datasets if d.get("dataset_id")]
@@ -453,7 +453,7 @@ if any_sample:
 
 st.divider()
 
-# ----- (1) Header --------------------------------------------------------- #
+# ----- (Header) ------------------------------------------------------------ #
 grade = summary.get("statistical_evidence_grade")
 call = (rrow or {}).get("readiness_call")
 condition = _first(summary.get("condition"), (rrow or {}).get("condition"))
@@ -485,20 +485,23 @@ st.caption(
     "用途,非臨床或個人醫療決策依據。詳見 REPRODUCIBILITY.md。"
 )
 
-# ----- (1b) Quick-answer headline (persona fast-path) ---------------------- #
-# UX-flow fix: the readiness call + next validation step were only ever shown
-# at the very BOTTOM of the page (⑧), after 6 sections of raw statistics,
-# concept/mechanism detail, and safety/tractability chips. A clinician has to
-# scroll past all of that to find the one-line "so what"; a researcher has to
-# scroll the same distance to find the recommended next experiment even
+# ----- (Quick-answer headline, persona fast-path) --------------------------- #
+# UX-flow fix: the readiness call + next validation step were originally only
+# shown at the very BOTTOM of the page, after every detail section. A clinician
+# had to scroll past all of that to find the one-line "so what"; a researcher
+# had to scroll the same distance to find the recommended next experiment even
 # though it is derived entirely from evidence shown further down. This card
-# promotes that same headline (computed once, in section ⑧ below -- no new
+# promotes that same headline (computed once, in section ⑨ below -- no new
 # computation, no new decision path) to right after the header, and points
 # each persona at the section number they'll want to read next using the
-# page's own existing ①–⑧ numbering as an informal table of contents.
+# page's own existing ①–⑨ numbering as an informal table of contents. Step 4
+# of docs/ux_flow_stepwise_plan.md additionally re-ordered ②–⑨ into a
+# persona-oriented sequence (descriptive summary + clinically-relevant sections
+# first, statistics/mechanism audit detail after) -- see that section's own
+# comments below for the per-block rationale.
 st.markdown("### 🧭 快速結論(quick answer)")
 if not rrow:
-    st.info("此標的尚無 readiness 記錄——請見下方 ② 是否有統計證據。")
+    st.info("此標的尚無 readiness 記錄——請見下方 ⑥ 是否有統計證據。")
 else:
     _qa_call = rrow.get("readiness_call")
     _qa_next = rrow.get("next_validation_step")
@@ -518,78 +521,16 @@ else:
         if not _is_unknown(_qa_next):
             st.success(f"下一步驗證:{_qa_next}")
         else:
-            st.caption("下一步驗證尚未定義(見下方 ⑧)。")
+            st.caption("下一步驗證尚未定義(見下方 ⑨)。")
 st.caption(
-    "🩺 **臨床醫師快速路徑**:外部證據 trials/literature/genetics(見下方 ⑦)、"
-    "安全性與遺傳學(見下方 ⑤)、完整判定理由(見下方 ⑧)。  \n"
-    "🔬 **研究者快速路徑**:GWT 統計證據(見下方 ②)、多軸描述性摘要(見下方 ②b)、"
-    "CD4 概念剖面 + 機制圖(見下方 ③④)。"
+    "🩺 **臨床醫師快速路徑**:外部證據 trials/literature/genetics(見下方 ③)、"
+    "安全性與遺傳學(見下方 ④)、完整判定理由(見下方 ⑨)。  \n"
+    "🔬 **研究者快速路徑**:GWT 統計證據(見下方 ⑥)、多軸描述性摘要(見下方 ②)、"
+    "CD4 概念剖面 + 機制圖(見下方 ⑦⑧)。"
 )
 
-# ----- (3) GWT evidence --------------------------------------------------- #
-st.subheader("② GWT 篩選證據(statistical / robustness)")
-if not summary:
-    _not_available("此標的的 target card", "target 不在此資料集,或資料集未建置")
-else:
-    ev1 = [
-        _labeled("DE 廣度 n_total_de_genes", _val_chip(summary.get("n_total_de_genes")), hint="上調/下調"),
-        _labeled("上調 n_up", _val_chip(summary.get("n_up_genes"))),
-        _labeled("下調 n_down", _val_chip(summary.get("n_down_genes"))),
-        _labeled("On-target 效應量", _val_chip(summary.get("ontarget_effect_size")), hint="log2FC"),
-        _labeled("On-target 顯著", _val_chip(summary.get("ontarget_significant"))),
-    ]
-    _fields_row(ev1)
-    ev2 = [
-        _labeled("KD 狀態 kd_status", _flag_chip(summary.get("kd_status"))),
-        _labeled("KD 效率 kd_efficiency", _val_chip(summary.get("kd_efficiency"))),
-        _labeled("Cross-guide 穩健度", _val_chip(summary.get("crossguide_correlation")), hint="gate 0.2/0.3"),
-        _labeled("Cross-donor 穩健度(mean)", _val_chip(summary.get("crossdonor_correlation_mean"))),
-        _labeled("Cross-donor(min)", _val_chip(summary.get("crossdonor_correlation_min"))),
-    ]
-    _fields_row(ev2)
-    ev3 = [
-        _labeled("Cells n_cells_target", _val_chip(summary.get("n_cells_target"))),
-        _labeled("Guides n_guides", _val_chip(summary.get("n_guides"))),
-        _labeled("Donors n_donors", _val_chip(summary.get("n_donors"))),
-        _labeled("Replicate pass", _val_chip(summary.get("replicate_pass_flag"))),
-        _labeled("條件特異性", _val_chip(summary.get("condition_specificity_score"))),
-    ]
-    _fields_row(ev3)
-
-    # Red-flag chips: each explains why the statistical grade is capped.
-    st.markdown("**紅旗 / 分數上限原因(red flags — 為何分級被 cap)**")
-    flags_html: List[str] = []
-    cap_reason = summary.get("score_cap_reason")
-    if not _is_unknown(cap_reason) and str(cap_reason).strip().lower() != "none":
-        for token in str(cap_reason).split(";"):
-            token = token.strip()
-            if token and token.lower() != "none":
-                flags_html.append(f'<span class="gwt-red-flag">⚑ {token}</span>')
-    flag_explanations = {
-        "offtarget_flag": "偵測到潛在脫靶效應 → 下游 DE 可能非專一,分級受限",
-        "effect_direction_flip_flag": "跨 guide/donor 效應方向翻轉 → 因果解讀不穩,分級受限",
-        "batch_sensitivity_flag": "對批次敏感 → 效應可能被技術變異驅動,分級受限",
-    }
-    for col, why in flag_explanations.items():
-        val = summary.get(col)
-        if val is True:
-            flags_html.append(f'<span class="gwt-red-flag" title="{why}">⚑ {col}:{why}</span>')
-        elif _is_unknown(val):
-            flags_html.append(_val_chip(val, unknown_label=f"{col}:未檢查"))
-    if flags_html:
-        st.markdown("<div>" + "".join(flags_html) + "</div>", unsafe_allow_html=True)
-    else:
-        st.markdown('<span class="gwt-chip gwt-chip--flag-low">無紅旗(no cap)· score_cap_reason = none</span>', unsafe_allow_html=True)
-
-    with st.expander("完整 target card 欄位(可稽核)", expanded=False):
-        audit_df = pd.DataFrame(
-            [{"field": k, "value": "未檢查 (unknown)" if _is_unknown(v) else _fmt(v)} for k, v in summary.items()]
-        )
-        st.dataframe(audit_df, use_container_width=True, hide_index=True)
-_provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": dataset_id})
-
-# ----- (2b) Descriptive multi-axis summary (triage) ----------------------- #
-st.subheader("②b 多軸描述性摘要(descriptive axes at a glance)")
+# ----- (②) Descriptive multi-axis summary (triage) ------------------------- #
+st.subheader("② 多軸描述性摘要(descriptive axes at a glance)")
 _descriptive_note()
 _triage_payload, _triage_sample = _triage_target(dataset_id, canonical)
 if _triage_sample or not _triage_payload:
@@ -620,77 +561,59 @@ else:
         extra={"dataset_id": dataset_id, "descriptive_only": True},
     )
 
-# ----- (4) CD4 concept profile (dataset-scoped module hits) --------------- #
-st.subheader("③ CD4 概念剖面(concept profile)")
+# ----- (③) External evidence ------------------------------------------------ #
+st.subheader("③ 外部證據(trials / literature / genetics)")
 _descriptive_note()
-modules_payload, m_sample = _modules(dataset_id)
-# NOTE: there is no live endpoint that returns a per-target SIGNED activation
-# waterfall (the concept_waterfall component + its SAMPLE_REPORT fixture is
-# the individual/COMPASS-layer demo on page 1, "探索demo" — driven by a
-# pasted expression table, not by dataset/target). This page previously
-# rendered that IL2RA fixture here UNCONDITIONALLY, so every target's dossier
-# showed the identical waterfall regardless of which gene was queried — an
-# honesty-invariant violation (a fixture presented as this target's data).
-# Fixed: this section now shows ONLY the real per-target module hits from
-# GET /api/modules/{dataset_id}, with an honest "not available" state when
-# there is no signed per-gene waterfall to show.
-st.caption(
-    "此區塊顯示此資料集中,此標的命中的概念模組(descriptive,非活化強度波形)。"
-    "目前的篩選 pipeline 未提供逐標的、有方向性的活化分數,因此不顯示瀑布圖——"
-    "顯示假資料樣板會誤導使用者以為是這個基因的結果。"
-)
-target_modules = [r for r in (modules_payload or []) if str(r.get("target", "")).upper() == canonical.upper()]
-if target_modules:
-    st.markdown(f"**{canonical} 在此資料集命中的概念模組(live)**")
-    st.dataframe(pd.DataFrame(target_modules), use_container_width=True, hide_index=True)
-elif not m_sample:
-    _not_available(f"{canonical} 的概念模組命中", "此標的無模組對應")
+evidence, ev_sample = _evidence(canonical)
+if evidence is None:
+    _not_available(
+        f"{canonical} 的外部證據快照",
+        f"尚未建置;可用 API 建立:POST /api/evidence/build {{\"genes\": [\"{canonical}\"]}}",
+    )
 else:
-    _not_available(f"{canonical} 的概念模組命中", "API 無法連線,無法取得 live 模組命中資料")
+    sources = evidence.get("sources", {}) or {}
+    ecols = st.columns(3)
+    with ecols[0]:
+        st.markdown("**臨床試驗 clinical trials**")
+        tr = sources.get("clinical_trials", {})
+        if tr.get("source_status") == "ok":
+            items = tr.get("items", []) or []
+            for t in items[:5]:
+                st.write(f"- [{t.get('nct_id', '')}]({t.get('url', '')}) {t.get('title', '')} "
+                         f"({t.get('phase') or 'NA'}, {t.get('status', 'NA')})")
+            if not items:
+                st.caption("查無試驗(measured empty)。")
+        else:
+            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{tr.get('reason', 'not fetched')}"), unsafe_allow_html=True)
+    with ecols[1]:
+        st.markdown("**文獻 literature**")
+        lit = sources.get("literature", {})
+        if lit.get("source_status") == "ok":
+            items = lit.get("items", []) or []
+            for it in items[:5]:
+                st.write(f"- [{it.get('pmid', '')}]({it.get('url', '')}) {it.get('title', '')} ({it.get('year', 'NA')})")
+            if not items:
+                st.caption("查無文獻(measured empty)。")
+        else:
+            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{lit.get('reason', 'not fetched')}"), unsafe_allow_html=True)
+    with ecols[2]:
+        st.markdown("**Open Targets(genetics/tractability)**")
+        ot = sources.get("open_targets", {})
+        if ot.get("source_status") == "ok":
+            for d in (ot.get("associated_diseases", []) or [])[:5]:
+                st.write(f"- {d.get('disease')} — genetic_association_score {d.get('genetic_association_score')}")
+            if not ot.get("associated_diseases"):
+                st.write(ot.get("items", []))
+        else:
+            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{ot.get('reason', 'not fetched')}"), unsafe_allow_html=True)
 _provenance(
-    "GET /api/modules/{dataset_id}",
-    extra={"dataset_id": dataset_id, "descriptive_only": True},
+    "GET /api/evidence/{gene}",
+    version=(evidence or {}).get("source_version"),
+    fetched_at=(evidence or {}).get("fetched_at"),
 )
 
-# ----- (5) Mechanism graph ------------------------------------------------ #
-st.subheader("④ 機制圖(Reactome pathways + STRING partners)")
-_descriptive_note()
-mech, mech_sample = _mechanism(canonical)
-if not mech.get("available"):
-    _not_available("機制圖", mech.get("reason") or "尚無快取的 pathway/network 快照")
-else:
-    nodes = mech.get("nodes", []) or []
-    edges = mech.get("edges", []) or []
-    pathways = [n for n in nodes if n.get("type") == "pathway"]
-    partners = [n for n in nodes if n.get("type") == "gene" and n.get("role") == "string_partner"]
-    mcols = st.columns(2)
-    with mcols[0]:
-        st.markdown(f"**Reactome pathways** ({len(pathways)})")
-        if pathways:
-            for p in pathways:
-                disease = " · ⚠ disease pathway" if p.get("is_in_disease") else ""
-                st.write(f"- {p.get('pathway_name')} (`{p.get('pathway_id')}`){disease}")
-        else:
-            st.caption(f"未取得 Reactome pathways(reactome_status = {mech.get('reactome_status')})")
-    with mcols[1]:
-        st.markdown(f"**STRING interaction partners** ({len(partners)})")
-        if partners:
-            edge_score = {e.get("target"): e.get("score") for e in edges if e.get("relationship") == "string_interaction"}
-            for pn in sorted(partners, key=lambda n: -(edge_score.get(n.get("id")) or 0)):
-                sc = edge_score.get(pn.get("id"))
-                st.write(f"- {pn.get('id')} (score {sc if sc is not None else 'NA'})")
-        else:
-            st.caption(f"未取得 STRING partners(string_status = {mech.get('string_status')})")
-    if mech.get("reason"):
-        st.caption(f"部分未取得:{mech.get('reason')}")
-_provenance(
-    "GET /api/mechanism-graph/{gene}",
-    version=mech.get("source_version"),
-    fetched_at=mech.get("fetched_at"),
-)
-
-# ----- (6) Safety & genetics (descriptive liability framing) -------------- #
-st.subheader("⑤ 安全性與遺傳學(liability / flag — 描述性)")
+# ----- (④) Safety & genetics (descriptive liability framing) --------------- #
+st.subheader("④ 安全性與遺傳學(liability / flag — 描述性)")
 _descriptive_note()
 st.caption(
     "⚠️ **框架很重要**:人類遺傳限制 + 廣泛表現 = **安全性負擔(liability)訊號**,"
@@ -751,8 +674,8 @@ _provenance(
     extra={"trait": pop.get("trait")},
 )
 
-# ----- (7) Tractability --------------------------------------------------- #
-st.subheader("⑥ 成藥性(tractability)")
+# ----- (⑤) Tractability ------------------------------------------------------ #
+st.subheader("⑤ 成藥性(tractability)")
 tcols = [
     _labeled("tractability_modality", _val_chip(summary.get("tractability_modality")), hint="推測 modality"),
     _labeled("druggable_class", _val_chip(summary.get("druggable_class"))),
@@ -760,59 +683,139 @@ tcols = [
 _fields_row(tcols)
 _provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": dataset_id})
 
-# ----- (8) External evidence ---------------------------------------------- #
-st.subheader("⑦ 外部證據(trials / literature / genetics)")
-_descriptive_note()
-evidence, ev_sample = _evidence(canonical)
-if evidence is None:
-    _not_available(
-        f"{canonical} 的外部證據快照",
-        f"尚未建置;可用 API 建立:POST /api/evidence/build {{\"genes\": [\"{canonical}\"]}}",
-    )
+# ----- (⑥) GWT evidence -------------------------------------------------------#
+st.subheader("⑥ GWT 篩選證據(statistical / robustness)")
+if not summary:
+    _not_available("此標的的 target card", "target 不在此資料集,或資料集未建置")
 else:
-    sources = evidence.get("sources", {}) or {}
-    ecols = st.columns(3)
-    with ecols[0]:
-        st.markdown("**臨床試驗 clinical trials**")
-        tr = sources.get("clinical_trials", {})
-        if tr.get("source_status") == "ok":
-            items = tr.get("items", []) or []
-            for t in items[:5]:
-                st.write(f"- [{t.get('nct_id', '')}]({t.get('url', '')}) {t.get('title', '')} "
-                         f"({t.get('phase') or 'NA'}, {t.get('status', 'NA')})")
-            if not items:
-                st.caption("查無試驗(measured empty)。")
-        else:
-            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{tr.get('reason', 'not fetched')}"), unsafe_allow_html=True)
-    with ecols[1]:
-        st.markdown("**文獻 literature**")
-        lit = sources.get("literature", {})
-        if lit.get("source_status") == "ok":
-            items = lit.get("items", []) or []
-            for it in items[:5]:
-                st.write(f"- [{it.get('pmid', '')}]({it.get('url', '')}) {it.get('title', '')} ({it.get('year', 'NA')})")
-            if not items:
-                st.caption("查無文獻(measured empty)。")
-        else:
-            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{lit.get('reason', 'not fetched')}"), unsafe_allow_html=True)
-    with ecols[2]:
-        st.markdown("**Open Targets(genetics/tractability)**")
-        ot = sources.get("open_targets", {})
-        if ot.get("source_status") == "ok":
-            for d in (ot.get("associated_diseases", []) or [])[:5]:
-                st.write(f"- {d.get('disease')} — genetic_association_score {d.get('genetic_association_score')}")
-            if not ot.get("associated_diseases"):
-                st.write(ot.get("items", []))
-        else:
-            st.markdown(_val_chip("unknown", unknown_label=f"未取得:{ot.get('reason', 'not fetched')}"), unsafe_allow_html=True)
+    ev1 = [
+        _labeled("DE 廣度 n_total_de_genes", _val_chip(summary.get("n_total_de_genes")), hint="上調/下調"),
+        _labeled("上調 n_up", _val_chip(summary.get("n_up_genes"))),
+        _labeled("下調 n_down", _val_chip(summary.get("n_down_genes"))),
+        _labeled("On-target 效應量", _val_chip(summary.get("ontarget_effect_size")), hint="log2FC"),
+        _labeled("On-target 顯著", _val_chip(summary.get("ontarget_significant"))),
+    ]
+    _fields_row(ev1)
+    ev2 = [
+        _labeled("KD 狀態 kd_status", _flag_chip(summary.get("kd_status"))),
+        _labeled("KD 效率 kd_efficiency", _val_chip(summary.get("kd_efficiency"))),
+        _labeled("Cross-guide 穩健度", _val_chip(summary.get("crossguide_correlation")), hint="gate 0.2/0.3"),
+        _labeled("Cross-donor 穩健度(mean)", _val_chip(summary.get("crossdonor_correlation_mean"))),
+        _labeled("Cross-donor(min)", _val_chip(summary.get("crossdonor_correlation_min"))),
+    ]
+    _fields_row(ev2)
+    ev3 = [
+        _labeled("Cells n_cells_target", _val_chip(summary.get("n_cells_target"))),
+        _labeled("Guides n_guides", _val_chip(summary.get("n_guides"))),
+        _labeled("Donors n_donors", _val_chip(summary.get("n_donors"))),
+        _labeled("Replicate pass", _val_chip(summary.get("replicate_pass_flag"))),
+        _labeled("條件特異性", _val_chip(summary.get("condition_specificity_score"))),
+    ]
+    _fields_row(ev3)
+
+    # Red-flag chips: each explains why the statistical grade is capped.
+    st.markdown("**紅旗 / 分數上限原因(red flags — 為何分級被 cap)**")
+    flags_html: List[str] = []
+    cap_reason = summary.get("score_cap_reason")
+    if not _is_unknown(cap_reason) and str(cap_reason).strip().lower() != "none":
+        for token in str(cap_reason).split(";"):
+            token = token.strip()
+            if token and token.lower() != "none":
+                flags_html.append(f'<span class="gwt-red-flag">⚑ {token}</span>')
+    flag_explanations = {
+        "offtarget_flag": "偵測到潛在脫靶效應 → 下游 DE 可能非專一,分級受限",
+        "effect_direction_flip_flag": "跨 guide/donor 效應方向翻轉 → 因果解讀不穩,分級受限",
+        "batch_sensitivity_flag": "對批次敏感 → 效應可能被技術變異驅動,分級受限",
+    }
+    for col, why in flag_explanations.items():
+        val = summary.get(col)
+        if val is True:
+            flags_html.append(f'<span class="gwt-red-flag" title="{why}">⚑ {col}:{why}</span>')
+        elif _is_unknown(val):
+            flags_html.append(_val_chip(val, unknown_label=f"{col}:未檢查"))
+    if flags_html:
+        st.markdown("<div>" + "".join(flags_html) + "</div>", unsafe_allow_html=True)
+    else:
+        st.markdown('<span class="gwt-chip gwt-chip--flag-low">無紅旗(no cap)· score_cap_reason = none</span>', unsafe_allow_html=True)
+
+    with st.expander("完整 target card 欄位(可稽核)", expanded=False):
+        audit_df = pd.DataFrame(
+            [{"field": k, "value": "未檢查 (unknown)" if _is_unknown(v) else _fmt(v)} for k, v in summary.items()]
+        )
+        st.dataframe(audit_df, use_container_width=True, hide_index=True)
+_provenance("GET /api/targets/{dataset_id}/{target}", extra={"dataset_id": dataset_id})
+
+# ----- (⑦) CD4 concept profile (dataset-scoped module hits) ---------------- #
+st.subheader("⑦ CD4 概念剖面(concept profile)")
+_descriptive_note()
+modules_payload, m_sample = _modules(dataset_id)
+# NOTE: there is no live endpoint that returns a per-target SIGNED activation
+# waterfall (the concept_waterfall component + its SAMPLE_REPORT fixture is
+# the individual/COMPASS-layer demo on page 1, "探索demo" — driven by a
+# pasted expression table, not by dataset/target). This page previously
+# rendered that IL2RA fixture here UNCONDITIONALLY, so every target's dossier
+# showed the identical waterfall regardless of which gene was queried — an
+# honesty-invariant violation (a fixture presented as this target's data).
+# Fixed: this section now shows ONLY the real per-target module hits from
+# GET /api/modules/{dataset_id}, with an honest "not available" state when
+# there is no signed per-gene waterfall to show.
+st.caption(
+    "此區塊顯示此資料集中,此標的命中的概念模組(descriptive,非活化強度波形)。"
+    "目前的篩選 pipeline 未提供逐標的、有方向性的活化分數,因此不顯示瀑布圖——"
+    "顯示假資料樣板會誤導使用者以為是這個基因的結果。"
+)
+target_modules = [r for r in (modules_payload or []) if str(r.get("target", "")).upper() == canonical.upper()]
+if target_modules:
+    st.markdown(f"**{canonical} 在此資料集命中的概念模組(live)**")
+    st.dataframe(pd.DataFrame(target_modules), use_container_width=True, hide_index=True)
+elif not m_sample:
+    _not_available(f"{canonical} 的概念模組命中", "此標的無模組對應")
+else:
+    _not_available(f"{canonical} 的概念模組命中", "API 無法連線,無法取得 live 模組命中資料")
 _provenance(
-    "GET /api/evidence/{gene}",
-    version=(evidence or {}).get("source_version"),
-    fetched_at=(evidence or {}).get("fetched_at"),
+    "GET /api/modules/{dataset_id}",
+    extra={"dataset_id": dataset_id, "descriptive_only": True},
 )
 
-# ----- (9) Readiness call + next validation step -------------------------- #
-st.subheader("⑧ Readiness 判定 + 下一步驗證")
+# ----- (⑧) Mechanism graph ------------------------------------------------- #
+st.subheader("⑧ 機制圖(Reactome pathways + STRING partners)")
+_descriptive_note()
+mech, mech_sample = _mechanism(canonical)
+if not mech.get("available"):
+    _not_available("機制圖", mech.get("reason") or "尚無快取的 pathway/network 快照")
+else:
+    nodes = mech.get("nodes", []) or []
+    edges = mech.get("edges", []) or []
+    pathways = [n for n in nodes if n.get("type") == "pathway"]
+    partners = [n for n in nodes if n.get("type") == "gene" and n.get("role") == "string_partner"]
+    mcols = st.columns(2)
+    with mcols[0]:
+        st.markdown(f"**Reactome pathways** ({len(pathways)})")
+        if pathways:
+            for p in pathways:
+                disease = " · ⚠ disease pathway" if p.get("is_in_disease") else ""
+                st.write(f"- {p.get('pathway_name')} (`{p.get('pathway_id')}`){disease}")
+        else:
+            st.caption(f"未取得 Reactome pathways(reactome_status = {mech.get('reactome_status')})")
+    with mcols[1]:
+        st.markdown(f"**STRING interaction partners** ({len(partners)})")
+        if partners:
+            edge_score = {e.get("target"): e.get("score") for e in edges if e.get("relationship") == "string_interaction"}
+            for pn in sorted(partners, key=lambda n: -(edge_score.get(n.get("id")) or 0)):
+                sc = edge_score.get(pn.get("id"))
+                st.write(f"- {pn.get('id')} (score {sc if sc is not None else 'NA'})")
+        else:
+            st.caption(f"未取得 STRING partners(string_status = {mech.get('string_status')})")
+    if mech.get("reason"):
+        st.caption(f"部分未取得:{mech.get('reason')}")
+_provenance(
+    "GET /api/mechanism-graph/{gene}",
+    version=mech.get("source_version"),
+    fetched_at=mech.get("fetched_at"),
+)
+
+# ----- (⑨) Readiness call + next validation step ---------------------------- #
+st.subheader("⑨ Readiness 判定 + 下一步驗證")
 st.caption(
     "這是本工具的**決定性**輸出(decision);上面的描述性區塊不改變它。"
     "「advance / validate / watchlist / deprioritize」代表什麼、不代表什麼 → 見頁首「ℹ️ 名詞解釋」。"
@@ -844,7 +847,7 @@ else:
         st.caption(f"尚未接線的外部 overlay(相關 domain 維持 unknown,非 0):{', '.join(missing)}")
 _provenance("GET /api/readiness/{dataset_id}", extra={"dataset_id": dataset_id})
 
-# ----- (10) Provenance footer --------------------------------------------- #
+# ----- (Provenance footer) --------------------------------------------------#
 st.divider()
 st.markdown("### 🔖 Provenance(資料溯源)")
 ds_meta = next((d for d in datasets if d.get("dataset_id") == dataset_id), {})
