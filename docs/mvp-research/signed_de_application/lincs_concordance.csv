@@ -1,0 +1,5 @@
+target,n_shared_landmark,sign_agreement_frac,spearman_rho,p_value,caveat
+SENP5,573,0.4799301919720768,-0.005109754247795367,0.9028609839928222,"DEMO-level directional sanity check: LINCS from non-T-cell lines, only 4 overlapping targets; NOT full external validation."
+PLCG1,499,0.4849699398797595,-0.06384615013158848,0.15442001791330348,"DEMO-level directional sanity check: LINCS from non-T-cell lines, only 4 overlapping targets; NOT full external validation."
+CCNC,526,0.49429657794676807,-0.01532196737397277,0.7258965979129078,"DEMO-level directional sanity check: LINCS from non-T-cell lines, only 4 overlapping targets; NOT full external validation."
+PMVK,360,0.6083333333333333,0.21904798648137716,2.7563282614978935e-05,"DEMO-level directional sanity check: LINCS from non-T-cell lines, only 4 overlapping targets; NOT full external validation."
