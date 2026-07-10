@@ -89,6 +89,7 @@ OPENAPI_TAGS = [
     {"name": "Uploads", "description": "Staging-first researcher dataset upload: column-mapping wizard, preview, approve, merge-to-cards."},
     {"name": "Mechanism graph", "description": "Target-centered Reactome pathway + STRING interaction graph, overlaid with this platform's own evidence (descriptive only)."},
     {"name": "Concept profile (demo)", "description": "Exploratory individual-sample concept projection onto the 20 CD4 immune concept modules. Research demo, NOT medical software; request-only, never persisted."},
+    {"name": "Clinical evidence (research use)", "description": "Disease x drug evidence-matching: whether a gene has a known drug, and whether that drug has actually been trialled for a specific disease. Evidence-matching only, NOT a treatment recommendation; live-queried (Open Targets + ClinicalTrials.gov), never persisted."},
 ]
 
 app = FastAPI(
@@ -134,6 +135,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "imports": "api.routers.imports",
     "mechanism": "api.routers.mechanism",
     "individual_concept": "api.routers.individual_concept",
+    "disease_drug": "api.routers.disease_drug",
 }
 
 # Each router declares its own OpenAPI tag (a pretty group name) on its

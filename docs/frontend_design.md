@@ -1,7 +1,13 @@
 # Frontend design — researcher & clinical-evidence personas
 
-**Status:** design doc, not yet implemented · **Decision confirmed (2026-07-10):** clinical-evidence
-*lookup* persona only (no patient records/history) — see §1.
+**Status:** implemented (2026-07-10) · **Decision confirmed:** clinical-evidence *lookup* persona
+only (no patient records/history) — see §1. `target_card_dashboard.py`'s six tabs became nine
+standalone researcher pages (§4 -- the extra count vs. this doc's original R1-R7 is 整合 Triage,
+免疫優先, and Pathway+Clinical's module hits, added to the dashboard after this doc's first
+draft); the existing individual-concept-profile page and two new pages became the clinical-evidence
+group (§5). Page numbering is `01`-`10` (researcher) / `11`-`13` (clinical), zero-padded so
+Streamlit's string-sort keeps them in the intended order — not the `1`-`7` / `8`-`10` gap this doc
+originally sketched.
 
 > Research / hypothesis-generating tool — **NOT clinical software**. This design adds a second
 > persona's *navigation and framing*, not a second product with different rules. Every constraint in

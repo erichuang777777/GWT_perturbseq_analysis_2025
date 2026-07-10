@@ -16,7 +16,7 @@ and vice versa — the backend can change its internals freely as long as the AP
 
 | Path | What it is | Status |
 |---|---|---|
-| `dashboard/` | The existing Streamlit dashboard (`target_card_dashboard.py`), moved here from `src/3_DE_analysis/`. Talks to the API exclusively via `requests` + `GWT_API_BASE`. | Working, unchanged behavior — moved location only |
+| `dashboard/` | Streamlit multipage app. `target_card_dashboard.py` is now a pure landing page with a persona picker (docs/frontend_design.md); every former tab lives in its own `pages/*.py` file — `01`-`10` for the researcher workspace, `11`-`13` for the clinical-evidence workspace. Shared HTTP helpers live in `api_client.py`, the sidebar dataset picker in `dataset_context.py`, and the clinical-evidence caveat/provenance pattern in `guardrails.py`. All talk to the API exclusively via `requests` + `GWT_API_BASE`. | Working |
 
 ## Running the dashboard standalone
 

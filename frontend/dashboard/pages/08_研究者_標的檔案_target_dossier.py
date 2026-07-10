@@ -12,7 +12,7 @@ Isolation (frontend/README.md, NON-NEGOTIABLE):
     any `src/3_DE_analysis` module.
 
     Note: this page does NOT reuse `concept_waterfall`/`SAMPLE_REPORT` (the
-    pasted-expression-table demo on pages/1_個體概念剖面_探索demo.py). It
+    pasted-expression-table demo on pages/11_臨床證據_個體概念剖面.py). It
     previously rendered that IL2RA fixture unconditionally under the "CD4
     concept profile" heading, so every target's dossier showed an identical
     waterfall regardless of which gene was queried. Fixed: this page now shows
@@ -32,7 +32,7 @@ Isolation (frontend/README.md, NON-NEGOTIABLE):
 
 When the live API is unreachable, each fetcher falls back to a small inline
 SAMPLE payload (shaped to match the real endpoint contract) that is LOUDLY
-labeled as a fixture, not real data — mirroring pages/1_個體概念剖面_探索demo.py.
+labeled as a fixture, not real data — mirroring pages/11_臨床證據_個體概念剖面.py.
 """
 
 from __future__ import annotations
