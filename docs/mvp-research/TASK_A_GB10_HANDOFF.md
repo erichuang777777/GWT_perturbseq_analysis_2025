@@ -53,24 +53,32 @@
 
 ### 6. 產出結果（已萃取、已驗證可讀）
 
-`metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`：
+**(a) 門檻子集** `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`：
 
 - **1,067,181 列**，欄位：`target_gene, target_ensembl_id, culture_condition, downstream_gene, downstream_ensembl_id, log_fc, adj_p_value, baseMean, zscore`
 - 涵蓋 **1,235 個標的 × 3 個培養條件 × 10,271 個下游基因身分**（僅保留 `adj_p_value < 0.1` 的顯著配對，否則全叉積會有 ~3,700 萬列）
-- 未壓縮 130MB（超過 GitHub 100MB 硬限制），gzip 後 **48MB**，已加入 `.gitignore` 的例外規則（原本 `*.gz` 被全域忽略，見 `.gitignore` 第 199 行的 `!metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`）
+- 未壓縮 130MB（超過 GitHub 100MB 硬限制），gzip 後 **48MB**，已加入 `.gitignore` 的例外規則（原本 `*.gz` 被全域忽略，見 `.gitignore` 的 `!metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`）
 - 依 `culture_condition` 分布：Stim8hr 413,044 / Stim48hr 349,743 / Rest 304,394 列
+
+**(b) 全量** `metadata/suppl_tables/full_signed_DE/`（`extract_full_signed_DE.py` 產出，用戶要求後追加）：
+
+- 對全部 **33,983 個 target×condition 列**（= repo 現有 `DE_stats.suppl_table.csv` 的完整列數，涵蓋 ~11,526 個標的，不限門檻子集）做同樣的 `adj_p_value < 0.1` 篩選
+- **2,056,424 列**顯著配對——比門檻子集的 16 倍列數預期少很多（門檻子集只有 1235/2131 個「效應強」的標的，全量包含大量弱效應/無效應標的，平均每列顯著命中數低很多，這是誠實反映生物學現實，不是萃取有誤）
+- **10,851 個標的**至少有 1 個顯著下游基因（其餘標的無顯著命中，如實呈現，不補 0）
+- 依 zstd 壓縮的 parquet 格式（比 csv.gz 再省 ~28%），因列數仍多，切成 2 個 part 檔（`part-000.parquet` 51.3MB + `part-001.parquet` 23.7MB，各自低於 GitHub 100MB 限制）——用 `pandas.read_parquet('metadata/suppl_tables/full_signed_DE/')` 讀整個目錄即自動合併，不需手動處理 part
+- 全程 9 秒完成（h5py 分批讀取，每批 3,000 列，避開一次性載入全部 4 個 layer ~11GB 的記憶體風險）
+- schema、覆蓋率細節見該目錄下 `README.md`
 
 ## GB10 接手檢查清單
 
-1. **不需要 OAK 掛載、不需要重算 DESeq2** —— 除非 GB10 之後要做手冊原本設想的「全量 11,526 標的 全基因組」分析（目前只有 1,235 gate-passing + 顯著基因，沒有全叉積）。
-2. 若要擴大到全部 33,983 target×condition 列（即手冊說的「全量」）：`extract_gate_passing_signed_DE.py` 拿掉 gate 篩選、直接對全部 `adata.obs` 做同樣的顯著性篩選即可，**同一個 15.63GB 檔案已經夠用，不必再抓任何東西**（此檔已在 `data/marson2025_data/GWCD4i.DE_stats.h5ad`，但**不在 git**，需重新用 `download_precomputed_DE.py` 抓一次或從 OAK 取得）。
-3. 若要更細的 cross-guide / cross-donor 訊號（repo 現有 `guide_correlation_*` / `donor_correlation_*` 欄位背後的原始每 guide/每 donor-pair 數值）：才需要額外抓 `GWCD4i.DE_stats.by_guide.h5mu`（29.4GB）/ `GWCD4i.DE_stats.by_donors.h5mu`（16.8GB）——用同一套 `download_precomputed_DE.py` 的模式（改 `FILES` 清單）即可，預期速度同樣是分鐘級而非天級。
-4. 萃取出的 `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz` 就是 `signature_explorer.py` 需要的查詢 signature 來源（取代目前的單基因 proxy），也是 LINCS(F) 比對的我方 query。
-5. 完成後跑 `pytest tests/ -q` 確認 golden-file 測試仍綠。
+1. **不需要 OAK 掛載、不需要重算 DESeq2** —— 全量與門檻子集皆已從公開的 `GWCD4i.DE_stats.h5ad` 萃取完成並提交進 repo。
+2. 若要更細的 cross-guide / cross-donor 訊號（repo 現有 `guide_correlation_*` / `donor_correlation_*` 欄位背後的原始每 guide/每 donor-pair 數值）：才需要額外抓 `GWCD4i.DE_stats.by_guide.h5mu`（29.4GB）/ `GWCD4i.DE_stats.by_donors.h5mu`（16.8GB）——用同一套 `download_precomputed_DE.py` 的模式（改 `FILES` 清單）即可，預期速度同樣是分鐘級而非天級。
+3. 萃取出的兩份長表就是 `signature_explorer.py` 需要的查詢 signature 來源（取代目前的單基因 proxy），也是 LINCS(F) 比對的我方 query。全量版可用於任意標的，門檻子集版聚焦在已驗證通過 MVP 門檻的 1,235 個。
+4. 完成後跑 `pytest tests/ -q` 確認 golden-file 測試仍綠。
 
 ## 誠實記錄：這次沒做的事
 
 - 沒有下載 14 個原始單細胞 h5ad（不需要——見上）
 - 沒有跑手冊原本的 Step 1/2/3 pipeline（不需要——結果已經在 `GWCD4i.DE_stats.h5ad` 裡）
-- 沒有處理 by_guide/by_donors 的細粒度資料（非本次任務範圍，見上方「GB10 接手檢查清單」第 3 點）
+- 沒有處理 by_guide/by_donors 的細粒度資料（非本次任務範圍，見上方「GB10 接手檢查清單」第 2 點）
 - 下載的原始 `GWCD4i.DE_stats.h5ad`（16GB）與其他小檔留在本地 `data/marson2025_data/`，**未進 git**（符合「大檔不進 repo」原則），下次要重跑萃取需要重新下載或改用 OAK 路徑
