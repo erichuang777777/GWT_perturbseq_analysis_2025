@@ -1,0 +1,19 @@
+group,stage_asset,version_id,md5,shape,bytes,status,frozen_at
+01_raw,01_raw / DE_stats.suppl_table.csv,11c6348b-f46d-48a3-8c22-7ae328f40c6c,f5cf2e070bc8a2fb2ce0c584b3277c4c,33983x16,4820370,OK,2026-07-10
+02_curated,02_curated / curated_targets.csv,506b62e3-4ad0-42a0-ac4d-b779a31f8121,5346cdd6e27237cc59419101088dcc3b,33983x18,5585305,OK,2026-07-10
+02_curated,02_curated / gate_passing_targets.csv,024cefa5-3a8f-4e4e-b82a-51f356a03960,5efd16dec06be518b3302609781f76e8,2131x18,374817,OK,2026-07-10
+03_processed,03_processed / effect_matrix.csv,e168ccb9-6d5d-427c-a5cf-93f388492f2f,dfb61e0c3a65fe1e9efa22fb85260018,11526x4,640678,OK,2026-07-10
+03_processed,03_processed / de_matrix.csv,a58b4ba0-da04-46b9-9ad2-21a3e632615c,3e6c03522620d0575445fdda70bf3b08,11526x4,221269,OK,2026-07-10
+04_statistical,04_statistical / summary_statistics.csv,419a18fa-4229-4b87-a373-1de23f79952d,f562a9c49313142dc238931c8a5d3b67,18x2,485,OK,2026-07-10
+04_statistical,04_statistical / condition_stats.csv,aeb64a9d-02e2-4e32-98d4-0c49a525db1c,5ffe137dffe32da8f13f3660eb6c53cc,3x4,142,OK,2026-07-10
+blindspot,blindspot / gene_gate_diagnosis.csv,8fd09c08-3ac6-48cc-99c9-95f78c0a1eb2,228c68bf4b467264de2d7852f10a7a1e,11526x10,1244863,OK,2026-07-10
+blindspot,blindspot / novelty_flags.csv,a7aa43c7-512f-49d8-bbf4-3f335329302c,ef693e5e685369e16a32562736c3377d,96x5,14672,OK,2026-07-10
+blindspot,blindspot / evidence_strength.csv,240e5948-6d34-4c5d-b974-c02800ffccc5,2a0064ec4093be9c52e953e8c188fa02,96x6,19898,OK,2026-07-10
+validation,validation / benchmark_results.csv,b5899e1f-e6ae-4de8-8438-7be8def535dd,4de9797db02301404ea4fb3d7fff9dd5,1225x4,25960,OK,2026-07-10
+validation,validation / dropout_diagnosis.csv,a76505a5-a3d7-4d2b-b6c7-0d6d2689b88f,1573a70a7873ea7c2fee644814851969,11526x8,656443,OK,2026-07-10
+validation,validation / context_specific_corrected.csv,26f49368-549f-4923-bf86-f02ca670180f,6ba620783550bd0c5dd3747cf5f0c993,96x6,5479,OK,2026-07-10
+audit,audit / cross_validation_results_en.csv,f7ad6ebe-09ef-45e8-89aa-a5d1041fd512,3c9f21204854d5159b9b23196a8e6790,24x7,2783,OK,2026-07-10
+audit,audit / parity_01_02.csv,14e94a94-1868-41db-b26d-8c22cbeaabc8,181be5d62b93786affdbbae61eab0cf9,25x7,2913,OK,2026-07-10
+audit,audit / parity_03.csv,fbc97a90-bde1-4662-a515-31c6e858aeca,c502b9d74fe87a750e3761fdaa28a8ac,4x10,565,OK,2026-07-10
+audit,audit / figure_registry.csv,af9b6263-e6d9-43f0-89b8-614761a4cce7,d125a1e62ee3bd7ab2c6b8e1ab0da8e0,8x8,7576,OK,2026-07-10
+audit,audit / reproducibility_bundle_v2.tar.gz,1ccbbc49-2d43-4e2d-8706-05bd23f8c424,aef56de3d1c2c28f7ada62ff9ce9949a,(binary),1263069,OK,2026-07-10
