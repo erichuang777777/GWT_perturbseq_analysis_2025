@@ -485,6 +485,47 @@ st.caption(
     "用途,非臨床或個人醫療決策依據。詳見 REPRODUCIBILITY.md。"
 )
 
+# ----- (1b) Quick-answer headline (persona fast-path) ---------------------- #
+# UX-flow fix: the readiness call + next validation step were only ever shown
+# at the very BOTTOM of the page (⑧), after 6 sections of raw statistics,
+# concept/mechanism detail, and safety/tractability chips. A clinician has to
+# scroll past all of that to find the one-line "so what"; a researcher has to
+# scroll the same distance to find the recommended next experiment even
+# though it is derived entirely from evidence shown further down. This card
+# promotes that same headline (computed once, in section ⑧ below -- no new
+# computation, no new decision path) to right after the header, and points
+# each persona at the section number they'll want to read next using the
+# page's own existing ①–⑧ numbering as an informal table of contents.
+st.markdown("### 🧭 快速結論(quick answer)")
+if not rrow:
+    st.info("此標的尚無 readiness 記錄——請見下方 ② 是否有統計證據。")
+else:
+    _qa_call = rrow.get("readiness_call")
+    _qa_next = rrow.get("next_validation_step")
+    _qa_flags = str(rrow.get("red_flag_override", "") or "")
+    qa_cols = st.columns([1, 2])
+    with qa_cols[0]:
+        st.markdown(
+            _labeled(
+                "Readiness call",
+                (f'<span class="gwt-chip gwt-chip--call">{_qa_call}</span>' if not _is_unknown(_qa_call) else _val_chip(_qa_call)),
+            ),
+            unsafe_allow_html=True,
+        )
+        if _qa_flags and _qa_flags.strip().lower() != "none":
+            st.caption(f"⚑ 被紅旗下修:{_qa_flags}")
+    with qa_cols[1]:
+        if not _is_unknown(_qa_next):
+            st.success(f"下一步驗證:{_qa_next}")
+        else:
+            st.caption("下一步驗證尚未定義(見下方 ⑧)。")
+st.caption(
+    "🩺 **臨床醫師快速路徑**:外部證據 trials/literature/genetics(見下方 ⑦)、"
+    "安全性與遺傳學(見下方 ⑤)、完整判定理由(見下方 ⑧)。  \n"
+    "🔬 **研究者快速路徑**:GWT 統計證據(見下方 ②)、多軸描述性摘要(見下方 ②b)、"
+    "CD4 概念剖面 + 機制圖(見下方 ③④)。"
+)
+
 # ----- (3) GWT evidence --------------------------------------------------- #
 st.subheader("② GWT 篩選證據(statistical / robustness)")
 if not summary:
