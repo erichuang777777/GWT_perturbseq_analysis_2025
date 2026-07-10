@@ -110,14 +110,6 @@ def _calibration(dataset_id: str) -> Dict[str, Any]:
     return _api_get(f"/api/calibration/{dataset_id}")
 
 
-@st.cache_data(ttl=300)
-def _evidence(gene: str) -> Optional[Dict[str, Any]]:
-    try:
-        return _api_get(f"/api/evidence/{gene}")
-    except Exception:
-        return None
-
-
 @st.cache_data(ttl=30)
 def _dataset_status(dataset_id: str) -> Dict[str, Any]:
     try:
@@ -243,24 +235,6 @@ def _count_chart(records: Iterable[Dict[str, Any]], label_col: str) -> pd.DataFr
     if df.empty or label_col not in df.columns or "n" not in df.columns:
         return pd.DataFrame()
     return df.set_index(label_col)[["n"]]
-
-
-def _evidence_graph(target: str, row: Dict[str, Any]) -> str:
-    pathway = str(row.get("pathway_axis") or "unassigned")
-    clinical = str(row.get("clinical_axis") or "unassigned")
-    grade = str(row.get("statistical_evidence_grade") or "NA")
-    cap = str(row.get("score_cap_reason") or "none")
-    return f"""
-digraph evidence {{
-  graph [rankdir=LR, bgcolor="transparent"];
-  node [shape=box, style="rounded,filled", color="#9fb3c8", fillcolor="#f5f7fa", fontname="Arial"];
-  edge [color="#6b7c93"];
-  "{target}" -> "{pathway}";
-  "{target}" -> "grade {grade}";
-  "{pathway}" -> "{clinical}";
-  "{clinical}" -> "{cap}";
-}}
-"""
 
 
 def _run_job() -> None:
@@ -771,89 +745,22 @@ def render_target_explorer() -> None:
         if not numeric_view.empty and "condition" in numeric_view.columns:
             st.bar_chart(numeric_view.set_index("condition"))
 
-        st.subheader("Readiness")
-        try:
-            readiness_rows = pd.DataFrame(_readiness(dataset_id).get("readiness", []))
-            target_readiness = readiness_rows[readiness_rows["target"] == selected] if not readiness_rows.empty else pd.DataFrame()
-            if not target_readiness.empty:
-                rr = target_readiness.iloc[0].to_dict()
-                rcols = st.columns(3)
-                rcols[0].metric("R-stage", rr.get("overall_readiness_stage", "NA"))
-                rcols[1].metric("Call", str(rr.get("readiness_call", "NA")))
-                rcols[2].metric("Red flags", str(rr.get("red_flag_override", "none")))
-                with st.expander("Readiness reasons", expanded=True):
-                    for part in str(rr.get("readiness_reasons", "")).split(";"):
-                        if part.strip():
-                            st.write(f"- {part.strip()}")
-                    st.info(f"Next validation step: {rr.get('next_validation_step', '')}")
-                st.dataframe(
-                    target_readiness[[c for c in ["condition", "overall_readiness_stage", "readiness_call", "biology_causality_score", "translation_score", "tractability_score", "red_flag_override"] if c in target_readiness.columns]],
-                    use_container_width=True,
-                    hide_index=True,
-                )
-
-                st.caption("Evidence components for this condition (not a summed total -- domains combine via rules, not addition).")
-                domain_cols = [
-                    "biology_causality_score",
-                    "translation_score",
-                    "tractability_score",
-                    "biomarker_score",
-                    "disease_relevance_score",
-                    "clinical_feasibility_score",
-                ]
-                domain_values = {}
-                for col in domain_cols:
-                    val = rr.get(col)
-                    domain_values[col] = pd.to_numeric(pd.Series([val]), errors="coerce").iloc[0]
-                waterfall_series = pd.Series(domain_values, name="score").dropna()
-                if not waterfall_series.empty:
-                    st.bar_chart(waterfall_series)
-                unknown_domains = [c for c in domain_cols if pd.isna(domain_values.get(c))]
-                if unknown_domains:
-                    st.caption(f"Not chartable (unknown -- no overlay/evidence yet): {', '.join(unknown_domains)}")
-            else:
-                st.info("No readiness record for this target.")
-        except Exception as e:
-            st.info(f"Readiness not available: {e}")
-
-        st.subheader("External evidence")
-        snapshot = _evidence(selected)
-        if snapshot is None:
-            st.info(f"No external evidence fetched yet for {selected}. Use the API to build it: POST /api/evidence/build {{\"genes\": [\"{selected}\"]}}")
-        else:
-            st.caption(f"Fetched {snapshot.get('fetched_at', 'NA')} · source_version {snapshot.get('source_version', 'NA')}")
-            ev_cols = st.columns(3)
-            sources = snapshot.get("sources", {})
-            with ev_cols[0]:
-                st.markdown("**Clinical trials**")
-                trials = sources.get("clinical_trials", {})
-                if trials.get("source_status") == "ok":
-                    for t in trials.get("items", [])[:5]:
-                        st.write(f"- [{t.get('nct_id', '')}]({t.get('url', '')}) {t.get('title', '')} ({t.get('phase') or 'NA'}, {t.get('status', 'NA')})")
-                    if not trials.get("items"):
-                        st.caption("No trials found.")
-                else:
-                    st.caption(f"unavailable: {trials.get('reason', 'not fetched')}")
-            with ev_cols[1]:
-                st.markdown("**Literature**")
-                lit = sources.get("literature", {})
-                if lit.get("source_status") == "ok":
-                    for item in lit.get("items", [])[:5]:
-                        st.write(f"- [{item.get('pmid', '')}]({item.get('url', '')}) {item.get('title', '')} ({item.get('year', 'NA')})")
-                    if not lit.get("items"):
-                        st.caption("No literature found.")
-                else:
-                    st.caption(f"unavailable: {lit.get('reason', 'not fetched')}")
-            with ev_cols[2]:
-                st.markdown("**Open Targets (tractability/genetics)**")
-                ot = sources.get("open_targets", {})
-                if ot.get("source_status") == "ok":
-                    st.write(ot.get("items", []))
-                else:
-                    st.caption(f"unavailable: {ot.get('reason', 'not fetched')}")
-
-        st.subheader("Evidence graph")
-        st.graphviz_chart(_evidence_graph(selected, summary_row))
+        # UX-flow fix (docs/ux_flow_stepwise_plan.md, Step 3): this used to carry
+        # its own inline Readiness / External-evidence / Evidence-graph section --
+        # a second, independently-maintained "single target" view that duplicated
+        # the real Target Dossier page and had already drifted from it (raw
+        # `st.metric(..., "NA")` instead of the `unknown != 0` chip treatment, no
+        # glossary, no quick-answer headline). Removed in favor of a deep-link to
+        # the one dossier that gets those fixes, so there is exactly one place
+        # this information is maintained.
+        st.divider()
+        st.info(
+            "完整的 Readiness 判定、外部證據(trials/literature/genetics)與機制圖,"
+            "請至該標的的完整檔案查看(含 unknown≠0 標示、名詞解釋、下一步驗證)。"
+        )
+        if st.button(f"開啟標的檔案:{selected} →", key="target_explorer_open_dossier"):
+            st.query_params.update({"dataset_id": dataset_id, "target": selected})
+            st.switch_page("pages/2_標的檔案_target_dossier.py")
 
         status = _dataset_status(dataset_id)
         lineage = status.get("lineage") or {}
@@ -886,7 +793,7 @@ def render_pathway_clinical() -> None:
             st.bar_chart(module_counts.set_index("module_name"))
 
     st.subheader("Module hit table")
-    st.dataframe(module_df, use_container_width=True, hide_index=True)
+    _selectable_table_with_dossier_link(module_df, "module_table")
 
 def render_imports() -> None:
     _render_imports_tab()
@@ -962,7 +869,7 @@ def render_disease() -> None:
             st.info(result.get("reason") or "No target-condition rows matched this indication at the current filters.")
         else:
             disease_df = pd.DataFrame(result["targets"])
-            st.dataframe(disease_df, use_container_width=True, hide_index=True)
+            _selectable_table_with_dossier_link(disease_df, "disease_table")
             if "disease_association_score" in disease_df.columns and "target" in disease_df.columns:
                 chart_df = disease_df.drop_duplicates("target").set_index("target")[["disease_association_score"]]
                 st.bar_chart(chart_df)
@@ -996,7 +903,7 @@ def render_disease() -> None:
                 ds_df = pd.DataFrame(ds_rows)
                 if "diseases" in ds_df.columns:
                     ds_df["diseases"] = ds_df["diseases"].map(lambda v: ", ".join(v) if isinstance(v, list) else v)
-                st.dataframe(ds_df, use_container_width=True, hide_index=True)
+                _selectable_table_with_dossier_link(ds_df, "double_support_table")
     except Exception as e:
         st.info(f"Double-support view not available: {e}")
 
