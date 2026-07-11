@@ -127,7 +127,7 @@ CRISPRi 的因果鏈為「標靶被抑制 → 下游轉錄改變」;若標靶自
 `calibration.py::control_panel_calibration()` 在真實參考資料集上雙向檢驗(`src/3_DE_analysis/calibration.py`;數字來源 `de_and_baseline_spec.md` §5):
 
 - **負對照**(`kd_status = not_measurable`,4,774 列):**99.96%** 正確落在 grade 1;**0%** 錯誤達 grade ≥3;**0%** 達 `advance`/`validate`。(列數為 4,774 而非早期 5,084,因 `kd_status/v2` 將 310 個 never-measured NaN 基線重分類為 `not_assessed`。)
-- **正對照**(21 基因,已確立之 CD4 表型:CD3D/E/G、CD28、ICOS、CTLA4、CD80/86、IL2RA、IL2RB、IL7R、LCK、ZAP70、JAK3、PTPN2、FOXP3、PTGER4、STAT5A/B、TNFRSF9):僅 **20%** 達嚴格 `statistical_evidence_grade ≥ 3`(需在特定條件同時跨捐贈者與跨 guide 穩健、≥2 guides),但 **93.1%** 未被就緒度引擎 `deprioritize`。
+- **正對照**(21 基因,已確立之 CD4 表型:CD3D/E/G、CD247、CD28、ICOS、CTLA4、CD80/86、IL2RA、IL2RB、IL7R、LCK、ZAP70、JAK3、PTPN2、FOXP3、PTGER4、STAT5A/B、TNFRSF9):僅 **20%** 達嚴格 `statistical_evidence_grade ≥ 3`(需在特定條件同時跨捐贈者與跨 guide 穩健、≥2 guides),但 **93.1%** 未被就緒度引擎 `deprioritize`。
 - **誠實詮釋**:grade 3/4 刻意是「此條件列一切吻合」的窄門,**不是**「是否為生物學上真標靶」的代理。低 grade 搭配未降級的 readiness 呼叫本身即具資訊量;為使正對照好看而放寬門檻,等於把指標校準到答案而非驗證它——故不為之。
 - **排序穩定度**:天真的「以 DE breadth 取 top-50」與嚴格過濾 top-50 僅 13/50 重疊(Spearman r = 0.943),為一項誠實發現:天真排序本身不具穩健性保證。
 - **正對照回復**:在 Stim8hr,校準回復全部 8 個 TCR/近端正對照於 top decile。

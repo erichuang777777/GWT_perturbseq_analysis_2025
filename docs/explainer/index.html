@@ -236,7 +236,7 @@
       </div>
       <div class="cites">
         <a class="cite" href="https://platform.opentargets.org/" target="_blank" rel="noopener">Open Targets<span class="src">·疾病與標靶</span></a>
-        <a class="cite" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMID:39657122" target="_blank" rel="noopener">Open Targets 2024<span class="src">·PMID 39657122</span></a>
+        <a class="cite" href="https://pubmed.ncbi.nlm.nih.gov/39657122/" target="_blank" rel="noopener">Open Targets 2024<span class="src">·PMID 39657122</span></a>
       </div>
     </div>
   </section>
@@ -278,7 +278,7 @@
     <div class="station-head"><span class="num">04</span><h2>Perturb-seq:上萬個實驗,逐一個細胞讀出來</h2></div>
     <div class="prose">
       <p>把「擾動基因(CRISPRi)」和「逐細胞讀取所有基因的活躍程度(單細胞 RNA 定序)」合在一起,就是 <strong>Perturb-seq</strong>。</p>
-      <p>想像一個超大的池子,裡面幾十萬顆細胞、每顆各被關掉一個不同的基因。定序技術能同時讀出<strong>每一顆細胞裡兩萬個基因各自開到多大</strong>,並且知道這顆細胞被動過哪個手腳。於是「一個基因被調弱後,牽動了哪些下游基因」就一次全部浮現。</p>
+      <p>想像一個超大的池子,裡面有極大量的細胞、每顆各被關掉一個不同的基因。定序技術能同時讀出<strong>每一顆細胞裡兩萬個基因各自開到多大</strong>,並且知道這顆細胞被動過哪個手腳。於是「一個基因被調弱後,牽動了哪些下游基因」就一次全部浮現。</p>
       <div class="why">
         <span class="lab">為什麼這一步重要</span>
         <p>這是把「一次一個」變成「一次全部」的關鍵。沒有 Perturb-seq,要涵蓋整個基因體需要幾萬次獨立實驗;有了它,一場實驗就能把整面開關牆掃過一遍。</p>
@@ -317,7 +317,7 @@
     <p class="kicker">從細胞到數字</p>
     <div class="station-head"><span class="num">06</span><h2>差異表現分析:把「反應」變成可比較的數字</h2></div>
     <div class="prose">
-      <p>拿到幾十萬顆細胞的讀數後,要回答的問題是:<strong>關掉基因 A 之後,哪些基因的活躍程度明顯變了?變多少?</strong>這個比較過程叫<strong>差異表現分析(DE)</strong>。</p>
+      <p>拿到極大量細胞的讀數後,要回答的問題是:<strong>關掉基因 A 之後,哪些基因的活躍程度明顯變了?變多少?</strong>這個比較過程叫<strong>差異表現分析(DE)</strong>。</p>
       <p>為了讓比較穩定,會先把「同一個擾動、同一位捐贈者、同一情境」的許多細胞<strong>合併成一份代表樣本</strong>(pseudobulk),再用統計方法(DESeq2)算出每個下游基因的變化幅度與可信度。整份資料最後濃縮成一張大表:</p>
       <div class="funnel" role="img" aria-label="資料規模:33,983 筆擾動×情境結果,涵蓋 10,282 個被測基因">
         <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 筆</div><span class="flabel"><b>擾動 × 情境</b> 的結果(每一列是一個基因在一種情境下的完整反應)</span></div>
