@@ -1,0 +1,73 @@
+/* IBM Plex Sans — weights 400/500/600/700 */
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+/* IBM Plex Mono — weights 400/500/600 */
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  color: #1a1d24;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+#root {
+  min-height: 100vh;
+}
+a {
+  color: #1a5fb4;
+  text-decoration: none;
+}
+a:hover {
+  color: #12488c;
+}
+::selection {
+  background: #dbe7fb;
+}
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+input:focus,
+textarea:focus {
+  outline: 2px solid #1a5fb4;
+  outline-offset: 0;
+}
+.rowhover:hover {
+  background: #f4f7fc !important;
+}
+.lift {
+  transition:
+    box-shadow 0.16s ease,
+    transform 0.16s ease,
+    border-color 0.16s ease;
+}
+.lift:hover {
+  box-shadow: 0 8px 28px -12px rgba(20, 40, 80, 0.28);
+  transform: translateY(-2px);
+  border-color: #c3d3ea !important;
+}
+.navlink {
+  transition: color 0.12s ease;
+  cursor: pointer;
+}
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cdd3dc;
+  border-radius: 6px;
+}
