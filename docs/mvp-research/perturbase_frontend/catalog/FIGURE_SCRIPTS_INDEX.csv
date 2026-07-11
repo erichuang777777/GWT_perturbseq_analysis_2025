@@ -1,0 +1,72 @@
+chart_id,script,language,packages,is_stub,version_id,artifact_id
+H6,H6_parallel_coords.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,c6ee9588-e70b-4d59-bdc9-77cf19821f45,0a852eb8-bbd0-4eef-9aa3-ca70fe2866ce
+H7,H7_parallel_categories.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,54331317-4832-40e6-b074-7ae23c4f4695,b01c3957-5a73-4b66-855e-84817f315bc2
+M1,M1_corr_heatmap.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,ece2d76d-4176-499c-b51c-7dbae62a9a32,f8f89d14-4385-441c-853b-53ef269ae422
+M10,M10_gene_condition_DE.py,Python,"['matplotlib', 'os', 'scipy']",False,6af9998c-201a-48c9-87f9-3c2a7d492c5a,66c9a9da-8bed-410c-8e0e-706b615bfb33
+M2,M2_cluster_heatmap.py,Python,"['matplotlib', 'os', 'scipy']",False,87727b13-b64f-44ea-8564-3e49f66986fe,72e5815a-1c36-464d-9f06-1f5d63ee48ce
+M3,M3_hexbin.py,Python,"['matplotlib', 'os']",False,8775b2c4-45ec-4a17-b179-55e289e04957,ccb8593e-e54b-4bd7-aae6-764b7a38e3cc
+M4,M4_density_scatter.py,Python,"['matplotlib', 'os']",False,8b542f6d-1aa6-4889-a33b-5c679dcf27a9,151db5c6-3fcd-4b83-9ae2-0e2a23f2218b
+M5,M5_scatter_matrix.py,Python,"['matplotlib', 'os', 'scipy']",False,060b0280-38e7-4fc1-8d70-9e9573547d28,3f880a45-7f96-4602-949a-1bb52739c75d
+M6,M6_condition_metric_heatmap.py,Python,"['matplotlib', 'os']",False,a08c0785-5b45-492d-986a-02debc3aa726,4feefd70-fcf0-4ae3-a2a4-337e8f38b85b
+M7,M7_joint_scatter.py,Python,"['matplotlib', 'os']",False,51048dba-7423-45dc-a63b-92e2a2164591,fefd3738-28cb-41b0-8ee1-59bbf0a3386c
+M8,M8_dendrogram.py,Python,"['matplotlib', 'os', 'scipy']",False,35f70607-3699-4fb6-82f5-375ee2013722,df7ed239-6b02-485d-8f5a-813386b05c71
+M9,M9_contour.py,Python,"['matplotlib', 'os', 'scipy']",False,bd7fa0dd-2cc7-4133-a3af-b4bbc531f0da,dc2bd995-9fae-4b36-b08b-5ee4de364d47
+N1,N1_string.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,cdb58820-1543-4661-8dde-ada71fab0fe4,538fd8f7-f539-4709-883f-cf3d146a07e5
+N2,N2_chord.py,Python,"['matplotlib', 'os', 'pandas']",False,583c8921-3f32-4006-966f-56dd79267586,bb423f1f-6a73-4945-b351-4ebf91bf4bbc
+N3,N3_venn.py,Python,"['matplotlib', 'matplotlib_venn', 'os', 'pandas']",False,43629d68-efe5-407e-a49d-6d6c7c107716,ae45b382-f527-40b0-a4bd-de51108d5dab
+N4,N4_manhattan.py,Python,"['matplotlib', 'os', 'pandas']",False,0867c3a4-3561-4891-b5e8-98911f62b51c,58cb77e4-f59d-4784-9525-638980b0419d
+N5,N5_slope.py,Python,"['matplotlib', 'os', 'pandas']",False,1125db6c-30fa-40c0-8d48-5ef39cc3da2f,d2f3b1e7-3082-4a44-bcab-9a3024a4d097
+N6,N6_stacked_area.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,2a673b4d-ad47-429e-b0fd-039db94529a7,bd0cea81-0431-498b-b68e-950ae1947a02
+N7,N7_N7_upset.py,Python,"['collections', 'matplotlib', 'os', 'pandas']",False,c22be9a7-0342-4f51-80f4-b3b5facd4f78,cc9efad2-17a5-40ac-958c-0e48a17e0149
+R1,R1_R1_lollipop.py,Python,"['matplotlib', 'numpy', 'pandas']",False,6c5417f5-7e0d-4f5f-b79b-f31a4722b45b,1505f434-6275-4cfb-a211-ca08c4aba95f
+R10,R10_R10_dotmatrix.py,Python,"['matplotlib', 'pandas']",False,5e373e10-5d35-4bf7-abb1-51b685a647f8,77cd60cd-65b3-4417-b1c9-37016b817278
+R2,R2_R2_diverging_bar.py,Python,"['matplotlib', 'numpy', 'pandas']",False,7d81c551-b747-40a6-966c-2c20cc00433e,616716f2-eaaf-44fd-9ae6-362d1735d395
+R3,R3_R3_stacked_bar.py,Python,"['matplotlib', 'pandas']",False,f608dc1d-57fa-4439-a5ba-5bef46c83a6c,25c4cb0b-fb39-46aa-bbff-568b0019cd89
+R4,R4_R4_waterfall.py,Python,"['matplotlib', 'pandas']",False,1a266a31-1917-4140-b960-6e296a5f6d57,a5cdec78-30a7-44fc-bd4e-17f10028134a
+R5,R5_R5_bubble.py,Python,"['matplotlib', 'pandas']",False,38aa9362-1c78-4617-9191-5cf4dfcbb953,187747c1-8122-4b4a-900b-08ef43abfaa5
+R6,R6_R6_grouped_bar.py,Python,"['matplotlib', 'numpy', 'pandas']",False,b1797c7f-9382-43de-9a82-becf50e6d484,0549d198-21b6-4295-8015-a4d48db90f61
+R7,R7_R7_errorbar.py,Python,"['matplotlib', 'pandas', 'scipy']",False,c4688838-0043-4feb-88fe-e91a9c06eb42,5aa06100-a140-440c-a469-73cb1d96a567
+R8,R8_R8_point.py,Python,"['matplotlib', 'pandas']",False,ceca7d3f-ffd9-4261-a128-397c92bf90f7,6d2ec458-b2e4-4f1b-93a8-b31caf34faee
+R9,R9_R9_MA.py,Python,"['matplotlib', 'pandas']",False,f318b477-fb07-497c-928d-b139468b019d,830cf436-89ad-446c-b88c-8186550ac003
+V1,V1_V1_PCA.py,Python,"['adjustText', 'matplotlib', 'numpy', 'os', 'pandas', 'sklearn']",False,c2d18ab2-04cc-4664-a091-138b0db893c9,ffbbae20-3aa9-42d2-8fba-90a1437e47cf
+V2,V2_V2_tSNE.py,Python,"['adjustText', 'matplotlib', 'numpy', 'os', 'pandas', 'sklearn']",False,1ed6bfe7-5d67-4263-ae3b-6e2467ecf75a,78c4b335-49f6-4766-94f5-c40c524f82ee
+V3,V3_V3_UMAP.py,Python,"['adjustText', 'matplotlib', 'numpy', 'os', 'pandas', 'sklearn']",False,683fbfc1-866b-428e-b40d-0e0281d1dc6f,96e82100-252b-4184-8062-a4bd3c2e5107
+V4,V4_V4_radar.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,808e6074-7167-490b-abb9-1819674fc203,6434c31c-f2b8-4626-8e65-b60358364f8f
+V5,V5_V5_circular_bar.py,Python,"['matplotlib', 'os', 'pandas']",False,5b99fc57-9469-4355-954f-84c92309264b,9bbb7838-376d-407d-b19c-73f047dec3a6
+V6,V6_V6_pca_biplot.py,Python,"['matplotlib', 'os', 'pandas', 'sklearn']",False,0301a9d3-977e-43c1-8a7b-c2ee632576dd,737bd576-0cc6-4644-8336-a6b356a19cf9
+A1,A1_benchmark_pr_roc.py,Python,"['matplotlib', 'numpy', 'os', 'pandas', 'scipy', 'sklearn']",False,658112ac-9ef0-41d6-a0df-9aca78379503,2b2626b9-d348-4741-a209-cb1e7fd8665c
+A2,A2_dropout_diagnosis.py,Python,"['gzip', 'matplotlib', 'numpy', 'os', 'pandas']",False,bc492448-f4ae-49c2-b4a4-c264be660a4d,9a193e64-30be-48b7-8705-5336fe293e67
+A3,A3_delivery_decision_funnel.py,Python,['matplotlib'],False,11f7a642-406b-4d2c-bb97-b5819a961e44,b22539f7-beaa-4f55-b79b-1705ff33a386
+A4,A4_kinetics_and_avoid.py,Python,"['matplotlib', 'numpy', 'pandas']",False,f409fd11-dc1d-4c61-8f83-1709c5aa3591,14afa569-3dac-4cec-b109-61c2aa2d31e1
+A5,A5_threshold_sensitivity_figure.py,Python,"['matplotlib', 'numpy', 'os', 'pandas', 'scipy']",False,cac2b9b7-331e-44bc-adb7-5e4cd0b12b46,6f957571-b789-42e5-81f2-3fad956ce9f6
+A6,A6_figure_target_validation.py,Python,"['matplotlib', 'numpy', 'os', 'pandas', 'sklearn']",False,d2bfb473-4652-4f7b-94c4-14a14a3cd371,df760e1e-ce53-4b9c-84d7-0845c387f36e
+A7,A7_level4_external_validation_figure.py,Python,"['PIL', 'matplotlib', 'numpy', 'os', 'pandas']",False,13a3aa83-3a93-4f24-b860-fc970ef9e0ff,bb1a56b7-b3b9-4d52-8cd3-7613a56a8fa0
+A8,A8_signed_application.py,Python,"['json', 'matplotlib', 'numpy', 'pandas']",False,3c64a078-8e17-4dde-bffc-4163d6936e50,bd722f52-07a8-4ca0-b1fd-3d67dd90051f
+A9,A9_lincs_concordance.py,Python,"['matplotlib', 'os', 'pandas', 'scipy']",False,9d725aa2-2489-4dca-95f8-72c8caf5fe70,3c7a2fe1-71bd-420a-8a39-b05ee226506b
+A10,A10_evidence_coverage_fix.py,Python,"['matplotlib', 'numpy', 'pandas', 'warnings']",False,84576ef1-d5fc-4e6e-89bc-751763a6390d,9bf69be5-cf38-4cf6-9918-364d9e091d5e
+A11,A11_dev_vs_user_gap.py,Python,['matplotlib'],False,9f07e127-a6f2-4713-a7d4-fcbb9a45f13c,baa7af5e-5cb2-49fb-aa05-a1bcc7f7898a
+A12,A12_cover_dual_perspective.py,Python,"['matplotlib', 'numpy', 'pandas']",False,7b03b4a6-137f-4661-966c-c0b7190f9d93,f66fb3c5-b55c-42eb-8236-1970f7a00afc
+A13,A13_COVER_target_ranking.py,Python,"['matplotlib', 'numpy', 'pandas']",False,91bf9f91-c025-4e32-97b8-9946d2bf29d3,6ce42136-e5d3-4b93-8e18-99050b73a117
+A14,A14_context_specific_corrected.py,Python,"['matplotlib', 'numpy', 'os', 'pandas']",False,d52d11aa-cbe5-4a04-b53f-08f7d385153a,bb861af4-8a59-402b-bc3b-67785e316615
+A15,A15_methodological_validation.py,Python,"['PIL', 'host', 'json', 'matplotlib', 'numpy', 'pandas', 'sklearn']",False,f231c1ec-57a2-4c14-935b-892b1013bf95,86bd7174-c019-4cca-b41f-abbe4955f695
+A16,A16_Figure1_integrated_story.py,Python,"['PIL', 'host', 'json']",False,7fae1bbf-e77c-4f4d-b6b1-7d2e450d797e,e570c8f7-f146-4748-a11e-8a784271fdf3
+A17,A17_figure1.py,unknown,[],True,c566c143-79c6-4cef-a90c-d13bfe222188,41347841-5a7b-4a86-85d6-e6c79a6690dc
+A18,A18_mechanism_map.py,Python,"['matplotlib', 'numpy', 'os', 'pandas', 'requests', 'time']",False,76013179-37b0-4e15-9d68-6ee5a627a365,7a497774-ad36-469b-8c54-7660824037a2
+C1,C1_C1_dotplot.py,Python,"['matplotlib', 'numpy', 'pandas']",False,0a9c4dbb-e2a3-48b2-b7f1-9b1bdef14978,563b2b37-c829-4f8e-be65-7a9e289b9f90
+C2,C2_C2_pseudovolcano.py,Python,"['matplotlib', 'pandas']",False,1e286a08-fe06-4dc8-b739-3af7a028967b,ecf11bd4-a632-4d40-ba58-c2c6202976a6
+C3,C3_C3_funnel.py,Python,"['matplotlib', 'numpy', 'pandas']",False,0237bee9-a055-4b34-873e-d6586937b3e7,2c1f95d0-7329-482e-bb7d-b2627073cd85
+D1,D1_D1_violin.py,Python,"['matplotlib', 'numpy', 'pandas']",False,604af51b-3f93-4f70-830f-d810f036a47a,dc54432d-f022-49ae-ad44-cc1d0c4c9aed
+D10,D10_D10_qq.py,Python,"['matplotlib', 'numpy', 'pandas', 'scipy']",False,74363963-b398-45f3-82aa-1aa2ebf3a1cf,33ac185a-e495-4fe8-bf7f-2513818c146f
+D2,D2_D2_box.py,Python,"['matplotlib', 'numpy', 'pandas']",False,f752a983-3f68-4255-b9db-0de2180e3d65,0a9b1489-eec3-4bd6-911b-19af950353f1
+D3,D3_D3_ridgeline.py,Python,"['matplotlib', 'numpy', 'pandas', 'scipy']",False,aed4b62a-c6c6-4667-b47c-91bd74f4885b,4bd72ef0-be08-4ddb-9cf0-ba76da818bd2
+D4,D4_D4_histogram.py,Python,"['matplotlib', 'numpy', 'pandas']",False,5f075774-38bf-402f-972f-30cfe3785e99,f5cd9f92-515a-4635-a7fc-a150e90e6c60
+D5,D5_D5_ecdf.py,Python,"['matplotlib', 'numpy', 'pandas']",False,c7298056-a0ac-4312-bcc6-c475c8c84215,5c8cf0ca-a967-4883-b5ed-49cb7df523b3
+D6,D6_D6_strip.py,Python,"['matplotlib', 'numpy', 'pandas']",False,ee5aff2c-61b3-4b57-b141-833f89ce7fad,7b3f1705-f6e7-45c8-b12b-339bd08868a1
+D7,D7_D7_swarm.py,Python,"['matplotlib', 'numpy', 'pandas']",False,c1cbcb56-e654-4a05-9f17-3379ed3565ed,6375213c-ee87-4c5c-8ac5-53275285258e
+D8,D8_D8_raincloud.py,Python,"['matplotlib', 'numpy', 'pandas', 'scipy']",False,9be99e32-4d2c-41c3-b210-3af727a01526,2ccd6edc-eb11-4771-88e8-74fd1baea216
+D9,D9_D9_kde.py,Python,"['matplotlib', 'numpy', 'pandas', 'scipy']",False,1c1adcd3-c357-4a70-8e5d-aee00bbfb953,5f15ca3a-ba9e-4323-96ad-653149250164
+H1,H1_H1_treemap.py,Python,"['matplotlib', 'numpy', 'pandas', 'squarify']",False,d97bdea4-8252-4be8-9325-6e44ed98ab43,241e2e4a-3e51-408b-844c-d2fe219114d3
+H2,H2_H2_sunburst.py,Python,"['matplotlib', 'numpy', 'pandas']",False,d3190378-4dfe-4ebe-8712-026ac0223b9c,0bddd89a-2667-4dde-991b-588d11bc26e5
+H3,H3_H3_icicle.py,Python,"['matplotlib', 'numpy', 'pandas']",False,6d59c9ce-5212-4d6b-8fdb-33dd8466fbb8,6ee60b63-c35a-45fc-ae72-6d5719b11271
+H4,H4_H4_sankey.py,Python,"['matplotlib', 'numpy', 'pandas']",False,be2cb6ae-43bf-41b2-b493-86f76f944136,19244117-7a9c-4b02-a1dd-effed1397298
+H5,H5_H5_funnel.py,Python,"['matplotlib', 'numpy', 'pandas']",False,7a994571-6c60-48b7-9a36-c514d764f4ef,d21ecda0-750d-4406-b42d-05d8e8347385
