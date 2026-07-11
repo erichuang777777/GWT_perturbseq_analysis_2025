@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 160" role="img" aria-label="Perturbase logo">
+  <title>Perturbase wordmark</title>
+
+  <!-- ==== geometric icon: rounded square node with signed up/down chevrons ==== -->
+  <rect x="16" y="16" width="128" height="128" rx="30" fill="#2f3b4c"/>
+  <!-- upregulation chevron (orange) -->
+  <path d="M52 92 L80 60 L108 92" fill="none" stroke="#d97757"
+        stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- downregulation chevron (blue) -->
+  <path d="M52 78 L80 110 L108 78" fill="none" stroke="#6a9bcc"
+        stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ==== wordmark ==== -->
+  <text x="176" y="102"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'Segoe UI', sans-serif"
+        font-size="76" font-weight="700" letter-spacing="-2" fill="#2f3b4c">Perturb<tspan fill="#d97757">base</tspan></text>
+</svg>
