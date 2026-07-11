@@ -63,6 +63,15 @@ coverage numbers, versioning) see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILI
 dashboard's own `unknown != 0` discipline and `advance`/`grade` glossary are explained there and
 inside the app itself (look for the ℹ️ 名詞解釋 expander).
 
+### Upload your own screen (live)
+
+After `make api`, open **`http://127.0.0.1:8000/upload`** — a standalone page that stages a CSV
+DE table through the real pipeline (upload → column-mapping → approve → merge) and shows the actual
+readiness call from the same engine that scores the reference dataset. It talks only to the live
+`/api/imports/*` endpoints, and is kept separate from the static React portal (`frontend/webserver/`,
+which is frozen for release). Guide-less uploads are honestly reported: on-target knockdown is
+`not_assessed` (genuinely unknown, `unknown != 0`) and grade is capped accordingly.
+
 ### Limitations
 
 This platform is based on primary human CD4⁺ T cell CRISPRi Perturb-seq across Rest/Stim8hr/Stim48hr conditions, with limited donors, transcriptomic readouts, and hypothesis-generating interpretation only. Results require orthogonal validation such as independent guides, donor replication, protein/functional assays, and disease-context models before therapeutic interpretation.

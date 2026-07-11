@@ -134,6 +134,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "genes": "api.routers.genes",
     "population": "api.routers.population",
     "imports": "api.routers.imports",
+    "upload_ui": "api.routers.upload_ui",
     "mechanism": "api.routers.mechanism",
     "individual_concept": "api.routers.individual_concept",
     "disease_drug": "api.routers.disease_drug",

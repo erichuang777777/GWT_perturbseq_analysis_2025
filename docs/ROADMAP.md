@@ -6,10 +6,11 @@ honest forward pointer. Paired with `docs/KNOWN_LIMITATIONS.md`.
 
 ## Near-term (frontend / upload workstream — separate PRs)
 
-- **Standalone live upload tool** (chosen approach "C"): a self-contained tool
-  that hits the live FastAPI `/api/imports/*` flow (upload → column-mapping →
-  approve → merge → real readiness), kept separate from the static portal so the
-  frozen portal stays untouched.
+- ✅ **Standalone live upload tool** (approach "C") — **shipped**: `GET /upload`
+  (`src/3_DE_analysis/api/routers/upload_ui.py`) drives the live FastAPI
+  `/api/imports/*` flow (upload → column-mapping → approve → merge → real
+  readiness), kept separate from the static portal so the frozen portal stays
+  untouched. Guarded by `tests/test_upload_ui.py`.
 - **Fix stale build wiring** (see KNOWN_LIMITATIONS "stale build wiring"):
   - point `Makefile` `dashboard`/`dev` at the React `frontend/webserver` (Vite),
     or remove the dead Streamlit targets;
