@@ -43,6 +43,7 @@ CD4 Perturb-seq 標靶探索工具是一套建立在 **Marson lab CD4 T 細胞 P
 - `docs/IMPLEMENTATION_PLAN.md` — 活的實作計劃(每個 Wave 的完成/驗證表)
 - `docs/data_dictionary.md` — 每個產出欄位的逐欄定義
 - `docs/technical_methods.md` — 技術方法與驗證說明(peer-review 等級,含正式參考文獻)
+- `docs/figure_guide.md` — 圖表導讀(科研人員):把 codebase 圖表整理成正式閱讀路徑,含嵌入圖與判讀
 - `docs/de_and_baseline_spec.md` — NTC 基線與 DE 方法學
 - `docs/data_governance_checklist.md` — 資料治理與授權檢查清單
 - `docs/cache_and_versioning_policy.md` — 快取與版本失效政策
