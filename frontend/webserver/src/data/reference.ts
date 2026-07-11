@@ -1,9 +1,10 @@
 import type { Call, ColorSet, Figure, Grade, GradeStyle } from "./types";
-import { SOURCE_VERSION } from "./dataset";
 
-// Short badge label (header/footer). Full real provenance lives in SOURCE_VERSION.
+// Short badge label (header/footer). Full real provenance lives in
+// data/dataset.ts's SOURCE_VERSION (a live `let` export populated after
+// loadDataset() resolves) -- import that directly rather than re-exporting
+// it here as a `const`, which would freeze it at its pre-load empty value.
 export const DATA_VERSION = "GWT-CD4 real-data v1";
-export const DATASET_SOURCE = SOURCE_VERSION;
 
 export const READINESS: Record<Call, ColorSet> = {
   advance: { label: "Advance", color: "#0a6e4f", bg: "#e4f3ec", dot: "#0d7d5a" },

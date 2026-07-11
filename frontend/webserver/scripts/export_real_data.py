@@ -7,10 +7,12 @@ value that isn't backed by one of these files:
 
   - sources/target_tool_cache/<run-id>/target_cards.csv
       Real per-target-per-condition statistics from the genome-scale CD4
-      Perturb-seq screen (effect size, FDR, DE gene counts, grade, ...).
+      Perturb-seq screen (effect size, FDR, DE gene counts, grade, ...) —
+      11,526 genes, 33,983 gene x condition rows.
   - src/3_DE_analysis/core/readiness.py (compute_readiness)
       The repo's own deterministic readiness engine — run as-is, not
-      reimplemented. Produces readiness_call / stage / reasons / next step.
+      reimplemented, on the FULL card set. Produces readiness_call / stage /
+      reasons / next step for every gene x condition row.
   - src/3_DE_analysis/individual_concept_profile.py (load_concept_modules)
       The real M01-M20 immune concept module definitions (seed gene lists).
   - src/3_DE_analysis/concept_annotation.py (annotate_targets)
@@ -18,24 +20,44 @@ value that isn't backed by one of these files:
   - sources/target_tool_cache/_evidence/<GENE>.json
       Real, already-fetched Open Targets / ClinicalTrials.gov / PubMed
       snapshots (tractability, disease associations, safety liabilities,
-      clinical trials, literature) — the *only* genes this export selects
-      are the ones this cache actually covers (21 genes), so the target
-      list itself is not an arbitrary curation.
+      clinical trials, literature) — only fetched for 21 genes. Every target
+      in the portal gets real statistics + a real readiness call regardless;
+      this deeper external evidence is populated only for the genes this
+      cache actually covers, and left empty (not fabricated) for the rest.
   - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics.
+      Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
+
+Target selection: every gene whose best-condition statistical_evidence_grade
+is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
+primary-condition readiness_call is "advance" or "watchlist" — not an
+arbitrary curation, a disclosed statistical threshold applied to the full
+real screen. Below MIN_GRADE, "deprioritize" calls (the overwhelming
+majority of the remaining low-grade genes) are intentionally excluded.
 
 Anything not present in these sources is emitted as JSON `null` (never a
 fabricated 0 or placeholder), matching this project's own "unknown != 0"
-discipline (see docs/architecture_refactor_plan.md, core/readiness.py).
+discipline (see docs/architecture_refactor_plan.md, core/readiness.py). Gene
+full names are standard HGNC nomenclature for the 21 evidence-cache genes
+(verified by hand); every other gene displays its symbol as its name rather
+than a guessed/fabricated full name.
+
+The readiness engine and concept annotation run once over all 33,983 rows
+(~15s) and are then CACHED to sources/target_tool_cache/_cache/*.parquet so
+re-running this export (e.g. after only touching GENE_FULL_NAMES or the JSON
+shape) does not repeat that computation. Pass --force to recompute after
+readiness.py / concept_annotation.py / target_cards.csv itself changes — the
+cache is otherwise trusted whenever it's newer than target_cards.csv.
 
 Usage (from repo root):
-    pip install pandas numpy pyyaml
-    python3 frontend/webserver/scripts/export_real_data.py
+    pip install pandas numpy pyyaml pyarrow
+    python3 frontend/webserver/scripts/export_real_data.py [--force]
 
-Writes frontend/webserver/src/data/generated/real-dataset.json.
+Writes frontend/webserver/public/real-dataset.json (fetched at runtime, not
+bundled into the JS -- see src/data/dataset.ts).
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -54,7 +76,21 @@ GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
 ESSENTIALS_TSV = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 BROAD_EFFECT_TXT = REPO_ROOT / "sources" / "broad_effect_genes.txt"
 
-OUT_PATH = Path(__file__).resolve().parents[1] / "src" / "data" / "generated" / "real-dataset.json"
+# Cached full-screen compute_readiness / annotate_targets output (see module
+# docstring). Committed to the repo so nobody has to pay the ~15s recompute
+# just to regenerate the frontend JSON.
+CACHE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_cache"
+READINESS_CACHE = CACHE_DIR / "readiness_full.parquet"
+ANNOTATED_CACHE = CACHE_DIR / "concept_annotated_full.parquet"
+
+# Minimum best-condition statistical_evidence_grade for a gene to be included,
+# UNION any gene (any grade) whose primary-condition readiness_call is
+# "advance" or "watchlist" — see README's Data section.
+MIN_GRADE = 2
+
+# public/ (not src/) -- at ~7,200 genes this is fetched at runtime, not
+# bundled into the JS (see src/data/dataset.ts's loadDataset()).
+OUT_PATH = Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
 
 # Standard HGNC full names for the 21 genes this export covers. Public
 # nomenclature, not evidence -- kept separate from every statistic/score
@@ -110,7 +146,28 @@ def load_evidence(gene: str) -> dict | None:
     return json.loads(p.read_text())
 
 
+def parse_score(v):
+    """Undo the str() coercion applied to disease_relevance_score before caching."""
+    if v is None or v == "unknown":
+        return "unknown"
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return v
+
+
+def _cache_is_fresh() -> bool:
+    if not (READINESS_CACHE.exists() and ANNOTATED_CACHE.exists()):
+        return False
+    cards_mtime = CARDS_CSV.stat().st_mtime
+    return READINESS_CACHE.stat().st_mtime >= cards_mtime and ANNOTATED_CACHE.stat().st_mtime >= cards_mtime
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--force", action="store_true", help="Recompute readiness/annotation even if a fresh cache exists.")
+    args = parser.parse_args()
+
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     from data.loaders import load_gene_set
@@ -118,32 +175,66 @@ def main() -> None:
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
     cards = pd.read_csv(CARDS_CSV)
+    print(f"Full screen: {len(cards)} gene x condition rows, {cards['target'].nunique()} unique genes", file=sys.stderr)
 
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
-    print(f"Evidence-cache genes ({len(evidence_genes)}): {evidence_genes}", file=sys.stderr)
+    print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
 
-    gene_cards = cards[cards["target"].isin(evidence_genes)].copy()
-    print(f"target_cards rows for these genes: {len(gene_cards)}", file=sys.stderr)
+    if not args.force and _cache_is_fresh():
+        print(f"Reading cached readiness/annotation from {CACHE_DIR} (pass --force to recompute)...", file=sys.stderr)
+        readiness = pd.read_parquet(READINESS_CACHE)
+        annotated = pd.read_parquet(ANNOTATED_CACHE)
+    else:
+        overlays = load_overlays(GENE_LISTS_DIR)
+        essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
+        broad_effect = load_gene_set(BROAD_EFFECT_TXT) if BROAD_EFFECT_TXT.exists() else set()
 
-    overlays = load_overlays(GENE_LISTS_DIR)
-    essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
-    broad_effect = load_gene_set(BROAD_EFFECT_TXT) if BROAD_EFFECT_TXT.exists() else set()
+        def evidence_lookup(gene: str):
+            return load_evidence(gene)
 
-    def evidence_lookup(gene: str):
-        return load_evidence(gene)
+        print("Running the repo's real readiness engine (core.readiness.compute_readiness) on the full screen (~15s, cached after)...", file=sys.stderr)
+        readiness = compute_readiness(
+            cards,
+            overlays=overlays,
+            essentials=essentials,
+            broad_effect_genes=broad_effect,
+            evidence_lookup=evidence_lookup,
+        )
+        # disease_relevance_score is int-or-"unknown" (readiness.py's UNKNOWN
+        # sentinel) -- a genuinely mixed-type column parquet can't store.
+        # Stringify uniformly here so the cached and freshly-computed frames
+        # have identical dtypes; parse_score() below undoes this on read.
+        readiness["disease_relevance_score"] = readiness["disease_relevance_score"].apply(str)
+        # Keep only the columns this export actually reads -- shrinks the
+        # cache and drops other mixed-type/unused columns (e.g.
+        # genetic_support_max_genetic_score) we'd otherwise have to placate
+        # parquet about for no benefit.
+        readiness = readiness[[
+            "target", "condition", "red_flag_override", "readiness_call",
+            "overall_readiness_stage", "readiness_reasons", "next_validation_step",
+            "biology_causality_score", "translation_score", "translation_capped_by",
+            "tractability_score", "tractability_modality", "human_genetic_support",
+            "disease_relevance_score", "clinical_feasibility_score",
+            "composite_safety_liability", "genetic_support_confidence",
+            "has_external_evidence",
+        ]].copy()
 
-    print("Running the repo's real readiness engine (core.readiness.compute_readiness)...", file=sys.stderr)
-    readiness = compute_readiness(
-        gene_cards,
-        overlays=overlays,
-        essentials=essentials,
-        broad_effect_genes=broad_effect,
-        evidence_lookup=evidence_lookup,
-    )
+        print("Running real concept-module annotation (concept_annotation.annotate_targets) on the full screen...", file=sys.stderr)
+        modules_for_cache = load_concept_modules()
+        annotated_full = annotate_targets(cards, modules=modules_for_cache)
+        # This export only ever reads target/condition/stimulation_gated back
+        # off the annotated frame (module membership itself comes from
+        # load_concept_modules() directly) -- drop the nested
+        # concept_modules list-of-dicts column, which parquet can't round
+        # -trip as cleanly, rather than fight with its serialization.
+        annotated = annotated_full[["target", "condition", "stimulation_gated"]].copy()
 
-    print("Running real concept-module annotation (concept_annotation.annotate_targets)...", file=sys.stderr)
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        readiness.to_parquet(READINESS_CACHE, index=False)
+        annotated.to_parquet(ANNOTATED_CACHE, index=False)
+        print(f"Cached readiness -> {READINESS_CACHE.relative_to(REPO_ROOT)}, annotation -> {ANNOTATED_CACHE.relative_to(REPO_ROOT)}", file=sys.stderr)
+
     modules = load_concept_modules()
-    annotated = annotate_targets(gene_cards, modules=modules)
 
     gnomad = pd.read_csv(GNOMAD_CSV) if GNOMAD_CSV.exists() else pd.DataFrame(columns=["ensembl_id", "gene_symbol", "loeuf", "pli"])
     gnomad_by_gene = {r["gene_symbol"]: r for _, r in gnomad.iterrows()}
@@ -153,25 +244,46 @@ def main() -> None:
         for g in m["seed_genes"]:
             module_by_gene.setdefault(g, []).append(m)
 
-    targets_out = []
-    for gene in evidence_genes:
-        g_cards = gene_cards[gene_cards["target"] == gene]
-        if g_cards.empty:
-            print(f"  SKIP {gene}: no target_cards rows", file=sys.stderr)
+    # Primary condition per gene = highest statistical_evidence_grade, tie-broken by lowest fdr_min.
+    cards = cards.assign(
+        _grade=pd.to_numeric(cards["statistical_evidence_grade"], errors="coerce").fillna(0),
+        _fdr=pd.to_numeric(cards["fdr_min"], errors="coerce").fillna(1.0),
+    )
+    primary_rows = cards.sort_values(["_grade", "_fdr"], ascending=[False, True]).groupby("target", as_index=False).head(1)
+    primary_by_gene = {r["target"]: r for _, r in primary_rows.iterrows()}
+
+    readiness_indexed = readiness.set_index(["target", "condition"])
+    grade_max_by_gene = cards.groupby("target")["_grade"].max()
+
+    def primary_call(gene: str, primary_row: pd.Series):
+        key = (gene, primary_row["condition"])
+        if key not in readiness_indexed.index:
+            return None
+        return readiness_indexed.loc[key]
+
+    # Selection: grade>=MIN_GRADE anywhere for that gene, UNION primary-condition
+    # readiness_call in (advance, watchlist) — deprioritize calls below MIN_GRADE
+    # are intentionally excluded.
+    selected_genes = set()
+    for gene, prow in primary_by_gene.items():
+        if grade_max_by_gene.get(gene, 0) >= MIN_GRADE:
+            selected_genes.add(gene)
             continue
+        r = primary_call(gene, prow)
+        if r is not None and r["readiness_call"] in ("advance", "watchlist"):
+            selected_genes.add(gene)
+    selected_genes = sorted(selected_genes)
+    print(f"Selected {len(selected_genes)} genes (grade>={MIN_GRADE} OR primary-condition readiness_call in advance/watchlist)", file=sys.stderr)
+
+    targets_out = []
+    for gene in selected_genes:
+        g_cards = cards[cards["target"] == gene]
         g_readiness = readiness[readiness["target"] == gene]
         g_annot = annotated[annotated["target"] == gene]
 
-        # Primary condition = highest statistical_evidence_grade, tie-broken by lowest fdr_min.
-        g_cards_sorted = g_cards.assign(
-            _grade=pd.to_numeric(g_cards["statistical_evidence_grade"], errors="coerce").fillna(0),
-            _fdr=pd.to_numeric(g_cards["fdr_min"], errors="coerce").fillna(1.0),
-        ).sort_values(["_grade", "_fdr"], ascending=[False, True])
-        primary_row = g_cards_sorted.iloc[0]
+        primary_row = primary_by_gene[gene]
         primary_condition = primary_row["condition"]
-
-        r_row_df = g_readiness[g_readiness["condition"] == primary_condition]
-        r_row = r_row_df.iloc[0] if not r_row_df.empty else None
+        r_row = primary_call(gene, primary_row)
 
         conditions_out = []
         for _, crow in g_cards.iterrows():
@@ -291,7 +403,7 @@ def main() -> None:
                 "tractabilityScore": nan_to_none(r_row.get("tractability_score")),
                 "tractabilityModality": r_row.get("tractability_modality"),
                 "humanGeneticSupport": r_row.get("human_genetic_support"),
-                "diseaseRelevanceScore": nan_to_none(r_row.get("disease_relevance_score")),
+                "diseaseRelevanceScore": parse_score(r_row.get("disease_relevance_score")),
                 "clinicalFeasibilityScore": nan_to_none(r_row.get("clinical_feasibility_score")),
                 "compositeSafetyLiability": r_row.get("composite_safety_liability"),
                 "geneticSupportConfidence": r_row.get("genetic_support_confidence"),

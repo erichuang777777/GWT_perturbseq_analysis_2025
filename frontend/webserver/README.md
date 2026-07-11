@@ -36,14 +36,29 @@ repo's own pipeline** — not mock or illustrative values. `scripts/export_real_
   tagging.
 - `sources/target_tool_cache/_evidence/<GENE>.json` — real, already-fetched Open Targets /
   ClinicalTrials.gov / PubMed snapshots (tractability, disease associations, safety
-  liabilities, clinical trials, literature). **The 20 targets in the portal are exactly the
-  genes this cache covers** — not an arbitrary curation.
-- `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` — real gnomAD v4 LOEUF/pLI.
+  liabilities, clinical trials, literature) — fetched for 21 genes only.
+- `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` — real gnomAD v4 LOEUF/pLI
+  (16 genes).
 
-Anything those sources didn't have is emitted as `null` / rendered as `unknown` — never a
-fabricated value (see `unknown ≠ 0` below). The **figure atlas is the one section that still
-renders synthetic, deterministically-generated series** — every figure's caption says so; that
-data hasn't been swapped for the real notebook outputs yet.
+**Target selection (7,249 genes):** every gene whose best-condition `statistical_evidence_grade`
+is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose primary-condition
+`readiness_call` is `advance` or `watchlist` — a disclosed statistical threshold over the full
+11,526-gene screen, not an arbitrary curation. Below `MIN_GRADE`, `deprioritize` calls (4,277 of
+the remaining 4,290 lower-grade genes) are intentionally excluded; only the 13 lower-grade genes
+that still call `watchlist` are added back in, alongside the 302 `advance` genes (already a
+subset of the grade threshold). Every one of these 7,249 targets gets real statistics, a real
+readiness call, and real concept-module membership (where applicable). The deeper external-evidence
+panels (disease associations, tractability flags, safety liabilities, clinical trials,
+literature, gnomAD constraint) are populated only for the 21 genes the evidence cache covers —
+the rest honestly render `unknown` / "no record indexed" in those panels rather than a
+fabricated value. Gene "name" is standard HGNC nomenclature (hand-verified) for the 21
+evidence-cache genes; every other gene displays its symbol as its name rather than a guessed
+full name.
+
+Anything a source didn't have is emitted as `null` / rendered as `unknown` — never a fabricated
+value (see `unknown ≠ 0` below). The **figure atlas is the one section that still renders
+synthetic, deterministically-generated series** — every figure's caption says so; a separate
+effort is wiring that to real outputs.
 
 Design discipline:
 
@@ -57,19 +72,29 @@ Design discipline:
 
 ```bash
 # from the repo root
-pip install pandas numpy pyyaml
-python3 frontend/webserver/scripts/export_real_data.py
+pip install pandas numpy pyyaml pyarrow
+python3 frontend/webserver/scripts/export_real_data.py           # uses the cache if fresh
+python3 frontend/webserver/scripts/export_real_data.py --force   # recompute readiness/annotation
 ```
 
-Writes `src/data/generated/real-dataset.json`, which `src/data/dataset.ts` imports directly.
+`core.readiness.compute_readiness` and `concept_annotation.annotate_targets` run once over all
+33,983 gene × condition rows (~15s) and are then **cached** to
+`sources/target_tool_cache/_cache/{readiness_full,concept_annotated_full}.parquet` — committed
+to the repo so nobody has to pay that recompute just to regenerate the frontend JSON. The cache
+is trusted whenever it's newer than `target_cards.csv`; pass `--force` after changing
+`readiness.py` / `concept_annotation.py` themselves.
+
+Writes `public/real-dataset.json` (~18 MB / ~965 kB gzipped — see "Build" below for why this is
+a runtime-fetched static asset rather than a JS import).
 
 ### Wiring to the live API (follow-up)
 
-`src/data/dataset.ts` is the only seam: swap its static JSON import for `fetch` calls to the
-FastAPI endpoints under `src/3_DE_analysis/api/` (run the API and hit `/docs` for the live
-OpenAPI schema). The UI reads everything through the logic/selector layer in `src/lib/`, so
-only the data layer needs to change. The figure atlas would separately need its synthetic
-generators (`src/lib/drawFigure.ts`) replaced with the real notebook outputs.
+`src/data/dataset.ts`'s `loadDataset()` is the only seam: swap its `fetch('/real-dataset.json')`
+for calls to the FastAPI endpoints under `src/3_DE_analysis/api/` (run the API and hit `/docs`
+for the live OpenAPI schema) — ideally with server-side pagination/filtering given the target
+count. The UI reads everything through the logic/selector layer in `src/lib/`, so only the data
+layer needs to change. The figure atlas would separately need its synthetic generators
+(`src/lib/drawFigure.ts`) replaced with the real notebook outputs.
 
 ## Develop
 
@@ -86,11 +111,21 @@ npm run build      # type-checks then emits a static bundle to dist/
 npm run preview    # serve the production build locally
 ```
 
-Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened; the
-initial bundle is ~90 kB gzipped.
+Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened. The
+real dataset (~18 MB / ~965 kB gzipped at 7,249 genes) is **not** bundled into the JS — it's
+fetched once at startup from `public/real-dataset.json` (see `src/data/dataset.ts`'s
+`loadDataset()`, gated in `main.tsx` behind a small loading screen), which keeps the main JS
+bundle itself at ~94 kB gzipped and lets the browser cache the data independently of app-code
+deploys.
+
+The **explorer table is virtualized** (`@tanstack/react-virtual`) — with 7,249 real targets,
+only the rows scrolled into view are mounted as DOM nodes (~25–40 at a time regardless of list
+length). The composite-priority weight sliders also throttle their store updates to one commit
+per animation frame rather than one per native `input` event, so dragging a slider doesn't
+trigger a full re-rank + re-render on every pixel of mouse movement.
 
 ## Stack
 
-React 19 · TypeScript · Vite · Plotly (`plotly.js-dist-min`) · IBM Plex Sans/Mono
-(`@fontsource`). State lives in a small context store (`src/store/`) with `cd4portal.*`
-`localStorage` persistence for weights, shortlist, and reviewer decisions.
+React 19 · TypeScript · Vite · Plotly (`plotly.js-dist-min`) · `@tanstack/react-virtual` ·
+IBM Plex Sans/Mono (`@fontsource`). State lives in a small context store (`src/store/`) with
+`cd4portal.*` `localStorage` persistence for weights, shortlist, and reviewer decisions.
