@@ -253,6 +253,7 @@ Open Targets `39657122` · ChEMBL 2023 `37933841` · CELLxGENE Discover/Census `
 ### 5.1 `docs/`(權威規格與計劃)
 | 檔案 | 內容 |
 |---|---|
+| `technical_methods.md` | **技術方法與驗證說明**(peer-review 等級:資料出處、方法、校準、限制、正式參考文獻) |
 | `IMPLEMENTATION_PLAN.md` | **活的實作計劃**(每個 Wave 完成/驗證表,權威狀態) |
 | `DRUG_DISCOVERY_TOOL_DEVELOPMENT_PLAN.md` | 策略層:為什麼做、功能面 |
 | `data_dictionary.md` | 每個產出欄位逐欄定義 |
