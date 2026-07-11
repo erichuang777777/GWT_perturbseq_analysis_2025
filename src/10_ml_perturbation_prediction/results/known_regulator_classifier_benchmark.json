@@ -1,9 +1,9 @@
 {
-  "method": "known-regulator classifier: LogisticRegression / RandomForest / HistGradientBoosting vs the existing simple ctx_specific_de ranking (AUROC 0.85)",
+  "method": "known-regulator classifier: LogisticRegression / LinearSVC / kNN / RandomForest / HistGradientBoosting vs the existing simple ctx_specific_de ranking (AUROC 0.85). Deep analysis on the ablated set adds: AUPRC (prevalence-appropriate for 1% positives), permutation null p-values (n_perm=5000, statistical power with only 13 positives), precision@k + positive-rank distribution, and single-SAFE-feature + random-dummy baselines.",
   "task": "y = 1 if truth_class=='positive' (13 genes) else 0 (1,211 'rest' + 1 'negative' = 1,212) -- same operative definition as the existing baseline ('positives vs rest'), not a balanced classification task (only 1 confirmed negative survives the n>=200 cell gate).",
   "cv": "RepeatedStratifiedKFold n_splits=5 x n_repeats=10, random_state=0; reports auroc_mean/std across repeats and win_rate (fraction of repeats beating the recomputed baseline) -- with only 13 positives, a single split's AUROC is too noisy to trust on its own.",
   "leakage_note": "CIRCULAR_COLUMNS are literal inputs to the ctx_specific_de formula (verified via CD3E's real numbers); LABEL_ADJACENT_COLUMNS (n_concept_modules) correlates with how the canonical positive list was curated, not with the score. A model that only wins with these included and loses once they're removed is reproducing the baseline in disguise, not learning new signal -- see 'ablated' results for the honest answer.",
-  "elapsed_seconds": 307.95625281333923,
+  "elapsed_seconds": 479.64264035224915,
   "full": {
     "feature_set": "full (includes CIRCULAR + LABEL_ADJACENT)",
     "n_features": 43,
@@ -97,6 +97,76 @@
         "auroc_win_rate": 1.0,
         "beats_baseline_auprc_on_mean": true,
         "auprc_win_rate": 0.6
+      },
+      "linear_svm": {
+        "auroc_mean": 0.9105991368367606,
+        "auroc_std": 0.022924582580919412,
+        "auroc_per_repeat": [
+          0.9212998222899214,
+          0.9043538969281544,
+          0.8552932216298552,
+          0.9203478040111703,
+          0.9344376745366845,
+          0.8900736227468901,
+          0.9347550139629347,
+          0.900926631124651,
+          0.9244732165524245,
+          0.9200304645849201
+        ],
+        "auprc_mean": 0.42544652458406773,
+        "auprc_std": 0.07644420905717306,
+        "auprc_per_repeat": [
+          0.525955677026199,
+          0.32059001820752714,
+          0.3127761129813467,
+          0.3983914914381207,
+          0.4533864055789362,
+          0.39207119356562165,
+          0.5294606291748609,
+          0.3750398978094871,
+          0.428336909560588,
+          0.51845691049799
+        ],
+        "n_repeats": 10,
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.3
+      },
+      "knn": {
+        "auroc_mean": 0.9378966742828128,
+        "auroc_std": 0.018583278665605805,
+        "auroc_per_repeat": [
+          0.9149530337649151,
+          0.9145087585681646,
+          0.9522721502919522,
+          0.9521769484640772,
+          0.9534463061690784,
+          0.9156511805026657,
+          0.95509647118558,
+          0.9507489210459508,
+          0.9544935262757045,
+          0.9156194465600407
+        ],
+        "auprc_mean": 0.4664993573378678,
+        "auprc_std": 0.04658772074751579,
+        "auprc_per_repeat": [
+          0.45938070211362136,
+          0.3799052576496186,
+          0.43961127770946434,
+          0.4416138269025807,
+          0.4553372442094247,
+          0.44683602849715803,
+          0.5599300538546024,
+          0.506849509034383,
+          0.5105636870132668,
+          0.4649659863945578
+        ],
+        "n_repeats": 10,
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.3
       },
       "random_forest": {
         "auroc_mean": 0.9469186341711093,
@@ -256,7 +326,185 @@
         "beats_baseline_auroc_on_mean": false,
         "auroc_win_rate": 0.0,
         "beats_baseline_auprc_on_mean": false,
-        "auprc_win_rate": 0.0
+        "auprc_win_rate": 0.0,
+        "ranking_on_mean_oof": {
+          "precision_at_13": 0.3076923076923077,
+          "precision_at_25": 0.24,
+          "precision_at_50": 0.12,
+          "recall_at_50": 0.46153846153846156,
+          "positive_ranks": [
+            1,
+            2,
+            3,
+            12,
+            21,
+            22,
+            103,
+            129,
+            253,
+            346,
+            595,
+            721,
+            1216
+          ],
+          "positive_rank_median": 103.0
+        },
+        "permutation_auroc": {
+          "observed": 0.7884615384615385,
+          "null_mean": 0.49970332571718706,
+          "null_p95": 0.6339235846661591,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        },
+        "permutation_auprc": {
+          "observed": 0.3141868542130653,
+          "null_mean": 0.015896088449385972,
+          "null_p95": 0.033052804928006746,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        }
+      },
+      "linear_svm": {
+        "auroc_mean": 0.7416285859355167,
+        "auroc_std": 0.041712892822794397,
+        "auroc_per_repeat": [
+          0.7543792840822544,
+          0.7136963696369638,
+          0.772911906575273,
+          0.664889565879665,
+          0.765041888804265,
+          0.8304138106118304,
+          0.722010662604722,
+          0.747969027671998,
+          0.722010662604722,
+          0.7229626808834729
+        ],
+        "auprc_mean": 0.2538879325128855,
+        "auprc_std": 0.043260052754754176,
+        "auprc_per_repeat": [
+          0.2515381759843234,
+          0.2548561156796752,
+          0.20898456607861654,
+          0.29504880464266947,
+          0.2926455036693123,
+          0.27911693034338764,
+          0.24524058421852848,
+          0.1735665826588318,
+          0.21472297984897765,
+          0.3231590820045331
+        ],
+        "n_repeats": 10,
+        "beats_baseline_auroc_on_mean": false,
+        "auroc_win_rate": 0.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.0,
+        "ranking_on_mean_oof": {
+          "precision_at_13": 0.3076923076923077,
+          "precision_at_25": 0.2,
+          "precision_at_50": 0.12,
+          "recall_at_50": 0.46153846153846156,
+          "positive_ranks": [
+            1,
+            2,
+            4,
+            8,
+            23,
+            30,
+            260,
+            286,
+            409,
+            489,
+            580,
+            594,
+            1180
+          ],
+          "positive_rank_median": 260.0
+        },
+        "permutation_auroc": {
+          "observed": 0.7604087331810103,
+          "null_mean": 0.49988050266565115,
+          "null_p95": 0.6326574003554203,
+          "p_value": 0.0005998800239952009,
+          "n_perm": 5000
+        },
+        "permutation_auprc": {
+          "observed": 0.2934558218126873,
+          "null_mean": 0.015774801360338722,
+          "null_p95": 0.03110159915076972,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        }
+      },
+      "knn": {
+        "auroc_mean": 0.8056169078446306,
+        "auroc_std": 0.03954044717655981,
+        "auroc_per_repeat": [
+          0.8287001777100788,
+          0.8283828382838284,
+          0.7863988321909113,
+          0.7484133028687483,
+          0.8283511043412033,
+          0.8307946179233308,
+          0.8293665905052043,
+          0.715949479563341,
+          0.828065498857578,
+          0.8317466362020818
+        ],
+        "auprc_mean": 0.3049070229267067,
+        "auprc_std": 0.024933481464886678,
+        "auprc_per_repeat": [
+          0.30189825212381605,
+          0.27424138886323757,
+          0.31810094667237526,
+          0.2892862281675779,
+          0.27922684458398744,
+          0.3292210405288876,
+          0.32144712430426714,
+          0.28007326007326006,
+          0.2989666635885123,
+          0.3566084803611456
+        ],
+        "n_repeats": 10,
+        "beats_baseline_auroc_on_mean": false,
+        "auroc_win_rate": 0.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.0,
+        "ranking_on_mean_oof": {
+          "precision_at_13": 0.38461538461538464,
+          "precision_at_25": 0.24,
+          "precision_at_50": 0.18,
+          "recall_at_50": 0.6923076923076923,
+          "positive_ranks": [
+            1,
+            2,
+            3,
+            5,
+            8,
+            16,
+            38,
+            39,
+            46,
+            182,
+            435,
+            439,
+            1094
+          ],
+          "positive_rank_median": 38.0
+        },
+        "permutation_auroc": {
+          "observed": 0.8254315816197004,
+          "null_mean": 0.5005592599644579,
+          "null_p95": 0.5748698908352374,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        },
+        "permutation_auprc": {
+          "observed": 0.3918247941725992,
+          "null_mean": 0.01464431186154631,
+          "null_p95": 0.02902668759811617,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        }
       },
       "random_forest": {
         "auroc_mean": 0.8762693577050011,
@@ -291,7 +539,43 @@
         "beats_baseline_auroc_on_mean": true,
         "auroc_win_rate": 1.0,
         "beats_baseline_auprc_on_mean": false,
-        "auprc_win_rate": 0.0
+        "auprc_win_rate": 0.0,
+        "ranking_on_mean_oof": {
+          "precision_at_13": 0.38461538461538464,
+          "precision_at_25": 0.2,
+          "precision_at_50": 0.12,
+          "recall_at_50": 0.46153846153846156,
+          "positive_ranks": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            40,
+            65,
+            69,
+            71,
+            74,
+            138,
+            464,
+            1192
+          ],
+          "positive_rank_median": 65.0
+        },
+        "permutation_auroc": {
+          "observed": 0.8779195227215031,
+          "null_mean": 0.4987121350596598,
+          "null_p95": 0.6310627697385124,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        },
+        "permutation_auprc": {
+          "observed": 0.41377929026552496,
+          "null_mean": 0.015988179972921433,
+          "null_p95": 0.03156660146322407,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        }
       },
       "hist_gbr": {
         "auroc_mean": 0.802030972328002,
@@ -326,7 +610,306 @@
         "beats_baseline_auroc_on_mean": false,
         "auroc_win_rate": 0.2,
         "beats_baseline_auprc_on_mean": false,
-        "auprc_win_rate": 0.0
+        "auprc_win_rate": 0.0,
+        "ranking_on_mean_oof": {
+          "precision_at_13": 0.3076923076923077,
+          "precision_at_25": 0.16,
+          "precision_at_50": 0.1,
+          "recall_at_50": 0.38461538461538464,
+          "positive_ranks": [
+            1,
+            3,
+            6,
+            7,
+            26,
+            108,
+            116,
+            166,
+            182,
+            286,
+            573,
+            609,
+            666
+          ],
+          "positive_rank_median": 116.0
+        },
+        "permutation_auroc": {
+          "observed": 0.8313023610053313,
+          "null_mean": 0.5017815054582381,
+          "null_p95": 0.6357609799441484,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        },
+        "permutation_auprc": {
+          "observed": 0.24902560228773493,
+          "null_mean": 0.01584376017188406,
+          "null_p95": 0.031431917100813146,
+          "p_value": 0.0001999600079984003,
+          "n_perm": 5000
+        }
+      }
+    },
+    "baseline_ranking": {
+      "precision_at_13": 0.46153846153846156,
+      "precision_at_25": 0.24,
+      "precision_at_50": 0.14,
+      "recall_at_50": 0.5384615384615384,
+      "positive_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        36,
+        111,
+        234,
+        235,
+        396,
+        400,
+        1082
+      ],
+      "positive_rank_median": 36.0
+    },
+    "baseline_permutation_auroc": {
+      "observed": 0.8458047727849709,
+      "null_mean": 0.5001546077684692,
+      "null_p95": 0.6295681010408735,
+      "p_value": 0.0001999600079984003,
+      "n_perm": 5000
+    },
+    "baseline_permutation_auprc": {
+      "observed": 0.47439782835920896,
+      "null_mean": 0.01598235674382909,
+      "null_p95": 0.03253476605504776,
+      "p_value": 0.0001999600079984003,
+      "n_perm": 5000
+    },
+    "single_feature_baselines": {
+      "loeuf": {
+        "direction": "lower_is_positive",
+        "auroc": 0.5934881949733435,
+        "auprc": 0.014366321793176824,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.0,
+        "precision_at_50": 0.02,
+        "recall_at_50": 0.07692307692307693,
+        "positive_ranks": [
+          36,
+          208,
+          311,
+          358,
+          377,
+          421,
+          517,
+          664,
+          666,
+          681,
+          690,
+          702,
+          864
+        ],
+        "positive_rank_median": 517.0
+      },
+      "pli": {
+        "direction": "higher_is_positive",
+        "auroc": 0.6229372937293729,
+        "auprc": 0.014557386604104949,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.04,
+        "precision_at_50": 0.02,
+        "recall_at_50": 0.07692307692307693,
+        "positive_ranks": [
+          23,
+          109,
+          270,
+          307,
+          360,
+          405,
+          468,
+          504,
+          584,
+          653,
+          673,
+          715,
+          930
+        ],
+        "positive_rank_median": 468.0
+      },
+      "positive_control_similarity": {
+        "direction": "higher_is_positive",
+        "auroc": 0.6534336125920285,
+        "auprc": 0.25350078492935635,
+        "precision_at_13": 0.6153846153846154,
+        "precision_at_25": 0.32,
+        "precision_at_50": 0.16,
+        "recall_at_50": 0.6153846153846154,
+        "positive_ranks": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          8,
+          11,
+          113,
+          236,
+          397,
+          401,
+          1082
+        ],
+        "positive_rank_median": 8.0
+      },
+      "crossdonor_correlation_mean": {
+        "direction": "higher_is_positive",
+        "auroc": 0.7665016501650165,
+        "auprc": 0.03386999964871671,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.0,
+        "precision_at_50": 0.0,
+        "recall_at_50": 0.0,
+        "positive_ranks": [
+          63,
+          66,
+          93,
+          122,
+          124,
+          154,
+          156,
+          170,
+          171,
+          214,
+          316,
+          958,
+          1163
+        ],
+        "positive_rank_median": 156.0
+      },
+      "crossguide_correlation": {
+        "direction": "higher_is_positive",
+        "auroc": 0.5053947702462553,
+        "auprc": 0.013054037832728706,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.0,
+        "precision_at_50": 0.0,
+        "recall_at_50": 0.0,
+        "positive_ranks": [
+          123,
+          148,
+          175,
+          249,
+          338,
+          341,
+          384,
+          716,
+          939,
+          940,
+          941,
+          972,
+          1008
+        ],
+        "positive_rank_median": 384.0
+      },
+      "guide_signif_ratio": {
+        "direction": "higher_is_positive",
+        "auroc": 0.508980705762884,
+        "auprc": 0.010950559931246627,
+        "precision_at_13": 0.38461538461538464,
+        "precision_at_25": 0.2,
+        "precision_at_50": 0.12,
+        "recall_at_50": 0.46153846153846156,
+        "positive_ranks": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          32,
+          97,
+          200,
+          201,
+          340,
+          343,
+          1113,
+          1160
+        ],
+        "positive_rank_median": 97.0
+      },
+      "n_cells_target": {
+        "direction": "lower_is_positive",
+        "auroc": 0.5652449860370652,
+        "auprc": 0.01576945156561671,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.04,
+        "precision_at_50": 0.02,
+        "recall_at_50": 0.07692307692307693,
+        "positive_ranks": [
+          19,
+          143,
+          330,
+          409,
+          465,
+          480,
+          485,
+          607,
+          628,
+          775,
+          778,
+          852,
+          966
+        ],
+        "positive_rank_median": 485.0
+      },
+      "target_baseline_expression": {
+        "direction": "higher_is_positive",
+        "auroc": 0.8047727849708048,
+        "auprc": 0.0633888544514948,
+        "precision_at_13": 0.07692307692307693,
+        "precision_at_25": 0.04,
+        "precision_at_50": 0.1,
+        "recall_at_50": 0.38461538461538464,
+        "positive_ranks": [
+          12,
+          26,
+          27,
+          38,
+          43,
+          67,
+          94,
+          166,
+          260,
+          385,
+          436,
+          587,
+          1026
+        ],
+        "positive_rank_median": 94.0
+      },
+      "_random_dummy": {
+        "direction": "random",
+        "auroc": 0.5044427519675044,
+        "auprc": 0.013228810046477952,
+        "precision_at_13": 0.0,
+        "precision_at_25": 0.0,
+        "precision_at_50": 0.0,
+        "recall_at_50": 0.0,
+        "positive_ranks": [
+          89,
+          93,
+          145,
+          264,
+          348,
+          483,
+          609,
+          650,
+          804,
+          1027,
+          1068,
+          1104,
+          1215
+        ],
+        "positive_rank_median": 609.0
       }
     }
   }

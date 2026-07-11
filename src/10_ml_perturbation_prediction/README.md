@@ -99,20 +99,22 @@ src/10_ml_perturbation_prediction/
 
 現有簡單排序基線（`ctx_specific_de` 排序）AUROC = 0.8458、**AUPRC = 0.4744**。因為正類
 prevalence 只有 13/1225 ≈ 1%，**AUROC 會過度樂觀，必須同時看對稀有正類敏感的 AUPRC**。
-10x 重複 5-fold StratifiedKFold，ablated（排除 leakage 欄位）特徵集：
+評比了**五個模型家族**（linear: Logistic + Linear SVM;非參數: kNN;tree: Random Forest +
+HistGBR）。10x 重複 5-fold StratifiedKFold，ablated（排除 leakage 欄位）特徵集：
 
 | 模型 | ablated AUROC | 贏基線 | **ablated AUPRC** | **贏基線** |
 |---|---|---|---|---|
-| Logistic Regression | 0.7595±0.0301 | 0/10 | 0.2864 | 0/10 ❌ |
-| Random Forest | 0.8763±0.0145 | 10/10 | **0.3733** | **0/10** ⚠️ |
-| HistGradientBoosting | 0.8020±0.0469 | 2/10 | 0.2006 | 0/10 ❌ |
+| Logistic / Linear SVM / kNN / HistGBR | 0.74–0.81 | 0–2/10 | 0.20–0.30 | 0/10 ❌ |
+| Random Forest | 0.8763 | 10/10 | **0.3733** | **0/10** ⚠️ |
 
-**關鍵：Random Forest 的 AUROC「贏」（0.876 > 0.846）是 1% prevalence 下的假象——它的
-AUPRC 只有 0.373，反而輸給基線的 0.474。** 也就是說，移除 leakage 欄位、再用正確的
-指標後，**沒有任何 model 贏過簡單的 `ctx_specific_de` 基線**：在「真的把 13 個已知調控子
-推到最前排」這件事上，簡單基線比所有 ML 模型都好。這是一個乾淨的、符合 2025-2026 文獻
-共識的負面結果，完整的「leakage × 指標 2×2」討論見
-`../results/known_regulator_classifier_README.md`。
+**五個模型、三個家族,ablated AUPRC 全部 0/10 輸給基線的 0.474。** Random Forest 的 AUROC
+「贏」（0.876 > 0.846）是 1% prevalence 下的假象——AUPRC 只有 0.373 反而輸基線。四項深度
+分析(使用者要求)進一步確認:**① 置換檢定 n_perm=5000:基線與五個模型 p≈0.0002——訊號
+是真的、不是小樣本雜訊,只是 ML 抓到的比不上基線;② precision@k:基線 P@13=0.462、正類
+中位排名 36,把已知調控子排得最前;③ 單一 SAFE 特徵基線也贏不過基線,random dummy 的
+AUPRC 0.013≈prevalence 驗證框架無偏差。** 結論:移除 leakage + 看對指標後,**沒有任何
+model 贏過簡單基線**——乾淨的負面結果,符合 2025-2026 文獻共識。完整的「leakage × 指標
+2×2」與四項分析見 `../results/known_regulator_classifier_README.md`。
 
 T1 的兩個既有嘗試（GenePT、GEARS）都誠實地打不過「訓練集平均 profile」這個基線，
 呼應 2025-2026 年文獻共識（Ahlmann-Eltze et al., *Nature Methods* 2025）。詳細討論見
