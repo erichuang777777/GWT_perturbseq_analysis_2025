@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CD4 T-cell perturbation network mark">
+  <title>Scientific mark: T cell with signed downstream regulatory network</title>
+  <defs>
+    <linearGradient id="cellFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7fa9d3"/>
+      <stop offset="1" stop-color="#6a9bcc"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ==== T cell (source node, left) ==== -->
+  <!-- membrane receptors (TCR / CD4 stubs) -->
+  <g stroke="#6a9bcc" stroke-width="14" stroke-linecap="round" fill="none">
+    <line x1="128" y1="118" x2="112" y2="86"/>
+    <line x1="92"  y1="150" x2="58"  y2="132"/>
+    <line x1="86"  y1="206" x2="50"  y2="206"/>
+    <line x1="92"  y1="262" x2="58"  y2="280"/>
+    <line x1="128" y1="294" x2="112" y2="326"/>
+  </g>
+  <circle cx="152" cy="206" r="70" fill="url(#cellFill)"/>
+  <!-- nucleus -->
+  <circle cx="152" cy="206" r="30" fill="#3f6fa0" opacity="0.9"/>
+
+  <!-- ==== branching downstream network (edges) ==== -->
+  <g stroke="#788c5d" stroke-width="13" stroke-linecap="round" fill="none">
+    <path d="M212 178 C 280 150, 300 118, 356 108"/>   <!-- to up-regulated node -->
+    <path d="M222 206 C 300 206, 320 206, 372 206"/>   <!-- to hub node -->
+    <path d="M212 234 C 280 262, 300 294, 356 304"/>   <!-- to down-regulated node -->
+    <path d="M372 206 L 432 150"/>                      <!-- hub -> up -->
+    <path d="M372 206 L 432 262"/>                      <!-- hub -> down -->
+  </g>
+
+  <!-- hub node -->
+  <circle cx="372" cy="206" r="26" fill="#788c5d"/>
+
+  <!-- up-regulated target (orange, arrow up) -->
+  <circle cx="392" cy="98" r="40" fill="#d97757"/>
+  <path d="M392 118 L392 82 M392 82 L378 96 M392 82 L406 96"
+        stroke="#ffffff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- down-regulated target (blue, arrow down) -->
+  <circle cx="392" cy="314" r="40" fill="#6a9bcc"/>
+  <path d="M392 294 L392 330 M392 330 L378 316 M392 330 L406 316"
+        stroke="#ffffff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- secondary up node -->
+  <circle cx="446" cy="140" r="22" fill="#d97757"/>
+  <!-- secondary down node -->
+  <circle cx="446" cy="272" r="22" fill="#6a9bcc"/>
+</svg>
