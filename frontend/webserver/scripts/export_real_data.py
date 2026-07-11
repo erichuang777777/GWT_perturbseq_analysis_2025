@@ -28,10 +28,11 @@ value that isn't backed by one of these files:
       Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
 
 Target selection: every gene whose best-condition statistical_evidence_grade
-is >= MIN_GRADE (2 = C or better), UNION every gene whose primary-condition
-readiness_call is "advance" (empirically a subset of the grade threshold set
-here) — not an arbitrary curation, a disclosed statistical threshold applied
-to the full real screen.
+is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
+primary-condition readiness_call is "advance" or "watchlist" — not an
+arbitrary curation, a disclosed statistical threshold applied to the full
+real screen. Below MIN_GRADE, "deprioritize" calls (the overwhelming
+majority of the remaining low-grade genes) are intentionally excluded.
 
 Anything not present in these sources is emitted as JSON `null` (never a
 fabricated 0 or placeholder), matching this project's own "unknown != 0"
@@ -83,8 +84,8 @@ READINESS_CACHE = CACHE_DIR / "readiness_full.parquet"
 ANNOTATED_CACHE = CACHE_DIR / "concept_annotated_full.parquet"
 
 # Minimum best-condition statistical_evidence_grade for a gene to be included,
-# UNION any gene whose primary-condition readiness_call is "advance" (in
-# practice a subset of the grade threshold set — see README's Data section).
+# UNION any gene (any grade) whose primary-condition readiness_call is
+# "advance" or "watchlist" — see README's Data section.
 MIN_GRADE = 2
 
 # public/ (not src/) -- at ~7,200 genes this is fetched at runtime, not
@@ -260,17 +261,19 @@ def main() -> None:
             return None
         return readiness_indexed.loc[key]
 
-    # Selection: grade>=MIN_GRADE anywhere for that gene, UNION primary-condition readiness_call == advance.
+    # Selection: grade>=MIN_GRADE anywhere for that gene, UNION primary-condition
+    # readiness_call in (advance, watchlist) — deprioritize calls below MIN_GRADE
+    # are intentionally excluded.
     selected_genes = set()
     for gene, prow in primary_by_gene.items():
         if grade_max_by_gene.get(gene, 0) >= MIN_GRADE:
             selected_genes.add(gene)
             continue
         r = primary_call(gene, prow)
-        if r is not None and r["readiness_call"] == "advance":
+        if r is not None and r["readiness_call"] in ("advance", "watchlist"):
             selected_genes.add(gene)
     selected_genes = sorted(selected_genes)
-    print(f"Selected {len(selected_genes)} genes (grade>={MIN_GRADE} OR primary-condition readiness_call==advance)", file=sys.stderr)
+    print(f"Selected {len(selected_genes)} genes (grade>={MIN_GRADE} OR primary-condition readiness_call in advance/watchlist)", file=sys.stderr)
 
     targets_out = []
     for gene in selected_genes:

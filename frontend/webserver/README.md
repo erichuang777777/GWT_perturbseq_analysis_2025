@@ -40,12 +40,14 @@ repo's own pipeline** — not mock or illustrative values. `scripts/export_real_
 - `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` — real gnomAD v4 LOEUF/pLI
   (16 genes).
 
-**Target selection (7,236 genes):** every gene whose best-condition `statistical_evidence_grade`
-is ≥ 2 (`MIN_GRADE` in the script), **union** every gene whose primary-condition
-`readiness_call` is `advance` — a disclosed statistical threshold over the full 11,526-gene
-screen, not an arbitrary curation (the 302 `advance` genes are, empirically, a subset of this
-grade threshold here). Every one of these 7,236 targets gets real statistics, a real readiness
-call, and real concept-module membership (where applicable). The deeper external-evidence
+**Target selection (7,249 genes):** every gene whose best-condition `statistical_evidence_grade`
+is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose primary-condition
+`readiness_call` is `advance` or `watchlist` — a disclosed statistical threshold over the full
+11,526-gene screen, not an arbitrary curation. Below `MIN_GRADE`, `deprioritize` calls (4,277 of
+the remaining 4,290 lower-grade genes) are intentionally excluded; only the 13 lower-grade genes
+that still call `watchlist` are added back in, alongside the 302 `advance` genes (already a
+subset of the grade threshold). Every one of these 7,249 targets gets real statistics, a real
+readiness call, and real concept-module membership (where applicable). The deeper external-evidence
 panels (disease associations, tractability flags, safety liabilities, clinical trials,
 literature, gnomAD constraint) are populated only for the 21 genes the evidence cache covers —
 the rest honestly render `unknown` / "no record indexed" in those panels rather than a
@@ -82,7 +84,7 @@ to the repo so nobody has to pay that recompute just to regenerate the frontend 
 is trusted whenever it's newer than `target_cards.csv`; pass `--force` after changing
 `readiness.py` / `concept_annotation.py` themselves.
 
-Writes `public/real-dataset.json` (~18 MB / ~940 kB gzipped — see "Build" below for why this is
+Writes `public/real-dataset.json` (~18 MB / ~965 kB gzipped — see "Build" below for why this is
 a runtime-fetched static asset rather than a JS import).
 
 ### Wiring to the live API (follow-up)
@@ -110,13 +112,13 @@ npm run preview    # serve the production build locally
 ```
 
 Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened. The
-real dataset (~18 MB / ~940 kB gzipped at 7,236 genes) is **not** bundled into the JS — it's
+real dataset (~18 MB / ~965 kB gzipped at 7,249 genes) is **not** bundled into the JS — it's
 fetched once at startup from `public/real-dataset.json` (see `src/data/dataset.ts`'s
 `loadDataset()`, gated in `main.tsx` behind a small loading screen), which keeps the main JS
 bundle itself at ~94 kB gzipped and lets the browser cache the data independently of app-code
 deploys.
 
-The **explorer table is virtualized** (`@tanstack/react-virtual`) — with 7,236 real targets,
+The **explorer table is virtualized** (`@tanstack/react-virtual`) — with 7,249 real targets,
 only the rows scrolled into view are mounted as DOM nodes (~25–40 at a time regardless of list
 length). The composite-priority weight sliders also throttle their store updates to one commit
 per animation frame rather than one per native `input` event, so dragging a slider doesn't
