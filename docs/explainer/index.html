@@ -184,6 +184,14 @@
   footer a{color:var(--ink-soft)}
   .disclaimer{font-size:12.5px; color:var(--muted); line-height:1.6; border:1px dashed var(--line); border-radius:10px; padding:14px 16px; margin-top:8px}
 
+  .minichart{border:1px solid var(--line); background:var(--surface); border-radius:12px; padding:16px 18px; margin:24px 0}
+  .minichart .mc-cap{font-size:13px; color:var(--muted); line-height:1.55; margin-top:12px}
+  .minichart .mc-cap b{color:var(--ink-soft); font-weight:600}
+  .longtail{display:flex; align-items:flex-end; gap:5px; height:104px}
+  .longtail i{flex:1; background:linear-gradient(180deg,var(--accent),color-mix(in srgb,var(--accent) 35%,transparent)); border-radius:3px 3px 0 0; min-width:0}
+  .robust2{display:grid; grid-template-columns:repeat(2,1fr); gap:7px}
+  .robust2 div{border:1px solid var(--line); border-radius:9px; padding:12px 10px; font-size:13px; line-height:1.5; text-align:center; color:var(--ink-soft)}
+  .robust2 .good{border-color:var(--accent); background:color-mix(in srgb,var(--accent) 10%,var(--surface)); color:var(--accent-ink); font-weight:650}
   .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
   .reveal.in{opacity:1; transform:none}
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none}}
@@ -324,6 +332,12 @@
         <div class="frow"><div class="fbar" style="width:62%;background:var(--val)">10,282 個</div><span class="flabel">被測量到的<b>下游基因</b></span></div>
         <div class="frow"><div class="fbar" style="width:30%;background:var(--watch)">3 種情境</div><span class="flabel">Rest / Stim8hr / Stim48hr</span></div>
       </div>
+      <div class="minichart">
+        <div class="longtail" role="img" aria-label="少數基因擾動後影響很大、多數影響很小的長尾分佈示意">
+          <i style="height:100%"></i><i style="height:60%"></i><i style="height:39%"></i><i style="height:27%"></i><i style="height:19%"></i><i style="height:14%"></i><i style="height:11%"></i><i style="height:9%"></i><i style="height:8%"></i><i style="height:7%"></i><i style="height:6%"></i><i style="height:6%"></i><i style="height:5%"></i><i style="height:5%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i>
+        </div>
+        <div class="mc-cap">簡化示意:<b>少數基因</b>(左)一被關掉就牽動大量下游基因,<b>絕大多數基因</b>(右)只有很小的效應——這叫「長尾」,也是為什麼下一步要用篩選把訊號濃縮出來。(研究人員版的真實分佈圖見 repo 的「圖表導讀」)</div>
+      </div>
       <div class="why">
         <span class="lab">為什麼這一步重要</span>
         <p>科學結論不能靠「看起來有變」,而要有<strong>可量化、可比較、附帶不確定性</strong>的數字。這一步把雜亂的細胞讀數,變成後續一切排序與決策的共同語言。</p>
@@ -342,6 +356,15 @@
       <p>有了漂亮的數字,還不能立刻相信。這個專案設了兩道關卡:</p>
       <h3>把關一:換人、換工具,答案還一樣嗎?</h3>
       <p>同一個基因的效果,如果在<strong>不同捐贈者之間</strong>、以及用<strong>不同導引 RNA</strong>時都一致,才算穩健;只在某一個人或某一支 guide 出現的訊號,很可能是雜訊。</p>
+      <div class="minichart">
+        <div class="robust2" role="img" aria-label="換人與換工具都一致才算可信的示意四宮格">
+          <div class="good">✓ 換人也一樣<br>✓ 換工具也一樣<br><span style="font-weight:400">→ 可信</span></div>
+          <div>✓ 換人一樣<br>✗ 換工具不一樣<br>→ 存疑</div>
+          <div>✗ 換人不一樣<br>✓ 換工具一樣<br>→ 存疑</div>
+          <div>✗ 兩者都不一樣<br>→ 很可能是雜訊</div>
+        </div>
+        <div class="mc-cap">簡化示意:只有「換不同捐贈者」與「換不同導引 RNA」<b>都得到一致結果</b>時,才把這個訊號當真。(研究人員版是一張跨捐贈者 vs 跨 guide 的散點圖)</div>
+      </div>
       <h3>把關二:那個基因,真的被關小了嗎?</h3>
       <p>CRISPRi 的因果邏輯是「<em class="k">先把標靶關小 → 才導致下游改變</em>」。如果連標靶本身有沒有被關小都無法確認,下游的變化就不能歸因給它。所以每個結果都被貼上一個<strong>敲低狀態</strong>:已確認、微弱、或<strong>無法評估</strong>。</p>
       <div class="why">
