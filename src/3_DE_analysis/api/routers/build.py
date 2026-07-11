@@ -15,6 +15,13 @@ from api import deps
 
 router = APIRouter(tags=["Build"])
 
+# Release-freeze OF-1 resolution: the canonical reference dataset is the 39-col
+# card_schema/v2 build. The legacy 31-col build is retained only as a regression
+# fixture (see its DEPRECATED.md) and is flagged so clients exclude it from the
+# default selection.
+CANONICAL_DATASET_ID = "a6bba17b-f194-4a50-8cf8-96e03eededd6"
+DEPRECATED_DATASET_IDS = {"e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137"}
+
 
 @dataclass
 class TargetCardRunConfig:
@@ -81,19 +88,25 @@ def list_datasets() -> List[Dict[str, Any]]:
         meta = deps._read_metadata(path.name)
         if not out_csv.exists() and not meta:
             continue
+        deprecated = path.name in DEPRECATED_DATASET_IDS or (path / "DEPRECATED.md").exists()
         records.append(
             {
                 "dataset_id": path.name,
                 "status": meta.get("status", "unknown"),
                 "rows": meta.get("rows"),
                 "output": meta.get("output", str(out_csv) if out_csv.exists() else ""),
+                "canonical": path.name == CANONICAL_DATASET_ID,
+                "deprecated": deprecated,
                 "updated_at_epoch": max(
                     [p.stat().st_mtime for p in [out_csv, path / "metadata.json"] if p.exists()],
                     default=path.stat().st_mtime,
                 ),
             }
         )
-    return sorted(records, key=lambda x: x["updated_at_epoch"], reverse=True)
+    # Canonical first, then non-deprecated (newest first), deprecated datasets last
+    # so a default "pick the first" client never lands on the legacy schema.
+    records.sort(key=lambda x: (not x["canonical"], x["deprecated"], -x["updated_at_epoch"]))
+    return records
 
 
 @router.post("/api/run/target-card")

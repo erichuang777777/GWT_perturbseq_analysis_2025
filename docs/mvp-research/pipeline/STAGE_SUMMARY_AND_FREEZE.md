@@ -1,6 +1,8 @@
 # Stage summary & freeze report
 
-**Frozen:** 2026-07-10 · **Scope:** 7-stage pipeline + 3 recent work packages · **Mechanism:** manifest freeze (immutable artifact version_ids + md5)
+**Frozen:** 2026-07-10 (core) · 2026-07-11 (extended to 04_results/05/07) · **Scope:** 7-stage pipeline + 3 recent work packages · **Mechanism:** manifest freeze (immutable artifact version_ids + md5)
+
+> **Verify anytime:** `make freeze` (`scripts/freeze_pipeline.py`) recomputes every pinned asset's live md5 and fails on any drift; `make eda` regenerates the deterministic per-stage EDA inventory (`EDA_INDEX.md`). The 2026-07-11 extension added the canonical 39-col `target_cards.csv` (04_results — the product data, previously unpinned), `REFINED_CATALOG_53.csv` (05_visualization), and the React portal's `real-dataset.json` (07_dashboard), bringing coverage to all seven stages.
 
 Each asset below is pinned to a specific artifact version_id. Version_ids are immutable — a frozen id always resolves to exactly these bytes (md5 in FREEZE_MANIFEST.csv). Re-running any stage produces a NEW version and never overwrites a frozen one.
 
@@ -89,4 +91,4 @@ Each asset below is pinned to a specific artifact version_id. Version_ids are im
 
 ---
 ## Freeze integrity
-To verify a frozen asset: resolve its version_id, compute md5, compare to FREEZE_MANIFEST.csv. All 18 assets resolved OK at freeze time. The raw input (01_raw, md5 f5cf2e07) is the sole upstream source; all downstream stages are reproducible from it via the reproducibility bundle.
+To verify a frozen asset: resolve its version_id, compute md5, compare to FREEZE_MANIFEST.csv — or just run `make freeze`, which does this for every pin and exits non-zero on drift. All 21 assets (18 core, frozen 2026-07-10, + 3 extension pins for 04_results/05_visualization/07_dashboard, frozen 2026-07-11) resolved OK at freeze time. The raw input (01_raw, md5 f5cf2e07) is the sole upstream source; all downstream stages are reproducible from it via the reproducibility bundle.
