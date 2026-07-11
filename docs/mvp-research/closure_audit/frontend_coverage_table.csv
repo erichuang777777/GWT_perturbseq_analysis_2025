@@ -1,0 +1,72 @@
+id,group,family_en,filename,has_en,has_zh,has_all_4,has_raw_source,has_script,script_is_stub
+C1,Core gallery,Dimensionality reduction & composite,C1_dotplot.png,True,True,True,True,True,False
+C2,Core gallery,Dimensionality reduction & composite,C2_pseudovolcano.png,True,True,True,True,True,False
+C3,Core gallery,Dimensionality reduction & composite,C3_funnel.png,True,True,True,True,True,False
+D1,Core gallery,Distributions,D1_violin.png,True,True,True,True,True,False
+D10,Core gallery,Distributions,D10_qq.png,True,True,True,True,True,False
+D2,Core gallery,Distributions,D2_box.png,True,True,True,True,True,False
+D3,Core gallery,Distributions,D3_ridgeline.png,True,True,True,True,True,False
+D4,Core gallery,Distributions,D4_histogram.png,True,True,True,True,True,False
+D5,Core gallery,Distributions,D5_ecdf.png,True,True,True,True,True,False
+D6,Core gallery,Distributions,D6_strip.png,True,True,True,True,True,False
+D7,Core gallery,Distributions,D7_swarm.png,True,True,True,True,True,False
+D8,Core gallery,Distributions,D8_raincloud.png,True,True,True,True,True,False
+D9,Core gallery,Distributions,D9_kde.png,True,True,True,True,True,False
+H1,Core gallery,Hierarchical & interactive,H1_treemap.png,True,True,True,True,True,False
+H2,Core gallery,Hierarchical & interactive,H2_sunburst.png,True,True,True,True,True,False
+H3,Core gallery,Hierarchical & interactive,H3_icicle.png,True,True,True,True,True,False
+H4,Core gallery,Hierarchical & interactive,H4_sankey.png,True,True,True,True,True,False
+H5,Core gallery,Hierarchical & interactive,H5_funnel.png,True,True,True,True,True,False
+H6,Core gallery,Hierarchical & interactive,H6_parallel_coords.png,True,True,True,True,True,False
+H7,Core gallery,Hierarchical & interactive,H7_parallel_categories.png,True,True,True,True,True,False
+M1,Core gallery,Matrices,M1_corr_heatmap.png,True,True,True,True,True,False
+M10,Core gallery,Matrices,M10_gene_condition_DE.png,True,True,True,True,True,False
+M2,Core gallery,Matrices,M2_cluster_heatmap.png,True,True,True,True,True,False
+M3,Core gallery,Matrices,M3_hexbin.png,True,True,True,True,True,False
+M4,Core gallery,Matrices,M4_density_scatter.png,True,True,True,True,True,False
+M5,Core gallery,Matrices,M5_scatter_matrix.png,True,True,True,True,True,False
+M6,Core gallery,Matrices,M6_condition_metric_heatmap.png,True,True,True,True,True,False
+M7,Core gallery,Matrices,M7_joint_scatter.png,True,True,True,True,True,False
+M8,Core gallery,Matrices,M8_dendrogram.png,True,True,True,True,True,False
+M9,Core gallery,Matrices,M9_contour.png,True,True,True,True,True,False
+N1,Core gallery,Networks,N1_string.png,True,True,True,True,True,False
+N2,Core gallery,Networks,N2_chord.png,True,True,True,True,True,False
+N3,Core gallery,Networks,N3_venn.png,True,True,True,True,True,False
+N4,Core gallery,Networks,N4_manhattan.png,True,True,True,True,True,False
+N5,Core gallery,Networks,N5_slope.png,True,True,True,True,True,False
+N6,Core gallery,Networks,N6_stacked_area.png,True,True,True,True,True,False
+N7,Core gallery,Networks,N7_upset.png,True,True,True,True,True,False
+R1,Core gallery,Ranking,R1_lollipop.png,True,True,True,True,True,False
+R10,Core gallery,Ranking,R10_dotmatrix.png,True,True,True,True,True,False
+R2,Core gallery,Ranking,R2_diverging_bar.png,True,True,True,True,True,False
+R3,Core gallery,Ranking,R3_stacked_bar.png,True,True,True,True,True,False
+R4,Core gallery,Ranking,R4_waterfall.png,True,True,True,True,True,False
+R5,Core gallery,Ranking,R5_bubble.png,True,True,True,True,True,False
+R6,Core gallery,Ranking,R6_grouped_bar.png,True,True,True,True,True,False
+R7,Core gallery,Ranking,R7_errorbar.png,True,True,True,True,True,False
+R8,Core gallery,Ranking,R8_point.png,True,True,True,True,True,False
+R9,Core gallery,Ranking,R9_MA.png,True,True,True,True,True,False
+V1,Core gallery,Dimensionality reduction & composite,V1_PCA.png,True,True,True,True,True,False
+V2,Core gallery,Dimensionality reduction & composite,V2_tSNE.png,True,True,True,True,True,False
+V3,Core gallery,Dimensionality reduction & composite,V3_UMAP.png,True,True,True,True,True,False
+V4,Core gallery,Dimensionality reduction & composite,V4_radar.png,True,True,True,True,True,False
+V5,Core gallery,Dimensionality reduction & composite,V5_circular_bar.png,True,True,True,True,True,False
+V6,Core gallery,Dimensionality reduction & composite,V6_pca_biplot.png,True,True,True,True,True,False
+A1,Analysis & publication,Analysis / publication figure,benchmark_pr_roc.png,True,True,True,True,True,False
+A2,Analysis & publication,Analysis / publication figure,dropout_diagnosis.png,True,True,True,True,True,False
+A3,Analysis & publication,Analysis / publication figure,delivery_decision_funnel.png,True,True,True,True,True,False
+A4,Analysis & publication,Analysis / publication figure,kinetics_and_avoid.png,True,True,True,True,True,False
+A5,Analysis & publication,Analysis / publication figure,threshold_sensitivity_figure.png,True,True,True,True,True,False
+A6,Analysis & publication,Analysis / publication figure,figure_target_validation.png,True,True,True,True,True,False
+A7,Analysis & publication,Analysis / publication figure,level4_external_validation_figure.png,True,True,True,True,True,False
+A8,Analysis & publication,Analysis / publication figure,signed_application.png,True,True,True,True,True,False
+A9,Analysis & publication,Analysis / publication figure,lincs_concordance.png,True,True,True,True,True,False
+A10,Analysis & publication,Analysis / publication figure,evidence_coverage_fix.png,True,True,True,True,True,False
+A11,Analysis & publication,Analysis / publication figure,dev_vs_user_gap.png,True,True,True,True,True,False
+A12,Analysis & publication,Analysis / publication figure,cover_dual_perspective.png,True,True,True,True,True,False
+A13,Analysis & publication,Analysis / publication figure,COVER_target_ranking.png,True,True,True,True,True,False
+A14,Analysis & publication,Analysis / publication figure,context_specific_corrected.png,True,True,True,True,True,False
+A15,Analysis & publication,Analysis / publication figure,methodological_validation.png,True,True,True,True,True,False
+A16,Analysis & publication,Analysis / publication figure,Figure1_integrated_story.png,True,True,True,True,True,False
+A17,Analysis & publication,Analysis / publication figure,figure1.png,True,True,True,True,True,True
+A18,Analysis & publication,Analysis / publication figure,mechanism_map.png,True,True,True,True,True,False
