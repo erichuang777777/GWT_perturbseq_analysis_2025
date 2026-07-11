@@ -1,9 +1,13 @@
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useRef } from "react";
 import { TARGETS } from "../data/dataset";
 import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
 import { consensus, fmtEffect, rankedTargets } from "../lib/logic";
 import { useStore } from "../store/store";
+
+const ROW_HEIGHT = 54;
+const TABLE_HEIGHT = 700;
 
 export default function Explorer() {
   const { state, setState, applyPreset, inShortlist, toggleShortlist, clearShortlist, votesFor } = useStore();
@@ -153,6 +157,16 @@ export default function Explorer() {
     color: dfilter === d.k ? "#fff" : "#4a515e",
     bg: dfilter === d.k ? "#0d7d5a" : "transparent",
   }));
+
+  // 7,000+ real targets can't all be mounted as DOM rows at once -- only
+  // render the rows currently scrolled into view.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => ROW_HEIGHT,
+    overscan: 12,
+  });
 
   const slGenes = S.shortlist.filter((g) => all.find((x) => x.gene === g));
   const shortlistChips = slGenes.map((g) => ({ gene: g }));
@@ -368,50 +382,73 @@ export default function Explorer() {
             <div style={{ textAlign: "center" }}>Grade</div>
             <div style={{ textAlign: "center" }}>Review</div>
           </div>
-          {rows.map((r) => (
-            <div
-              key={r.gene}
-              className="rowhover navlink"
-              onClick={() => setState({ view: "dossier", selectedGene: r.gene })}
-              style={{ display: "grid", gridTemplateColumns: GRID, gap: "12px", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid #eef0f3", background: "#fff" }}
-            >
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleShortlist(r.gene);
-                }}
-                style={{ width: "18px", height: "18px", borderRadius: "5px", border: `1.5px solid ${r.checkBorder}`, background: r.checkBg, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: r.checkOpacity }}
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              </div>
-              <div style={{ fontSize: "13px", fontWeight: 600, color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }}>{r.rank}</div>
-              <div>
-                <div style={{ fontSize: "14.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.gene}</div>
-                <div style={{ fontSize: "12px", color: "#8a92a0", marginTop: "1px" }}>{r.name}</div>
-              </div>
-              <div>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12.5px", color: "#4a515e" }}>
-                  <span style={{ fontSize: "10.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad" }}>{r.moduleId}</span> {r.moduleShort}
-                </span>
-              </div>
-              <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.effect}</div>
-              <div style={{ textAlign: "right", fontSize: "14px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{r.comp}</div>
-              <div style={{ textAlign: "center" }}>
-                <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11.5px", fontWeight: 600, color: r.rColor, background: r.rBg }}>{r.rLabel}</span>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "26px", height: "26px", borderRadius: "7px", fontSize: "12.5px", fontWeight: 700, color: r.gColor, background: r.gBg }}>{r.grade}</span>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <span title="reviewer consensus" style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "3px 8px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 600, color: r.decColor, background: r.decBg }}>
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: r.decDot }} />
-                  {r.decLabel}
-                </span>
+          {rows.length > 0 && (
+            <div ref={scrollRef} style={{ height: TABLE_HEIGHT + "px", overflowY: "auto" }}>
+              <div style={{ height: rowVirtualizer.getTotalSize() + "px", position: "relative", width: "100%" }}>
+                {rowVirtualizer.getVirtualItems().map((vi) => {
+                  const r = rows[vi.index];
+                  return (
+                    <div
+                      key={r.gene}
+                      className="rowhover navlink"
+                      onClick={() => setState({ view: "dossier", selectedGene: r.gene })}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: ROW_HEIGHT + "px",
+                        transform: `translateY(${vi.start}px)`,
+                        display: "grid",
+                        gridTemplateColumns: GRID,
+                        gap: "12px",
+                        alignItems: "center",
+                        padding: "0 16px",
+                        borderBottom: "1px solid #eef0f3",
+                        background: "#fff",
+                      }}
+                    >
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleShortlist(r.gene);
+                        }}
+                        style={{ width: "18px", height: "18px", borderRadius: "5px", border: `1.5px solid ${r.checkBorder}`, background: r.checkBg, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: r.checkOpacity }}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      </div>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }}>{r.rank}</div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: "14.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.gene}</div>
+                        <div style={{ fontSize: "12px", color: "#8a92a0", marginTop: "1px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.name}</div>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12.5px", color: "#4a515e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          <span style={{ fontSize: "10.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad" }}>{r.moduleId}</span> {r.moduleShort}
+                        </span>
+                      </div>
+                      <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.effect}</div>
+                      <div style={{ textAlign: "right", fontSize: "14px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{r.comp}</div>
+                      <div style={{ textAlign: "center" }}>
+                        <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11.5px", fontWeight: 600, color: r.rColor, background: r.rBg }}>{r.rLabel}</span>
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "26px", height: "26px", borderRadius: "7px", fontSize: "12.5px", fontWeight: 700, color: r.gColor, background: r.gBg }}>{r.grade}</span>
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <span title="reviewer consensus" style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "3px 8px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 600, color: r.decColor, background: r.decBg }}>
+                          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: r.decDot }} />
+                          {r.decLabel}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          ))}
+          )}
           {rankedFiltered.length === 0 && (
             <div style={{ padding: "44px", textAlign: "center", color: "#9aa1ad", fontSize: "14px" }}>No targets match the current filters.</div>
           )}

@@ -16,7 +16,7 @@ and vice versa — the backend can change its internals freely as long as the AP
 
 | Path | What it is | Status |
 |---|---|---|
-| `webserver/` | React + TypeScript + Vite single-page app (the CD4 Target Discovery Portal). Researcher workspace (target explorer, dossier, compare, multi-reviewer decision layer), clinical-evidence lookup, an interactive Plotly figure atlas, and a REST API reference. Ported from the Claude Design prototype. The researcher/clinical side renders **real data** exported from this repo's own pipeline: real statistics + a real readiness call for **660 genes** (every gene at grade ≥ 3 or with an `advance` call, out of the full 11,526-gene screen), with deeper external evidence (disease associations, tractability, safety, clinical trials, literature, gnomAD) populated for the 21 genes that evidence cache covers and honestly `unknown` elsewhere — see `webserver/README.md` for exactly which files feed what. The figure atlas still renders illustrative demo data. | Working (real data; figure atlas still illustrative) |
+| `webserver/` | React + TypeScript + Vite single-page app (the CD4 Target Discovery Portal). Researcher workspace (virtualized target explorer, dossier, compare, multi-reviewer decision layer), clinical-evidence lookup, an interactive Plotly figure atlas, and a REST API reference. Ported from the Claude Design prototype. The researcher/clinical side renders **real data** exported from this repo's own pipeline: real statistics + a real readiness call for **7,236 genes** (every gene at grade ≥ 2 or with an `advance` call, out of the full 11,526-gene screen), with deeper external evidence (disease associations, tractability, safety, clinical trials, literature, gnomAD) populated for the 21 genes that evidence cache covers and honestly `unknown` elsewhere. The readiness/concept-module computation over the full screen is cached (`sources/target_tool_cache/_cache/`) so regenerating the export doesn't repeat it, and the ~18 MB dataset is fetched at runtime rather than bundled — see `webserver/README.md` for exactly which files feed what. The figure atlas still renders illustrative demo data. | Working (real data; figure atlas still illustrative) |
 
 The previous Streamlit dashboard (`dashboard/`) has been replaced by `webserver/`. To recover it,
 check out any commit before this one.
@@ -25,10 +25,11 @@ check out any commit before this one.
 
 `webserver/scripts/export_real_data.py` is an **offline, build-time export step**, not part of the
 running frontend — it's invoked manually from the repo root (see `webserver/README.md`) and writes
-a static JSON file the frontend imports at build time. The compiled frontend itself still never
-imports `src/3_DE_analysis/` or touches the repo's data files at runtime; its only *runtime*
-contract remains the API's HTTP/JSON shapes, same as before. Re-run the export script whenever the
-underlying pipeline output changes.
+a static JSON file (`webserver/public/real-dataset.json`) the frontend fetches at startup. The
+compiled frontend itself still never imports `src/3_DE_analysis/` or touches the repo's data files
+at runtime; its only *runtime* contract is fetching that one static JSON file (same origin, no
+backend involved), same isolation as before. Re-run the export script whenever the underlying
+pipeline output changes.
 
 ## Running the webserver standalone
 
@@ -38,9 +39,9 @@ npm install
 npm run dev          # http://localhost:5173 — real data baked in, no backend needed to browse it
 ```
 
-To wire it to the live backend instead of the exported snapshot, start the FastAPI service and
-replace the static import in `webserver/src/data/dataset.ts` with `fetch` calls against
-`GWT_API_BASE` (see `webserver/README.md`):
+To wire it to a live backend instead of the exported static snapshot, start the FastAPI service and
+replace the `fetch('/real-dataset.json')` call in `webserver/src/data/dataset.ts`'s `loadDataset()`
+with calls against `GWT_API_BASE` (see `webserver/README.md`):
 
 ```bash
 # from repo root, in a separate terminal

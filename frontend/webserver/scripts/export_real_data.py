@@ -28,10 +28,10 @@ value that isn't backed by one of these files:
       Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
 
 Target selection: every gene whose best-condition statistical_evidence_grade
-is >= 3 (B or better), UNION every gene whose primary-condition readiness_call
-is "advance" (empirically a subset of the grade>=3 set here: 302 advance vs
-660 grade>=3 genes) — not an arbitrary curation, a disclosed statistical
-threshold applied to the full real screen.
+is >= MIN_GRADE (2 = C or better), UNION every gene whose primary-condition
+readiness_call is "advance" (empirically a subset of the grade threshold set
+here) — not an arbitrary curation, a disclosed statistical threshold applied
+to the full real screen.
 
 Anything not present in these sources is emitted as JSON `null` (never a
 fabricated 0 or placeholder), matching this project's own "unknown != 0"
@@ -40,14 +40,23 @@ full names are standard HGNC nomenclature for the 21 evidence-cache genes
 (verified by hand); every other gene displays its symbol as its name rather
 than a guessed/fabricated full name.
 
-Usage (from repo root):
-    pip install pandas numpy pyyaml
-    python3 frontend/webserver/scripts/export_real_data.py
+The readiness engine and concept annotation run once over all 33,983 rows
+(~15s) and are then CACHED to sources/target_tool_cache/_cache/*.parquet so
+re-running this export (e.g. after only touching GENE_FULL_NAMES or the JSON
+shape) does not repeat that computation. Pass --force to recompute after
+readiness.py / concept_annotation.py / target_cards.csv itself changes — the
+cache is otherwise trusted whenever it's newer than target_cards.csv.
 
-Writes frontend/webserver/src/data/generated/real-dataset.json.
+Usage (from repo root):
+    pip install pandas numpy pyyaml pyarrow
+    python3 frontend/webserver/scripts/export_real_data.py [--force]
+
+Writes frontend/webserver/public/real-dataset.json (fetched at runtime, not
+bundled into the JS -- see src/data/dataset.ts).
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -66,7 +75,21 @@ GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
 ESSENTIALS_TSV = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 BROAD_EFFECT_TXT = REPO_ROOT / "sources" / "broad_effect_genes.txt"
 
-OUT_PATH = Path(__file__).resolve().parents[1] / "src" / "data" / "generated" / "real-dataset.json"
+# Cached full-screen compute_readiness / annotate_targets output (see module
+# docstring). Committed to the repo so nobody has to pay the ~15s recompute
+# just to regenerate the frontend JSON.
+CACHE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_cache"
+READINESS_CACHE = CACHE_DIR / "readiness_full.parquet"
+ANNOTATED_CACHE = CACHE_DIR / "concept_annotated_full.parquet"
+
+# Minimum best-condition statistical_evidence_grade for a gene to be included,
+# UNION any gene whose primary-condition readiness_call is "advance" (in
+# practice a subset of the grade threshold set — see README's Data section).
+MIN_GRADE = 2
+
+# public/ (not src/) -- at ~7,200 genes this is fetched at runtime, not
+# bundled into the JS (see src/data/dataset.ts's loadDataset()).
+OUT_PATH = Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
 
 # Standard HGNC full names for the 21 genes this export covers. Public
 # nomenclature, not evidence -- kept separate from every statistic/score
@@ -122,7 +145,28 @@ def load_evidence(gene: str) -> dict | None:
     return json.loads(p.read_text())
 
 
+def parse_score(v):
+    """Undo the str() coercion applied to disease_relevance_score before caching."""
+    if v is None or v == "unknown":
+        return "unknown"
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return v
+
+
+def _cache_is_fresh() -> bool:
+    if not (READINESS_CACHE.exists() and ANNOTATED_CACHE.exists()):
+        return False
+    cards_mtime = CARDS_CSV.stat().st_mtime
+    return READINESS_CACHE.stat().st_mtime >= cards_mtime and ANNOTATED_CACHE.stat().st_mtime >= cards_mtime
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--force", action="store_true", help="Recompute readiness/annotation even if a fresh cache exists.")
+    args = parser.parse_args()
+
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     from data.loaders import load_gene_set
@@ -135,25 +179,61 @@ def main() -> None:
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
     print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
 
-    overlays = load_overlays(GENE_LISTS_DIR)
-    essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
-    broad_effect = load_gene_set(BROAD_EFFECT_TXT) if BROAD_EFFECT_TXT.exists() else set()
+    if not args.force and _cache_is_fresh():
+        print(f"Reading cached readiness/annotation from {CACHE_DIR} (pass --force to recompute)...", file=sys.stderr)
+        readiness = pd.read_parquet(READINESS_CACHE)
+        annotated = pd.read_parquet(ANNOTATED_CACHE)
+    else:
+        overlays = load_overlays(GENE_LISTS_DIR)
+        essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
+        broad_effect = load_gene_set(BROAD_EFFECT_TXT) if BROAD_EFFECT_TXT.exists() else set()
 
-    def evidence_lookup(gene: str):
-        return load_evidence(gene)
+        def evidence_lookup(gene: str):
+            return load_evidence(gene)
 
-    print("Running the repo's real readiness engine (core.readiness.compute_readiness) on the full screen...", file=sys.stderr)
-    readiness = compute_readiness(
-        cards,
-        overlays=overlays,
-        essentials=essentials,
-        broad_effect_genes=broad_effect,
-        evidence_lookup=evidence_lookup,
-    )
+        print("Running the repo's real readiness engine (core.readiness.compute_readiness) on the full screen (~15s, cached after)...", file=sys.stderr)
+        readiness = compute_readiness(
+            cards,
+            overlays=overlays,
+            essentials=essentials,
+            broad_effect_genes=broad_effect,
+            evidence_lookup=evidence_lookup,
+        )
+        # disease_relevance_score is int-or-"unknown" (readiness.py's UNKNOWN
+        # sentinel) -- a genuinely mixed-type column parquet can't store.
+        # Stringify uniformly here so the cached and freshly-computed frames
+        # have identical dtypes; parse_score() below undoes this on read.
+        readiness["disease_relevance_score"] = readiness["disease_relevance_score"].apply(str)
+        # Keep only the columns this export actually reads -- shrinks the
+        # cache and drops other mixed-type/unused columns (e.g.
+        # genetic_support_max_genetic_score) we'd otherwise have to placate
+        # parquet about for no benefit.
+        readiness = readiness[[
+            "target", "condition", "red_flag_override", "readiness_call",
+            "overall_readiness_stage", "readiness_reasons", "next_validation_step",
+            "biology_causality_score", "translation_score", "translation_capped_by",
+            "tractability_score", "tractability_modality", "human_genetic_support",
+            "disease_relevance_score", "clinical_feasibility_score",
+            "composite_safety_liability", "genetic_support_confidence",
+            "has_external_evidence",
+        ]].copy()
 
-    print("Running real concept-module annotation (concept_annotation.annotate_targets) on the full screen...", file=sys.stderr)
+        print("Running real concept-module annotation (concept_annotation.annotate_targets) on the full screen...", file=sys.stderr)
+        modules_for_cache = load_concept_modules()
+        annotated_full = annotate_targets(cards, modules=modules_for_cache)
+        # This export only ever reads target/condition/stimulation_gated back
+        # off the annotated frame (module membership itself comes from
+        # load_concept_modules() directly) -- drop the nested
+        # concept_modules list-of-dicts column, which parquet can't round
+        # -trip as cleanly, rather than fight with its serialization.
+        annotated = annotated_full[["target", "condition", "stimulation_gated"]].copy()
+
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        readiness.to_parquet(READINESS_CACHE, index=False)
+        annotated.to_parquet(ANNOTATED_CACHE, index=False)
+        print(f"Cached readiness -> {READINESS_CACHE.relative_to(REPO_ROOT)}, annotation -> {ANNOTATED_CACHE.relative_to(REPO_ROOT)}", file=sys.stderr)
+
     modules = load_concept_modules()
-    annotated = annotate_targets(cards, modules=modules)
 
     gnomad = pd.read_csv(GNOMAD_CSV) if GNOMAD_CSV.exists() else pd.DataFrame(columns=["ensembl_id", "gene_symbol", "loeuf", "pli"])
     gnomad_by_gene = {r["gene_symbol"]: r for _, r in gnomad.iterrows()}
@@ -180,17 +260,17 @@ def main() -> None:
             return None
         return readiness_indexed.loc[key]
 
-    # Selection: grade>=3 anywhere for that gene, UNION primary-condition readiness_call == advance.
+    # Selection: grade>=MIN_GRADE anywhere for that gene, UNION primary-condition readiness_call == advance.
     selected_genes = set()
     for gene, prow in primary_by_gene.items():
-        if grade_max_by_gene.get(gene, 0) >= 3:
+        if grade_max_by_gene.get(gene, 0) >= MIN_GRADE:
             selected_genes.add(gene)
             continue
         r = primary_call(gene, prow)
         if r is not None and r["readiness_call"] == "advance":
             selected_genes.add(gene)
     selected_genes = sorted(selected_genes)
-    print(f"Selected {len(selected_genes)} genes (grade>=3 OR primary-condition readiness_call==advance)", file=sys.stderr)
+    print(f"Selected {len(selected_genes)} genes (grade>={MIN_GRADE} OR primary-condition readiness_call==advance)", file=sys.stderr)
 
     targets_out = []
     for gene in selected_genes:
@@ -320,7 +400,7 @@ def main() -> None:
                 "tractabilityScore": nan_to_none(r_row.get("tractability_score")),
                 "tractabilityModality": r_row.get("tractability_modality"),
                 "humanGeneticSupport": r_row.get("human_genetic_support"),
-                "diseaseRelevanceScore": nan_to_none(r_row.get("disease_relevance_score")),
+                "diseaseRelevanceScore": parse_score(r_row.get("disease_relevance_score")),
                 "clinicalFeasibilityScore": nan_to_none(r_row.get("clinical_feasibility_score")),
                 "compositeSafetyLiability": r_row.get("composite_safety_liability"),
                 "geneticSupportConfidence": r_row.get("genetic_support_confidence"),
