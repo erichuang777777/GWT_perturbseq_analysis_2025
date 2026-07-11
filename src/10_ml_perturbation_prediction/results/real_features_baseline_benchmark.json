@@ -1,0 +1,56 @@
+{
+  "method": "target's own real experimental features (n_cells, cross-donor/guide correlation, guide-level robustness, baseline expression) + Ridge (linear) / HistGradientBoosting (ML) -- predicting the target's own downstream log_fc profile over the 500 most frequently significant landmark genes",
+  "baseline": "mean training-set response profile (ignores which gene was perturbed) -- same honest baseline used by genept_baseline",
+  "response_source_caveat": "GWCD4i.DE_stats.h5ad (the dense response matrix genept_baseline used) is not present in this checkout (S3-only, ~15.6GB, not committed). Y is instead built from metadata/suppl_tables/full_signed_DE/ (adj_p<0.1 significant pairs only), landmark genes = top-500 most frequently significant downstream genes, 0.0 for non-significant pairs (a defensible floor -- adj_p>=0.1 means no significant change detected -- not a fabricated value, but coarser than the dense matrix).",
+  "elapsed_seconds": 1832.1292786598206,
+  "per_condition": [
+    {
+      "condition": "Rest",
+      "n_targets": 11287,
+      "n_features": 10,
+      "n_landmark_genes": 500,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "ridge_mean_corr": 0.10298164890341377,
+      "ridge_median_corr": 0.04133085906505585,
+      "hist_gbr_mean_corr": 0.07048001331792958,
+      "hist_gbr_median_corr": 0.011140489019453526,
+      "baseline_mean_corr": 0.09219520370246506,
+      "baseline_median_corr": 0.04202256351709366,
+      "ridge_beats_baseline": true,
+      "hist_gbr_beats_baseline": false
+    },
+    {
+      "condition": "Stim8hr",
+      "n_targets": 11415,
+      "n_features": 10,
+      "n_landmark_genes": 500,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "ridge_mean_corr": 0.10872686281554844,
+      "ridge_median_corr": 0.03555465675890446,
+      "hist_gbr_mean_corr": 0.07571740389371405,
+      "hist_gbr_median_corr": 0.010899202432483435,
+      "baseline_mean_corr": 0.10008804611800404,
+      "baseline_median_corr": 0.03989473916590214,
+      "ridge_beats_baseline": true,
+      "hist_gbr_beats_baseline": false
+    },
+    {
+      "condition": "Stim48hr",
+      "n_targets": 11281,
+      "n_features": 10,
+      "n_landmark_genes": 500,
+      "n_splits": 5,
+      "ridge_alpha": 10.0,
+      "ridge_mean_corr": 0.10828010804101502,
+      "ridge_median_corr": 0.03150922432541847,
+      "hist_gbr_mean_corr": 0.08261509144645293,
+      "hist_gbr_median_corr": 0.009501379914581776,
+      "baseline_mean_corr": 0.10059517751898363,
+      "baseline_median_corr": 0.0358254536986351,
+      "ridge_beats_baseline": true,
+      "hist_gbr_beats_baseline": false
+    }
+  ]
+}

@@ -21,6 +21,13 @@ target×gene 配對，10,851 個標的）與 `metadata/suppl_tables/gate_passing
 的兩條路線（GenePert 風格的簡單基線、GEARS 風格的圖神經網路），所以需要一個
 不會弄髒 production 程式碼的獨立空間。
 
+`genept_baseline`/`gears_model` 兩條路線跑完（皆誠實負面）後，使用者接續要求
+「建立一個 ML/linear 等多模型比較的結果，即使 ML 不好也沒關係，也是一種發現」，
+延伸出兩條新路線：**`known_regulator_classifier/`**（linear vs ML 挑戰現有的
+已知調控子排序基線，見下方結果——這是目前唯一通過 leakage 稽核的正面發現）與
+**`real_features_baseline/`**（把 `genept_baseline` 的外部 GenePT 文字嵌入換成
+被擾動基因自己的真實實驗特徵，其餘任務結構不變，唯一變數是特徵來源）。
+
 ## 護欄（沿用 `perturbation_prediction_ml.py` 的既有紀律，非新發明）
 
 1. **絕不餵決策。** 這裡的任何模型輸出都不寫入 `target_cards.csv`、
@@ -50,6 +57,12 @@ src/10_ml_perturbation_prediction/
 │   └── evaluate.py
 ├── gears_model/                  ← 進階路線：GO 知識圖譜 + 圖神經網路
 │   └── (見該目錄 README，規模較大，逐步實作)
+├── known_regulator_classifier/   ← T2：已知調控子分類（linear vs ML 挑戰簡單排序基線）
+│   ├── build_features.py
+│   └── train_compare.py
+├── real_features_baseline/       ← T1-rework：genept_baseline 換成真實 DE 特徵
+│   ├── build_real_features.py
+│   └── train_real_features.py
 └── results/                      ← 基準測試報告（json/csv/md），只描述性，不進決策
 ```
 
@@ -59,15 +72,41 @@ src/10_ml_perturbation_prediction/
 - `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`（門檻子集，107 萬列）
 - 兩者 schema 一致：`target_gene, target_ensembl_id, culture_condition, downstream_gene, downstream_ensembl_id, log_fc, adj_p_value, baseMean, zscore`
 
-## 結果摘要（兩條路線都已完成，皆為誠實負面結果）
+## 結果摘要（四條路線，一個正面發現 + 三個誠實負面結果）
+
+**T1（用被擾動基因的特徵，預測其下游反應 profile）：**
 
 | 方法 | Pearson（全部基因） | Pearson（顯著差異基因） | 贏了均值基線？ |
 |---|---|---|---|
 | GenePT embedding + Ridge regression | ~0.18（Rest/Stim8hr/Stim48hr 皆未贏） | *(未計算此指標)* | ❌ |
 | GEARS（GO 圖 + GNN，官方套件） | 0.9916 | **0.0210** | ❌ |
+| 真實 DE 特徵 + Ridge（T1-rework，landmark-500 設定） | Rest 0.103 / Stim8hr 0.109 / Stim48hr 0.108 | — | ✅ 微幅（+0.008~0.011）|
+| 真實 DE 特徵 + HistGBR（T1-rework，landmark-500 設定） | Rest 0.071 / Stim8hr 0.076 / Stim48hr 0.083 | — | ❌ |
 
-兩個架構迥異的方法（簡單線性 vs. 複雜圖神經網路）都誠實地打不過「訓練集
-平均 profile」這個基線，方向一致，呼應 2025-2026 年文獻共識
-（Ahlmann-Eltze et al., *Nature Methods* 2025）。詳細討論見
+> T1-rework 註：把 GenePT 外部文字嵌入換成被擾動基因**自己的真實實驗特徵**後，Ridge
+> 從「全輸」變成「三個條件都微幅贏過均值基線」——方向性訊號成立（基因自己的量測比通用
+> 文字描述更能預測其下游反應），**但 margin 只有 ~0.01、絕對相關僅 ~0.10，且非線性
+> HistGBR 反而輸**，不是突破。且 landmark-500/0-floor 設定與 GenePT 的密集矩陣不完全
+> 可比，數字只能各自跟自己的基線比。完整誠實討論見
+> `../results/real_features_baseline_README.md`。
+
+**T2（已知調控子分類，`known_regulator_classifier/`）：**
+
+現有簡單排序基線（`ctx_specific_de` 排序）AUROC = 0.8458。10x 重複 5-fold
+StratifiedKFold，full（含 leakage 風險欄位）vs ablated（排除後）兩個特徵集分別跑：
+
+| 模型 | ablated AUROC | ablated 贏基線次數 |
+|---|---|---|
+| Logistic Regression | 0.7595±0.0301 | 0/10 ❌ |
+| **Random Forest** | **0.8763±0.0145** | **10/10 ✅ 真訊號** |
+| HistGradientBoosting | 0.8020±0.0469 | 2/10 ❌ |
+
+**Random Forest 在排除所有跟 `ctx_specific_de` 公式直接相關的欄位後，仍然穩定贏過
+現有的簡單排序基線**——這是本次探索目前唯一通過 leakage 稽核的正面發現，但仍有
+小樣本（僅 13 個正類）的統計把握度限制，見 `../results/known_regulator_classifier_README.md`
+的完整討論（含誠實的下一步）。
+
+T1 的兩個既有嘗試（GenePT、GEARS）都誠實地打不過「訓練集平均 profile」這個基線，
+呼應 2025-2026 年文獻共識（Ahlmann-Eltze et al., *Nature Methods* 2025）。詳細討論見
 `genept_baseline/`（`../results/genept_baseline_README.md`）與
 `gears_model/`（`../results/gears_benchmark_README.md`）。
