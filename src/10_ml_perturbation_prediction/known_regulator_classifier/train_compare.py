@@ -265,9 +265,12 @@ def evaluate_feature_set(df: pd.DataFrame, feature_columns: List[str], set_name:
         print(f"  [{set_name}] 排除 100%-missing 欄位（無可學訊號）: {all_missing}")
         X = X.drop(columns=all_missing)
 
-    baseline_score = df["ctx_specific_de"].to_numpy()
-    baseline_auroc = float(roc_auc_score(y, baseline_score))
-    baseline_auprc = float(average_precision_score(y, baseline_score))
+    # NaN 保護:跟所有 model / 置換 / ranking 路徑一致(missing 排到最後),讓 baseline 計算
+    # 在未來若 ctx_specific_de 出現 NaN 時不會 crash。目前該欄 0 個 NaN,故此為數學恆等(不改任何數字)。
+    baseline_score = df["ctx_specific_de"].to_numpy(dtype=float)
+    _bs = np.nan_to_num(baseline_score, nan=np.nanmin(baseline_score) - 1.0) if np.isnan(baseline_score).any() else baseline_score
+    baseline_auroc = float(roc_auc_score(y, _bs))
+    baseline_auprc = float(average_precision_score(y, _bs))
     # AUPRC 的「無資訊」參考線 = 正類 prevalence（一個隨機分類器的 AUPRC≈prevalence）。
     # AUROC 的無資訊參考線恆為 0.5，跟 prevalence 無關——這正是為什麼在 1% 正類時
     # 一定要同時看 AUPRC：它把「稀有」這件事編進參考線裡。
