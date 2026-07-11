@@ -24,7 +24,7 @@ target×gene 配對，10,851 個標的）與 `metadata/suppl_tables/gate_passing
 `genept_baseline`/`gears_model` 兩條路線跑完（皆誠實負面）後，使用者接續要求
 「建立一個 ML/linear 等多模型比較的結果，即使 ML 不好也沒關係，也是一種發現」，
 延伸出兩條新路線：**`known_regulator_classifier/`**（linear vs ML 挑戰現有的
-已知調控子排序基線，見下方結果——這是目前唯一通過 leakage 稽核的正面發現）與
+已知調控子排序基線——移除 leakage 欄位並補上 AUPRC 後為誠實負面，見下方結果）與
 **`real_features_baseline/`**（把 `genept_baseline` 的外部 GenePT 文字嵌入換成
 被擾動基因自己的真實實驗特徵，其餘任務結構不變，唯一變數是特徵來源）。
 
@@ -72,7 +72,12 @@ src/10_ml_perturbation_prediction/
 - `metadata/suppl_tables/gate_passing_signed_DE.suppl_table.csv.gz`（門檻子集，107 萬列）
 - 兩者 schema 一致：`target_gene, target_ensembl_id, culture_condition, downstream_gene, downstream_ensembl_id, log_fc, adj_p_value, baseMean, zscore`
 
-## 結果摘要（四條路線，一個正面發現 + 三個誠實負面結果）
+## 結果摘要（四條路線：T2 誠實負面、T1 兩個負面 + 一個微弱方向性訊號）
+
+> 註：T2 曾一度被記為「唯一正面發現」，但使用者指出應補上 AUPRC——補上後發現原本的
+> AUROC「贏」是 1% prevalence 下的假象，T2 的誠實結論是**負面**（見下方 T2 段落）。
+> 目前四條路線裡沒有任何一個在正確指標下穩定贏過簡單基線；唯一非負面的是 T1-rework
+> Ridge 的 +0.01 微弱方向性訊號。
 
 **T1（用被擾動基因的特徵，預測其下游反應 profile）：**
 
@@ -90,21 +95,24 @@ src/10_ml_perturbation_prediction/
 > 可比，數字只能各自跟自己的基線比。完整誠實討論見
 > `../results/real_features_baseline_README.md`。
 
-**T2（已知調控子分類，`known_regulator_classifier/`）：**
+**T2（已知調控子分類，`known_regulator_classifier/`）：誠實負面（AUPRC 推翻了 AUROC 假象）**
 
-現有簡單排序基線（`ctx_specific_de` 排序）AUROC = 0.8458。10x 重複 5-fold
-StratifiedKFold，full（含 leakage 風險欄位）vs ablated（排除後）兩個特徵集分別跑：
+現有簡單排序基線（`ctx_specific_de` 排序）AUROC = 0.8458、**AUPRC = 0.4744**。因為正類
+prevalence 只有 13/1225 ≈ 1%，**AUROC 會過度樂觀，必須同時看對稀有正類敏感的 AUPRC**。
+10x 重複 5-fold StratifiedKFold，ablated（排除 leakage 欄位）特徵集：
 
-| 模型 | ablated AUROC | ablated 贏基線次數 |
-|---|---|---|
-| Logistic Regression | 0.7595±0.0301 | 0/10 ❌ |
-| **Random Forest** | **0.8763±0.0145** | **10/10 ✅ 真訊號** |
-| HistGradientBoosting | 0.8020±0.0469 | 2/10 ❌ |
+| 模型 | ablated AUROC | 贏基線 | **ablated AUPRC** | **贏基線** |
+|---|---|---|---|---|
+| Logistic Regression | 0.7595±0.0301 | 0/10 | 0.2864 | 0/10 ❌ |
+| Random Forest | 0.8763±0.0145 | 10/10 | **0.3733** | **0/10** ⚠️ |
+| HistGradientBoosting | 0.8020±0.0469 | 2/10 | 0.2006 | 0/10 ❌ |
 
-**Random Forest 在排除所有跟 `ctx_specific_de` 公式直接相關的欄位後，仍然穩定贏過
-現有的簡單排序基線**——這是本次探索目前唯一通過 leakage 稽核的正面發現，但仍有
-小樣本（僅 13 個正類）的統計把握度限制，見 `../results/known_regulator_classifier_README.md`
-的完整討論（含誠實的下一步）。
+**關鍵：Random Forest 的 AUROC「贏」（0.876 > 0.846）是 1% prevalence 下的假象——它的
+AUPRC 只有 0.373，反而輸給基線的 0.474。** 也就是說，移除 leakage 欄位、再用正確的
+指標後，**沒有任何 model 贏過簡單的 `ctx_specific_de` 基線**：在「真的把 13 個已知調控子
+推到最前排」這件事上，簡單基線比所有 ML 模型都好。這是一個乾淨的、符合 2025-2026 文獻
+共識的負面結果，完整的「leakage × 指標 2×2」討論見
+`../results/known_regulator_classifier_README.md`。
 
 T1 的兩個既有嘗試（GenePT、GEARS）都誠實地打不過「訓練集平均 profile」這個基線，
 呼應 2025-2026 年文獻共識（Ahlmann-Eltze et al., *Nature Methods* 2025）。詳細討論見

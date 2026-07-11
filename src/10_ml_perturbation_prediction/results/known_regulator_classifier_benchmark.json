@@ -3,7 +3,7 @@
   "task": "y = 1 if truth_class=='positive' (13 genes) else 0 (1,211 'rest' + 1 'negative' = 1,212) -- same operative definition as the existing baseline ('positives vs rest'), not a balanced classification task (only 1 confirmed negative survives the n>=200 cell gate).",
   "cv": "RepeatedStratifiedKFold n_splits=5 x n_repeats=10, random_state=0; reports auroc_mean/std across repeats and win_rate (fraction of repeats beating the recomputed baseline) -- with only 13 positives, a single split's AUROC is too noisy to trust on its own.",
   "leakage_note": "CIRCULAR_COLUMNS are literal inputs to the ctx_specific_de formula (verified via CD3E's real numbers); LABEL_ADJACENT_COLUMNS (n_concept_modules) correlates with how the canonical positive list was curated, not with the score. A model that only wins with these included and loses once they're removed is reproducing the baseline in disguise, not learning new signal -- see 'ablated' results for the honest answer.",
-  "elapsed_seconds": 401.87161445617676,
+  "elapsed_seconds": 307.95625281333923,
   "full": {
     "feature_set": "full (includes CIRCULAR + LABEL_ADJACENT)",
     "n_features": 43,
@@ -58,7 +58,10 @@
     "n_genes": 1225,
     "n_positive": 13,
     "n_negative_or_rest": 1212,
+    "positive_prevalence": 0.010612244897959184,
     "baseline_auroc_recomputed": 0.8458047727849709,
+    "baseline_auprc_recomputed": 0.47439782835920896,
+    "auprc_no_skill_reference": 0.010612244897959184,
     "models": {
       "logistic": {
         "auroc_mean": 0.9173584666158924,
@@ -75,10 +78,25 @@
           0.9190149784209191,
           0.9170474739781672
         ],
+        "auprc_mean": 0.5042968027812128,
+        "auprc_std": 0.08314525154217652,
+        "auprc_per_repeat": [
+          0.6066460418766849,
+          0.3869231343369275,
+          0.38326919022364947,
+          0.4215890576730261,
+          0.5671134184377271,
+          0.507036744926586,
+          0.60865939626406,
+          0.4548999278304633,
+          0.5281095436275135,
+          0.5787215726154902
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": true,
-        "n_repeats_beating_baseline": 10,
-        "win_rate": 1.0
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": true,
+        "auprc_win_rate": 0.6
       },
       "random_forest": {
         "auroc_mean": 0.9469186341711093,
@@ -95,10 +113,25 @@
           0.9486862147753239,
           0.9393247017009392
         ],
+        "auprc_mean": 0.7457525516660495,
+        "auprc_std": 0.0343889466714285,
+        "auprc_per_repeat": [
+          0.7555770420056134,
+          0.7335046035627807,
+          0.7262756570909634,
+          0.7277196519633494,
+          0.8092418870981555,
+          0.6785510101476488,
+          0.7547505613471999,
+          0.7222987914341298,
+          0.7769324312695456,
+          0.7726738807411075
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": true,
-        "n_repeats_beating_baseline": 10,
-        "win_rate": 1.0
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": true,
+        "auprc_win_rate": 1.0
       },
       "hist_gbr": {
         "auroc_mean": 0.9503173394262504,
@@ -115,10 +148,25 @@
           0.956905305915207,
           0.9457984259964459
         ],
+        "auprc_mean": 0.6408231087340934,
+        "auprc_std": 0.0689959432968607,
+        "auprc_per_repeat": [
+          0.6724113759311152,
+          0.6429230348195865,
+          0.5818106963418403,
+          0.5735110890745976,
+          0.6923977236733191,
+          0.5639704366062369,
+          0.7479818490688054,
+          0.5435131389078758,
+          0.6546612081263147,
+          0.7350505347912435
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": true,
-        "n_repeats_beating_baseline": 10,
-        "win_rate": 1.0
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": true,
+        "auprc_win_rate": 1.0
       }
     }
   },
@@ -170,7 +218,10 @@
     "n_genes": 1225,
     "n_positive": 13,
     "n_negative_or_rest": 1212,
+    "positive_prevalence": 0.010612244897959184,
     "baseline_auroc_recomputed": 0.8458047727849709,
+    "baseline_auprc_recomputed": 0.47439782835920896,
+    "auprc_no_skill_reference": 0.010612244897959184,
     "models": {
       "logistic": {
         "auroc_mean": 0.7594503681137346,
@@ -187,10 +238,25 @@
           0.7353389185072354,
           0.7275958365067275
         ],
+        "auprc_mean": 0.286363507697222,
+        "auprc_std": 0.02823427823399663,
+        "auprc_per_repeat": [
+          0.2877265425802454,
+          0.28308530500572937,
+          0.28897756909421696,
+          0.31137331748277514,
+          0.2968016996584046,
+          0.29300354793232125,
+          0.28256086307219974,
+          0.20684563023839012,
+          0.30391630489612265,
+          0.3093442970118152
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": false,
-        "n_repeats_beating_baseline": 0,
-        "win_rate": 0.0
+        "beats_baseline_auroc_on_mean": false,
+        "auroc_win_rate": 0.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.0
       },
       "random_forest": {
         "auroc_mean": 0.8762693577050011,
@@ -207,10 +273,25 @@
           0.873984513835999,
           0.863893120081239
         ],
+        "auprc_mean": 0.3733378687031846,
+        "auprc_std": 0.047993766771181244,
+        "auprc_per_repeat": [
+          0.4189852777157756,
+          0.2827845756727745,
+          0.3623473490511945,
+          0.4223411879910006,
+          0.3255626716930522,
+          0.37375276543940883,
+          0.3908187327970655,
+          0.3169355834795458,
+          0.427609757396415,
+          0.41224078579561313
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": true,
-        "n_repeats_beating_baseline": 10,
-        "win_rate": 1.0
+        "beats_baseline_auroc_on_mean": true,
+        "auroc_win_rate": 1.0,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.0
       },
       "hist_gbr": {
         "auroc_mean": 0.802030972328002,
@@ -227,10 +308,25 @@
           0.8052170601675552,
           0.8168316831683169
         ],
+        "auprc_mean": 0.20060477058115364,
+        "auprc_std": 0.04376806254716597,
+        "auprc_per_repeat": [
+          0.24664820930299178,
+          0.18561602946251962,
+          0.1876309392096502,
+          0.21334618990088677,
+          0.171320996544443,
+          0.2847745293521756,
+          0.2123218742100036,
+          0.11202597385403648,
+          0.21225002097654566,
+          0.1801129429982838
+        ],
         "n_repeats": 10,
-        "beats_baseline_on_mean": false,
-        "n_repeats_beating_baseline": 2,
-        "win_rate": 0.2
+        "beats_baseline_auroc_on_mean": false,
+        "auroc_win_rate": 0.2,
+        "beats_baseline_auprc_on_mean": false,
+        "auprc_win_rate": 0.0
       }
     }
   }
