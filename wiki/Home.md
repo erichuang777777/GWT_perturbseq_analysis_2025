@@ -45,6 +45,7 @@ CD4 Perturb-seq 標靶探索工具是一套建立在 **Marson lab CD4 T 細胞 P
 - `docs/technical_methods.md` — 技術方法與驗證說明(peer-review 等級,含正式參考文獻)
 - `docs/figure_guide.md` — 圖表導讀(科研人員):把 codebase 圖表整理成正式閱讀路徑,含嵌入圖與判讀
 - `docs/server_modules.md` — Server 模組參考:13 個 API router 的用途/端點/輸入輸出 + 概念層 M01–M20,集中一頁
+- `docs/researcher_guide/` — 研究人員導覽(單頁網站):科研人員如何判讀卡片/決策/校準與呼叫 API,並連向各權威文件
 - `docs/de_and_baseline_spec.md` — NTC 基線與 DE 方法學
 - `docs/data_governance_checklist.md` — 資料治理與授權檢查清單
 - `docs/cache_and_versioning_policy.md` — 快取與版本失效政策

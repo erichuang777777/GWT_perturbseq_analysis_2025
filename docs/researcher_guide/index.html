@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="研究人員導覽:引導科研人員判讀 CD4 Perturb-seq 平台的標靶卡片、就緒度決策、校準、概念層與 API,並連向各權威文件。">
+<title>CD4 Perturb-seq 平台 · 研究人員導覽</title>
+</head>
+<body>
+<title>CD4 Perturb-seq 平台 · 研究人員導覽</title>
+<style>
+  :root{
+    --bg:#F4F7F6; --surface:#FFFFFF; --surface-2:#EAF0EE;
+    --ink:#0E1F1D; --ink-soft:#41605B; --muted:#6F8A85; --line:#D6E0DD;
+    --accent:#0E8F86; --accent-ink:#0A6E67; --accent-2:#B5316F;
+    --adv:#0E8F86; --val:#2D6CB5; --watch:#B0761A; --deprio:#7A908E; --flag:#C23A63;
+    --glow:rgba(14,143,134,.13);
+    --font-display:"Noto Serif TC","Source Han Serif TC","Songti TC","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --font-body:"PingFang TC","Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","Hiragino Sans",sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --maxw:840px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#08120F; --surface:#0E1B18; --surface-2:#13241F;
+      --ink:#E9F2EF; --ink-soft:#A9C2BC; --muted:#6E8983; --line:#20362F;
+      --accent:#34D6C0; --accent-ink:#57E3CF; --accent-2:#E85AA0;
+      --adv:#34D6C0; --val:#5FA0E6; --watch:#E0A83C; --deprio:#8AA39D; --flag:#F0648F;
+      --glow:rgba(52,214,192,.20);
+    }
+  }
+  :root[data-theme="light"]{--bg:#F4F7F6;--surface:#FFFFFF;--surface-2:#EAF0EE;--ink:#0E1F1D;--ink-soft:#41605B;--muted:#6F8A85;--line:#D6E0DD;--accent:#0E8F86;--accent-ink:#0A6E67;--accent-2:#B5316F;--adv:#0E8F86;--val:#2D6CB5;--watch:#B0761A;--deprio:#7A908E;--flag:#C23A63;--glow:rgba(14,143,134,.13);}
+  :root[data-theme="dark"]{--bg:#08120F;--surface:#0E1B18;--surface-2:#13241F;--ink:#E9F2EF;--ink-soft:#A9C2BC;--muted:#6E8983;--line:#20362F;--accent:#34D6C0;--accent-ink:#57E3CF;--accent-2:#E85AA0;--adv:#34D6C0;--val:#5FA0E6;--watch:#E0A83C;--deprio:#8AA39D;--flag:#F0648F;--glow:rgba(52,214,192,.20);}
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16.5px;line-height:1.7;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--accent);color:var(--bg)}
+  a{color:var(--accent-ink);text-underline-offset:3px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:60;transition:width .1s linear}
+
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.4) blur(10px);background:color-mix(in srgb,var(--bg) 84%,transparent);border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:1120px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:14px}
+  .brand{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px}
+  .brand b{color:var(--ink);font-weight:600;letter-spacing:.01em;text-transform:none;font-family:var(--font-body);font-size:13.5px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--glow)}
+  .spacer{flex:1}
+  .toggle{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;padding:7px 12px;border-radius:20px;cursor:pointer}
+  .toggle:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  .hero{border-bottom:1px solid var(--line);background:
+     radial-gradient(120% 100% at 82% -20%, var(--glow), transparent 60%)}
+  .hero-in{max-width:var(--maxw);margin:0 auto;padding:64px 24px 48px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 18px}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.16;letter-spacing:-.01em;margin:0 0 18px;text-wrap:balance}
+  .lede{font-size:clamp(1.02rem,2.2vw,1.18rem);color:var(--ink-soft);max-width:62ch;margin:0 0 22px}
+  .tags{display:flex;flex-wrap:wrap;gap:9px}
+  .tag{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-soft);border:1px solid var(--line);background:var(--surface);padding:6px 11px;border-radius:20px}
+
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.4rem,3.2vw,1.9rem);line-height:1.24;margin:0 0 16px;letter-spacing:-.005em;text-wrap:balance}
+  h3{font-size:1.02rem;font-weight:650;margin:24px 0 8px}
+  p{margin:0 0 15px}
+  strong{font-weight:650;color:var(--ink)}
+  code{font-family:var(--font-mono);font-size:.85em;background:var(--surface-2);padding:2px 6px;border-radius:5px}
+  .muted{color:var(--muted);font-size:14px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:680px){.grid2{grid-template-columns:1fr}}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;display:block;overflow-x:auto}
+  thead th{text-align:left;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:9px 12px 9px 0;white-space:nowrap}
+  td{border-bottom:1px solid var(--line);padding:10px 12px 10px 0;vertical-align:top;color:var(--ink-soft)}
+  td:first-child{color:var(--ink)}
+  td code, .ep{font-family:var(--font-mono);font-size:12.5px;color:var(--accent-ink);white-space:nowrap}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:16px 0}
+  .note{border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 6%,var(--surface));padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0}
+  .note .lab{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);display:block;margin-bottom:5px}
+  .note p{margin:0;font-size:14.5px}
+  .warn{border-left-color:var(--flag);background:color-mix(in srgb,var(--flag) 7%,var(--surface))}
+  .warn .lab{color:var(--flag)}
+
+  .pill{display:inline-block;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;padding:3px 9px;border-radius:20px;color:#fff}
+  .p-adv{background:var(--adv)}.p-val{background:var(--val)}.p-watch{background:var(--watch)}.p-dep{background:var(--deprio)}.p-flag{background:var(--flag)}
+
+  .flags{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}
+  .flags li{display:flex;gap:12px;align-items:baseline;border:1px solid var(--line);border-left:3px solid var(--flag);border-radius:0 9px 9px 0;padding:11px 14px;background:var(--surface);font-size:14px}
+  .flags .ft{font-family:var(--font-mono);font-size:12px;color:var(--flag);min-width:150px;font-weight:600}
+  .flags .fc{color:var(--ink-soft)}
+
+  ol.reading{list-style:none;counter-reset:r;padding:0;margin:16px 0;display:grid;gap:11px}
+  ol.reading li{counter-increment:r;display:flex;gap:15px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:var(--surface)}
+  ol.reading li::before{content:counter(r);font-family:var(--font-mono);font-weight:600;color:var(--accent-ink);border:1.5px solid var(--accent);border-radius:50%;width:30px;height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;font-size:13px}
+  ol.reading b{display:block;margin-bottom:2px}
+  ol.reading .d{font-size:13.5px;color:var(--ink-soft)}
+  ol.reading a{font-family:var(--font-mono);font-size:12.5px}
+
+  .cites{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .cite{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-family:var(--font-mono);text-decoration:none;color:var(--ink-soft);border:1px solid var(--line);background:var(--surface);padding:6px 11px;border-radius:8px}
+  .cite:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .cite::after{content:"↗";font-size:11px;opacity:.6}
+
+  footer{padding:36px 0 56px;color:var(--muted);font-size:13.5px}
+  .disclaimer{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;line-height:1.6}
+
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><span class="dot" aria-hidden="true"></span><b>CD4 Perturb-seq 平台 · 研究人員導覽</b></span>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeToggle" type="button" aria-label="切換深色／淺色主題">☾ / ☀</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-in reveal in">
+    <p class="eyebrow">Researcher's Guide · 給科研人員</p>
+    <h1>如何把這個平台當成<br>研究工具來讀與用</h1>
+    <p class="lede">這是給計算生物、免疫學與藥物探索研究者的導覽:平台在科學上回答什麼、每個輸出怎麼判讀、如何呼叫 API、如何讀圖,以及每個宣稱的權威依據在哪。它是**決策支援層**——消費已發表的 GWT Perturb-seq DE 結果 [1],不重算 DE。</p>
+    <div class="tags">
+      <span class="tag">決策支援層,非新方法</span>
+      <span class="tag">consume ≠ recompute</span>
+      <span class="tag">研究用,非臨床建議</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section id="s1">
+    <p class="kicker">30 秒定位</p>
+    <h2>這個平台在科學上回答什麼</h2>
+    <p>它把一個在<strong>原代人類 CD4⁺ T 細胞</strong>上執行的全基因體 CRISPRi Perturb-seq 篩選 [1] 的差異表現(DE)結果,轉為每「標的 × 條件」一列的<strong>標靶卡片</strong>,並輸出可辯護、可追溯的 <span class="pill p-adv">advance</span> <span class="pill p-val">validate</span> <span class="pill p-watch">watchlist</span> <span class="pill p-dep">deprioritize</span> 決策。核心價值不在演算法,而在:把統計等級、穩健性、敲低因果性、可成藥性、安全與遺傳學證據整合成一個**保守、誠實、可稽核**的優先序。</p>
+    <div class="note">
+      <span class="lab">關鍵前提</span>
+      <p>平台<strong>不重算</strong> DE / pseudobulk / NTC 基線——那些是上游已驗證的計算。它加的是判讀與決策層。方法學全貌見 <code>docs/technical_methods.md</code>。</p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <p class="kicker">資料</p>
+    <h2>資料集與出處</h2>
+    <table>
+      <thead><tr><th>項目</th><th>值</th></tr></thead>
+      <tbody>
+        <tr><td>DE 統計列數</td><td>33,983 列(= 11,526 唯一標的 × 3 條件)</td></tr>
+        <tr><td>被測下游基因</td><td>10,282</td></tr>
+        <tr><td>條件 / 捐贈者 / 批次</td><td>Rest·Stim8hr·Stim48hr / D1–D4 / R1·R2</td></tr>
+        <tr><td>供消費的表</td><td><code>DE_stats</code> · <code>guide_kd_efficiency</code> · <code>sgrna_library_metadata</code> · <code>sample_metadata</code></td></tr>
+        <tr><td>公開入口 / accession</td><td>CZI Virtual Cells Platform · SRA <code>SRP643211</code> / GEO <code>GSE314342</code></td></tr>
+      </tbody>
+    </table>
+    <p class="muted">⚠️ <code>Stim48hr</code> 完全落在 <code>CD4i_R2</code> run,任何 Stim48hr 專一宣稱需帶 batch caveat。逐欄定義見 <code>metadata/data_sharing_readme.md</code> / <code>docs/data_dictionary.md</code>。</p>
+  </section>
+
+  <section id="s3">
+    <p class="kicker">核心判讀</p>
+    <h2>怎麼讀一張標靶卡片</h2>
+    <p>一張卡片是「一個標的在一個條件下」的完整證據摘要。判讀時依序看四件事:</p>
+    <div class="grid2">
+      <div class="card"><h3 style="margin-top:0">① 統計證據等級 1–4</h3><p class="muted" style="margin:0"><code>statistical_evidence_grade</code>:建立在上游 <code>keep_for_DE</code> 之上的可重現性閘(最小細胞數、跨 donor/guide 相關、脫靶旗)。缺 guide 資料封頂 2。</p></div>
+      <div class="card"><h3 style="margin-top:0">② 敲低因果閘 kd_status</h3><p class="muted" style="margin:0"><code>confirmed</code>(可因果判讀)/ <code>weak</code> / <code>not_measurable</code>(NTC 基線 ≤0.001)/ <code>not_assessed</code>(從未測量,不懲罰)。標的自身未確認敲低,下游 DE 不可因果歸因。</p></div>
+      <div class="card"><h3 style="margin-top:0">③ 穩健性</h3><p class="muted" style="margin:0"><code>crossdonor_correlation</code> 與 <code>crossguide_correlation</code>:效應在不同捐贈者與不同 gRNA 間是否重現。缺值顯示 caveat,不補 0。</p></div>
+      <div class="card"><h3 style="margin-top:0">④ 決策 + 封頂原因</h3><p class="muted" style="margin:0"><code>readiness_call</code> + <code>score_cap_reason</code> + <code>next_step</code>。永遠先看封頂原因,它解釋為何某列沒到更高等級。</p></div>
+    </div>
+    <div class="note"><span class="lab">判讀守則</span><p><code>unknown ≠ 0</code>:未建置的證據領域是明確「未知」,不是負分。低 grade 搭配「未被 deprioritize」的 readiness 本身即有資訊——兩者回答不同問題。</p></div>
+  </section>
+
+  <section id="s4">
+    <p class="kicker">決策邏輯</p>
+    <h2>就緒度引擎與紅旗覆蓋</h2>
+    <p>12 個證據領域 → <code>R0–R5</code> 階梯 → 決策。關鍵在<strong>紅旗覆蓋</strong>:不論下游統計多強,命中即封頂——這是平台把「訊號強」與「好標的」分開的機制。</p>
+    <ul class="flags">
+      <li><span class="ft">essential_gene → watchlist</span><span class="fc">必需基因;另不得捏造 safety 分數</span></li>
+      <li><span class="ft">broad_effect → watchlist</span><span class="fc">廣泛效應(239 基因清單:染色質/轉錄機器)</span></li>
+      <li><span class="ft">high_offtarget → watchlist</span><span class="fc"><code>offtarget_flag</code>(TSS 10 kb 內顯著下調)</span></li>
+      <li><span class="ft">kd_not_measurable → watchlist</span><span class="fc">敲低無法評估</span></li>
+      <li><span class="ft">uncertain_direction → validate</span><span class="fc"><code>ontarget_significant</code> 為否 / 方向不明</span></li>
+      <li><span class="ft">batch_confounded → validate</span><span class="fc"><code>batch_sensitivity_flag = sensitive</code></span></li>
+      <li><span class="ft">kd_weak → validate</span><span class="fc">敲低訊號未達確認門檻</span></li>
+    </ul>
+    <p class="muted">端點 <span class="ep">GET /api/readiness/{dataset_id}</span>。完整領域與門檻見 <code>docs/technical_methods.md</code> §3.5。</p>
+  </section>
+
+  <section id="s5">
+    <p class="kicker">可信度</p>
+    <h2>校準:排序是否回復已知生物學</h2>
+    <p><code>calibration.py::control_panel_calibration()</code> 在真實參考集雙向檢驗:</p>
+    <table>
+      <thead><tr><th>檢驗</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr><td>負對照(<code>not_measurable</code>,4,774 列)</td><td>99.96% 落 grade 1;0% 達 advance/validate</td></tr>
+        <tr><td>正對照(21 基因 canonical CD4 面板)</td><td>AUROC 0.85;93.1% 未被 deprioritize</td></tr>
+        <tr><td>排序穩定度</td><td>天真 top-50(DE breadth)vs 嚴格 top-50 僅 13/50 重疊,Spearman r=0.943</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><span class="lab">誠實發現</span><p>grade 3/4 是「此條件列一切吻合」的窄門,<strong>不是</strong>「是否為真標的」的代理。為使正對照好看而放寬門檻 = 把指標校準到答案。端點 <span class="ep">GET /api/calibration/{dataset_id}</span>。</p></div>
+  </section>
+
+  <section id="s6">
+    <p class="kicker">概念層</p>
+    <h2>免疫概念模組 M01–M20</h2>
+    <p>平台把每個標的/樣本投影到 20 個 CD4 T 細胞免疫概念(concept-bottleneck layer,COMPASS-analog),以 seed-gene overlap 計分(可手算稽核、無黑箱)。涵蓋 TCR 訊號、共刺激/檢查點、細胞激素軸、Th 分化、代謝、記憶/耗竭、細胞週期。</p>
+    <div class="note warn"><span class="lab">關鍵不變量</span><p>概念分數是<strong>描述性的,永不餵</strong> <code>readiness_call</code> / <code>_stage()</code>。它只回答「這個標的在哪些免疫概念上有訊號」,不進評分。</p></div>
+    <p class="muted">端點 <span class="ep">GET /api/modules/{dataset_id}</span>、<span class="ep">POST /api/individual-concept-profile</span>。逐模組 seed genes 與生物學意義見 <code>docs/concept_dictionary.md</code>。</p>
+  </section>
+
+  <section id="s7">
+    <p class="kicker">怎麼跑 / 查</p>
+    <h2>API 入口與主要端點</h2>
+    <div class="card" style="padding:16px 18px"><code>uvicorn api.app:app --app-dir src/3_DE_analysis</code> · 互動文件 <code>/docs</code> · 健康檢查 <span class="ep">GET /api/health</span></div>
+    <table>
+      <thead><tr><th>模組</th><th>主要端點</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>build</td><td><span class="ep">POST /api/run/target-card</span></td><td>建資料集(→ 不可變 dataset_id)</td></tr>
+        <tr><td>cards</td><td><span class="ep">GET /api/targets/{id}</span></td><td>卡片 / 單標靶 dossier / 排序 / 匯出</td></tr>
+        <tr><td>readiness</td><td><span class="ep">GET /api/readiness/{id}</span></td><td>就緒度決策</td></tr>
+        <tr><td>calibration</td><td><span class="ep">GET /api/calibration/{id}</span></td><td>正/負對照校準</td></tr>
+        <tr><td>evidence</td><td><span class="ep">GET /api/evidence/{gene}</span></td><td>CT/PubMed/Open Targets(cache-first)</td></tr>
+        <tr><td>disease</td><td><span class="ep">GET /api/disease/{name}/targets/{id}</span></td><td>疾病轉譯(13 適應症)</td></tr>
+        <tr><td>genes</td><td><span class="ep">GET /api/search</span></td><td>Ensembl 解析 + 模糊搜尋</td></tr>
+        <tr><td>imports</td><td><span class="ep">POST /api/imports</span></td><td>上傳自有 DE(usr_ 隔離)</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">13 個 router 的完整端點/輸入輸出見 <code>docs/server_modules.md</code>。</p>
+  </section>
+
+  <section id="s8">
+    <p class="kicker">讀圖</p>
+    <h2>圖表判讀路徑</h2>
+    <p>codebase 內的分析圖已整理成正式閱讀路徑,每張附出處/如何讀/結論:資料概覽(EDA)→ 分佈結構(long-tail)→ 穩健性 → 篩選漏斗(33,983 → 2,131 → 1,235)→ 排序與 STRING 三模組 → 情境動力學 → 方法學驗證(AUROC 0.85、237 essential dropout)→ 決策層(11,526 → 39 可遞送)。</p>
+    <p class="muted">完整嵌圖與判讀:<code>docs/figure_guide.md</code>(含 53 張精修圖庫 + 8 張經譜系稽核的 pipeline 圖)。</p>
+  </section>
+
+  <section id="s9">
+    <p class="kicker">限制 · 引用</p>
+    <h2>限制與如何引用</h2>
+    <p><strong>明確 descope</strong>(非疏漏,已記錄):signed module scoring(DE 僅 up/down 計數、無 per-gene 方向)· SCEPTRE(誠實外部 hook 而非天真重寫)· pertpy/Mixscape(scikit-learn 替代)· 細胞層級真實資料(1.7 TiB 委外執行,僅對合成 fixture 驗證)· 情境專一性為 heuristic 非交互作用檢定。</p>
+    <div class="note warn"><span class="lab">CRISPRi ≠ 藥理學</span><p>體外 CD4 情境的強訊號是線索,不是療效保證;安全與可成藥性永遠拉回人體證據。本平台輸出為<strong>研究用標靶優先排序,非臨床或用藥建議</strong>。</p></div>
+    <p><strong>引用</strong>:Zhu R., Dann E. et al. (2025) Genome-scale perturb-seq in primary human CD4⁺ T cells… <em>bioRxiv</em> <code>10.64898/2025.12.23.696273</code> [1]。</p>
+  </section>
+
+  <section id="s10" style="border-bottom:0">
+    <p class="kicker">文件地圖</p>
+    <h2>建議閱讀順序(權威文件)</h2>
+    <ol class="reading">
+      <li><span><b>Server 模組參考</b><span class="d">13 個 API router 的用途/端點/輸入輸出</span><a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/server_modules.md" target="_blank" rel="noopener">docs/server_modules.md ↗</a></span></li>
+      <li><span><b>技術方法與驗證</b><span class="d">資料出處、方法、校準、限制、正式參考文獻(peer-review 等級)</span><a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/technical_methods.md" target="_blank" rel="noopener">docs/technical_methods.md ↗</a></span></li>
+      <li><span><b>圖表導讀</b><span class="d">codebase 圖表的正式閱讀路徑,含嵌圖與判讀</span><a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/figure_guide.md" target="_blank" rel="noopener">docs/figure_guide.md ↗</a></span></li>
+      <li><span><b>概念詞典 M01–M20</b><span class="d">20 個免疫概念模組的 seed genes 與生物學意義</span><a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/concept_dictionary.md" target="_blank" rel="noopener">docs/concept_dictionary.md ↗</a></span></li>
+      <li><span><b>資料字典 / DE 基線規格</b><span class="d">每個產出欄位逐欄定義 · NTC 基線與 DE 方法學</span><a href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/data_dictionary.md" target="_blank" rel="noopener">data_dictionary.md ↗</a></span></li>
+    </ol>
+    <div class="cites">
+      <a class="cite" href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025" target="_blank" rel="noopener">GitHub Repo</a>
+      <a class="cite" href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/wiki" target="_blank" rel="noopener">專案 Wiki</a>
+      <a class="cite" href="https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" target="_blank" rel="noopener">bioRxiv 論文</a>
+      <a class="cite" href="https://platform.opentargets.org/" target="_blank" rel="noopener">Open Targets</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p class="disclaimer"><strong>閱讀說明</strong>:本頁為研究人員導覽,提供判讀與使用的入口;逐字權威內容以連結的 <code>docs/</code> 文件與程式為準。所有平台內數字(33,983 / 11,526 / 239 / R0–R5 / 校準值)皆對應 repo 內真實檔案。本工具為研究用標靶優先排序,非臨床或用藥建議。</p>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var s=localStorage.getItem('gwt-theme');if(s)root.setAttribute('data-theme',s);}catch(e){}
+  var btn=document.getElementById('themeToggle');
+  btn&&btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark';root.setAttribute('data-theme',next);
+    try{localStorage.setItem('gwt-theme',next);}catch(e){}
+  });
+  var bar=document.getElementById('progress');
+  function onScroll(){var h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?(window.scrollY/h)*100:0).toFixed(1)+'%';}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var secs=document.querySelectorAll('section');
+  if(reduce||!('IntersectionObserver' in window)){secs.forEach(function(s){s.classList.add('reveal','in');});}
+  else{secs.forEach(function(s){s.classList.add('reveal');});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+    secs.forEach(function(s){io.observe(s);});}
+})();
+</script>
+
+</body>
+</html>
