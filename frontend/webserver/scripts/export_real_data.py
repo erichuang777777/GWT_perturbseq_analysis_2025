@@ -69,7 +69,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SRC_3DE = REPO_ROOT / "src" / "3_DE_analysis"
 sys.path.insert(0, str(SRC_3DE))
 
-CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137" / "target_cards.csv"
+CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
 EVIDENCE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_evidence"
 GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"

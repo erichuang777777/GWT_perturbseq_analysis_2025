@@ -34,8 +34,11 @@ export interface Figure {
   desc: string;
 }
 
-// ---------- real dataset shape (src/data/generated/real-dataset.json) ----------
-// Produced by scripts/export_real_data.py directly from this repo's own
+// ---------- real dataset shape (public/real-dataset.json) ----------
+// Fetched at runtime by dataset.ts's loadDataset() from the app's BASE_URL
+// (Vite serves public/ at the site root) -- not statically imported, so it
+// never gets bundled into the JS payload. Produced by
+// scripts/export_real_data.py directly from this repo's own
 // target_cards.csv, readiness engine, concept-module loader, and cached
 // Open Targets / ClinicalTrials.gov / PubMed / gnomAD evidence. Any field
 // the source data didn't have is `null` here — never a fabricated value.

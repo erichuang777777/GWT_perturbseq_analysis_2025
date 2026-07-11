@@ -19,4 +19,4 @@ audit,audit / figure_registry.csv,af9b6263-e6d9-43f0-89b8-614761a4cce7,d125a1e62
 audit,audit / reproducibility_bundle_v2.tar.gz,1ccbbc49-2d43-4e2d-8706-05bd23f8c424,aef56de3d1c2c28f7ada62ff9ce9949a,(binary),1263069,OK,2026-07-10
 04_results,04_results / target_cards.csv (a6bba17b 39-col canonical),a6bba17b-f194-4a50-8cf8-96e03eededd6,400c21fa7fa382de56c9f5578cf72ecb,33983x39,11734543,OK,2026-07-11
 05_visualization,05_visualization / REFINED_CATALOG_53.csv,19bc78fc-0a6d-4c38-afd1-fb71858dde40,f07ce8a4ab41e04b42795fa5105032d7,53x6,14634,OK,2026-07-11
-07_dashboard,07_dashboard / real-dataset.json (React portal export; note: embeds generatedAt timestamp),108512a2-17ff-42a8-ba69-d751d9523b18,9b1f6c816f364d22d2e9b95c45962095,7249targets,18547136,OK,2026-07-11
+07_dashboard,07_dashboard / real-dataset.json (React portal export; regenerated from canonical a6bba17b dataset; deterministic -- generatedAt is always null; no wall-clock stamp),708b3feb-f17a-4ac0-9cd1-ac858e96df57,8ae7e96312cb6fade49efc23d2b78b96,7249targets,18760385,OK,2026-07-11

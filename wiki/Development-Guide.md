@@ -48,13 +48,16 @@ pip install -q pytest
 python -m pytest tests/ -q
 
 # 3. 啟動後端 API(FastAPI;新路徑,或用相容 shim target_card_api:app)
+# 同時服務即時上傳工具 GET /upload
 uvicorn api.app:app --app-dir src/3_DE_analysis
 # 健康檢查:GET /api/health 會逐能力回報 available/degraded
 
-# 4. 啟動前端儀表板(獨立套件,只透過 HTTP/JSON 跟 API 溝通)
-pip install -r frontend/dashboard/requirements.txt
-GWT_API_BASE=http://127.0.0.1:8000 streamlit run frontend/dashboard/target_card_dashboard.py
+# 4. 啟動前端(React + Vite portal,獨立套件 frontend/webserver/)
+# 瀏覽讀靜態預先匯出的 JSON,不即時打 API;只有 /upload 工具打即時 API
+cd frontend/webserver && npm install && npm run dev
 ```
+
+`make dev` / `make api` / `make web` 為以上的一鍵版本(見根目錄 `Makefile`)。
 
 重建 GWT 參考標靶卡片的完整指令與快取/版本規則,見 **[維護 Maintenance](Maintenance)**。
 

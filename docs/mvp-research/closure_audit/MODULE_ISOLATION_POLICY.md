@@ -122,8 +122,8 @@ The seven stages are **documentation + data modules**: each stage folder holds a
 - **Purpose:** the CD4 Target Discovery Portal (`frontend/webserver/`, React+TS+Vite SPA; a prior Streamlit `dashboard/` was replaced).
 - **INPUT contract:** **FastAPI HTTP/JSON only.** Hard rule (from `frontend/README.md`): nothing under `frontend/` imports `src/3_DE_analysis/` modules, reads its files, or shares its process. The API JSON is the *only* contract.
 - **OUTPUT contract:** rendered UI + the runtime-fetched ~18 MB dataset (real data for 7,249 genes); no data written back into the pipeline.
-- **Shared dependencies:** `webserver/package.json`; the API base URL (`GWT_API_BASE`).
-- **ISOLATION RULE:** the strongest isolation in the repo — frontend can be rewritten in any stack without touching backend, and vice versa, provided the JSON contract holds. Edit `frontend/webserver/`; run the Vite dev server (or `make dashboard` for the legacy path); re-validate `pytest tests/test_dashboard_smoke.py`, `test_ui_chips`, `test_empty_states`, `test_dossier_nav`.
+- **Shared dependencies:** `webserver/package.json`. (The portal itself takes no API base URL — it fetches its static `public/real-dataset.json`; the separate live upload tool at `/upload` is served directly by the API, same origin, no env var needed.)
+- **ISOLATION RULE:** the strongest isolation in the repo — frontend can be rewritten in any stack without touching backend, and vice versa, provided the JSON contract holds. Edit `frontend/webserver/`; run `make web` (or `cd frontend/webserver && npm run dev`); re-validate `pytest tests/test_empty_states.py`, `test_upload_ui.py` (the live upload tool, which does talk to the API).
 
 ### 3.4 `scripts/` — Standalone read-only collector
 - **Purpose:** `scripts/validate_pipeline.py` — read-only collector feeding `docs/human_validation_protocol.md`; prints live numbers, decides nothing, rebuilds nothing.

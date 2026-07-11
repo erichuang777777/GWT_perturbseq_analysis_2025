@@ -11,12 +11,12 @@ honest forward pointer. Paired with `docs/KNOWN_LIMITATIONS.md`.
   `/api/imports/*` flow (upload → column-mapping → approve → merge → real
   readiness), kept separate from the static portal so the frozen portal stays
   untouched. Guarded by `tests/test_upload_ui.py`.
-- **Fix stale build wiring** (see KNOWN_LIMITATIONS "stale build wiring"):
-  - point `Makefile` `dashboard`/`dev` at the React `frontend/webserver` (Vite),
-    or remove the dead Streamlit targets;
-  - switch `export_real_data.py` to the canonical 39-col `a6bba17b` dataset and
-    regenerate the portal export;
-  - reconcile the `dataset.ts` import path vs the committed `public/real-dataset.json`.
+- ✅ **Fix stale build wiring** — **shipped** (see KNOWN_LIMITATIONS "stale build
+  wiring", now resolved): `Makefile` `web`/`dev` point at the React
+  `frontend/webserver` (Vite); `export_real_data.py` switched to the canonical
+  39-col `a6bba17b` dataset and the portal export was regenerated; the
+  `dataset.ts`/`public/real-dataset.json` path was re-verified as already
+  correct (only a stale comment needed fixing).
 - **Refresh `data_dictionary.md` code-path references** (`build_target_cards.py::build_cards_frame`
   / `readiness_engine.py` → `core/cards.py` / `core/readiness.py`) — OF-7 residual.
 
