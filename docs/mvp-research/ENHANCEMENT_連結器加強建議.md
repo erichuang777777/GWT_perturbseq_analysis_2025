@@ -8,7 +8,7 @@
 
 ## 0. 先確認：我沒有要重做的部分
 
-repo 的 `wiki/Tech-Debt.md` 已有一份紮實的 10 項 code review（A.1–A.7 正確性、B.8–9 效能、C.10 重複、D descope、E 驗證缺口）。**那份 review 我認同，不重複。** 尤其 A.1（`_kd_status` 把 NaN 基線當敲低失敗，違反 repo 自己的 `unknown≠0`）確實應列為上傳功能的合併前阻擋項。
+repo 的 `wiki/Tech-Debt.md` 已有一份紮實的 10 項 code review（A.1–A.7 正確性、B.8–9 效能、C.10 重複、D descope、E 驗證缺口）。**那份 review 我認同，不重複。** 其中 A.1（`_kd_status` 把 NaN 基線當敲低失敗，違反 repo 自己的 `unknown≠0`）與 A.2（對應後遺失 `n_total_de_genes`）**已解決並有守護測試**（`kd_status/v2` + canonical 上傳 schema；見 `wiki/Tech-Debt.md` 該兩項的 ✅ 註記與 `tests/test_empty_states.py`）——上傳功能已正式支援，不再是合併前阻擋項。
 
 本報告只加它沒涵蓋的一件事：**用連結器實跑，證明被標為「卡住/等佈署」的證據領域，現在就能填。**
 
