@@ -6,14 +6,16 @@
 
 ## A. 正確性問題(code review 發現)
 
-### 🔴 1. `_kd_status` 把「從未測量」當成「測量後失敗」— 每個上傳資料集都被封頂
+### ✅ 1.（已解決)`_kd_status` 把「從未測量」當成「測量後失敗」— 每個上傳資料集都被封頂
+> **RESOLVED** — `kd_status/v2`(`core/kd_status.py`)已區分 NaN 基線 → `not_assessed`(genuinely unknown,不封頂)與已測量 sub-floor → `not_measurable`。守護測試:`tests/test_empty_states.py::test_guideless_upload_is_not_assessed_not_fabricated_not_measurable`(綠)。此項曾建議為上傳功能合併前阻擋項,阻擋前提現已滿足並移除。以下為歷史問題描述。
 - **位置**:`build_target_cards.py:351`(及 `:509`)
 - 使用者上傳走 `build_cards_frame(..., guide_df=None, schema="generic")`。無 guide 表時 `target_baseline_expression` 從未設定,被回填為 NaN。`_kd_status` 命中 `if pd.isna(baseline) or baseline <= FLOOR: return "not_measurable"`,於是**每個上傳資料集的每一列**都變成 `not_measurable`。
 - **後果**:每張卡片的 `score_cap_reason` 都加上 `kd_not_measurable`,readiness 整個上傳封頂在 watchlist,next step 顯示「NTC 表現過低無法評估敲低」— 這是捏造的,因為上傳根本沒有 NTC 細胞。
 - 這**直接違反** repo 自己 `docs/data_governance_checklist.md` §3 的 `unknown ≠ 0` 原則。NaN(未知)應與「已測量的低於 floor」是不同態。
 - **建議修法**:在 `_kd_status` 區分 NaN 基線(→ 新的 `unknown` / `not_assessed` 態)與 sub-floor;讓純上傳資料不被當成敲低失敗。
 
-### 🟡 2. 已對應的上傳結構性遺失 `n_total_de_genes` → 等級與校準退化
+### ✅ 2.（已解決)已對應的上傳結構性遺失 `n_total_de_genes` → 等級與校準退化
+> **RESOLVED** — `n_total_de_genes` 已納入 canonical 上傳 schema,`import_manager.suggested_mapping` 會把別名(如 `num_de_genes`)對應到它,`build_mapped_view` 不再丟棄。守護測試:`tests/test_empty_states.py::test_mapped_upload_preserves_n_total_de_genes`(綠)。以下為歷史問題描述。
 - **位置**:`build_target_cards.py:233` + `import_manager.py` 對應層
 - `adapt_generic_de` 讀 `col("n_total_de_genes")`,但 `n_total_de_genes` **不是** `REQUIRED_COLUMNS`/`RECOMMENDED_COLUMNS`/`GENERIC_TARGET_FIELDS` 裡的 canonical 欄位。`build_mapped_view` 只保留有對應的 canonical 欄位,所以欄位對應精靈跑完後這欄一定被丟掉 → `np.nan`。
 - **後果**:每個對應過的上傳 `n_total_de_genes` 全 NaN → `_make_score` replicate 閘失敗、biomarker=0、`calibration.qc_funnel` 第一階段就丟掉所有列。即使使用者有這欄並對應了也過不去。
@@ -88,4 +90,4 @@
 
 ---
 
-> 修正建議的優先序:**A.1 與 A.2 影響研究者上傳這個核心功能,且 A.1 違反 repo 自己文件化的治理原則,建議視為合併前的阻擋項。** 其餘可在不動架構下逐步修。
+> 修正建議的優先序:**A.1 與 A.2(研究者上傳核心路徑)已解決並有守護測試(見上方 ✅),不再是合併前阻擋項——上傳功能已正式支援。** 其餘可在不動架構下逐步修。

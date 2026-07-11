@@ -144,7 +144,7 @@ CRISPRi 的因果鏈為「標靶被抑制 → 下游轉錄改變」;若標靶自
 2. **SCEPTRE**:以誠實外部 hook(R 存在則 shell out,否則優雅退化)而非天真 Python 重寫——SCEPTRE 的條件重採樣校準非平凡,天真重寫會重現其本要修正的 miscalibration [11,12]。
 3. **pertpy / Mixscape**:`pertpy` 因 `blitzgsea` 建置失敗無法安裝;回應者/逃逸者分類以 scikit-learn(PCA 差異均值軸 + 2-component GMM)重寫,程式註解明載為刻意替代 [13]。
 4. **細胞層級真實資料**:全量約 1.7 TiB 超過沙盒磁碟;程式對 schema 忠實之合成 fixture 已驗證(分類準確率 81.8%),但**未宣稱**已處理真實資料——委由負責人於自有機器執行(`src/9_cell_integration/RUN_ON_REAL_DATA.md`)。「對合成 fixture 驗證」與「已處理真實資料」是不同宣稱。
-5. **上傳路徑已知技術債**:純上傳(無 guide/NTC 表)在 `kd_status/v2` 前曾被誤判;另 `n_total_de_genes` 若非 canonical 上傳欄位會於對應後遺失(見 `Tech-Debt` A.1/A.2)。
+5. **上傳路徑(A.1/A.2 已解決)**:純上傳(無 guide/NTC 表)現正確給 `not_assessed`(非 `not_measurable`),`n_total_de_genes` 經 canonical 上傳 schema + 別名對應保留;二者皆有守護測試(`tests/test_empty_states.py::{test_guideless_upload_is_not_assessed_not_fabricated_not_measurable, test_mapped_upload_preserves_n_total_de_genes}`)。歷史問題見 `wiki/Tech-Debt.md` A.1/A.2 的 ✅ 註記。
 6. **情境專一性**為 heuristic(§3.7),非交互作用檢定。
 7. **驗證環境**:Streamlit 未安裝於開發沙盒,儀表板變更僅 py_compile/AST 驗證,未視覺渲染。
 
