@@ -41,8 +41,10 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, roc_auc_score
 from sklearn.model_selection import RepeatedStratifiedKFold
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import LinearSVC
 
 from build_features import CIRCULAR_COLUMNS, LABEL_ADJACENT_COLUMNS, build_features
 
@@ -55,7 +57,15 @@ N_SPLITS = 5
 # p-hack 到贏，是為了不要被單一次切分的雜訊誤導。
 N_REPEATS = 10
 RANDOM_STATE = 0
+N_PERM = 5000  # 置換檢定的 shuffle 次數(分數固定、不重訓，所以能負擔大 n_perm)
 CATEGORICAL_COLUMNS = ["delivery_modality", "polarity", "kinetic_archetype", "avoid_tier", "stimulation_gated"]
+# 單一 SAFE 特徵基線:每個都當一個「只用這一欄排序」的 baseline，看多特徵 ML 有沒有贏過
+# 自己最好的單一特徵。方向後驗挑選(取 AUROC 較高的方向)—— 這對單一特徵是「樂觀上限」，
+# 只會讓「ML 沒加值」的論點更強，不會更弱。
+SINGLE_FEATURE_BASELINES = [
+    "loeuf", "pli", "positive_control_similarity", "crossdonor_correlation_mean",
+    "crossguide_correlation", "guide_signif_ratio", "n_cells_target", "target_baseline_expression",
+]
 
 
 def _encode_features(df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
@@ -70,27 +80,98 @@ def _encode_features(df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
     return pd.concat(parts, axis=1)
 
 
-def _fit_predict_one_split(X_tr, X_te, y_tr, model_name: str, seed: int) -> np.ndarray:
+def _build_model(model_name: str, seed: int):
+    """五個模型:linear tier(logistic / linear_svm)、非參數(knn)、tree ensemble
+    (random_forest / hist_gbr)。除 hist_gbr 原生吃 NaN 外,其餘都用
+    median 插補 + 明確缺失指示欄(unknown != 0),再標準化。"""
     if model_name == "logistic":
-        model = Pipeline(steps=[
+        return Pipeline(steps=[
             ("impute", SimpleImputer(strategy="median", add_indicator=True)),
             ("scale", StandardScaler()),
             ("model", LogisticRegression(class_weight="balanced", max_iter=2000, random_state=seed)),
         ])
-    elif model_name == "random_forest":
-        model = Pipeline(steps=[
+    if model_name == "linear_svm":
+        # 線性 SVM;LinearSVC 沒有 predict_proba,用 decision_function 當連續分數(排序任務只需
+        # 一個單調分數,不需機率校準)。
+        return Pipeline(steps=[
+            ("impute", SimpleImputer(strategy="median", add_indicator=True)),
+            ("scale", StandardScaler()),
+            ("model", LinearSVC(class_weight="balanced", max_iter=5000, random_state=seed)),
+        ])
+    if model_name == "knn":
+        return Pipeline(steps=[
+            ("impute", SimpleImputer(strategy="median", add_indicator=True)),
+            ("scale", StandardScaler()),
+            ("model", KNeighborsClassifier(n_neighbors=15)),
+        ])
+    if model_name == "random_forest":
+        return Pipeline(steps=[
             ("impute", SimpleImputer(strategy="median", add_indicator=True)),
             ("model", RandomForestClassifier(
                 n_estimators=300, class_weight="balanced_subsample", random_state=seed, n_jobs=-1)),
         ])
-    elif model_name == "hist_gbr":
+    if model_name == "hist_gbr":
         # 原生支援 NaN，不插補 -- unknown 保持 unknown，不是 median 填補的推測值
-        model = HistGradientBoostingClassifier(
+        return HistGradientBoostingClassifier(
             random_state=seed, max_iter=200, learning_rate=0.05, class_weight="balanced")
-    else:
-        raise ValueError(model_name)
+    raise ValueError(model_name)
+
+
+def _score_test(model, X_te) -> np.ndarray:
+    """取連續分數:有 predict_proba 用正類機率,否則用 decision_function(LinearSVC)。"""
+    if hasattr(model, "predict_proba"):
+        return model.predict_proba(X_te)[:, 1]
+    return model.decision_function(X_te)
+
+
+def _fit_predict_one_split(X_tr, X_te, y_tr, model_name: str, seed: int) -> np.ndarray:
+    model = _build_model(model_name, seed)
     model.fit(X_tr, y_tr)
-    return model.predict_proba(X_te)[:, 1]
+    return _score_test(model, X_te)
+
+
+MODEL_NAMES = ["logistic", "linear_svm", "knn", "random_forest", "hist_gbr"]
+
+
+def _ranking_metrics(y: np.ndarray, scores: np.ndarray) -> Dict:
+    """對排序任務比 AUROC/AUPRC 更直覺的指標:precision@k、recall@50,以及 13 個正類各自
+    的排名(1 = 分數最高)。NaN 分數排到最後(誠實:沒分數不能假裝排前面)。"""
+    order = np.argsort(-np.nan_to_num(scores, nan=-np.inf), kind="stable")
+    ranked_y = y[order]
+    n_pos = int(y.sum())
+    out: Dict = {}
+    for k in (13, 25, 50):
+        out[f"precision_at_{k}"] = float(ranked_y[:k].sum() / k)
+    out["recall_at_50"] = float(ranked_y[:50].sum() / n_pos) if n_pos else float("nan")
+    # 每個正類的排名(1-indexed)
+    rank_of = np.empty(len(y), dtype=int)
+    rank_of[order] = np.arange(1, len(y) + 1)
+    pos_ranks = sorted(int(r) for r in rank_of[y == 1])
+    out["positive_ranks"] = pos_ranks
+    out["positive_rank_median"] = float(np.median(pos_ranks)) if pos_ranks else float("nan")
+    return out
+
+
+def _permutation_pvalue(y: np.ndarray, scores: np.ndarray, metric: str, n_perm: int, rng) -> Dict:
+    """置換檢定:固定分數向量,把標籤 shuffle n_perm 次,算 null 分佈與經驗 p-value。
+    回答「這個排序在只有 13 個正類下,是否顯著優於隨機標籤」——分數固定所以不需重訓,便宜。
+    p = (1 + #{null >= observed}) / (n_perm + 1)。"""
+    score_fn = average_precision_score if metric == "auprc" else roc_auc_score
+    s = np.nan_to_num(scores, nan=np.nanmin(scores) - 1.0 if np.isfinite(np.nanmin(scores)) else 0.0)
+    observed = float(score_fn(y, s))
+    y_perm = y.copy()
+    null = np.empty(n_perm)
+    for i in range(n_perm):
+        rng.shuffle(y_perm)
+        null[i] = score_fn(y_perm, s)
+    pval = float((1 + int(np.sum(null >= observed))) / (n_perm + 1))
+    return {
+        "observed": observed,
+        "null_mean": float(null.mean()),
+        "null_p95": float(np.percentile(null, 95)),
+        "p_value": pval,
+        "n_perm": n_perm,
+    }
 
 
 def _repeated_cv_metrics(X: pd.DataFrame, y: np.ndarray, model_name: str) -> Dict:
@@ -102,6 +183,10 @@ def _repeated_cv_metrics(X: pd.DataFrame, y: np.ndarray, model_name: str) -> Dic
     rskf = RepeatedStratifiedKFold(n_splits=N_SPLITS, n_repeats=N_REPEATS, random_state=RANDOM_STATE)
     per_repeat_auroc: List[float] = []
     per_repeat_auprc: List[float] = []
+    # 也累加每個基因跨 repeat 的 OOF 分數平均 -- 給 precision@k / 置換檢定用一個穩定的
+    # 單一分數向量(每個基因在每個 repeat 被當 test 剛好一次)。
+    oof_sum = np.zeros(len(y))
+    oof_count = np.zeros(len(y))
     oof = np.full(len(y), np.nan)
     current_repeat_idx = -1
     for split_idx, (tr_idx, te_idx) in enumerate(rskf.split(X, y)):
@@ -113,13 +198,18 @@ def _repeated_cv_metrics(X: pd.DataFrame, y: np.ndarray, model_name: str) -> Dic
             oof = np.full(len(y), np.nan)
             current_repeat_idx = repeat_idx
         X_tr, X_te = X.iloc[tr_idx], X.iloc[te_idx]
-        oof[te_idx] = _fit_predict_one_split(X_tr, X_te, y[tr_idx], model_name, seed=RANDOM_STATE + repeat_idx)
+        preds = _fit_predict_one_split(X_tr, X_te, y[tr_idx], model_name, seed=RANDOM_STATE + repeat_idx)
+        oof[te_idx] = preds
+        oof_sum[te_idx] += preds
+        oof_count[te_idx] += 1
     per_repeat_auroc.append(float(roc_auc_score(y, oof)))
     per_repeat_auprc.append(float(average_precision_score(y, oof)))
 
+    mean_oof = np.divide(oof_sum, oof_count, out=np.full(len(y), np.nan), where=oof_count > 0)
     roc = np.asarray(per_repeat_auroc)
     prc = np.asarray(per_repeat_auprc)
     return {
+        "mean_oof": mean_oof,
         "auroc_mean": float(roc.mean()),
         "auroc_std": float(roc.std()),
         "auroc_per_repeat": per_repeat_auroc,
@@ -130,7 +220,39 @@ def _repeated_cv_metrics(X: pd.DataFrame, y: np.ndarray, model_name: str) -> Dic
     }
 
 
-def evaluate_feature_set(df: pd.DataFrame, feature_columns: List[str], set_name: str) -> Dict:
+def _single_feature_baselines(df: pd.DataFrame, y: np.ndarray, rng) -> Dict:
+    """每個 SAFE 特徵單獨當排序基線(方向後驗挑選 = 樂觀上限),加一個 random dummy。
+    看多特徵 ML 有沒有贏過自己最好的單一特徵、以及是否任何單一特徵能贏 ctx_specific_de。"""
+    out: Dict[str, Dict] = {}
+    for feat in SINGLE_FEATURE_BASELINES:
+        if feat not in df.columns:
+            continue
+        raw = df[feat].to_numpy(dtype=float)
+        if np.isnan(raw).all():
+            continue
+        # 兩個方向都算 AUROC，取較高者(單一特徵的樂觀上限)
+        a_pos = float(roc_auc_score(y, np.nan_to_num(raw, nan=np.nanmin(raw) - 1)))
+        direction = 1 if a_pos >= 0.5 else -1
+        scores = direction * raw
+        out[feat] = {
+            "direction": "higher_is_positive" if direction == 1 else "lower_is_positive",
+            "auroc": float(roc_auc_score(y, np.nan_to_num(scores, nan=np.nanmin(scores) - 1))),
+            "auprc": float(average_precision_score(y, np.nan_to_num(scores, nan=np.nanmin(scores) - 1))),
+            **_ranking_metrics(y, scores),
+        }
+    # random dummy：確認 AUPRC 的無資訊線經驗上 ≈ prevalence、AUROC ≈ 0.5
+    dummy = rng.random(len(y))
+    out["_random_dummy"] = {
+        "direction": "random",
+        "auroc": float(roc_auc_score(y, dummy)),
+        "auprc": float(average_precision_score(y, dummy)),
+        **_ranking_metrics(y, dummy),
+    }
+    return out
+
+
+def evaluate_feature_set(df: pd.DataFrame, feature_columns: List[str], set_name: str,
+                         with_deep_analysis: bool = False) -> Dict:
     y = (df["truth_class"] == "positive").astype(int).to_numpy()
     X = _encode_features(df, feature_columns)
 
@@ -150,21 +272,28 @@ def evaluate_feature_set(df: pd.DataFrame, feature_columns: List[str], set_name:
     # AUROC 的無資訊參考線恆為 0.5，跟 prevalence 無關——這正是為什麼在 1% 正類時
     # 一定要同時看 AUPRC：它把「稀有」這件事編進參考線裡。
     prevalence = float(y.mean())
+    rng = np.random.default_rng(RANDOM_STATE)
 
     models: Dict[str, Dict] = {}
-    for model_name in ["logistic", "random_forest", "hist_gbr"]:
+    for model_name in MODEL_NAMES:
         cv = _repeated_cv_metrics(X, y, model_name)
+        mean_oof = cv.pop("mean_oof")  # 大向量,不進 JSON;只用來算 ranking / 置換
         roc_wins = sum(1 for a in cv["auroc_per_repeat"] if a > baseline_auroc)
         prc_wins = sum(1 for a in cv["auprc_per_repeat"] if a > baseline_auprc)
-        models[model_name] = {
+        entry = {
             **cv,
             "beats_baseline_auroc_on_mean": bool(cv["auroc_mean"] > baseline_auroc),
             "auroc_win_rate": roc_wins / cv["n_repeats"],
             "beats_baseline_auprc_on_mean": bool(cv["auprc_mean"] > baseline_auprc),
             "auprc_win_rate": prc_wins / cv["n_repeats"],
         }
+        if with_deep_analysis:
+            entry["ranking_on_mean_oof"] = _ranking_metrics(y, mean_oof)
+            entry["permutation_auroc"] = _permutation_pvalue(y, mean_oof, "auroc", N_PERM, rng)
+            entry["permutation_auprc"] = _permutation_pvalue(y, mean_oof, "auprc", N_PERM, rng)
+        models[model_name] = entry
 
-    return {
+    report = {
         "feature_set": set_name,
         "n_features": int(X.shape[1]),
         "feature_columns": list(X.columns),
@@ -178,6 +307,14 @@ def evaluate_feature_set(df: pd.DataFrame, feature_columns: List[str], set_name:
         "auprc_no_skill_reference": prevalence,
         "models": models,
     }
+    if with_deep_analysis:
+        # 基線自己也做 ranking + 置換檢定:回答「連 ctx_specific_de 0.474 在 13 個正類下
+        # 是否顯著優於隨機標籤」——這是所有結論的統計把握度地基。
+        report["baseline_ranking"] = _ranking_metrics(y, baseline_score)
+        report["baseline_permutation_auroc"] = _permutation_pvalue(y, baseline_score, "auroc", N_PERM, rng)
+        report["baseline_permutation_auprc"] = _permutation_pvalue(y, baseline_score, "auprc", N_PERM, rng)
+        report["single_feature_baselines"] = _single_feature_baselines(df, y, rng)
+    return report
 
 
 def main() -> None:
@@ -192,7 +329,9 @@ def main() -> None:
     ablated_cols = [c for c in full_cols if c not in CIRCULAR_COLUMNS + LABEL_ADJACENT_COLUMNS]
 
     full_report = evaluate_feature_set(df, full_cols, "full (includes CIRCULAR + LABEL_ADJACENT)")
-    ablated_report = evaluate_feature_set(df, ablated_cols, "ablated (excludes CIRCULAR + LABEL_ADJACENT)")
+    # ablated 才是誠實答案,所以深度分析(precision@k、置換檢定、單一特徵基線)只跑在它上面。
+    ablated_report = evaluate_feature_set(
+        df, ablated_cols, "ablated (excludes CIRCULAR + LABEL_ADJACENT)", with_deep_analysis=True)
 
     def _print_report(report: Dict, tag: str) -> None:
         print(f"\n=== {tag} === ({N_REPEATS}x repeated {N_SPLITS}-fold CV)  "
@@ -226,9 +365,38 @@ def main() -> None:
             verdict = "❌ 未贏基線（誠實負面）"
         print(f"  {name:14s} -> {verdict}")
 
+    # --- 深度分析(只在 ablated)---
+    b_rank = ablated_report["baseline_ranking"]
+    b_perm_roc = ablated_report["baseline_permutation_auroc"]
+    b_perm_prc = ablated_report["baseline_permutation_auprc"]
+    print(f"\n=== 置換檢定(n_perm={N_PERM};是否顯著優於隨機標籤，n=13 正類的統計把握度地基）===")
+    print(f"  baseline: AUROC p={b_perm_roc['p_value']:.4g} (null≈{b_perm_roc['null_mean']:.3f})   "
+          f"AUPRC p={b_perm_prc['p_value']:.4g} (null≈{b_perm_prc['null_mean']:.3f})")
+    for name, m in ablated_report["models"].items():
+        pr, pp = m["permutation_auroc"], m["permutation_auprc"]
+        print(f"  {name:14s} AUROC p={pr['p_value']:.4g}   AUPRC p={pp['p_value']:.4g}")
+
+    print("\n=== Precision@k / 正類排名（ablated；k=13 是正類總數）===")
+    print(f"  baseline: P@13={b_rank['precision_at_13']:.3f}  P@25={b_rank['precision_at_25']:.3f}  "
+          f"P@50={b_rank['precision_at_50']:.3f}  recall@50={b_rank['recall_at_50']:.3f}  "
+          f"正類中位排名={b_rank['positive_rank_median']:.0f}")
+    for name, m in ablated_report["models"].items():
+        r = m["ranking_on_mean_oof"]
+        print(f"  {name:14s} P@13={r['precision_at_13']:.3f}  P@25={r['precision_at_25']:.3f}  "
+              f"P@50={r['precision_at_50']:.3f}  recall@50={r['recall_at_50']:.3f}  "
+              f"正類中位排名={r['positive_rank_median']:.0f}")
+
+    print("\n=== 單一 SAFE 特徵基線 + dummy（方向後驗挑選=樂觀上限；ablated）===")
+    for feat, m in ablated_report["single_feature_baselines"].items():
+        print(f"  {feat:28s} AUROC={m['auroc']:.3f}  AUPRC={m['auprc']:.3f}  "
+              f"P@13={m['precision_at_13']:.3f}  ({m['direction']})")
+
     out = {
-        "method": "known-regulator classifier: LogisticRegression / RandomForest / HistGradientBoosting "
-                   "vs the existing simple ctx_specific_de ranking (AUROC 0.85)",
+        "method": "known-regulator classifier: LogisticRegression / LinearSVC / kNN / RandomForest / "
+                   "HistGradientBoosting vs the existing simple ctx_specific_de ranking (AUROC 0.85). "
+                   "Deep analysis on the ablated set adds: AUPRC (prevalence-appropriate for 1% positives), "
+                   "permutation null p-values (n_perm=5000, statistical power with only 13 positives), "
+                   "precision@k + positive-rank distribution, and single-SAFE-feature + random-dummy baselines.",
         "task": "y = 1 if truth_class=='positive' (13 genes) else 0 (1,211 'rest' + 1 'negative' = 1,212) "
                 "-- same operative definition as the existing baseline ('positives vs rest'), not a "
                 "balanced classification task (only 1 confirmed negative survives the n>=200 cell gate).",
