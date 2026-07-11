@@ -3,7 +3,7 @@
   "task": "y = 1 if truth_class=='positive' (13 genes) else 0 (1,211 'rest' + 1 'negative' = 1,212) -- same operative definition as the existing baseline ('positives vs rest'), not a balanced classification task (only 1 confirmed negative survives the n>=200 cell gate).",
   "cv": "RepeatedStratifiedKFold n_splits=5 x n_repeats=10, random_state=0; reports auroc_mean/std across repeats and win_rate (fraction of repeats beating the recomputed baseline) -- with only 13 positives, a single split's AUROC is too noisy to trust on its own.",
   "leakage_note": "CIRCULAR_COLUMNS are literal inputs to the ctx_specific_de formula (verified via CD3E's real numbers); LABEL_ADJACENT_COLUMNS (n_concept_modules) correlates with how the canonical positive list was curated, not with the score. A model that only wins with these included and loses once they're removed is reproducing the baseline in disguise, not learning new signal -- see 'ablated' results for the honest answer.",
-  "elapsed_seconds": 479.64264035224915,
+  "elapsed_seconds": 608.5871751308441,
   "full": {
     "feature_set": "full (includes CIRCULAR + LABEL_ADJACENT)",
     "n_features": 43,
