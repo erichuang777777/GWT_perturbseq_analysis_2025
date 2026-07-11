@@ -9,7 +9,7 @@
 API_PORT ?= 8000
 API_BASE := http://127.0.0.1:$(API_PORT)
 
-.PHONY: install-api install-dashboard install api dashboard dev test validate-pipeline
+.PHONY: install-api install-dashboard install api dashboard dev test validate-pipeline eda freeze
 
 install-api:
 	pip install -r src/3_DE_analysis/requirements.txt
@@ -46,3 +46,16 @@ test:
 # are the authority. Safe to run anytime; it never writes or rebuilds anything.
 validate-pipeline:
 	python scripts/validate_pipeline.py
+
+# Regenerate the deterministic per-stage EDA inventory reports (raw -> frontend).
+# Idempotent: on unchanged inputs it rewrites byte-identical files. See
+# docs/mvp-research/pipeline/EDA_INDEX.md.
+eda:
+	python scripts/generate_stage_eda.py
+
+# Release-freeze integrity check: verify every asset pinned in
+# FREEZE_MANIFEST.csv still matches its frozen md5, and that the EDA reports are
+# up to date. Non-zero exit on any drift/missing/stale -- this is the machine
+# check behind "結果可以重現". Does NOT re-run the S3-gated heavy pipeline.
+freeze:
+	python scripts/freeze_pipeline.py --eda
