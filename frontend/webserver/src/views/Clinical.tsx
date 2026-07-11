@@ -1,19 +1,9 @@
-import { DISEASES, DRUGS, GRADE, MODULES, READINESS } from "../data/reference";
-import { TARGETS } from "../data/targets";
-import type { Category } from "../data/types";
+import { MODULES, TARGETS, targetsInModule } from "../data/dataset";
+import { MODULE_META } from "../data/moduleMeta";
+import { CONSTRAINT_META, GRADE, READINESS } from "../data/reference";
 import { useStore } from "../store/store";
 
-const catBadge = (c: Category) =>
-  c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" };
-
-const phaseColor = (p: string) =>
-  p === "Approved" ? { c: "#0a6e4f", b: "#e4f3ec" } : p === "Withdrawn" ? { c: "#8a2f2f", b: "#f6e5e5" } : { c: "#1f56b8", b: "#e8f0fc" };
-
-const constraintMeta: Record<string, { label: string; color: string; bg: string }> = {
-  high: { label: "High constraint (LoF-intolerant)", color: "#0a6e4f", bg: "#e4f3ec" },
-  moderate: { label: "Moderate constraint", color: "#9a6510", bg: "#fbf1de" },
-  low: { label: "Low constraint", color: "#5b6270", bg: "#eef0f3" },
-};
+const catBadge = (c: string) => (c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" });
 
 export default function Clinical() {
   const { state, setState } = useStore();
@@ -34,139 +24,117 @@ export default function Clinical() {
     border: S.clinicalTab === tb.key ? "#0d7d5a" : "transparent",
   }));
 
-  // ---- concept tab ----
-  const conceptList = Object.keys(MODULES).map((id) => {
-    const m = MODULES[id];
-    const active = S.selectedConcept === id;
-    const cb = catBadge(m.cat);
-    return {
-      id,
-      name: m.name.replace(/_/g, " "),
-      cat: m.cat,
-      catBg: cb.catBg,
-      catColor: cb.catColor,
-      color: active ? "#1a5fb4" : "#3a414d",
-      bg: active ? "#eaf1fb" : "#fff",
-    };
+  // ---- concept tab (real modules from individual_concept_profile.py) ----
+  const conceptList = MODULES.map((m) => {
+    const active = S.selectedConcept === m.id;
+    const cb = catBadge(m.category);
+    return { id: m.id, name: m.name.replace(/_/g, " "), cat: m.category, catBg: cb.catBg, catColor: cb.catColor, color: active ? "#1a5fb4" : "#3a414d", bg: active ? "#eaf1fb" : "#fff" };
   });
-  const cm = MODULES[S.selectedConcept];
-  const ccb = catBadge(cm.cat);
-  const conceptTargets = all
-    .filter((t) => t.mod === S.selectedConcept)
-    .map((t) => {
-      const Rr = R[t.call];
-      return { gene: t.gene, name: t.name, rLabel: Rr.label, rColor: Rr.color, rBg: Rr.bg };
-    });
+  const cm = MODULES.find((m) => m.id === S.selectedConcept) ?? MODULES[0];
+  const cmMeta = MODULE_META[cm.id] ?? { desc: "", question: "" };
+  const ccb = catBadge(cm.category);
+  const conceptTargets = targetsInModule(cm.id).map((t) => {
+    const call = t.readiness?.call;
+    const Rr = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+    return { gene: t.gene, name: t.name, rLabel: Rr.label, rColor: Rr.color, rBg: Rr.bg };
+  });
 
-  // ---- disease × drug tab ----
-  const selDisKey = S.selectedDisease;
-  const diseaseChips = Object.keys(DISEASES).map((k) => {
-    const active = selDisKey === k;
-    return {
-      key: k,
-      name: DISEASES[k].name,
-      efo: DISEASES[k].efo,
-      color: active ? "#fff" : "#3a414d",
-      bg: active ? "#0d7d5a" : "#fff",
-      border: active ? "#0d7d5a" : "#d6dbe3",
-    };
-  });
-  const selDis = DISEASES[selDisKey] || Object.values(DISEASES)[0];
-  const disMatches = all
-    .filter((t) => selDis.genes.includes(t.gene))
-    .map((t) => {
-      const Rr = R[t.call];
-      const Gg = G[t.grade];
-      const M = MODULES[t.mod];
-      const assoc = Math.max(12, Math.min(98, Math.round(t.score * 0.9 + 6)));
-      const dl = DRUGS[t.gene];
-      let drug;
-      if (Array.isArray(dl) && dl.length) {
-        const d0 = dl[0];
-        const pc = phaseColor(d0.phase);
-        const n = (d0.trials && d0.trials[selDisKey]) || 0;
-        drug = {
-          has: true,
-          none: false,
-          name: d0.drug,
-          phase: d0.phase,
-          phaseC: pc.c,
-          phaseB: pc.b,
-          trialLabel: n > 0 ? n + " trial" + (n === 1 ? "" : "s") + " in " + selDis.name : "no trial for this indication",
-          trialColor: n > 0 ? "#0a6e4f" : "#9a6510",
-          extra: dl.length > 1 ? "+" + (dl.length - 1) + " more" : "",
-        };
+  // ---- disease × drug tab: real catalog built from targets' own Open Targets associations ----
+  interface CatalogEntry { id: string; name: string; count: number; maxScore: number }
+  const catalogMap = new Map<string, CatalogEntry>();
+  all.forEach((t) =>
+    t.diseases.forEach((d) => {
+      const existing = catalogMap.get(d.id);
+      const score = d.overallScore ?? 0;
+      if (existing) {
+        existing.count += 1;
+        existing.maxScore = Math.max(existing.maxScore, score);
       } else {
-        drug = {
-          has: false,
-          none: true,
-          name: dl !== undefined ? "no matchable drug" : "not indexed",
-          phase: "",
-          phaseC: "#8a92a0",
-          phaseB: "#f2f4f7",
-          trialLabel: "unknown — reported as-is, never a fabricated 0",
-          trialColor: "#9aa1ad",
-          extra: "",
-        };
+        catalogMap.set(d.id, { id: d.id, name: d.name, count: 1, maxScore: score });
       }
-      return {
-        gene: t.gene,
-        name: t.name,
-        moduleId: t.mod,
-        moduleShort: M ? M.name.replace(/_/g, " ") : "",
-        assoc: (assoc / 100).toFixed(2),
-        assocW: assoc + "%",
-        rLabel: Rr.label,
-        rColor: Rr.color,
-        rBg: Rr.bg,
-        grade: t.grade,
-        gColor: Gg.color,
-        gBg: Gg.bg,
-        drug,
-      };
-    })
-    .sort((a, b) => parseFloat(b.assoc) - parseFloat(a.assoc));
+    }),
+  );
+  const diseaseCatalog = Array.from(catalogMap.values()).sort((a, b) => b.count - a.count || b.maxScore - a.maxScore).slice(0, 12);
+  const selDisId = S.selectedDisease && catalogMap.has(S.selectedDisease) ? S.selectedDisease : diseaseCatalog[0]?.id;
+  const selDis = diseaseCatalog.find((d) => d.id === selDisId);
 
-  // ---- popgen tab ----
+  const diseaseChips = diseaseCatalog.map((d) => ({
+    id: d.id,
+    name: d.name,
+    diseaseId: d.id,
+    color: d.id === selDisId ? "#fff" : "#3a414d",
+    bg: d.id === selDisId ? "#0d7d5a" : "#fff",
+    border: d.id === selDisId ? "#0d7d5a" : "#d6dbe3",
+  }));
+
+  const disMatches = selDis
+    ? all
+        .filter((t) => t.diseases.some((d) => d.id === selDis.id))
+        .map((t) => {
+          const call = t.readiness?.call;
+          const Rr = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+          const Gg = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
+          const assoc = t.diseases.find((d) => d.id === selDis.id)!;
+          const nTrials = t.clinicalTrials.length;
+          return {
+            gene: t.gene,
+            name: t.name,
+            moduleId: t.module?.id ?? "—",
+            moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned module",
+            assoc: assoc.overallScore != null ? assoc.overallScore.toFixed(2) : "unknown",
+            assocW: assoc.overallScore != null ? Math.round(assoc.overallScore * 100) + "%" : "0%",
+            rLabel: Rr.label,
+            rColor: Rr.color,
+            rBg: Rr.bg,
+            grade: t.grade ?? "—",
+            gColor: Gg.color,
+            gBg: Gg.bg,
+            hasTrials: nTrials > 0,
+            trialLabel: nTrials > 0 ? `${nTrials} clinical trial${nTrials === 1 ? "" : "s"} indexed for this target` : "no clinical trial evidence indexed for this target",
+          };
+        })
+        .sort((a, b) => parseFloat(b.assoc) - parseFloat(a.assoc))
+    : [];
+
+  // ---- popgen tab (real gnomAD) ----
   const pq = S.popQuery.trim().toUpperCase();
   const pt = all.find((t) => t.gene.toUpperCase() === pq);
   let popTarget = null;
   if (pt) {
-    const cmeta = constraintMeta[pt.constraint];
-    const loeuf = pt.pop.find((p) => p[0].includes("LOEUF"))![1];
-    const mz = pt.pop.find((p) => p[0].includes("Missense"))![1];
-    const pli = pt.pop.find((p) => p[0].includes("pLI"))![1];
+    const tier = pt.gnomad.constraintTier;
+    const cmeta = tier ? CONSTRAINT_META[tier] : { label: "unknown", color: "#8a92a0", bg: "#f7f8fa" };
     popTarget = {
       gene: pt.gene,
       name: pt.name,
-      fetched: "2026-06-30",
       constraintLabel: cmeta.label,
       constraintColor: cmeta.color,
       constraintBg: cmeta.bg,
       metrics: [
-        { label: "gnomAD LOEUF", value: loeuf, color: "#1a5fb4", note: "Lower = more intolerant to loss of function" },
-        { label: "Missense Z", value: mz, color: "#1a5fb4", note: "Higher = missense-constrained" },
-        { label: "pLI", value: pli, color: "#1a5fb4", note: "Prob. of LoF intolerance (→1 = intolerant)" },
+        { label: "gnomAD LOEUF", value: pt.gnomad.loeuf != null ? pt.gnomad.loeuf.toFixed(3) : "unknown", color: "#1a5fb4", note: "Lower = more intolerant to loss of function" },
+        { label: "pLI", value: pt.gnomad.pli != null ? pt.gnomad.pli.toFixed(3) : "unknown", color: "#1a5fb4", note: "Prob. of LoF intolerance (→1 = intolerant)" },
+        { label: "Constraint tier", value: cmeta.label, color: cmeta.color, note: "Derived from LOEUF (< 0.35 high, < 0.6 moderate, else low)" },
       ],
       interpretation:
-        pt.constraint === "high"
+        tier === "high"
           ? "This gene is strongly loss-of-function intolerant in the general population — heterozygous LoF is under selection, so full antagonism may carry mechanism-based risk. Favour partial or tunable modulation."
-          : pt.constraint === "moderate"
+          : tier === "moderate"
             ? "Constraint is intermediate: some LoF tolerance exists but the gene is not neutral. Population genetics neither strongly supports nor argues against modulation on its own."
-            : "This gene tolerates loss-of-function variation in the population, which is broadly reassuring for a modulation strategy — though tolerance to germline variation does not by itself predict therapeutic effect.",
+            : tier === "low"
+              ? "This gene tolerates loss-of-function variation in the population, which is broadly reassuring for a modulation strategy — though tolerance to germline variation does not by itself predict therapeutic effect."
+              : "No gnomAD constraint record is indexed for this gene in this dataset.",
     };
   }
 
   const guardrails = [
-    { k: "Descriptive ≠ decision", t: "Statistical evidence (effect, robustness, concept profile) and human judgement (the readiness call, reviewer votes) are kept visually and structurally separate. Nothing here recommends a treatment." },
-    { k: "unknown ≠ 0", t: 'Any field without evidence reads "unknown" with a coverage note — never a fabricated zero or default. Empty drug and constraint records are shown honestly rather than hidden.' },
-    { k: "Every number is sourced", t: "Each metric carries its origin and version stamp (Open Targets / ChEMBL / gnomAD / the CD4 Perturb-seq screen). Adjustable weights re-order your view of hypotheses; they never rewrite the evidence." },
+    { k: "Descriptive ≠ decision", t: "Statistical evidence (effect, robustness) and human judgement (the readiness call, reviewer votes) are kept visually and structurally separate. Nothing here recommends a treatment." },
+    { k: "unknown ≠ 0", t: 'Any field without evidence reads "unknown" with a coverage note — never a fabricated zero or default. Empty drug, disease and constraint records are shown honestly rather than hidden.' },
+    { k: "Every number is sourced", t: "Each metric carries its origin (Open Targets / ClinicalTrials.gov / PubMed / gnomAD / the CD4 Perturb-seq screen's own readiness engine). Adjustable weights re-order your view of hypotheses; they never rewrite the evidence." },
   ];
   const scopeDoes = [
     "Surface immune-concept biology for one target or concept module",
-    "Rank CD4-screen targets against a disease context by association evidence",
+    "Rank CD4-screen targets against a real disease association context (Open Targets)",
     "Report population-genetics constraint (gnomAD) for a gene",
-    "Show indexed drug / trial precedent per target and indication",
+    "Show indexed clinical-trial and tractability evidence per target",
   ];
   const scopeDoesnt = [
     "Diagnose, stage, or manage any patient",
@@ -175,7 +143,7 @@ export default function Clinical() {
     "Replace regulatory, clinical, or expert review",
   ];
 
-  const DGRID = "1.15fr 0.95fr 120px 1.5fr 96px 62px";
+  const DGRID = "1.15fr 0.95fr 120px 1.6fr 96px 62px";
 
   return (
     <main style={{ flex: 1, maxWidth: "1120px", margin: "0 auto", width: "100%", padding: "30px 28px 70px" }}>
@@ -261,37 +229,41 @@ export default function Clinical() {
 
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "26px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "11px", marginBottom: "5px" }}>
-              <span style={{ fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4", fontWeight: 600 }}>{S.selectedConcept}</span>
+              <span style={{ fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4", fontWeight: 600 }}>{cm.id}</span>
               <h2 style={{ fontSize: "21px", fontWeight: 700, margin: 0, letterSpacing: "-.4px" }}>{cm.name.replace(/_/g, " ")}</h2>
-              <span style={{ fontSize: "11px", padding: "3px 9px", borderRadius: "6px", background: ccb.catBg, color: ccb.catColor, fontWeight: 600 }}>{cm.cat}</span>
+              <span style={{ fontSize: "11px", padding: "3px 9px", borderRadius: "6px", background: ccb.catBg, color: ccb.catColor, fontWeight: 600 }}>{cm.category}</span>
             </div>
-            <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "#3a414d", margin: "14px 0 22px" }}>{cm.desc}</p>
+            <p style={{ fontSize: "14.5px", lineHeight: 1.6, color: "#3a414d", margin: "14px 0 22px" }}>{cmMeta.desc}</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "22px", marginBottom: "24px" }}>
               <div>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".6px", color: "#8a92a0", textTransform: "uppercase", marginBottom: "9px" }}>Clinical question</div>
-                <p style={{ fontSize: "13.5px", lineHeight: 1.55, color: "#3a414d", margin: 0 }}>{cm.question}</p>
+                <p style={{ fontSize: "13.5px", lineHeight: 1.55, color: "#3a414d", margin: 0 }}>{cmMeta.question}</p>
               </div>
               <div>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".6px", color: "#8a92a0", textTransform: "uppercase", marginBottom: "9px" }}>Seed genes</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {cm.seeds.map((s) => (
+                  {cm.seedGenes.map((s) => (
                     <span key={s} style={{ fontSize: "12px", fontFamily: "'IBM Plex Mono', monospace", padding: "3px 9px", background: "#eaf1fb", color: "#1a5fb4", borderRadius: "6px", fontWeight: 500 }}>{s}</span>
                   ))}
                 </div>
               </div>
             </div>
             <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".6px", color: "#8a92a0", textTransform: "uppercase", marginBottom: "11px" }}>Screened targets in this concept</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-              {conceptTargets.map((t) => (
-                <div key={t.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: t.gene })} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 13px", border: "1px solid #eef0f3", borderRadius: "9px" }}>
-                  <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px" }}>{t.gene}</span>
-                  <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1 }}>{t.name}</span>
-                  <span style={{ display: "inline-block", padding: "3px 9px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: t.rColor, background: t.rBg }}>{t.rLabel}</span>
-                </div>
-              ))}
-            </div>
+            {conceptTargets.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                {conceptTargets.map((t) => (
+                  <div key={t.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: t.gene })} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 13px", border: "1px solid #eef0f3", borderRadius: "9px" }}>
+                    <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px" }}>{t.gene}</span>
+                    <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1 }}>{t.name}</span>
+                    <span style={{ display: "inline-block", padding: "3px 9px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: t.rColor, background: t.rBg }}>{t.rLabel}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#9aa1ad" }}>None of the real-evidence-covered screened targets in this dataset are members of this module.</div>
+            )}
             <div style={{ display: "flex", alignItems: "start", gap: "8px", marginTop: "20px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5 }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Concept activation is descriptive biology only — it never drives any readiness or evidence-grade call, and empty concepts report <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>unknown</span> rather than 0.
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Concept membership is descriptive biology only — it never drives any readiness or evidence-grade call.
             </div>
           </div>
         </div>
@@ -300,76 +272,66 @@ export default function Clinical() {
       {/* disease × drug */}
       {S.clinicalTab === "drug" && (
         <div>
-          <div style={{ fontSize: "13px", fontWeight: 600, color: "#3a414d", marginBottom: "11px" }}>Select a disease context</div>
+          <div style={{ fontSize: "13px", fontWeight: 600, color: "#3a414d", marginBottom: "5px" }}>Select a disease context</div>
+          <div style={{ fontSize: "11.5px", color: "#9aa1ad", marginBottom: "11px" }}>Real Open Targets disease associations across the screened targets in this dataset, most-referenced first.</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "28px" }}>
             {diseaseChips.map((d) => (
-              <div key={d.key} className="navlink" onClick={() => setState({ selectedDisease: d.key })} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "9px 15px", border: `1.5px solid ${d.border}`, borderRadius: "22px", background: d.bg, color: d.color, fontSize: "13.5px", fontWeight: 500 }}>
-                {d.name} <span style={{ fontSize: "10.5px", fontFamily: "'IBM Plex Mono', monospace", opacity: 0.7 }}>{d.efo}</span>
+              <div key={d.id} className="navlink" onClick={() => setState({ selectedDisease: d.id })} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "9px 15px", border: `1.5px solid ${d.border}`, borderRadius: "22px", background: d.bg, color: d.color, fontSize: "13.5px", fontWeight: 500 }}>
+                {d.name}
               </div>
             ))}
           </div>
 
-          <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "15px" }}>
-            <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0 }}>{selDis.name}</h2>
-            <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen</span>
-          </div>
+          {selDis ? (
+            <>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "15px" }}>
+                <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0 }}>{selDis.name}</h2>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen</span>
+              </div>
 
-          <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
-            <div style={{ display: "grid", gridTemplateColumns: DGRID, padding: "11px 16px", background: "#f7f8fa", borderBottom: "1px solid #e2e5ea", fontSize: "11px", fontWeight: 700, letterSpacing: ".5px", color: "#8a92a0", textTransform: "uppercase" }}>
-              <div>Target</div>
-              <div>Concept module</div>
-              <div style={{ textAlign: "center" }}>Assoc. score</div>
-              <div>Drug precedent (this indication)</div>
-              <div style={{ textAlign: "center" }}>Readiness</div>
-              <div style={{ textAlign: "center" }}>Grade</div>
-            </div>
-            {disMatches.map((m) => (
-              <div key={m.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: m.gene })} style={{ display: "grid", gridTemplateColumns: DGRID, alignItems: "center", padding: "13px 16px", borderBottom: "1px solid #eef0f3" }}>
-                <div>
-                  <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
-                  <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{m.name}</div>
+              <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
+                <div style={{ display: "grid", gridTemplateColumns: DGRID, padding: "11px 16px", background: "#f7f8fa", borderBottom: "1px solid #e2e5ea", fontSize: "11px", fontWeight: 700, letterSpacing: ".5px", color: "#8a92a0", textTransform: "uppercase" }}>
+                  <div>Target</div>
+                  <div>Concept module</div>
+                  <div style={{ textAlign: "center" }}>Assoc. score</div>
+                  <div>Clinical trial evidence (this target)</div>
+                  <div style={{ textAlign: "center" }}>Readiness</div>
+                  <div style={{ textAlign: "center" }}>Grade</div>
                 </div>
-                <div style={{ fontSize: "12.5px", color: "#4a515e" }}>
-                  <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{m.moduleId}</span> {m.moduleShort}
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "60px", height: "6px", background: "#e6e9ee", borderRadius: "4px", overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: m.assocW, background: "#0d7d5a", borderRadius: "4px" }} />
+                {disMatches.map((m) => (
+                  <div key={m.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: m.gene })} style={{ display: "grid", gridTemplateColumns: DGRID, alignItems: "center", padding: "13px 16px", borderBottom: "1px solid #eef0f3" }}>
+                    <div>
+                      <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
+                      <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{m.name}</div>
                     </div>
-                    <span style={{ fontSize: "12px", fontFamily: "'IBM Plex Mono', monospace", color: "#0d7d5a", fontWeight: 600 }}>{m.assoc}</span>
-                  </div>
-                </div>
-                <div style={{ paddingRight: "12px" }}>
-                  {m.drug.has && (
-                    <>
-                      <div style={{ display: "flex", alignItems: "center", gap: "7px", flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#1a1d24" }}>{m.drug.name}</span>
-                        <span style={{ padding: "2px 8px", borderRadius: "20px", fontSize: "10px", fontWeight: 600, color: m.drug.phaseC, background: m.drug.phaseB }}>{m.drug.phase}</span>
-                        <span style={{ fontSize: "10.5px", color: "#9aa1ad" }}>{m.drug.extra}</span>
+                    <div style={{ fontSize: "12.5px", color: "#4a515e" }}>
+                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{m.moduleId}</span> {m.moduleShort}
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                        <div style={{ width: "60px", height: "6px", background: "#e6e9ee", borderRadius: "4px", overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: m.assocW, background: "#0d7d5a", borderRadius: "4px" }} />
+                        </div>
+                        <span style={{ fontSize: "12px", fontFamily: "'IBM Plex Mono', monospace", color: "#0d7d5a", fontWeight: 600 }}>{m.assoc}</span>
                       </div>
-                      <div style={{ fontSize: "11px", color: m.drug.trialColor, marginTop: "3px" }}>{m.drug.trialLabel}</div>
-                    </>
-                  )}
-                  {m.drug.none && (
-                    <>
-                      <div style={{ fontSize: "12px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace" }}>{m.drug.name}</div>
-                      <div style={{ fontSize: "11px", color: "#b0b6c0", marginTop: "3px" }}>{m.drug.trialLabel}</div>
-                    </>
-                  )}
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: m.rColor, background: m.rBg }}>{m.rLabel}</span>
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "25px", height: "25px", borderRadius: "7px", fontSize: "12px", fontWeight: 700, color: m.gColor, background: m.gBg }}>{m.grade}</span>
-                </div>
+                    </div>
+                    <div style={{ paddingRight: "12px", fontSize: "11.5px", color: m.hasTrials ? "#0a6e4f" : "#9aa1ad", fontFamily: m.hasTrials ? "inherit" : "'IBM Plex Mono', monospace" }}>{m.trialLabel}</div>
+                    <div style={{ textAlign: "center" }}>
+                      <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: m.rColor, background: m.rBg }}>{m.rLabel}</span>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "25px", height: "25px", borderRadius: "7px", fontSize: "12px", fontWeight: 700, color: m.gColor, background: m.gBg }}>{m.grade}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div style={{ display: "flex", alignItems: "start", gap: "8px", marginTop: "16px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "720px" }}>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Association scores combine external genetic/literature evidence (Open Targets) with the CD4 perturbation signal. They rank hypotheses for research follow-up — they are not evidence of clinical efficacy in this disease.
-          </div>
+              <div style={{ display: "flex", alignItems: "start", gap: "8px", marginTop: "16px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "720px" }}>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Association scores are real Open Targets overall-association scores for this gene–disease pair. Clinical-trial evidence is gene-scoped (indexed trials for the target), not necessarily specific to this indication. They rank hypotheses for research follow-up — they are not evidence of clinical efficacy in this disease.
+              </div>
+            </>
+          ) : (
+            <div style={{ fontSize: "13px", color: "#9aa1ad" }}>No disease associations are indexed for any screened target in this dataset.</div>
+          )}
         </div>
       )}
 
@@ -396,14 +358,14 @@ export default function Clinical() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1px", background: "#e2e5ea", border: "1px solid #e2e5ea", borderRadius: "12px", overflow: "hidden", marginBottom: "20px" }}>
                 {popTarget.metrics.map((m) => (
                   <div key={m.label} style={{ background: "#fff", padding: "18px 20px" }}>
-                    <div style={{ fontSize: "24px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "-.5px", color: m.color }}>{m.value}</div>
+                    <div style={{ fontSize: "20px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "-.5px", color: m.color }}>{m.value}</div>
                     <div style={{ fontSize: "11.5px", color: "#6b7280", marginTop: "3px" }}>{m.label}</div>
                     <div style={{ fontSize: "10.5px", color: "#9aa1ad", marginTop: "5px", lineHeight: 1.4 }}>{m.note}</div>
                   </div>
                 ))}
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.6, color: "#3a414d", background: "#f7f8fa", borderRadius: "10px", padding: "15px 17px" }}>{popTarget.interpretation}</div>
-              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4.1 · constraint metrics · fetched {popTarget.fetched} · values shown are illustrative for this research demo</div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4 constraint (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
             </div>
           )}
           {!pt && pq.length > 0 && (

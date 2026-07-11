@@ -1,4 +1,4 @@
-import { DATA_VERSION } from "../data/reference";
+import { DATASET_SOURCE, DATA_VERSION } from "../data/reference";
 import { useStore } from "../store/store";
 
 export default function Footer() {
@@ -18,7 +18,7 @@ export default function Footer() {
       >
         <div style={{ fontSize: "11.5px", color: "#9aa1ad", lineHeight: 1.5 }}>
           CD4 Target Discovery Portal · genome-scale Perturb-seq ·{" "}
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{DATA_VERSION}</span> ·
+          <span title={DATASET_SOURCE} style={{ fontFamily: "'IBM Plex Mono', monospace", cursor: "help" }}>{DATA_VERSION}</span> ·
           descriptive-vs-decision separation · unknown ≠ 0
         </div>
         <div style={{ display: "flex", gap: "18px", fontSize: "12px", fontWeight: 500 }}>

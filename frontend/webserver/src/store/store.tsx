@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { DISEASES, WPRESETS } from "../data/reference";
+import { WPRESETS } from "../data/reference";
 import type { Vote, VoteStatus } from "../data/types";
 import type { Weights } from "../lib/logic";
 
@@ -87,11 +87,13 @@ function initialState(): AppState {
     navStack: [],
     clinicalTab: "scope",
     selectedConcept: "M02",
-    selectedDisease: "RA",
+    // "" = Clinical.tsx picks the top real disease from the catalog it builds
+    // from actual Open Targets associations (see diseaseCatalog there).
+    selectedDisease: "",
     popQuery: "IL2RA",
     sampleText: "",
     drugGene: "IL2RA",
-    drugDisease: "RA",
+    drugDisease: "",
     figureId: "volcano",
     figCondition: "Stim8hr",
     figThresh: 2,
@@ -179,8 +181,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           else if (kind === "popgen")
             next = { view: "clinical", clinicalTab: "popgen", popQuery: id };
           else if (kind === "disease") {
-            const key = DISEASES[id] ? id : Object.keys(DISEASES).find((k) => DISEASES[k].efo === id);
-            next = { view: "clinical", clinicalTab: "drug", selectedDisease: key || Object.keys(DISEASES)[0] };
+            // id is a real disease id (e.g. a MONDO id) from a target's own
+            // `diseases` array — Clinical.tsx's catalog is built from the
+            // same real data, so this always resolves to a real entry.
+            next = { view: "clinical", clinicalTab: "drug", selectedDisease: id };
           }
           if (!next) return {};
           return { ...next, navStack: [...s.navStack, snap] };

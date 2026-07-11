@@ -1,4 +1,4 @@
-import { TARGETS } from "../data/targets";
+import { TARGETS } from "../data/dataset";
 import { useStore } from "../store/store";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
   const stats = [
     { value: all.length, label: "CD4 perturbations profiled" },
     { value: "20", label: "Immune concept modules" },
-    { value: all.filter((x) => x.call === "advance").length, label: "Targets called Advance" },
+    { value: all.filter((x) => x.readiness?.call === "advance").length, label: "Targets called Advance" },
     { value: "~30", label: "REST API endpoints" },
   ];
 
@@ -65,7 +65,7 @@ export default function Home() {
               value={state.query}
               onChange={(e) => setState({ query: e.target.value })}
               onKeyDown={onSearchKey}
-              placeholder="Search a gene, e.g. PLCG1, IL2RA, JAK3…"
+              placeholder="Search a gene, e.g. PLCG1, IL2RA, CTLA4…"
               style={{ width: "100%", padding: "15px 16px 15px 42px", border: "1.5px solid #d6dbe3", borderRadius: "11px", fontSize: "15px", color: "#1a1d24" }}
             />
           </div>

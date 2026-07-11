@@ -1,26 +1,13 @@
-import { DECISION_META, GRADE, MODULES, READINESS, REVIEWERS, WKEYS } from "../data/reference";
-import { TARGETS } from "../data/targets";
+import { TARGETS, targetByGene } from "../data/dataset";
+import { CONSTRAINT_META, DECISION_META, GRADE, READINESS, RED_FLAG_LABELS, REVIEWERS, WKEYS } from "../data/reference";
 import type { VoteStatus } from "../data/types";
-import {
-  EXPRESSION,
-  PERTURB,
-  consensus,
-  fmtTs,
-  initials,
-  pct,
-  rankedTargets,
-  similarTargets,
-  subScores,
-  targetByGene,
-  tractability,
-} from "../lib/logic";
+import { consensus, fmtEffect, fmtFdr, fmtTs, initials, rankedTargets, similarTargets, subScores } from "../lib/logic";
 import { useStore } from "../store/store";
 
-const conceptColor = (v: number) => (v >= 0.7 ? "#1a5fb4" : v >= 0.45 ? "#4f83cc" : "#9dbde8");
+const CONDITION_LABEL: Record<string, string> = { Rest: "Rest", Stim8hr: "Stim 8 hr", Stim48hr: "Stim 48 hr" };
 
 export default function Dossier() {
-  const { state, setState, navTo, castVote, setVoteNote, clearMyVote, setReviewer, votesFor, myVote } =
-    useStore();
+  const { state, setState, navTo, castVote, setVoteNote, clearMyVote, setReviewer, votesFor, myVote } = useStore();
   const S = state;
   const all = TARGETS;
   const R = READINESS;
@@ -28,13 +15,13 @@ export default function Dossier() {
   const w = S.weights;
 
   const t = targetByGene(S.selectedGene) || all[0];
-  const Rt = R[t.call];
-  const Gt = G[t.grade];
-  const Mt = MODULES[t.mod];
+  const call = t.readiness?.call;
+  const Rt = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+  const Gt = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
 
   const wsum = WKEYS.reduce((a, x) => a + (w[x.k] || 0), 0) || 1;
   const rankedAll = rankedTargets(w);
-  const tRankInfo = rankedAll.find((x) => x.gene === t.gene) || { _rank: t.rank, _comp: t.score };
+  const tRankInfo = rankedAll.find((x) => x.gene === t.gene)!;
   const subs = subScores(t);
 
   let contribTotal = 0;
@@ -53,55 +40,11 @@ export default function Dossier() {
     };
   });
 
-  const similar = similarTargets(t, 4).map(({ t: st, sim }) => {
-    const Rs = R[st.call];
-    return { gene: st.gene, sim: Math.round(sim * 100) + "%", rLabel: Rs.label, rColor: Rs.color, rBg: Rs.bg };
+  const similar = similarTargets(t, 4).map((st) => {
+    const stCall = st.readiness?.call;
+    const Rs = stCall ? R[stCall] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+    return { gene: st.gene, rLabel: Rs.label, rColor: Rs.color, rBg: Rs.bg };
   });
-
-  const geneSet: Record<string, boolean> = {};
-  all.forEach((x) => (geneSet[x.gene] = true));
-
-  const tr = tractability(t);
-  const tract = {
-    known: tr.known,
-    unknown: !tr.known,
-    modality: [
-      { label: "Small molecule", ok: tr.modality.sm },
-      { label: "Antibody / biologic", ok: tr.modality.ab },
-      { label: "Other clinical", ok: tr.known && !tr.modality.sm && !tr.modality.ab },
-    ].map((m) => ({
-      label: m.label,
-      mark: m.ok ? "✓" : "—",
-      color: m.ok ? "#0a6e4f" : "#b0b6c0",
-      bg: m.ok ? "#e4f3ec" : "#f4f6f8",
-      border: m.ok ? "#bfe4d3" : "#e6e9ee",
-    })),
-    drugs: tr.drugs.map((d) => ({
-      drug: d.drug,
-      phase: d.phase,
-      moa: d.moa,
-      approved: d.approved,
-      phaseC: d.phase === "Approved" ? "#0a6e4f" : d.phase === "Withdrawn" ? "#8a2f2f" : "#1f56b8",
-      phaseB: d.phase === "Approved" ? "#e4f3ec" : d.phase === "Withdrawn" ? "#f6e5e5" : "#e8f0fc",
-    })),
-  };
-
-  const pb = PERTURB(t);
-  const mkPg = (x: { gene: string; fc: number }) => ({
-    gene: x.gene,
-    fc: (x.fc > 0 ? "+" : "") + x.fc.toFixed(2),
-    isTarget: !!geneSet[x.gene],
-    geneColor: geneSet[x.gene] ? "#1a5fb4" : "#3a414d",
-    width: Math.min(100, (Math.abs(x.fc) / 2.4) * 100) + "%",
-  });
-  const perturbation = { up: pb.up.map(mkPg), down: pb.down.map(mkPg) };
-
-  const expression = EXPRESSION(t).map((e) => ({
-    condition: e.condition,
-    level: e.level.toFixed(2),
-    width: Math.round(e.level * 100) + "%",
-    color: e.level >= 0.66 ? "#1a5fb4" : e.level >= 0.4 ? "#4f83cc" : "#9dbde8",
-  }));
 
   const DM = DECISION_META;
   const dVotes = votesFor(t.gene);
@@ -110,20 +53,13 @@ export default function Dossier() {
   const decision = {
     reviewers: REVIEWERS.map((r) => ({
       name: r,
-      active: r === S.reviewer,
       color: r === S.reviewer ? "#fff" : "#4a515e",
       bg: r === S.reviewer ? "#1a5fb4" : "#fff",
       border: r === S.reviewer ? "#1a5fb4" : "#d6dbe3",
     })),
     options: (["advance", "hold", "drop"] as VoteStatus[]).map((st) => {
       const on = !!(dMine && dMine.status === st);
-      return {
-        status: st,
-        label: DM[st].label,
-        color: on ? "#fff" : DM[st].color,
-        bg: on ? DM[st].dot : DM[st].bg,
-        border: DM[st].dot,
-      };
+      return { status: st, label: DM[st].label, color: on ? "#fff" : DM[st].color, bg: on ? DM[st].dot : DM[st].bg, border: DM[st].dot };
     }),
     hasMine: !!dMine,
     noteKey: t.gene + "|" + S.reviewer,
@@ -152,24 +88,34 @@ export default function Dossier() {
   };
 
   const statMetrics = [
-    { label: "|log2 fold-change|", value: t.effect, color: "#1a1d24" },
-    { label: "FDR (BH)", value: t.fdr, color: "#1a1d24" },
+    { label: "|log2 fold-change| (peak condition)", value: fmtEffect(t.effect), color: "#1a1d24" },
+    { label: "FDR (BH), peak condition", value: fmtFdr(t.fdr), color: "#1a1d24" },
     { label: "Composite priority", value: String(tRankInfo._comp), color: "#1a5fb4" },
-    { label: "Evidence grade", value: t.grade, color: Gt.color },
+    { label: "Evidence grade", value: t.grade ?? "unknown", color: Gt.color },
+    { label: "Cells captured", value: t.nCells != null ? t.nCells.toLocaleString() : "unknown", color: "#1a1d24" },
+    { label: "Guides", value: t.nGuides ?? "unknown", color: "#1a1d24" },
+    { label: "DE genes (total)", value: t.nTotalDeGenes ?? "unknown", color: "#1a1d24" },
+    { label: "Up / down", value: t.nUpGenes != null ? `${t.nUpGenes} / ${t.nDownGenes}` : "unknown", color: "#1a1d24" },
   ];
-  const concepts = t.concepts.map(([id, name, v]) => ({
-    id,
-    name,
-    width: v == null ? "0%" : pct(v),
-    color: v == null ? "#e6e9ee" : conceptColor(v),
-    display: v == null ? "unknown" : v.toFixed(2),
-    valColor: v == null ? "#b7791f" : "#4a515e",
+
+  const robustnessColor =
+    t.crossDonorCorrelationMean == null ? "#9aa1ad" : t.crossDonorCorrelationMean >= 0.6 ? "#0d7d5a" : t.crossDonorCorrelationMean >= 0.35 ? "#b7791f" : "#c0503f";
+
+  const diseases = t.diseases.map((d) => ({
+    name: d.name,
+    id: d.id,
+    score: d.overallScore != null ? d.overallScore.toFixed(2) : "unknown",
+    width: d.overallScore != null ? Math.round(d.overallScore * 100) + "%" : "0%",
   }));
-  const diseases = t.diseases.map(([name, efo, sc]) => ({ name, efo, score: sc.toFixed(2), width: pct(sc) }));
-  const rationale = t.rationale.map(([dot, text]) => ({ dot, text }));
-  const popgen = t.pop.map(([label, value]) => ({ label, value }));
-  const safetyColor = t.safety >= 75 ? "#0d7d5a" : t.safety >= 55 ? "#b7791f" : "#c0503f";
-  const robustnessColor = t.robustness >= 85 ? "#0d7d5a" : t.robustness >= 65 ? "#b7791f" : "#c0503f";
+
+  // real tractability flags, grouped by modality — show only modalities/flags that are true
+  const modalityLabel: Record<string, string> = { SM: "Small molecule", AB: "Antibody / biologic", PR: "PROTAC / other modality", OC: "Other clinical precedent" };
+  const tractRows = Object.entries(t.tractabilityFlags)
+    .map(([mod, flags]) => ({ mod, label: modalityLabel[mod] || mod, trueFlags: Object.entries(flags).filter(([, v]) => v).map(([k]) => k) }))
+    .filter((r) => r.trueFlags.length > 0);
+
+  const redFlags = t.readiness?.redFlags ?? [];
+  const reasonBullets = (t.readiness?.reasons ?? "").split(";").map((s) => s.trim()).filter(Boolean);
 
   const card: React.CSSProperties = { border: "1px solid #e2e5ea", borderRadius: "14px", padding: "22px" };
   const h3: React.CSSProperties = { fontSize: "15px", fontWeight: 700, margin: 0 };
@@ -194,13 +140,19 @@ export default function Dossier() {
           <div style={{ display: "flex", alignItems: "center", gap: "13px", marginBottom: "7px" }}>
             <h1 style={{ fontSize: "34px", fontWeight: 700, letterSpacing: "-.8px", margin: 0, fontFamily: "'IBM Plex Mono', monospace" }}>{t.gene}</h1>
             <span style={{ display: "inline-block", padding: "5px 13px", borderRadius: "20px", fontSize: "13px", fontWeight: 600, color: Rt.color, background: Rt.bg }}>{Rt.label}</span>
-            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", borderRadius: "8px", fontSize: "14px", fontWeight: 700, color: Gt.color, background: Gt.bg }}>{t.grade}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", borderRadius: "8px", fontSize: "14px", fontWeight: 700, color: Gt.color, background: Gt.bg }}>{t.grade ?? "—"}</span>
           </div>
           <div style={{ fontSize: "16px", color: "#4a515e" }}>{t.name}</div>
           <div style={{ display: "flex", gap: "8px", marginTop: "13px", flexWrap: "wrap" }}>
-            <span className="navlink" onClick={() => navTo("concept", t.mod)} style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4", background: "#eaf1fb", padding: "4px 9px", borderRadius: "6px" }}>{t.mod} · {Mt.name.replace(/_/g, " ")} →</span>
-            <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280", background: "#f2f4f7", padding: "4px 9px", borderRadius: "6px" }}>{t.cat}</span>
-            <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280", background: "#f2f4f7", padding: "4px 9px", borderRadius: "6px" }}>Ensembl {t.ensembl}</span>
+            {t.module ? (
+              <span className="navlink" onClick={() => navTo("concept", t.module!.id)} style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4", background: "#eaf1fb", padding: "4px 9px", borderRadius: "6px" }}>
+                {t.module.id} · {t.module.name.replace(/_/g, " ")} →
+              </span>
+            ) : (
+              <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", background: "#f2f4f7", padding: "4px 9px", borderRadius: "6px" }}>no assigned immune-concept module</span>
+            )}
+            <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280", background: "#f2f4f7", padding: "4px 9px", borderRadius: "6px" }}>{t.primaryCondition}</span>
+            <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280", background: "#f2f4f7", padding: "4px 9px", borderRadius: "6px" }}>Ensembl {t.ensembl ?? "unknown"}</span>
           </div>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -248,9 +200,7 @@ export default function Dossier() {
                 ))}
               </div>
             )}
-            {decision.noVotes && (
-              <div style={{ fontSize: "12.5px", color: "#a49cbe", padding: "10px 2px" }}>No reviews yet — cast the first call from the panel on the right.</div>
-            )}
+            {decision.noVotes && <div style={{ fontSize: "12.5px", color: "#a49cbe", padding: "10px 2px" }}>No reviews yet — cast the first call from the panel on the right.</div>}
           </div>
 
           <div style={{ borderLeft: "1px solid #ece8f5", paddingLeft: "20px" }}>
@@ -273,9 +223,7 @@ export default function Dossier() {
               onBlur={(e) => setVoteNote(t.gene, e.target.value)}
               style={{ width: "100%", minHeight: "56px", resize: "vertical", padding: "8px 10px", border: "1.5px solid #e0dcec", borderRadius: "8px", fontSize: "12px", color: "#3a414d", lineHeight: 1.45 }}
             />
-            {decision.hasMine && (
-              <div className="navlink" onClick={() => clearMyVote(t.gene)} style={{ fontSize: "11px", color: "#a49cbe", marginTop: "7px" }}>Clear my vote</div>
-            )}
+            {decision.hasMine && <div className="navlink" onClick={() => clearMyVote(t.gene)} style={{ fontSize: "11px", color: "#a49cbe", marginTop: "7px" }}>Clear my vote</div>}
           </div>
         </div>
       </div>
@@ -303,7 +251,7 @@ export default function Dossier() {
           ))}
         </div>
         <div style={{ fontSize: "10.5px", color: "#9aa1ad", marginTop: "11px", lineHeight: 1.45 }}>
-          Each segment = weight × sub-score. Change weights in the explorer to re-rank. Sub-scores are fixed evidence; the <strong>readiness call is rule-based and does not move with weights</strong>.
+          Sub-scores are a disclosed formula over real fields (effect size, cross-donor correlation, red flags, gnomAD constraint, disease association) — see the source comment in <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>lib/logic.ts</span>. Change weights in the explorer to re-rank. The <strong>readiness call is computed by the repo's own rule-based engine and does not move with weights</strong>.
         </div>
       </div>
 
@@ -314,163 +262,176 @@ export default function Dossier() {
           <div style={card}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={h3}>Statistical evidence</h3>
-              <span style={src}>src: DE_analysis · GWT-CD4 v2026.1</span>
+              <span style={src}>src: target_cards.csv (real screen output)</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "16px" }}>
               {statMetrics.map((m) => (
                 <div key={m.label}>
-                  <div style={{ fontSize: "22px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "-.5px", color: m.color }}>{m.value}</div>
-                  <div style={{ fontSize: "11.5px", color: "#6b7280", marginTop: "2px" }}>{m.label}</div>
+                  <div style={{ fontSize: "20px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "-.5px", color: m.color }}>{m.value}</div>
+                  <div style={{ fontSize: "11px", color: "#6b7280", marginTop: "2px" }}>{m.label}</div>
                 </div>
               ))}
             </div>
             <div style={{ marginTop: "18px", paddingTop: "16px", borderTop: "1px dashed #e2e5ea" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#6b7280", marginBottom: "6px" }}>
-                <span>Robustness across pseudo-replicates</span>
-                <span style={{ fontWeight: 600, color: "#1a1d24", fontFamily: "'IBM Plex Mono', monospace" }}>{t.robustness}%</span>
+                <span>Cross-donor correlation (peak condition)</span>
+                <span style={{ fontWeight: 600, color: "#1a1d24", fontFamily: "'IBM Plex Mono', monospace" }}>
+                  {t.crossDonorCorrelationMean != null ? t.crossDonorCorrelationMean.toFixed(2) : "not measured"}
+                </span>
               </div>
               <div style={{ height: "8px", background: "#eef0f3", borderRadius: "5px", overflow: "hidden" }}>
-                <div style={{ height: "100%", width: t.robustness + "%", background: robustnessColor, borderRadius: "5px" }} />
+                <div style={{ height: "100%", width: t.crossDonorCorrelationMean != null ? Math.round(t.crossDonorCorrelationMean * 100) + "%" : "0%", background: robustnessColor, borderRadius: "5px" }} />
+              </div>
+              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "6px" }}>
+                Replicate pass: {t.replicatePassFlag == null ? "unknown" : t.replicatePassFlag ? "yes" : "no"}
+                {t.readiness?.translationCappedBy && t.readiness.translationCappedBy !== "not_capped" ? ` · translation capped: ${t.readiness.translationCappedBy.replace(/_/g, " ")}` : ""}
               </div>
             </div>
           </div>
 
-          {/* concept profile */}
+          {/* concept module membership (real; no fabricated cross-module profile) */}
           <div style={card}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "5px" }}>
-              <h3 style={h3}>Immune-concept profile</h3>
-              <span style={src}>concept-bottleneck · M01–M20</span>
+              <h3 style={h3}>Immune-concept module</h3>
+              <span style={src}>concept modules · M01–M20</span>
             </div>
-            <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 16px", lineHeight: 1.5 }}>
-              Descriptive projection onto CD4 immune concepts. <strong style={{ color: "#7a6a3f" }}>Never feeds the readiness call.</strong> Empty concepts report <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>unknown</span>, never 0.
+            <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 14px", lineHeight: 1.5 }}>
+              Real seed-gene membership (concept_annotation.py). <strong style={{ color: "#7a6a3f" }}>Descriptive only — never feeds the readiness call.</strong> This pipeline does not compute a continuous activation score across every module for every gene, so only actual membership is shown — never a fabricated cross-module profile.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
-              {concepts.map((c) => (
-                <div key={c.id} className="navlink" onClick={() => navTo("concept", c.id)} style={{ display: "grid", gridTemplateColumns: "190px 1fr 54px", gap: "12px", alignItems: "center" }}>
-                  <div style={{ fontSize: "12.5px", color: "#3a414d", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{c.id}</span> {c.name}
-                  </div>
-                  <div style={{ height: "9px", background: "#f0f2f5", borderRadius: "5px", overflow: "hidden", position: "relative" }}>
-                    <div style={{ height: "100%", width: c.width, background: c.color, borderRadius: "5px" }} />
-                  </div>
-                  <div style={{ fontSize: "12px", textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: c.valColor }}>{c.display}</div>
-                </div>
-              ))}
-            </div>
+            {t.allModules.length > 0 ? (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {t.allModules.map((m) => (
+                  <span key={m.id} className="navlink" onClick={() => navTo("concept", m.id)} style={{ fontSize: "12.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4", background: "#eaf1fb", padding: "6px 12px", borderRadius: "8px" }}>
+                    {m.id} · {m.name.replace(/_/g, " ")}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>
+                unknown — not a member of any curated immune-concept module (may be a general chromatin/transcription-machinery gene; see red flags)
+              </div>
+            )}
+            {t.stimulationGated != null && (
+              <div style={{ marginTop: "12px", fontSize: "11.5px", color: t.stimulationGated ? "#0a6e4f" : "#6b7280" }}>
+                {t.stimulationGated ? "✓ Stimulation-gated — quiet at Rest, active on stimulation (real, from concept_annotation.py)." : "Not flagged stimulation-gated."}
+              </div>
+            )}
           </div>
 
-          {/* external evidence */}
+          {/* external evidence: real disease associations */}
           <div style={card}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={h3}>External evidence &amp; disease links</h3>
-              <span style={src}>src: Open Targets · fetched 2026-06-30</span>
+              <span style={src}>src: Open Targets (cached fetch)</span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-              {diseases.map((d) => (
-                <div key={d.efo} className="navlink" onClick={() => navTo("disease", d.efo)} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#1a1d24" }}>{d.name}</div>
-                    <div style={{ fontSize: "11.5px", color: "#8a92a0", fontFamily: "'IBM Plex Mono', monospace" }}>{d.efo}</div>
-                  </div>
-                  <div style={{ width: "130px" }}>
-                    <div style={{ height: "6px", background: "#e6e9ee", borderRadius: "4px", overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: d.width, background: "#1a5fb4", borderRadius: "4px" }} />
+            {diseases.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+                {diseases.map((d) => (
+                  <div key={d.id} className="navlink" onClick={() => navTo("disease", d.id)} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#1a1d24" }}>{d.name}</div>
+                      <div style={{ fontSize: "11.5px", color: "#8a92a0", fontFamily: "'IBM Plex Mono', monospace" }}>{d.id}</div>
                     </div>
-                  </div>
-                  <div style={{ width: "42px", textAlign: "right", fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{d.score}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ⑤ tractability */}
-          <div style={card}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-              <h3 style={h3}>Tractability</h3>
-              <span style={src}>src: Open Targets / ChEMBL</span>
-            </div>
-            <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
-              {tract.modality.map((m) => (
-                <div key={m.label} style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "6px 12px", borderRadius: "8px", border: `1px solid ${m.border}`, background: m.bg, color: m.color, fontSize: "12px", fontWeight: 600 }}>
-                  <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{m.mark}</span>
-                  {m.label}
-                </div>
-              ))}
-            </div>
-            {tract.known && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {tract.drugs.map((d) => (
-                  <div key={d.drug} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#1a1d24" }}>{d.drug}</div>
-                      <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{d.moa} · {d.approved}</div>
+                    <div style={{ width: "130px" }}>
+                      <div style={{ height: "6px", background: "#e6e9ee", borderRadius: "4px", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: d.width, background: "#1a5fb4", borderRadius: "4px" }} />
+                      </div>
                     </div>
-                    <span style={{ flexShrink: 0, padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: d.phaseC, background: d.phaseB }}>{d.phase}</span>
+                    <div style={{ width: "42px", textAlign: "right", fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{d.score}</div>
                   </div>
                 ))}
               </div>
-            )}
-            {tract.unknown && (
-              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>unknown — no tractability record indexed</div>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>unknown — no disease associations indexed in Open Targets for this gene</div>
             )}
           </div>
 
-          {/* ⑤ KO perturbation signature */}
+          {/* tractability: real flags */}
           <div style={card}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
-              <h3 style={h3}>Perturbation signature</h3>
-              <span style={src}>illustrative · Zhu 2025 DE drops in here</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+              <h3 style={h3}>Tractability</h3>
+              <span style={src}>src: Open Targets tractability (cached fetch)</span>
             </div>
-            <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 16px", lineHeight: 1.5 }}>Top trans-effects when this target is knocked out — what the cell does downstream. Click a target-gene to jump to its dossier.</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-              <div>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".4px", textTransform: "uppercase", color: "#2D6CBC", marginBottom: "9px" }}>Up-regulated</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  {perturbation.up.map((g) => (
-                    <div key={g.gene} className="navlink" onClick={() => g.isTarget && navTo("gene", g.gene)} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "12.5px", fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, color: g.geneColor, width: "66px" }}>{g.gene}</span>
-                      <div style={{ flex: 1, height: "7px", background: "#eef2f8", borderRadius: "4px", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: g.width, background: "#2D6CBC", borderRadius: "4px" }} />
-                      </div>
-                      <span style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: "#2D6CBC", width: "42px", textAlign: "right" }}>{g.fc}</span>
+            {tractRows.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {tractRows.map((r) => (
+                  <div key={r.mod} style={{ padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
+                    <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24", marginBottom: "6px" }}>{r.label}</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {r.trueFlags.map((f) => (
+                        <span key={f} style={{ fontSize: "11px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "3px 9px", borderRadius: "20px" }}>✓ {f}</span>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".4px", textTransform: "uppercase", color: "#A8373A", marginBottom: "9px" }}>Down-regulated</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  {perturbation.down.map((g) => (
-                    <div key={g.gene} className="navlink" onClick={() => g.isTarget && navTo("gene", g.gene)} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "12.5px", fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, color: g.geneColor, width: "66px" }}>{g.gene}</span>
-                      <div style={{ flex: 1, height: "7px", background: "#f7ecec", borderRadius: "4px", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: g.width, background: "#A8373A", borderRadius: "4px" }} />
-                      </div>
-                      <span style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: "#A8373A", width: "42px", textAlign: "right" }}>{g.fc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ⑤ expression across conditions */}
-          <div style={card}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
-              <h3 style={h3}>Activity across culture conditions</h3>
-              <span style={src}>illustrative · rest / stimulated</span>
-            </div>
-            <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 16px", lineHeight: 1.5 }}>Active regulators shift sharply with stimulation — the study's central finding.</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {expression.map((e) => (
-                <div key={e.condition} style={{ display: "grid", gridTemplateColumns: "96px 1fr 46px", gap: "12px", alignItems: "center" }}>
-                  <div style={{ fontSize: "12.5px", color: "#4a515e" }}>{e.condition}</div>
-                  <div style={{ height: "10px", background: "#f0f2f5", borderRadius: "5px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: e.width, background: e.color, borderRadius: "5px" }} />
                   </div>
-                  <div style={{ fontSize: "12px", textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "#4a515e" }}>{e.level}</div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>unknown — no positive tractability flags indexed in Open Targets</div>
+            )}
+            {t.readiness?.tractabilityModality && t.readiness.tractabilityModality !== "unknown" && (
+              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "10px" }}>Readiness-engine tractability class: {t.readiness.tractabilityModality}</div>
+            )}
+          </div>
+
+          {/* clinical trial evidence + literature (real) */}
+          {(t.clinicalTrials.length > 0 || t.literature.length > 0) && (
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+                <h3 style={h3}>Clinical trial &amp; literature evidence</h3>
+                <span style={src}>src: ClinicalTrials.gov / PubMed (cached fetch)</span>
+              </div>
+              {t.clinicalTrials.length > 0 ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: t.literature.length ? "16px" : 0 }}>
+                  {t.clinicalTrials.map((c) => (
+                    <a key={c.nctId} href={c.url} target="_blank" rel="noreferrer" style={{ display: "block", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24" }}>{c.title}</div>
+                      <div style={{ fontSize: "11px", color: "#8a92a0", marginTop: "3px" }}>
+                        {c.nctId} · {c.phase || "phase unknown"} · {c.status} · {c.conditions.join(", ")}
+                      </div>
+                    </a>
+                  ))}
                 </div>
-              ))}
+              ) : (
+                <div style={{ fontSize: "12.5px", color: "#9aa1ad", marginBottom: t.literature.length ? "16px" : 0 }}>no clinical trial evidence indexed for this target</div>
+              )}
+              {t.literature.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  {t.literature.map((l) => (
+                    <a key={l.pmid} href={l.url} target="_blank" rel="noreferrer" style={{ fontSize: "12px", color: "#4a515e" }}>
+                      {l.title} <span style={{ color: "#9aa1ad" }}>— {l.journal}, {l.year}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* real per-condition DE signal (replaces the old fabricated perturbation-signature + expression panels) */}
+          <div style={card}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
+              <h3 style={h3}>Signal across culture conditions</h3>
+              <span style={src}>src: target_cards.csv · Rest / Stim 8 hr / Stim 48 hr</span>
+            </div>
+            <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 16px", lineHeight: 1.5 }}>
+              Real differential-expression breadth per condition (this repo's DE pipeline, not a raw expression level). {t.stimulationGated ? "This target is stimulation-gated." : ""}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {t.conditions.map((c) => {
+                const maxDe = Math.max(...t.conditions.map((x) => x.nTotalDeGenes ?? 0), 1);
+                const width = Math.round(((c.nTotalDeGenes ?? 0) / maxDe) * 100) + "%";
+                const color = c.grade != null && c.grade >= 3 ? "#1a5fb4" : c.grade != null && c.grade === 2 ? "#4f83cc" : "#9dbde8";
+                return (
+                  <div key={c.condition} style={{ display: "grid", gridTemplateColumns: "96px 1fr 150px", gap: "12px", alignItems: "center" }}>
+                    <div style={{ fontSize: "12.5px", color: "#4a515e" }}>{CONDITION_LABEL[c.condition] ?? c.condition}</div>
+                    <div style={{ height: "10px", background: "#f0f2f5", borderRadius: "5px", overflow: "hidden" }}>
+                      <div style={{ height: "100%", width, background: color, borderRadius: "5px" }} />
+                    </div>
+                    <div style={{ fontSize: "11.5px", textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "#4a515e" }}>
+                      {c.nTotalDeGenes ?? "—"} DE ({c.nUpGenes ?? "—"}↑/{c.nDownGenes ?? "—"}↓) grade {c.grade ?? "—"}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -479,60 +440,91 @@ export default function Dossier() {
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px", background: "#fafbfc" }}>
             <h3 style={{ fontSize: "14px", fontWeight: 700, margin: "0 0 13px" }}>Readiness rationale</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
-              {rationale.map((x, i) => (
+            <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginBottom: redFlags.length ? "14px" : 0 }}>
+              {reasonBullets.map((text, i) => (
                 <div key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: x.dot, flexShrink: 0, marginTop: "5px" }} />
-                  <div style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4a515e" }}>{x.text}</div>
+                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#2563c9", flexShrink: 0, marginTop: "5px" }} />
+                  <div style={{ fontSize: "12px", lineHeight: 1.45, color: "#4a515e" }}>{text}</div>
                 </div>
               ))}
             </div>
+            {redFlags.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
+                {redFlags.map((f) => (
+                  <div key={f} style={{ fontSize: "11.5px", color: "#8a2f2f", background: "#f6e5e5", borderRadius: "8px", padding: "7px 10px" }}>⚑ {RED_FLAG_LABELS[f] ?? f}</div>
+                ))}
+              </div>
+            )}
+            {t.readiness?.nextValidationStep && (
+              <div style={{ fontSize: "11.5px", lineHeight: 1.5, color: "#1f56b8", background: "#e8f0fc", borderRadius: "8px", padding: "9px 11px" }}>
+                <strong>Next validation step:</strong> {t.readiness.nextValidationStep}
+              </div>
+            )}
           </div>
 
+          {/* safety window: real red flags + safety liabilities + constraint, no fabricated score */}
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: 700, margin: 0 }}>Safety window</h3>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
+              <h3 style={{ fontSize: "14px", fontWeight: 700, margin: 0 }}>Safety signals</h3>
               <span style={{ fontSize: "10px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace" }}>descriptive</span>
             </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "8px", margin: "8px 0 4px" }}>
-              <div style={{ fontSize: "30px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "-1px", color: safetyColor }}>{t.safety}</div>
-              <div style={{ fontSize: "12px", color: "#9aa1ad" }}>/ 100</div>
-            </div>
-            <div style={{ height: "7px", background: "#eef0f3", borderRadius: "5px", overflow: "hidden", marginBottom: "12px" }}>
-              <div style={{ height: "100%", width: t.safety + "%", background: safetyColor, borderRadius: "5px" }} />
-            </div>
-            <div style={{ fontSize: "11.5px", lineHeight: 1.5, color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "8px", padding: "9px 11px" }}>{t.safetyNote}</div>
+            {t.safetyLiabilities.length > 0 ? (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "10px" }}>
+                {t.safetyLiabilities.map((s) => (
+                  <span key={s.event} style={{ fontSize: "11px", fontWeight: 600, color: "#8a2f2f", background: "#f6e5e5", padding: "3px 9px", borderRadius: "20px" }}>{s.event}</span>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: "11.5px", color: "#6b7280", marginBottom: "10px" }}>No adverse-event liabilities indexed in Open Targets for this gene.</div>
+            )}
+            {redFlags.length > 0 ? (
+              <div style={{ fontSize: "11.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "8px", padding: "9px 11px" }}>
+                {redFlags.length} pipeline red flag{redFlags.length === 1 ? "" : "s"} triggered (see rationale panel).
+              </div>
+            ) : (
+              <div style={{ fontSize: "11.5px", color: "#6b7280" }}>No pipeline red flags triggered for this target.</div>
+            )}
           </div>
 
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px" }}>
             <h3 style={{ fontSize: "14px", fontWeight: 700, margin: "0 0 13px" }}>Population genetics</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {popgen.map((p) => (
-                <div key={p.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "12.5px", color: "#6b7280" }}>{p.label}</span>
-                  <span style={{ fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{p.value}</span>
-                </div>
-              ))}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: "12.5px", color: "#6b7280" }}>gnomAD LOEUF</span>
+                <span style={{ fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{t.gnomad.loeuf != null ? t.gnomad.loeuf.toFixed(3) : "unknown"}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: "12.5px", color: "#6b7280" }}>pLI</span>
+                <span style={{ fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{t.gnomad.pli != null ? t.gnomad.pli.toFixed(3) : "unknown"}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Constraint tier</span>
+                <span style={{ fontSize: "12.5px", fontWeight: 600, color: t.gnomad.constraintTier ? CONSTRAINT_META[t.gnomad.constraintTier].color : "#9aa1ad" }}>
+                  {t.gnomad.constraintTier ? CONSTRAINT_META[t.gnomad.constraintTier].label : "unknown"}
+                </span>
+              </div>
             </div>
             <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "13px", paddingTop: "12px", borderTop: "1px dashed #e2e5ea", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span>src: gnomAD v4 · fetched 2026-06-30</span>
+              <span>src: gnomAD v4</span>
               <span className="navlink" onClick={() => navTo("popgen", t.gene)} style={{ color: "#1a5fb4" }}>Open lookup →</span>
             </div>
           </div>
 
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px" }}>
             <h3 style={{ fontSize: "14px", fontWeight: 700, margin: "0 0 4px" }}>Targets like this</h3>
-            <p style={{ fontSize: "11px", color: "#8a92a0", margin: "0 0 13px", lineHeight: 1.45 }}>Nearest neighbours by immune-concept profile (cosine similarity).</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              {similar.map((s) => (
-                <div key={s.gene} className="rowhover navlink" onClick={() => navTo("gene", s.gene)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 9px", borderRadius: "9px" }}>
-                  <div style={{ fontSize: "13px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24", width: "62px" }}>{s.gene}</div>
-                  <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 600, color: s.rColor, background: s.rBg }}>{s.rLabel}</span>
-                  <div style={{ flex: 1 }} />
-                  <div style={{ fontSize: "12px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280" }}>{s.sim}</div>
-                </div>
-              ))}
-            </div>
+            <p style={{ fontSize: "11px", color: "#8a92a0", margin: "0 0 13px", lineHeight: 1.45 }}>Other screened targets sharing this gene's assigned concept module (real membership).</p>
+            {similar.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                {similar.map((s) => (
+                  <div key={s.gene} className="rowhover navlink" onClick={() => navTo("gene", s.gene)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 9px", borderRadius: "9px" }}>
+                    <div style={{ fontSize: "13px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24", width: "70px" }}>{s.gene}</div>
+                    <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 600, color: s.rColor, background: s.rBg }}>{s.rLabel}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontSize: "11.5px", color: "#9aa1ad" }}>No other screened targets share this gene's module.</div>
+            )}
           </div>
 
           <button

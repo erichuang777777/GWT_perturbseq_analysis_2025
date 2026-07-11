@@ -2,6 +2,7 @@
 **.pdf
 **/genome/*
 **/*.html
+!frontend/webserver/index.html
 **/*.h5ad
 **/*.h5mu
 **/czi-psomagen/
@@ -34,6 +35,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!frontend/webserver/src/lib/
 lib64/
 parts/
 sdist/

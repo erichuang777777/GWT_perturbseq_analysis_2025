@@ -1,7 +1,7 @@
-import { GRADE, READINESS, DECISION_META, MODULES, WKEYS, WPRESETS } from "../data/reference";
-import { TARGETS } from "../data/targets";
+import { TARGETS } from "../data/dataset";
+import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
-import { consensus, rankedTargets } from "../lib/logic";
+import { consensus, fmtEffect, rankedTargets } from "../lib/logic";
 import { useStore } from "../store/store";
 
 export default function Explorer() {
@@ -19,7 +19,7 @@ export default function Explorer() {
       k,
       label: R[k].label,
       dot: R[k].dot,
-      count: all.filter((t) => t.call === k).length,
+      count: all.filter((t) => t.readiness?.call === k).length,
       color: sel ? R[k].color : "#4a515e",
       bg: sel ? R[k].bg : "transparent",
     };
@@ -29,6 +29,7 @@ export default function Explorer() {
     return {
       k,
       label: k,
+      count: all.filter((t) => t.grade === k).length,
       color: sel ? G[k].color : "#8a92a0",
       bg: sel ? G[k].bg : "#fff",
       border: sel ? G[k].border : "#e2e5ea",
@@ -39,7 +40,7 @@ export default function Explorer() {
     return {
       k,
       label: k,
-      count: all.filter((t) => t.cat === k).length,
+      count: all.filter((t) => t.module?.category === k).length,
       color: sel ? "#1a5fb4" : "#4a515e",
       bg: sel ? "#eaf1fb" : "transparent",
     };
@@ -72,9 +73,9 @@ export default function Explorer() {
   const anyC = Object.keys(cs).some((k) => cs[k]);
   const filtered = all.filter((t) => {
     if (q && !(t.gene.toUpperCase().includes(q) || t.name.toUpperCase().includes(q))) return false;
-    if (anyR && !rs[t.call]) return false;
-    if (anyG && !gs[t.grade]) return false;
-    if (anyC && !cs[t.cat]) return false;
+    if (anyR && !(t.readiness && rs[t.readiness.call])) return false;
+    if (anyG && !(t.grade && gs[t.grade])) return false;
+    if (anyC && !(t.module && cs[t.module.category])) return false;
     return true;
   });
   const filtGenes = new Set(filtered.map((t) => t.gene));
@@ -91,9 +92,9 @@ export default function Explorer() {
   });
 
   const rows = rankedFiltered.map((t) => {
-    const R2 = R[t.call];
-    const G2 = G[t.grade];
-    const M2 = MODULES[t.mod];
+    const call = t.readiness?.call;
+    const R2 = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+    const G2 = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
     const c = consensus(votesFor(t.gene));
     const cm2 = DECISION_META[c.status];
     const listed = inShortlist(t.gene);
@@ -102,13 +103,13 @@ export default function Explorer() {
       comp: t._comp,
       gene: t.gene,
       name: t.name,
-      moduleId: t.mod,
-      moduleShort: M2.name.replace(/_/g, " "),
-      effect: t.effect,
+      moduleId: t.module?.id ?? "—",
+      moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned concept module",
+      effect: fmtEffect(t.effect),
       rLabel: R2.label,
       rColor: R2.color,
       rBg: R2.bg,
-      grade: t.grade,
+      grade: t.grade ?? "—",
       gColor: G2.color,
       gBg: G2.bg,
       checkBg: listed ? "#1a5fb4" : "#fff",

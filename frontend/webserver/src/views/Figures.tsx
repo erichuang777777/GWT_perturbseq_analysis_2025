@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { DATA_VERSION, DISEASES, FIGURES, clusterNames } from "../data/reference";
+import { DATA_VERSION, FIGURES, FIGURE_DISEASES, clusterNames } from "../data/reference";
 import { drawFigure } from "../lib/drawFigure";
 import { useStore } from "../store/store";
 
@@ -88,7 +88,7 @@ export default function Figures() {
     segControls = [
       mkSeg(
         "Disease",
-        Object.keys(DISEASES).map((k) => ({ k, l: DISEASES[k].name })),
+        FIGURE_DISEASES.map((d) => ({ k: d.key, l: d.name })),
         S.figDisease,
         (k) => ({ figDisease: k }),
       ),

@@ -16,29 +16,39 @@ and vice versa — the backend can change its internals freely as long as the AP
 
 | Path | What it is | Status |
 |---|---|---|
-| `webserver/` | React + TypeScript + Vite single-page app (the CD4 Target Discovery Portal). Researcher workspace (target explorer, dossier, compare, multi-reviewer decision layer), clinical-evidence lookup, an interactive Plotly figure atlas, and a REST API reference. Ported from the Claude Design prototype; currently renders a deterministic **mock dataset** in `src/data/` and does not call the API yet — see `webserver/README.md` for how to wire it to the FastAPI endpoints. | Working (mock data) |
+| `webserver/` | React + TypeScript + Vite single-page app (the CD4 Target Discovery Portal). Researcher workspace (target explorer, dossier, compare, multi-reviewer decision layer), clinical-evidence lookup, an interactive Plotly figure atlas, and a REST API reference. Ported from the Claude Design prototype. The researcher/clinical side renders **real data** exported from this repo's own pipeline (target_cards.csv + the real readiness engine + concept modules + cached Open Targets/ClinicalTrials.gov/PubMed/gnomAD evidence) for the 20 targets that evidence cache covers — see `webserver/README.md` for exactly which files. The figure atlas still renders illustrative demo data. | Working (real data; figure atlas still illustrative) |
 
 The previous Streamlit dashboard (`dashboard/`) has been replaced by `webserver/`. To recover it,
 check out any commit before this one.
+
+### A note on the isolation rule above
+
+`webserver/scripts/export_real_data.py` is an **offline, build-time export step**, not part of the
+running frontend — it's invoked manually from the repo root (see `webserver/README.md`) and writes
+a static JSON file the frontend imports at build time. The compiled frontend itself still never
+imports `src/3_DE_analysis/` or touches the repo's data files at runtime; its only *runtime*
+contract remains the API's HTTP/JSON shapes, same as before. Re-run the export script whenever the
+underlying pipeline output changes.
 
 ## Running the webserver standalone
 
 ```bash
 cd frontend/webserver
 npm install
-npm run dev          # http://localhost:5173  (mock data — no backend needed)
+npm run dev          # http://localhost:5173 — real data baked in, no backend needed to browse it
 ```
 
-To wire it to the backend, start the FastAPI service and replace the static modules in
-`webserver/src/data/` with `fetch` calls against `GWT_API_BASE` (see `webserver/README.md`):
+To wire it to the live backend instead of the exported snapshot, start the FastAPI service and
+replace the static import in `webserver/src/data/dataset.ts` with `fetch` calls against
+`GWT_API_BASE` (see `webserver/README.md`):
 
 ```bash
 # from repo root, in a separate terminal
 uvicorn target_card_api:app --app-dir src/3_DE_analysis
 ```
 
-The frontend still never touches the repo's data files, `sources/`, or `metadata/` directly — its
-only contract with the backend is the API's HTTP/JSON shapes.
+The compiled frontend still never touches the repo's data files, `sources/`, or `metadata/`
+directly at runtime — its only contract with the backend is the API's HTTP/JSON shapes.
 
 ## Adding a new frontend (or replacing this one)
 

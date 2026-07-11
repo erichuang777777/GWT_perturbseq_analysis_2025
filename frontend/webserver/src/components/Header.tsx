@@ -1,5 +1,5 @@
+import { TARGETS } from "../data/dataset";
 import { DATA_VERSION } from "../data/reference";
-import { TARGETS } from "../data/targets";
 import { useStore } from "../store/store";
 
 export default function Header() {

@@ -1,25 +1,25 @@
 const API_VERSION = "v1";
 
 const apiEndpoints = [
-  { path: "/targets", desc: "List all screened targets with rank, call, grade and effect size." },
-  { path: "/targets/{gene}", desc: "Full dossier for one target — statistical evidence, robustness, safety window and module membership." },
-  { path: "/diseases", desc: "List disease contexts (EFO id, name, associated genes)." },
-  { path: "/diseases/{efo}/targets", desc: "Targets matched to a disease context, ranked by association score." },
+  { path: "/targets", desc: "List all screened targets with rank, readiness call, grade and effect size." },
+  { path: "/targets/{gene}", desc: "Full dossier for one target — statistical evidence, readiness-engine domains, tractability and module membership." },
+  { path: "/diseases", desc: "List real disease associations (MONDO id, name, referencing targets) aggregated from Open Targets." },
+  { path: "/diseases/{id}/targets", desc: "Targets matched to a disease context, ranked by real Open Targets association score." },
   { path: "/popgen/{gene}", desc: "Population-genetics constraint metrics (gnomAD-derived) for one gene." },
-  { path: "/figures/{id}", desc: "Metadata and underlying data series for one figure in the atlas." },
+  { path: "/figures/{id}", desc: "Metadata and underlying data series for one figure in the atlas (still illustrative demo data)." },
 ];
 
 const apiSample = `{
   "gene": "PLCG1",
   "name": "Phospholipase C gamma 1",
   "module": "M02",
-  "call": "advance",
+  "readiness_call": "advance",
   "grade": "A",
-  "effect_size": 2.14,
-  "fdr": "3.1e-14",
-  "robustness": 96,
-  "safety_window": 82,
-  "dataset_version": "GWT-CD4 v2026.1"
+  "effect_size": 14.10,
+  "fdr": "1e-16",
+  "cross_donor_correlation_mean": 0.735,
+  "primary_condition": "Stim8hr",
+  "dataset_version": "GWT-CD4 real-data v1"
 }`;
 
 export default function ApiDocs() {

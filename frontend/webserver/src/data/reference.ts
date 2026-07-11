@@ -1,15 +1,9 @@
-import type {
-  Call,
-  ColorSet,
-  Disease,
-  Drug,
-  Figure,
-  Grade,
-  GradeStyle,
-  Module,
-} from "./types";
+import type { Call, ColorSet, Figure, Grade, GradeStyle } from "./types";
+import { SOURCE_VERSION } from "./dataset";
 
-export const DATA_VERSION = "GWT-CD4 v2026.1";
+// Short badge label (header/footer). Full real provenance lives in SOURCE_VERSION.
+export const DATA_VERSION = "GWT-CD4 real-data v1";
+export const DATASET_SOURCE = SOURCE_VERSION;
 
 export const READINESS: Record<Call, ColorSet> = {
   advance: { label: "Advance", color: "#0a6e4f", bg: "#e4f3ec", dot: "#0d7d5a" },
@@ -35,6 +29,24 @@ export const DECISION_META: Record<string, ColorSet> = {
 
 export const REVIEWERS = ["A. Okafor", "R. Mehta", "L. Sørensen", "J. Park"];
 
+export const CONSTRAINT_META: Record<string, { label: string; color: string; bg: string }> = {
+  high: { label: "High constraint (LoF-intolerant)", color: "#0a6e4f", bg: "#e4f3ec" },
+  moderate: { label: "Moderate constraint", color: "#9a6510", bg: "#fbf1de" },
+  low: { label: "Low constraint", color: "#5b6270", bg: "#eef0f3" },
+};
+
+export const RED_FLAG_LABELS: Record<string, string> = {
+  essential_gene: "Essential gene (Hart core-essentials screen)",
+  broad_effect: "Broad/pleiotropic effect (chromatin-transcription machinery)",
+  high_offtarget: "High off-target signal flagged",
+  uncertain_direction: "Effect direction not confidently called",
+  batch_confounded: "Batch-sensitive across runs",
+  kd_not_measurable: "Knockdown not measurable in NTC cells",
+  kd_weak: "Knockdown confirmed but weak",
+};
+
+// Weight presets re-order the researcher's VIEW of the real evidence; they
+// never change the evidence itself or the (rule-based, real) readiness call.
 export const WPRESETS: Record<string, Record<string, number>> = {
   Balanced: { stat: 20, robust: 20, safety: 20, popgen: 20, external: 20 },
   "Genetics-led": { stat: 15, robust: 10, safety: 15, popgen: 30, external: 30 },
@@ -50,67 +62,7 @@ export const WKEYS: { k: string; label: string; short: string; color: string }[]
   { k: "external", label: "External", short: "Extern", color: "#c0503f" },
 ];
 
-export const MODULES: Record<string, Module> = {
-  M01: { name: "TCR_Core_Receptor", cat: "Upstream", desc: "The TCR core receptor complex (CD3 chains + TRBC) — the most upstream initiation point of the CD4 activation signal. Governs whether the activation threshold can be reshaped.", question: "Can CD4 TCR initiation signalling reshape the activation threshold?", seeds: ["CD3D", "CD3E", "CD3G", "CD247", "TRBC1", "TRBC2"] },
-  M02: { name: "TCR_Proximal_Signaling", cat: "Upstream", desc: "The proximal TCR signalling chain — a node-dense stretch of kinases and adaptors immediately downstream of receptor engagement, rich in druggable checkpoints.", question: "Which early TCR-downstream nodes behave as druggable regulatory points?", seeds: ["LCK", "FYN", "ZAP70", "LAT", "LCP2", "PLCG1", "ITK", "VAV1", "CARD11", "BCL10", "MALT1"] },
-  M03: { name: "Costimulation", cat: "Upstream", desc: "The costimulatory axis (CD28/ICOS and ligands) that sets how activation and proliferation programs are re-wired after receptor engagement.", question: "Does costimulation drive reconfiguration of the proliferation/activation program?", seeds: ["CD28", "ICOS", "GRB2", "PIK3R1", "TRAT1", "CD80", "CD86"] },
-  M04: { name: "Checkpoint_Module", cat: "Upstream", desc: "Inhibitory checkpoint receptors balancing immune suppression against activation — assessed for reversible or enhanceable signalling.", question: "Does the inhibitory axis show reversible / enhanceable signal?", seeds: ["CTLA4", "PDCD1", "TIGIT", "LAG3", "ICOS", "CD40", "CD40LG"] },
-  M05: { name: "IL2R_JAKSTAT", cat: "Upstream", desc: "The IL-2 receptor / JAK-STAT survival and proliferation loop — a key branch point between Treg and effector fates.", question: "Is the IL-2 survival & proliferation loop reset by perturbation?", seeds: ["IL2RA", "IL2RB", "JAK1", "JAK3", "STAT5A", "STAT5B"] },
-  M06: { name: "IFN_Response", cat: "Upstream", desc: "Interferon response axis (type I/II receptors + STAT1/IRF) capturing inflammatory-stimulus sensitivity.", question: "Is inflammatory-stimulus sensitivity amplified or dampened?", seeds: ["IFNAR1", "IFNAR2", "IFNGR1", "IFNGR2", "STAT1", "IRF1", "IRF9"] },
-  M07: { name: "Th1_Polarization", cat: "Downstream", desc: "The master transcriptional program for Th1 differentiation.", question: "Does perturbation drive a Th1-like transcriptomic shift?", seeds: ["TBX21", "IFNG", "IRF1", "EOMES", "STAT4", "CXCR3"] },
-  M08: { name: "Th2_Polarization", cat: "Downstream", desc: "The Th2 differentiation program (GATA3/STAT6 axis + IL4/IL13 effectors).", question: "Does perturbation drive a Th2-like skew?", seeds: ["GATA3", "IL4", "IL13", "IL4R", "STAT6", "IRF4"] },
-  M09: { name: "Th17_Polarization", cat: "Downstream", desc: "The Th17 inflammatory differentiation program (RORC/STAT3 axis + IL17 effectors) — common in chronic autoimmune inflammation.", question: "Does perturbation drive a Th17-like inflammatory program?", seeds: ["RORC", "IL17A", "IL17F", "IL23R", "STAT3", "CCR6"] },
-  M10: { name: "Treg_Modulation", cat: "Downstream", desc: "The regulatory-T tolerance / suppression program.", question: "Is the tolerance/suppression axis altered?", seeds: ["FOXP3", "IKZF2", "CTLA4", "IL2RA", "TGFB1", "TGFB2"] },
-  M11: { name: "NFkB_Axis", cat: "Downstream", desc: "The NF-κB inflammatory signal-amplification axis.", question: "Is innate/inflammatory signal amplification altered?", seeds: ["NFKB1", "RELA", "IKBKB", "TRAF2", "TNFRSF1A", "REL"] },
-  M12: { name: "AP1_NFAT_Activation", cat: "Downstream", desc: "AP-1 / NFAT immediate-early activation response — a directionality sanity check for perturbations.", question: "Do immediate-early activation responses shift in concert?", seeds: ["FOS", "JUN", "FOSB", "FOSL2", "NR4A1", "NR4A2", "NFATC1", "NFATC2"] },
-  M13: { name: "PI3K_AKT_mTOR", cat: "Upstream", desc: "The PI3K-AKT-mTOR metabolic / proliferation signalling axis.", question: "Are metabolic and proliferation signals rewritten?", seeds: ["PIK3CD", "PIK3R1", "MTOR", "RPTOR", "AKT1"] },
-  M14: { name: "Metabolic_Switch", cat: "Downstream", desc: "The activation-coupled metabolic reprogramming (MYC/HIF1A/glycolysis).", question: "Does metabolic reprogramming track with activation?", seeds: ["MYC", "SLC2A1", "HIF1A", "CCND3", "RPS6KB1"] },
-  M15: { name: "Maturation_Memory_Trafficking", cat: "Downstream", desc: "Naive/memory homing and lymphoid-tissue positioning program.", question: "Is the naive/memory homing profile preserved?", seeds: ["CCR7", "SELL", "LTB", "S1PR1", "IL7R"] },
-  M16: { name: "Chemotaxis_Tissue_Infiltration", cat: "Downstream", desc: "Chemotaxis and tissue-infiltration program.", question: "Are migration / tissue-positioning programs altered?", seeds: ["CXCR3", "CXCR4", "CCR5", "CCR6", "XCL1", "XCL2"] },
-  M17: { name: "Cytotoxic_Like_Differentiation", cat: "Downstream", desc: "Atypical CD4 cytotoxic / effector-like program.", question: "Does perturbation bias toward effector-like cytotoxic programs?", seeds: ["GZMB", "PRF1", "NKG7", "FAS", "FASLG", "IFNG"] },
-  M18: { name: "Exhaustion_Escape", cat: "Downstream", desc: "T-cell exhaustion / escape program (TOX-driven + inhibitory receptors) — used in safety and therapeutic-window assessment.", question: "Does prolonged stimulation induce exhaustion or reversible suppression?", seeds: ["PDCD1", "HAVCR2", "LAG3", "TOX", "ENTPD1"] },
-  M19: { name: "Memory_Fate_Program", cat: "Downstream", desc: "Memory-fate / plasticity transcriptional and chromatin program.", question: "Are fate plasticity and stability changed?", seeds: ["TCF7", "BCL11B", "RUNX3", "BACH2", "SMARCA4", "ARID1A"] },
-  M20: { name: "Cell_Cycle_Proliferation", cat: "Downstream", desc: "Cell-cycle / proliferation marker program — a non-specific-proliferation sanity check.", question: "Does perturbation mainly drive proliferation rather than a specific immune pathway?", seeds: ["MKI67", "TOP2A", "MCM7", "PCNA", "TYMS"] },
-};
-
-export const DISEASES: Record<string, Disease> = {
-  RA: { name: "Rheumatoid arthritis", efo: "EFO_0000685", genes: ["IL2RA", "CTLA4", "STAT3", "PLCG1"] },
-  IBD: { name: "Inflammatory bowel disease", efo: "EFO_0003767", genes: ["RORC", "STAT3", "JAK3", "TIGIT"] },
-  PSO: { name: "Psoriasis", efo: "EFO_0000676", genes: ["RORC", "STAT3", "TIGIT", "ITK"] },
-  MS: { name: "Multiple sclerosis", efo: "EFO_0003885", genes: ["IL2RA", "CTLA4", "LAG3", "TBX21IRF"] },
-  SLE: { name: "Systemic lupus erythematosus", efo: "EFO_0002690", genes: ["PLCG1", "ITK", "STAT3", "PDCD1"] },
-  T1D: { name: "Type 1 diabetes", efo: "EFO_0001359", genes: ["CTLA4", "IL2RA", "PTPN22FOX", "FOXP3"] },
-};
-
-// Illustrative disease-agnostic drug lists per gene; trials keyed by disease code.
-// A nonzero count only means trials exist for THAT disease. Empty [] = gene resolves but no matchable drugs.
-export const DRUGS: Record<string, Drug[]> = {
-  IL2RA: [
-    { drug: "Basiliximab", phase: "Approved", moa: "Anti-CD25 (IL2RA) mAb", approved: "Kidney-transplant rejection", trials: {} },
-    { drug: "Daclizumab", phase: "Withdrawn", moa: "Anti-CD25 (IL2RA) mAb", approved: "Multiple sclerosis (withdrawn 2018)", trials: { MS: 11 } },
-  ],
-  CTLA4: [
-    { drug: "Abatacept", phase: "Approved", moa: "CTLA4-Ig fusion (co-stimulation blocker)", approved: "Rheumatoid arthritis, PsA, JIA", trials: { RA: 63, PSO: 5, T1D: 6 } },
-    { drug: "Belatacept", phase: "Approved", moa: "CTLA4-Ig fusion", approved: "Kidney-transplant rejection", trials: {} },
-  ],
-  JAK3: [
-    { drug: "Tofacitinib", phase: "Approved", moa: "JAK1/JAK3 inhibitor", approved: "RA, ulcerative colitis, PsA, AS", trials: { RA: 44, IBD: 23, PSO: 8 } },
-    { drug: "Decernotinib", phase: "Phase 2", moa: "JAK3-selective inhibitor", approved: "Investigational", trials: { RA: 5 } },
-  ],
-  PDCD1: [
-    { drug: "Nivolumab", phase: "Approved", moa: "Anti-PD-1 mAb (checkpoint inhibitor)", approved: "Oncology (melanoma, NSCLC, …)", trials: {} },
-    { drug: "Pembrolizumab", phase: "Approved", moa: "Anti-PD-1 mAb (checkpoint inhibitor)", approved: "Oncology (multiple)", trials: {} },
-  ],
-  TIGIT: [{ drug: "Tiragolumab", phase: "Phase 3", moa: "Anti-TIGIT mAb", approved: "Investigational (oncology)", trials: {} }],
-  LAG3: [{ drug: "Relatlimab", phase: "Approved", moa: "Anti-LAG-3 mAb", approved: "Melanoma (with nivolumab)", trials: {} }],
-  RORC: [{ drug: "RORγt inverse agonists (e.g. JTE-451)", phase: "Phase 2", moa: "RORγt inverse agonist", approved: "Investigational", trials: { PSO: 4 } }],
-  ITK: [{ drug: "Ibrutinib (off-target ITK)", phase: "Approved", moa: "BTK / ITK inhibitor", approved: "B-cell malignancies", trials: {} }],
-  STAT3: [],
-  FOXP3: [],
-  PLCG1: [],
-  ZAP70: [],
-};
-
+// ---------- figure atlas (still illustrative — see Figures.tsx caption) ----------
 export const FIGURES: Figure[] = [
   { id: "volcano", num: "S6", title: "Trans-effect volcano", cat: "Differential expression", src: "3_DE_analysis/DE_results_figure.ipynb", desc: "Genome-scale perturbation trans-effects — effect size against statistical significance. Positive and negative regulators separate by direction; move the FDR threshold to re-call significance." },
   { id: "umap", num: "3A", title: "Functional clustering (UMAP)", cat: "Functional interaction", src: "6_functional_interaction/cluster_plot.ipynb", desc: "Regulators embedded by downstream transcriptional similarity and grouped into functional clusters. Hover any point for its gene; highlight one cluster to isolate a program." },
@@ -140,3 +92,16 @@ export const CLUSTER_COLORS: Record<string, string> = {
 };
 
 export const clusterNames = () => Object.keys(CLUSTER_COLORS);
+
+// Small illustrative disease list for the figure atlas's GWAS-enrichment demo
+// control only (that figure's whole series is synthetic — see Figures.tsx
+// caption). Not used anywhere real data is shown; the Clinical tab's disease
+// catalog is built from real Open Targets associations in Clinical.tsx.
+export const FIGURE_DISEASES: { key: string; name: string }[] = [
+  { key: "RA", name: "Rheumatoid arthritis" },
+  { key: "IBD", name: "Inflammatory bowel disease" },
+  { key: "PSO", name: "Psoriasis" },
+  { key: "MS", name: "Multiple sclerosis" },
+  { key: "SLE", name: "Systemic lupus erythematosus" },
+  { key: "T1D", name: "Type 1 diabetes" },
+];

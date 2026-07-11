@@ -4,13 +4,14 @@ A React + TypeScript + Vite single-page app that presents the CD4 T-cell genome-
 Perturb-seq target-discovery results as an interactive web server, for two personas:
 
 - **Researcher workspace** — faceted target explorer with adjustable composite-priority
-  weights, per-target dossier (statistical evidence, immune-concept profile, tractability,
-  KO perturbation signature, safety window, population genetics, similar targets),
-  multi-reviewer decision layer, and a side-by-side compare view.
+  weights, per-target dossier (real statistical evidence, concept-module membership, real
+  tractability/disease/clinical-trial evidence, safety signals, population genetics, similar
+  targets), multi-reviewer decision layer, and a side-by-side compare view.
 - **Clinical-evidence lookup** — scope & guardrails, individual concept profile (M01–M20),
   disease × drug evidence match, and population-genetics constraint lookup.
 - **Figure atlas** — 8 interactive Plotly figures (volcano, UMAP clustering, effect
   heatmap, cytokine regulators, Th1/Th2 polarization, GWAS enrichment, power, LoF burden).
+  **This section still renders illustrative demo data** — see its in-app caption.
 - **REST API reference.**
 
 It replaces the previous Streamlit dashboard (`frontend/dashboard/`). Like that app, it is
@@ -19,12 +20,32 @@ to the backend through the FastAPI service's HTTP/JSON API, never by importing b
 
 ## Data
 
-This is a faithful port of the exported Claude Design prototype and currently runs on the
-**deterministic mock dataset** baked into `src/data/` (15 real T-cell targets, the 20 concept
-modules, drug/trial precedents, gnomAD constraint, and figure series). Nothing here calls the
-live API yet.
+The researcher/clinical side of the portal runs on **real data exported directly from this
+repo's own pipeline** — not mock or illustrative values. `scripts/export_real_data.py` reads:
 
-Design discipline carried over from the prototype:
+- `sources/target_tool_cache/<run-id>/target_cards.csv` — real per-target-per-condition
+  statistics from the genome-scale CD4 Perturb-seq screen (effect size, FDR, DE gene counts,
+  grade, cross-donor correlation, …).
+- `src/3_DE_analysis/core/readiness.py` (`compute_readiness`) — the repo's own deterministic
+  readiness engine, **run as-is, not reimplemented** — produces the real
+  advance/validate/watchlist/deprioritize call, stage, red-flag overrides, rationale text and
+  next-validation-step for every target.
+- `src/3_DE_analysis/individual_concept_profile.py` (`load_concept_modules`) — the real M01–M20
+  concept-module definitions and seed-gene membership.
+- `src/3_DE_analysis/concept_annotation.py` (`annotate_targets`) — real "stimulation-gated"
+  tagging.
+- `sources/target_tool_cache/_evidence/<GENE>.json` — real, already-fetched Open Targets /
+  ClinicalTrials.gov / PubMed snapshots (tractability, disease associations, safety
+  liabilities, clinical trials, literature). **The 20 targets in the portal are exactly the
+  genes this cache covers** — not an arbitrary curation.
+- `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` — real gnomAD v4 LOEUF/pLI.
+
+Anything those sources didn't have is emitted as `null` / rendered as `unknown` — never a
+fabricated value (see `unknown ≠ 0` below). The **figure atlas is the one section that still
+renders synthetic, deterministically-generated series** — every figure's caption says so; that
+data hasn't been swapped for the real notebook outputs yet.
+
+Design discipline:
 
 - **descriptive ≠ decision** — evidence and the human readiness call are kept separate; weights
   reorder your *view* of hypotheses, never the evidence or the rule-based readiness call.
@@ -32,12 +53,23 @@ Design discipline carried over from the prototype:
   fabricated zero.
 - every number carries a source/version stamp.
 
-### Wiring to the real API (follow-up)
+### Regenerating the dataset
 
-Swap the static modules in `src/data/` (`targets.ts`, `reference.ts`) and the deterministic
-generators in `src/lib/` for `fetch` calls to the FastAPI endpoints under
-`src/3_DE_analysis/api/` (run the API and hit `/docs` for the live OpenAPI schema). The UI reads
-everything through the logic/selector layer, so only the data layer needs to change.
+```bash
+# from the repo root
+pip install pandas numpy pyyaml
+python3 frontend/webserver/scripts/export_real_data.py
+```
+
+Writes `src/data/generated/real-dataset.json`, which `src/data/dataset.ts` imports directly.
+
+### Wiring to the live API (follow-up)
+
+`src/data/dataset.ts` is the only seam: swap its static JSON import for `fetch` calls to the
+FastAPI endpoints under `src/3_DE_analysis/api/` (run the API and hit `/docs` for the live
+OpenAPI schema). The UI reads everything through the logic/selector layer in `src/lib/`, so
+only the data layer needs to change. The figure atlas would separately need its synthetic
+generators (`src/lib/drawFigure.ts`) replaced with the real notebook outputs.
 
 ## Develop
 

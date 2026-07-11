@@ -1,7 +1,6 @@
+import { TARGETS } from "../data/dataset";
 import { DECISION_META, GRADE, READINESS } from "../data/reference";
-import { TARGETS } from "../data/targets";
-import type { Target } from "../data/types";
-import { composite, consensus } from "../lib/logic";
+import { composite, consensus, fmtFdr, subScores } from "../lib/logic";
 import { useStore } from "../store/store";
 
 interface Cell {
@@ -23,48 +22,47 @@ export default function Compare() {
   const G = GRADE;
 
   const slGenes = state.shortlist.filter((g) => all.find((x) => x.gene === g));
-  const compareTargets = slGenes.slice(0, 5).map((g) => all.find((x) => x.gene === g)!) as Target[];
+  const compareTargets = slGenes.slice(0, 5).map((g) => all.find((x) => x.gene === g)!);
 
   const cmp = compareTargets.map((x) => {
-    const Rr = R[x.call];
-    const Gg = G[x.grade];
+    const call = x.readiness?.call;
+    const Rr = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+    const Gg = x.grade ? G[x.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
     const cons2 = consensus(votesFor(x.gene));
     const cm2 = DECISION_META[cons2.status];
-    const loeuf = parseFloat((x.pop.find((p) => p[0].includes("LOEUF")) || ([] as unknown as [string, string]))[1]);
-    const topC = x.concepts.find((c) => c[2] != null) || ([] as unknown as [string, string, number]);
     return {
       x,
       Rr,
       Gg,
       cm2,
       comp: composite(x, state.weights),
-      effNum: parseFloat(x.effect),
-      fdrNum: parseFloat(x.fdr),
-      loeuf,
-      robust: x.robustness,
-      safe: x.safety,
-      topConcept: topC[1] || "—",
-      fdr: x.fdr,
+      effNum: x.effect,
+      fdrNum: x.fdr,
+      loeuf: x.gnomad.loeuf,
+      robust: x.crossDonorCorrelationMean != null ? Math.round(x.crossDonorCorrelationMean * 100) : null,
+      safe: subScores(x).safety,
+      topConcept: x.module ? `${x.module.id} · ${x.module.name.replace(/_/g, " ")}` : "no assigned module",
+      fdr: fmtFdr(x.fdr),
     };
   });
 
   type Spec = {
     label: string;
     kind: "num" | "fdr" | "badge" | "text";
-    get: (c: (typeof cmp)[number]) => number | string | { label: string; color: string; bg: string; dot?: string };
+    get: (c: (typeof cmp)[number]) => number | null | string | { label: string; color: string; bg: string; dot?: string };
     dir?: "hi" | "lo";
     fmt?: (v: number) => string;
   };
   const cSpecs: Spec[] = [
     { label: "Composite priority", kind: "num", get: (c) => c.comp, dir: "hi" },
     { label: "Readiness call", kind: "badge", get: (c) => ({ label: c.Rr.label, color: c.Rr.color, bg: c.Rr.bg }) },
-    { label: "Evidence grade", kind: "badge", get: (c) => ({ label: c.x.grade, color: c.Gg.color, bg: c.Gg.bg }) },
+    { label: "Evidence grade", kind: "badge", get: (c) => ({ label: c.x.grade ?? "—", color: c.Gg.color, bg: c.Gg.bg }) },
     { label: "|log2 fold-change|", kind: "num", get: (c) => c.effNum, dir: "hi", fmt: (v) => v.toFixed(2) },
     { label: "FDR (BH)", kind: "fdr", get: (c) => c.fdr },
-    { label: "Robustness", kind: "num", get: (c) => c.robust, dir: "hi", fmt: (v) => v + "%" },
-    { label: "Safety window", kind: "num", get: (c) => c.safe, dir: "hi", fmt: (v) => v + " / 100" },
-    { label: "gnomAD LOEUF", kind: "num", get: (c) => c.loeuf, dir: "lo", fmt: (v) => (isNaN(v) ? "unknown" : v.toFixed(2)) },
-    { label: "Top concept", kind: "text", get: (c) => c.topConcept },
+    { label: "Cross-donor correlation", kind: "num", get: (c) => c.robust, dir: "hi", fmt: (v) => v + "%" },
+    { label: "Safety sub-score", kind: "num", get: (c) => c.safe, dir: "hi", fmt: (v) => v + " / 100" },
+    { label: "gnomAD LOEUF", kind: "num", get: (c) => c.loeuf, dir: "lo", fmt: (v) => v.toFixed(3) },
+    { label: "Concept module", kind: "text", get: (c) => c.topConcept },
     { label: "Review consensus", kind: "badge", get: (c) => ({ label: c.cm2.label, color: c.cm2.color, bg: c.cm2.bg, dot: c.cm2.dot }) },
   ];
   const cBest = cSpecs.map((s) => {
@@ -74,7 +72,7 @@ export default function Compare() {
       return s.dir === "hi" ? Math.max.apply(null, vs) : Math.min.apply(null, vs);
     }
     if (s.kind === "fdr") {
-      const vs = cmp.map((c) => c.fdrNum).filter((v) => !isNaN(v));
+      const vs = cmp.map((c) => c.fdrNum).filter((v): v is number => v != null && !isNaN(v));
       return vs.length ? Math.min.apply(null, vs) : null;
     }
     return null;
