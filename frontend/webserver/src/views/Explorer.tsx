@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { TARGETS } from "../data/dataset";
 import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
@@ -5,9 +6,27 @@ import { consensus, fmtEffect, rankedTargets } from "../lib/logic";
 import { useStore } from "../store/store";
 
 export default function Explorer() {
-  const { state, setState, setWeight, applyPreset, inShortlist, toggleShortlist, clearShortlist, votesFor } =
-    useStore();
+  const { state, setState, applyPreset, inShortlist, toggleShortlist, clearShortlist, votesFor } = useStore();
   const S = state;
+
+  // 660+ real targets means a full re-rank/re-render per slider tick is
+  // expensive — coalesce rapid drag events to one update per animation
+  // frame instead of committing every native "input" event.
+  const pendingWeights = useRef<Record<string, number>>({});
+  const rafId = useRef<number | null>(null);
+  const flushWeights = useCallback(() => {
+    rafId.current = null;
+    const pending = pendingWeights.current;
+    pendingWeights.current = {};
+    setState((s) => ({ weights: { ...s.weights, ...pending }, weightPreset: "Custom" }));
+  }, [setState]);
+  const setWeight = useCallback(
+    (k: string, v: number) => {
+      pendingWeights.current[k] = v;
+      if (rafId.current == null) rafId.current = requestAnimationFrame(flushWeights);
+    },
+    [flushWeights],
+  );
   const all = TARGETS;
   const R = READINESS;
   const G = GRADE;

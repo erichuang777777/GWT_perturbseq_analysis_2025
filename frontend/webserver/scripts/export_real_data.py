@@ -7,10 +7,12 @@ value that isn't backed by one of these files:
 
   - sources/target_tool_cache/<run-id>/target_cards.csv
       Real per-target-per-condition statistics from the genome-scale CD4
-      Perturb-seq screen (effect size, FDR, DE gene counts, grade, ...).
+      Perturb-seq screen (effect size, FDR, DE gene counts, grade, ...) —
+      11,526 genes, 33,983 gene x condition rows.
   - src/3_DE_analysis/core/readiness.py (compute_readiness)
       The repo's own deterministic readiness engine — run as-is, not
-      reimplemented. Produces readiness_call / stage / reasons / next step.
+      reimplemented, on the FULL card set. Produces readiness_call / stage /
+      reasons / next step for every gene x condition row.
   - src/3_DE_analysis/individual_concept_profile.py (load_concept_modules)
       The real M01-M20 immune concept module definitions (seed gene lists).
   - src/3_DE_analysis/concept_annotation.py (annotate_targets)
@@ -18,15 +20,25 @@ value that isn't backed by one of these files:
   - sources/target_tool_cache/_evidence/<GENE>.json
       Real, already-fetched Open Targets / ClinicalTrials.gov / PubMed
       snapshots (tractability, disease associations, safety liabilities,
-      clinical trials, literature) — the *only* genes this export selects
-      are the ones this cache actually covers (21 genes), so the target
-      list itself is not an arbitrary curation.
+      clinical trials, literature) — only fetched for 21 genes. Every target
+      in the portal gets real statistics + a real readiness call regardless;
+      this deeper external evidence is populated only for the genes this
+      cache actually covers, and left empty (not fabricated) for the rest.
   - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics.
+      Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
+
+Target selection: every gene whose best-condition statistical_evidence_grade
+is >= 3 (B or better), UNION every gene whose primary-condition readiness_call
+is "advance" (empirically a subset of the grade>=3 set here: 302 advance vs
+660 grade>=3 genes) — not an arbitrary curation, a disclosed statistical
+threshold applied to the full real screen.
 
 Anything not present in these sources is emitted as JSON `null` (never a
 fabricated 0 or placeholder), matching this project's own "unknown != 0"
-discipline (see docs/architecture_refactor_plan.md, core/readiness.py).
+discipline (see docs/architecture_refactor_plan.md, core/readiness.py). Gene
+full names are standard HGNC nomenclature for the 21 evidence-cache genes
+(verified by hand); every other gene displays its symbol as its name rather
+than a guessed/fabricated full name.
 
 Usage (from repo root):
     pip install pandas numpy pyyaml
@@ -118,12 +130,10 @@ def main() -> None:
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
     cards = pd.read_csv(CARDS_CSV)
+    print(f"Full screen: {len(cards)} gene x condition rows, {cards['target'].nunique()} unique genes", file=sys.stderr)
 
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
-    print(f"Evidence-cache genes ({len(evidence_genes)}): {evidence_genes}", file=sys.stderr)
-
-    gene_cards = cards[cards["target"].isin(evidence_genes)].copy()
-    print(f"target_cards rows for these genes: {len(gene_cards)}", file=sys.stderr)
+    print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
 
     overlays = load_overlays(GENE_LISTS_DIR)
     essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
@@ -132,18 +142,18 @@ def main() -> None:
     def evidence_lookup(gene: str):
         return load_evidence(gene)
 
-    print("Running the repo's real readiness engine (core.readiness.compute_readiness)...", file=sys.stderr)
+    print("Running the repo's real readiness engine (core.readiness.compute_readiness) on the full screen...", file=sys.stderr)
     readiness = compute_readiness(
-        gene_cards,
+        cards,
         overlays=overlays,
         essentials=essentials,
         broad_effect_genes=broad_effect,
         evidence_lookup=evidence_lookup,
     )
 
-    print("Running real concept-module annotation (concept_annotation.annotate_targets)...", file=sys.stderr)
+    print("Running real concept-module annotation (concept_annotation.annotate_targets) on the full screen...", file=sys.stderr)
     modules = load_concept_modules()
-    annotated = annotate_targets(gene_cards, modules=modules)
+    annotated = annotate_targets(cards, modules=modules)
 
     gnomad = pd.read_csv(GNOMAD_CSV) if GNOMAD_CSV.exists() else pd.DataFrame(columns=["ensembl_id", "gene_symbol", "loeuf", "pli"])
     gnomad_by_gene = {r["gene_symbol"]: r for _, r in gnomad.iterrows()}
@@ -153,25 +163,44 @@ def main() -> None:
         for g in m["seed_genes"]:
             module_by_gene.setdefault(g, []).append(m)
 
-    targets_out = []
-    for gene in evidence_genes:
-        g_cards = gene_cards[gene_cards["target"] == gene]
-        if g_cards.empty:
-            print(f"  SKIP {gene}: no target_cards rows", file=sys.stderr)
+    # Primary condition per gene = highest statistical_evidence_grade, tie-broken by lowest fdr_min.
+    cards = cards.assign(
+        _grade=pd.to_numeric(cards["statistical_evidence_grade"], errors="coerce").fillna(0),
+        _fdr=pd.to_numeric(cards["fdr_min"], errors="coerce").fillna(1.0),
+    )
+    primary_rows = cards.sort_values(["_grade", "_fdr"], ascending=[False, True]).groupby("target", as_index=False).head(1)
+    primary_by_gene = {r["target"]: r for _, r in primary_rows.iterrows()}
+
+    readiness_indexed = readiness.set_index(["target", "condition"])
+    grade_max_by_gene = cards.groupby("target")["_grade"].max()
+
+    def primary_call(gene: str, primary_row: pd.Series):
+        key = (gene, primary_row["condition"])
+        if key not in readiness_indexed.index:
+            return None
+        return readiness_indexed.loc[key]
+
+    # Selection: grade>=3 anywhere for that gene, UNION primary-condition readiness_call == advance.
+    selected_genes = set()
+    for gene, prow in primary_by_gene.items():
+        if grade_max_by_gene.get(gene, 0) >= 3:
+            selected_genes.add(gene)
             continue
+        r = primary_call(gene, prow)
+        if r is not None and r["readiness_call"] == "advance":
+            selected_genes.add(gene)
+    selected_genes = sorted(selected_genes)
+    print(f"Selected {len(selected_genes)} genes (grade>=3 OR primary-condition readiness_call==advance)", file=sys.stderr)
+
+    targets_out = []
+    for gene in selected_genes:
+        g_cards = cards[cards["target"] == gene]
         g_readiness = readiness[readiness["target"] == gene]
         g_annot = annotated[annotated["target"] == gene]
 
-        # Primary condition = highest statistical_evidence_grade, tie-broken by lowest fdr_min.
-        g_cards_sorted = g_cards.assign(
-            _grade=pd.to_numeric(g_cards["statistical_evidence_grade"], errors="coerce").fillna(0),
-            _fdr=pd.to_numeric(g_cards["fdr_min"], errors="coerce").fillna(1.0),
-        ).sort_values(["_grade", "_fdr"], ascending=[False, True])
-        primary_row = g_cards_sorted.iloc[0]
+        primary_row = primary_by_gene[gene]
         primary_condition = primary_row["condition"]
-
-        r_row_df = g_readiness[g_readiness["condition"] == primary_condition]
-        r_row = r_row_df.iloc[0] if not r_row_df.empty else None
+        r_row = primary_call(gene, primary_row)
 
         conditions_out = []
         for _, crow in g_cards.iterrows():
