@@ -85,7 +85,7 @@ export function PopulationGeneticsPanel({ t }: { t: RealTarget }) {
         </div>
       </div>
       <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "13px", paddingTop: "12px", borderTop: "1px dashed #e2e5ea", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span>src: gnomAD v4</span>
+        <span>src: gnomAD v2.1.1</span>
         <span className="navlink" onClick={() => navTo("popgen", t.gene)} style={{ color: "#1a5fb4" }}>Open lookup →</span>
       </div>
     </div>

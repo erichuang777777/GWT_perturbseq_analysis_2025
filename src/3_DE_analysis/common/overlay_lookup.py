@@ -36,12 +36,13 @@ MODALITY_ANTIBODY_SURFACE = "antibody (surface)"
 MODALITY_ANTIBODY_BIOLOGIC = "antibody / biologic"
 MODALITY_SMALL_MOLECULE = "small molecule"
 
-# gnomAD v4's "constrained" cutoff: a gene with LOEUF below this bar is flagged
-# loss-of-function intolerant. Set to 0.6 to match gnomAD v4's current
-# constrained threshold, consistent with the v4 LOEUF/pLI values now in the
-# seed overlay -- broader than the gnomAD v2.1.1-era 0.35 this originally used
-# (per ENHANCEMENT_連結器加強建議.md §2), so more genes in the constrained band
-# are flagged. This is the ONLY threshold used by gnomad_flag_from_constraint;
+# Loss-of-function "constrained-ish" cutoff applied to the real, full-genome
+# gnomAD v2.1.1 LOEUF distribution now in the seed overlay: a gene with LOEUF
+# below this bar is flagged loss-of-function intolerant. 0.6 is a deliberately
+# inclusive soft cutoff -- broader than gnomAD's own strict bottom-decile
+# ~0.35 line (per ENHANCEMENT_連結器加強建議.md §2) -- so more genes in the
+# constrained band are flagged; it is NOT gnomAD's own published threshold for
+# any version. This is the ONLY threshold used by gnomad_flag_from_constraint;
 # it does not vary by gene.
 LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.6
 

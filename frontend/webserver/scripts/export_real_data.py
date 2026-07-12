@@ -25,7 +25,9 @@ value that isn't backed by one of these files:
       this deeper external evidence is populated only for the genes this
       cache actually covers, and left empty (not fabricated) for the rest.
   - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
+      Real gnomAD v2.1.1 LOEUF / pLI constraint metrics, full-genome
+      (19,155 genes; see docs/data_governance_checklist.md §1 for why
+      v2.1.1 was chosen over v4 -- v2.1.1 is complete across chrX).
 
 Target selection: every gene whose best-condition statistical_evidence_grade
 is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
@@ -422,7 +424,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v4 constraint",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v2.1.1 constraint (full-genome)",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules
