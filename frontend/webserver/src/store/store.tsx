@@ -19,7 +19,8 @@ export type View =
   | "clinical"
   | "compare"
   | "figures"
-  | "apidocs";
+  | "apidocs"
+  | "provenance";
 
 export interface AppState {
   view: View;

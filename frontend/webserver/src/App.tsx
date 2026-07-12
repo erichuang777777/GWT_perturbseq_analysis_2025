@@ -8,6 +8,7 @@ import Compare from "./views/Compare";
 import Dossier from "./views/Dossier";
 import Explorer from "./views/Explorer";
 import Home from "./views/Home";
+import Provenance from "./views/Provenance";
 
 // Figure atlas pulls in Plotly (~4 MB) — load it only when the atlas is opened.
 const Figures = lazy(() => import("./views/Figures"));
@@ -39,6 +40,8 @@ function Router() {
       );
     case "apidocs":
       return <ApiDocs />;
+    case "provenance":
+      return <Provenance />;
     default:
       return <Home />;
   }
