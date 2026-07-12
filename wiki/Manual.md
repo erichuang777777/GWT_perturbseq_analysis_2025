@@ -258,6 +258,8 @@ Open Targets `39657122` · ChEMBL 2023 `37933841` · CELLxGENE Discover/Census `
 | `server_modules.md` | **Server 模組參考**:13 個 API router 的用途/端點/輸入輸出、載入容錯、概念層 M01–M20,集中一頁 |
 | `provenance_registry.md` / `.csv` | **Provenance 登錄表**:資料來源 × 演算法 × 參考文獻,對齊同一組固定欄位(機器可讀 CSV;79 列) |
 | `frontend_disclosure_spec.md` | **前端揭露規格**:哪些說明要在 portal 揭露、放哪、來源檔、靜態匯出怎麼供給、外部資料 attribution、待補文件清單 |
+| `data_use_terms.md` | **資料使用與條款**(對外 portal 草稿):用途限定、授權(MIT + 外部來源)、引用、attribution、無個資、無擔保 |
+| `bulk_download_schema.md` | **Bulk download 欄位說明**:`real-dataset.json` / `disclosure.json` / `provenance_registry.csv` 逐欄結構與「null=unknown」規則 |
 | `researcher_guide/` | **研究人員導覽**(單頁網站):判讀標靶卡片/就緒度/校準、API 入口、圖表路徑、建議閱讀順序(科普站的科研人員對應版) |
 | `IMPLEMENTATION_PLAN.md` | **活的實作計劃**(每個 Wave 完成/驗證表,權威狀態) |
 | `DRUG_DISCOVERY_TOOL_DEVELOPMENT_PLAN.md` | 策略層:為什麼做、功能面 |
