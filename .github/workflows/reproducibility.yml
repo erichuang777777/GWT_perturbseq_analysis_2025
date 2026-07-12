@@ -114,7 +114,23 @@ jobs:
         shell: Rscript {0}
         run: |
           # Pin exact library versions to match the frozen environment.md.
-          install.packages("remotes", repos = "https://cloud.r-project.org")
+          #
+          # Install from the RSPM/Posit Package Manager binary mirror (already
+          # configured on PATH by use-public-rspm: true above), NOT the plain
+          # https://cloud.r-project.org source mirror. The full `tidyverse`
+          # meta-package's own Imports pull in a much larger dependency tree
+          # (googledrive, googlesheets4, httr, ragg, reprex, rvest, ...) than
+          # the 4 packages this bundle's R scripts actually call, and several
+          # of those transitive deps fail to build from source in this runner
+          # image (missing system libs) even though the packages actually used
+          # -- dplyr/readr/tibble/jsonlite -- install fine on their own.
+          # RSPM serves prebuilt Ubuntu-noble binaries for the whole tree,
+          # sidestepping the source-compile failure entirely; this matches how
+          # environment.md's own "Recreate" recipe installs R (conda-forge
+          # binaries), just via a different binary channel.
+          rspm <- Sys.getenv("RSPM")
+          options(repos = c(RSPM = rspm), pkgType = "binary")
+          install.packages("remotes", repos = rspm)
           pins <- c(
             tibble    = Sys.getenv("R_TIBBLE_VERSION"),
             readr     = Sys.getenv("R_READR_VERSION"),
@@ -125,12 +141,23 @@ jobs:
           for (pkg in names(pins)) {
             message(sprintf("installing %s == %s", pkg, pins[[pkg]]))
             remotes::install_version(pkg, version = pins[[pkg]],
-                                     repos = "https://cloud.r-project.org",
+                                     repos = rspm,
                                      upgrade = "never")
+          }
+          # install.packages()/install_version() report a failed install with
+          # a printed ERROR, not an R condition that halts the script -- so a
+          # broken install here would otherwise surface only later, as a
+          # confusing "no package called X" from inside the stage scripts.
+          # Fail loudly, right here, instead.
+          missing <- names(pins)[!vapply(names(pins), requireNamespace,
+                                          logical(1), quietly = TRUE)]
+          if (length(missing) > 0) {
+            stop(sprintf("R package install failed for: %s (see ERROR lines above)",
+                          paste(missing, collapse = ", ")))
           }
           cat("---- resolved R toolchain ----\n")
           cat("R", as.character(getRversion()), "\n")
-          for (pkg in c("dplyr","readr","tibble","jsonlite"))
+          for (pkg in c("dplyr","readr","tibble","jsonlite","tidyverse"))
             cat(pkg, as.character(packageVersion(pkg)), "\n")
 
       # -------------------- The guard --------------------
