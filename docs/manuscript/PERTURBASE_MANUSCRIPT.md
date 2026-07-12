@@ -116,7 +116,7 @@ Beyond the screen, the platform attaches evidence the dataset does not contain: 
 
 ## 4. Discussion
 
-The load-bearing result is the module-independent benchmark: the ranking recovers 13 canonical CD4 regulators at AUROC 0.85 against ground truth that is independent of the concept modules used to build the ranking, and it does so while deprioritising 237 essential-dropout and 11 near-zero-baseline artefacts through the red-flag override. A named, fundable consequence follows directly — TYK2, a top signed-DE hit, is the target of the marketed drug deucravacitinib and carries a strong rheumatoid-arthritis genetic association, and the platform advances it on evidence a reviewer can trace. We foreground these because they are the claims that justify the tool; the curation counts and mechanism detail below are the machinery that makes them defensible.
+The load-bearing result is the module-independent benchmark: the ranking recovers 13 canonical CD4 regulators at AUROC 0.85 against ground truth that is independent of the concept modules used to build the ranking, and it does so while rejecting 237 essential-dropout artefacts at the ≥200-cell curation gate (with gnomAD LOEUF as the diagnostic) and 11 near-zero-baseline artefacts through the baseline-expression correction. A named, fundable consequence follows directly — TYK2, a top signed-DE hit, is the target of the marketed drug deucravacitinib and carries a strong rheumatoid-arthritis genetic association, and the platform advances it on evidence a reviewer can trace. We foreground these because they are the claims that justify the tool; the curation counts and mechanism detail below are the machinery that makes them defensible.
 
 The contribution of Perturbase is not a new measurement but a new *discipline* imposed on an existing one. A genome-scale primary-cell Perturb-seq screen is expensive and information-rich, and the temptation is to rank its targets by the most visible statistic — downstream DE breadth — and hand the top of that list to a wet lab. Our results show why that is unsafe: naive breadth-ranking overlaps the robust ranking in only 13 of 50 targets, 237 top candidates are essential-gene artefacts, and 11 of 96 context-specific hits vanish under a baseline-expression correction. Each of these failure modes is invisible in the raw DE table and is caught only by an explicit gate.
 
@@ -187,3 +187,42 @@ The figure deck (33 main-display figures) was assessed by a handling-editor narr
 Code: `https://github.com/erichuang777777/GWT_perturbseq_analysis_2025` (`src/3_DE_analysis/`); environment `environment.yaml` (Python 3.11); tests `python -m pytest tests/ -q`. Primary data: CZI Virtual Cells Platform; SRA `SRP643211` / GEO `GSE314342`. Source screen: Zhu R., Dann E. et al. (2025), bioRxiv doi:10.64898/2025.12.23.696273. Determinism: identical inputs + identical four-layer versions → identical outputs; each `dataset_id` is an immutable snapshot.
 
 *This manuscript describes a research-use, hypothesis-generating target-prioritisation toolkit built on published data. It is not clinical software and makes no diagnostic, prescribing, or treatment claim.*
+
+---
+
+## References (literature-appraisal set, verified)
+
+The following primary sources were retrieved and DOI-verified during the literature appraisal (`LITERATURE_APPRAISAL.md`). They anchor the manuscript's claims to external evidence, supportive and non-supportive.
+
+**Genetic evidence for targets**
+- Nelson M.R., et al. (2015) The support of human genetic evidence for approved drug indications. *Nat Genet.* doi:10.1038/ng.3314
+- King E.A., Davis J.W., Degner J.F. (2019) Are drug targets with genetic support twice as likely to be approved? *PLoS Genet.* doi:10.1371/journal.pgen.1008489
+- Minikel E.V., et al. (2024) Refining the impact of genetic evidence on clinical success. *Nature.* doi:10.1038/s41586-024-07316-0
+- Buniello A., et al. (2024) Open Targets Platform. *Nucleic Acids Res.* doi:10.1093/nar/gkae1128
+
+**Constraint, essentiality, and CRISPR-screen calibration**
+- Karczewski K.J., et al. (2020) The mutational constraint spectrum (gnomAD). *Nature.* doi:10.1038/s41586-020-2308-7
+- Tsherniak A., et al. (2017) Defining a Cancer Dependency Map. *Cell.* doi:10.1016/j.cell.2017.06.010
+- Dempster J.M., et al. (2021) Chronos: a cell population dynamics model of CRISPR experiments. *Genome Biol.* doi:10.1186/s13059-021-02540-7
+- Barry T., et al. (2021) SCEPTRE improves calibration and sensitivity in single-cell CRISPR screen analysis. *Genome Biol.* doi:10.1186/s13059-021-02545-2
+- Barry T., et al. (2024) Robust differential expression testing for single-cell CRISPR screens at low MOI. *Genome Biol.* doi:10.1186/s13059-024-03254-2
+- Morris J.A., et al. (2023) Discovery of target genes and pathways at GWAS loci by pooled single-cell CRISPR screens. *Science.* doi:10.1126/science.adh7699
+
+**Single-cell DE readout and perturbation modelling**
+- Squair J.W., et al. (2021) Confronting false discoveries in single-cell differential expression. *Nat Commun.* doi:10.1038/s41467-021-25960-2
+- Dong M., et al. (2023) Causal identification of single-cell experimental perturbation effects with CINEMA-OT. *Nat Methods.* doi:10.1038/s41592-023-02040-5
+- Roohani Y., et al. (2023) Predicting transcriptional outcomes of novel multigene perturbations with GEARS. *Nat Biotechnol.* doi:10.1038/s41587-023-01905-6
+
+**Primary human T-cell functional genomics**
+- Shifrut E., et al. (2018) Genome-wide CRISPR screens in primary human T cells. *Cell.* doi:10.1016/j.cell.2018.10.024
+- Schmidt R., et al. (2022) CRISPR activation and interference screens decode stimulation responses in primary human T cells. *Science.* doi:10.1126/science.abj4008
+- Freimer J.W., et al. (2022) Enhanced T cell effector activity by targeting the Mediator kinase module. *Science.* doi:10.1126/science.abn5647
+- Carnevale J., et al. (2022) RASA2 ablation in T cells boosts antigen sensitivity and long-term function. *Nature.* doi:10.1038/s41586-022-05126-w
+
+**TYK2 / deucravacitinib worked example**
+- Wrobleski S.T., et al. (2019) Highly selective inhibition of tyrosine kinase 2 (TYK2). *J Med Chem.* doi:10.1021/acs.jmedchem.9b00444
+- Armstrong A.W., et al. (2023) Deucravacitinib versus placebo and apremilast in plaque psoriasis (POETYK PSO-1). *J Am Acad Dermatol.* doi:10.1016/j.jaad.2022.07.002
+- Strober B., et al. (2022) Deucravacitinib versus placebo and apremilast (POETYK PSO-2). *J Am Acad Dermatol.* doi:10.1016/j.jaad.2022.08.061
+- Morand E.F., et al. (2022) Deucravacitinib in systemic lupus erythematosus (phase 2). *Arthritis Rheumatol.* doi:10.1002/art.42391
+
+*The full methods-and-domain reference list (DESeq2, Benjamini–Hochberg, Perturb-seq foundational methods, external databases) is maintained in `docs/technical_methods.md §8`; this section adds the appraisal's verified evidence-appraisal sources.*
