@@ -137,6 +137,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "upload_ui": "api.routers.upload_ui",
     "mechanism": "api.routers.mechanism",
     "individual_concept": "api.routers.individual_concept",
+    "signed_module_effect": "api.routers.signed_module_effect",
     "disease_drug": "api.routers.disease_drug",
     "meta": "api.routers.meta",
 }

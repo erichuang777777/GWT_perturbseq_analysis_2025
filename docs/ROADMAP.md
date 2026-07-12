@@ -20,6 +20,30 @@ honest forward pointer. Paired with `docs/KNOWN_LIMITATIONS.md`.
 - **Refresh `data_dictionary.md` code-path references** (`build_target_cards.py::build_cards_frame`
   / `readiness_engine.py` → `core/cards.py` / `core/readiness.py`) — OF-7 residual.
 
+## Better use of the paper's own in-repo data (identified in the coverage audit)
+
+Higher-value than external DBs: data the paper already ships in-repo but the tool
+underused.
+
+- ✅ **Signed directional module-effect scoring** (Tier-1 ①) — **shipped**:
+  `signed_module_effect.py` + `GET /api/signed_module_effect/{gene}`. Uses the in-repo
+  `full_signed_DE` table (per-downstream-gene `log_fc`) to answer "does knocking this
+  target down activate or repress each concept module's program?" — recovering master
+  regulators with the correct sign (GATA3→Th2, TBX21→Th1, FOXP3→Treg as activators).
+  Descriptive only, sparse (`unknown != 0`), guarded by `tests/test_signed_module_effect.py`,
+  freeze-pinned. Does NOT reproduce the paper's network inference (see KNOWN_LIMITATIONS).
+- **Surface the paper's own regulator/signature tables** (Tier-1 ②, not yet built):
+  `Th2_Th1_polarization_signature_DE`, `CD4T_aging_signature_DE`,
+  `cluster_autoimmune_enrichment`, and the paper's `*_regulator_coefficients` tables are
+  in `metadata/suppl_tables/` but not referenced by `core/`/`api/`. Surfacing them as
+  dossier overlays would present the paper's *own* nominated Th1/Th2/aging/autoimmune
+  regulators directly.
+- **Full gnomAD constraint** (Tier-2, biggest external win): replace the 15-gene seed
+  (0.13% coverage) with the full-genome public gnomAD LOEUF/pLI snapshot.
+- **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's
+  autoimmune-GWAS emphasis): expand disease association beyond the current 13 curated
+  indications / 17% coverage.
+
 ## Medium-term (evidence & modeling)
 
 - **Real safety + membrane/tractability overlay** (§1.12): wire CellxGene safety

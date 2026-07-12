@@ -20,11 +20,20 @@ the paper's scientific claims.
   regulators (Th1/Th2 polarization, age-related phenotypes, autoimmune-risk pathways)
   from the raw single-cell perturbation signatures. That modeling is **not reimplemented
   here.** What looks like "pathways" in this tool is either (a) static, hand-curated
-  concept-module membership (`concept_annotation.py`, M01–M20, **binary overlap** — signed
-  module scoring was descoped because the *aggregate* DE table carries only up/down counts,
-  no per-gene direction), or (b) **external** Reactome/STRING pathway graphs
+  concept-module membership (`concept_annotation.py`, M01–M20, **binary overlap** — the
+  *aggregate* DE table that the cards are built from carries only up/down counts, no
+  per-gene direction), or (b) **external** Reactome/STRING pathway graphs
   (`mechanism_graph`) annotated with this platform's evidence — not pathways derived from
   this screen.
+  - **Partial exception (`signed_module_effect.py`, `GET /api/signed_module_effect/{gene}`):**
+    a *directional* readout — "does knocking this target down activate or repress each
+    concept module's program?" — IS now computed, but from a *different* in-repo table
+    (`full_signed_DE`, which carries per-downstream-gene `log_fc`), not from the cards.
+    It recovers known master regulators with the correct sign (GATA3→Th2, TBX21→Th1,
+    FOXP3→Treg all score as activators). It is still **descriptive only** (never a
+    readiness input), **sparse** (only ~3,739 targets perturb any module marker
+    measurably; the rest are `unknown`, not 0), and is **not** a reproduction of the
+    paper's regulatory-network inference — it is a directional overlay on the same screen.
 - **It does not find genes beyond the paper's screen.** The target cards reprocess the
   *same* 11,526-gene, 4-donor screen — the gene universe is identical to the paper's, so
   there are no "additional" genes to discover. The ML tracks that *attempted* predictive
