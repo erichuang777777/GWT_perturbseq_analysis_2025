@@ -50,7 +50,7 @@ Portal 讀 `public/` 三個檔就能揭露一切:`real-dataset.json`(資料)、`
 
 | 位置 | 內容 |
 |---|---|
-| `views/Provenance.tsx` | 揭露頁:渲染 `disclosure.json` + `provenance_registry.csv`(版本/覆蓋/登錄表/原則/限制/概念層/attribution)。Header + Footer 有入口 |
+| `views/Provenance.tsx` | 揭露頁:渲染 `disclosure.json` + `provenance_registry.csv`(版本/覆蓋/登錄表/原則/限制/概念層/attribution)**以及驗證階梯 L1–L5,含 Track D 表型匹配結果——方向性 null、magnitude 公平版 passes-with-confound,誠實標註**。Header + Footer 有入口 |
 | `views/Deck.tsx` | Overview:4 頁專案簡報(總覽/方法/成果/資訊圖表)。Header + Footer 有入口 |
 | `views/ApiDocs.tsx` | REST API 文件頁 |
 | `views/Home.tsx` | 兩張職業卡 + 旗艦圖 |
