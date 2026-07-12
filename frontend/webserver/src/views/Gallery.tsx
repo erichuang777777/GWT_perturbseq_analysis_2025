@@ -1,181 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  galleryAsset,
-  loadGallery,
-  type GalleryChart,
-  type GalleryData,
-  type GalleryStructure,
-} from "../data/gallery";
+import { galleryAsset, loadGallery, type GalleryChart, type GalleryData, type GalleryStructure } from "../data/gallery";
+import Chip from "../components/ui/Chip";
+import { InlineScreen } from "../components/ui/ScreenState";
+import FigureModal from "./gallery/FigureModal";
+import StructureModal from "./gallery/StructureModal";
+import { T, plddtColor, type Lang } from "./gallery/i18n";
 
 const ACCENT = "#5b3fb4";
-type Lang = "en" | "zh";
 type Tab = "figures" | "structures";
-
-const T = {
-  en: {
-    heading: "Figure & structure gallery",
-    sub: "Every rendered figure and predicted protein structure from this repo's pipeline, each stamped with the underlying data source. Descriptive reference material — it never feeds the readiness call.",
-    figures: "Figures",
-    structures: "Protein structures",
-    allFamilies: "All families",
-    source: "Data source",
-    close: "Close",
-    plddt: "Mean pLDDT",
-    length: "Length",
-    topology: "Topology",
-    tm: "TM segments",
-    residues: "aa",
-    noStruct: "No AlphaFold model available for this protein.",
-    openAF: "Open in AlphaFold DB",
-    downloadCif: "Download structure (.cif)",
-    topologyPlot: "Transmembrane topology (Protter)",
-    structNote: "Predicted model (AlphaFold). pLDDT is a per-residue confidence score, not an experimental measurement.",
-    count: (n: number, kind: string) => `${n} ${kind}`,
-  },
-  zh: {
-    heading: "圖表與結構圖庫",
-    sub: "本專案流程產生的每一張圖表與預測蛋白結構，皆標註其底層資料來源。此為描述性參考資料，不參與 readiness 判定。",
-    figures: "圖表",
-    structures: "蛋白結構",
-    allFamilies: "全部類別",
-    source: "資料來源",
-    close: "關閉",
-    plddt: "平均 pLDDT",
-    length: "長度",
-    topology: "拓撲",
-    tm: "跨膜區段",
-    residues: "個胺基酸",
-    noStruct: "此蛋白無 AlphaFold 預測模型。",
-    openAF: "在 AlphaFold DB 開啟",
-    downloadCif: "下載結構檔 (.cif)",
-    topologyPlot: "跨膜拓撲圖 (Protter)",
-    structNote: "AlphaFold 預測模型。pLDDT 為每殘基信心分數，非實驗量測值。",
-    count: (n: number, kind: string) => `${n} ${kind}`,
-  },
-};
-
-function plddtColor(v: number | null): string {
-  if (v == null) return "#9aa1ad";
-  if (v >= 90) return "#0d7d5a";
-  if (v >= 70) return "#3a7bd5";
-  if (v >= 50) return "#c68a1a";
-  return "#c0603a";
-}
-
-function FigureModal({ chart, lang, onClose }: { chart: GalleryChart; lang: Lang; onClose: () => void }) {
-  const t = T[lang];
-  const c = chart[lang];
-  return (
-    <Overlay onClose={onClose}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "10px", flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "12px", fontWeight: 600, color: ACCENT, background: "#efe9fb", padding: "2px 8px", borderRadius: "6px" }}>{chart.id}</span>
-          <h2 style={{ fontSize: "19px", fontWeight: 700, letterSpacing: "-.3px", margin: 0 }}>{c.title}</h2>
-        </div>
-        <div style={{ fontSize: "12px", color: "#8a92a0", marginTop: "-6px" }}>{chart.group} · {c.family}</div>
-        <img
-          src={galleryAsset(chart.img)}
-          alt={c.title}
-          style={{ width: "100%", maxHeight: "56vh", objectFit: "contain", background: "#fafafb", border: "1px solid #eceef2", borderRadius: "10px" }}
-        />
-        <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#3a414d", margin: 0 }}>{c.description}</p>
-        <p style={{ fontSize: "13.5px", lineHeight: 1.6, color: "#4a515e", margin: 0 }}>{c.data_explanation}</p>
-        <div style={{ fontSize: "12px", lineHeight: 1.55, color: "#7a818d", background: "#f7f8fa", border: "1px solid #eceef2", borderRadius: "8px", padding: "10px 12px" }}>
-          <strong style={{ color: "#5b6270" }}>{t.source}:</strong> {chart.raw_source}
-        </div>
-      </div>
-    </Overlay>
-  );
-}
-
-function StructureModal({ s, lang, onClose }: { s: GalleryStructure; lang: Lang; onClose: () => void }) {
-  const t = T[lang];
-  return (
-    <Overlay onClose={onClose}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "10px", flexWrap: "wrap" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "-.3px", margin: 0 }}>{s.gene}</h2>
-          <span style={{ fontSize: "13px", color: "#6b7280" }}>{s.protein_name}</span>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "11.5px", color: "#8a92a0" }}>{s.uniprot}</span>
-        </div>
-        <div style={{ display: "flex", gap: "22px", flexWrap: "wrap", fontSize: "13px" }}>
-          <Metric label={t.plddt} value={s.plddt != null ? s.plddt.toFixed(1) : "—"} color={plddtColor(s.plddt)} />
-          <Metric label={t.length} value={s.length != null ? `${s.length} ${t.residues}` : "—"} />
-          <Metric label={t.topology} value={s.topology_class || "—"} />
-          <Metric label={t.tm} value={s.n_tm != null ? String(s.n_tm) : "—"} />
-        </div>
-        {s.protter ? (
-          <div>
-            <div style={{ fontSize: "12px", color: "#8a92a0", marginBottom: "6px" }}>{t.topologyPlot}</div>
-            <img src={galleryAsset(s.protter)} alt={`${s.gene} topology`} style={{ width: "100%", maxHeight: "50vh", objectFit: "contain", background: "#fafafb", border: "1px solid #eceef2", borderRadius: "10px" }} />
-          </div>
-        ) : (
-          <div style={{ fontSize: "13px", color: "#8a92a0" }}>{t.noStruct}</div>
-        )}
-        <div style={{ fontSize: "12px", lineHeight: 1.55, color: "#7a818d" }}>{t.structNote}</div>
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          {s.has_alphafold && (
-            <a href={`https://alphafold.ebi.ac.uk/entry/${s.uniprot}`} target="_blank" rel="noreferrer" style={linkBtn}>{t.openAF} →</a>
-          )}
-          {s.cif && (
-            <a href={galleryAsset(s.cif)} download style={{ ...linkBtn, color: "#4a515e", background: "#f2f3f6" }}>{t.downloadCif}</a>
-          )}
-        </div>
-      </div>
-    </Overlay>
-  );
-}
-
-const linkBtn: React.CSSProperties = {
-  fontSize: "13px",
-  fontWeight: 600,
-  color: ACCENT,
-  background: "#efe9fb",
-  padding: "8px 14px",
-  borderRadius: "8px",
-  textDecoration: "none",
-};
-
-function Metric({ label, value, color }: { label: string; value: string; color?: string }) {
-  return (
-    <div>
-      <div style={{ fontSize: "11px", color: "#9aa1ad", marginBottom: "2px" }}>{label}</div>
-      <div style={{ fontSize: "15px", fontWeight: 700, color: color || "#1a1d24" }}>{value}</div>
-    </div>
-  );
-}
-
-function Overlay({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
-  return (
-    <div
-      onClick={onClose}
-      style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(20,22,28,.55)", backdropFilter: "blur(3px)", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "40px 20px", overflowY: "auto" }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{ position: "relative", width: "100%", maxWidth: "760px", background: "#fff", borderRadius: "16px", padding: "26px 28px 30px", boxShadow: "0 24px 60px -12px rgba(20,22,28,.4)" }}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          style={{ position: "absolute", top: "16px", right: "16px", width: "30px", height: "30px", border: "none", borderRadius: "8px", background: "#f2f3f6", color: "#5b6270", fontSize: "17px", cursor: "pointer", lineHeight: 1 }}
-        >
-          ×
-        </button>
-        {children}
-      </div>
-    </div>
-  );
-}
 
 export default function Gallery() {
   const [data, setData] = useState<GalleryData | null>(null);
@@ -209,10 +41,8 @@ export default function Gallery() {
     return family === "__all__" ? data.charts : data.charts.filter((c) => c.en.family === family);
   }, [data, family]);
 
-  if (status === "loading")
-    return <Centered>Loading gallery…</Centered>;
-  if (status === "error" || !data)
-    return <Centered>Couldn't load the gallery catalog.</Centered>;
+  if (status === "loading") return <InlineScreen>Loading gallery…</InlineScreen>;
+  if (status === "error" || !data) return <InlineScreen>Couldn't load the gallery catalog.</InlineScreen>;
 
   return (
     <main style={{ flex: 1, maxWidth: "1280px", width: "100%", margin: "0 auto", padding: "34px 28px 70px" }}>
@@ -253,9 +83,9 @@ export default function Gallery() {
       {tab === "figures" && (
         <>
           <div style={{ display: "flex", gap: "7px", flexWrap: "wrap", marginBottom: "20px" }}>
-            <Chip label={t.allFamilies} active={family === "__all__"} onClick={() => setFamily("__all__")} />
+            <Chip label={t.allFamilies} active={family === "__all__"} onClick={() => setFamily("__all__")} accent={ACCENT} />
             {families.map((f) => (
-              <Chip key={f.key} label={f.label} active={family === f.key} onClick={() => setFamily(f.key)} />
+              <Chip key={f.key} label={f.label} active={family === f.key} onClick={() => setFamily(f.key)} accent={ACCENT} />
             ))}
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "16px" }}>
@@ -318,25 +148,6 @@ export default function Gallery() {
 
       {openChart && <FigureModal chart={openChart} lang={lang} onClose={() => setOpenChart(null)} />}
       {openStruct && <StructureModal s={openStruct} lang={lang} onClose={() => setOpenStruct(null)} />}
-    </main>
-  );
-}
-
-function Chip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{ padding: "6px 13px", border: `1px solid ${active ? ACCENT : "#d6dbe3"}`, borderRadius: "20px", cursor: "pointer", fontSize: "12.5px", fontWeight: 500, background: active ? "#efe9fb" : "#fff", color: active ? ACCENT : "#5b6270" }}
-    >
-      {label}
-    </button>
-  );
-}
-
-function Centered({ children }: { children: React.ReactNode }) {
-  return (
-    <main style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#9aa1ad", fontSize: "14px", minHeight: "50vh" }}>
-      {children}
     </main>
   );
 }

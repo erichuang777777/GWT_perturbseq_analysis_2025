@@ -25,7 +25,9 @@ value that isn't backed by one of these files:
       this deeper external evidence is populated only for the genes this
       cache actually covers, and left empty (not fabricated) for the rest.
   - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics, genome-wide (~19,155 genes).
+      Real gnomAD v2.1.1 LOEUF / pLI constraint metrics, full-genome
+      (19,155 genes; see docs/data_governance_checklist.md §1 for why
+      v2.1.1 was chosen over v4 -- v2.1.1 is complete across chrX).
   - sources/target_tool_cache/_overlays/gtex_per_tissue.parquet
       Real GTEx off-context tissue-expression breadth (Blood/Spleen excluded).
       Combined with the gnomAD overlay above to populate readiness's
@@ -482,7 +484,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v4 constraint + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v2.1.1 constraint (full-genome) + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules

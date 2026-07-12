@@ -365,7 +365,7 @@ export default function Clinical() {
                 ))}
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.6, color: "#3a414d", background: "#f7f8fa", borderRadius: "10px", padding: "15px 17px" }}>{popTarget.interpretation}</div>
-              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4 constraint (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v2.1.1 constraint, full-genome (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
             </div>
           )}
           {!pt && pq.length > 0 && (
