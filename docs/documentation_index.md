@@ -26,6 +26,7 @@
 ### 1.3 前端規格與對外文件
 | 檔案 | 用途 | 現況 |
 |---|---|---|
+| `docs/FRONTEND_HANDOFF.md` | **前端交付清單(curated)**:portal 需要的最佳文件與資產,附「怎麼用/已做好/待做」 | ✅ |
 | `docs/frontend_disclosure_spec.md` | 交付前端的揭露規格(放哪、來源檔、缺口) | ✅ |
 | `docs/data_use_terms.md` | 對外資料使用與條款草稿 | ✅ |
 | `docs/bulk_download_schema.md` | 下載檔欄位說明(null=unknown) | ✅ |
