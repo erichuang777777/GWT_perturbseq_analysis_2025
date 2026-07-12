@@ -224,3 +224,7 @@ src/10_ml_perturbation_prediction/.venv_ml/
 # Keep the committed slide deck (overrides **/*.html above)
 !docs/slides/index.html
 !docs/slides/index.en.html
+
+# Keep committed flagship figures for the portal Home cards
+!frontend/webserver/public/flagship/
+!frontend/webserver/public/flagship/*.png
