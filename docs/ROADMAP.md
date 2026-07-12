@@ -38,9 +38,17 @@ underused.
   `coef_rank` 0-1 percentile, and the paper's own known/novel flag), keyed by gene, across
   polarization + aging signatures × context. Recovers the paper's own top calls (GATA3
   polarization rank 1.0 known; BCL6 a novel nomination). Descriptive only, `unknown != 0`,
-  guarded by `tests/test_paper_regulators.py`. **Still not surfaced** (lower priority): the
-  raw signature DE tables (`Th2_Th1_polarization_signature_DE`, `CD4T_aging_signature_DE`)
-  and the cluster-level `cluster_autoimmune_enrichment` (needs gene↔cluster explosion).
+  guarded by `tests/test_paper_regulators.py`.
+- ✅ **Surface the paper's autoimmune-cluster enrichment** (Tier-1, autoimmune axis) —
+  **shipped**: `autoimmune_clusters.py` + `GET /api/autoimmune_clusters/{gene}` explode the
+  paper's cluster-level `cluster_autoimmune_enrichment_results` (negative controls excluded)
+  so it's gene-queryable — "does this target sit in a perturbation cluster enriched for an
+  autoimmune disease, in which context, at what odds ratio?" Recovers textbook autoimmune
+  genes against textbook diseases (CTLA4 → Hashimoto's/RA/celiac/T1DM/SLE). Framed honestly
+  as **guilt-by-cluster-membership**, not a direct gene→disease association; descriptive
+  only, `unknown != 0`; guarded by `tests/test_autoimmune_clusters.py`. **Still not surfaced**
+  (lower priority): the raw signature DE tables (`Th2_Th1_polarization_signature_DE`,
+  `CD4T_aging_signature_DE`).
 - **Full gnomAD constraint** (Tier-2, biggest external win): replace the 15-gene seed
   (0.13% coverage) with the full-genome public gnomAD LOEUF/pLI snapshot.
 - **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's

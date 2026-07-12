@@ -139,6 +139,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "individual_concept": "api.routers.individual_concept",
     "signed_module_effect": "api.routers.signed_module_effect",
     "paper_regulators": "api.routers.paper_regulators",
+    "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "disease_drug": "api.routers.disease_drug",
     "meta": "api.routers.meta",
 }
