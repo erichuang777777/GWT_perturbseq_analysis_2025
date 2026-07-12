@@ -19,7 +19,7 @@
     "donors": 4,
     "runs": 2,
     "deep_external_evidence_genes": 21,
-    "gnomad_constraint_genes": 16,
+    "gnomad_constraint_genes": 11267,
     "evidence_fetched_at": "2026-07-08",
     "note": "Every target carries real statistics + a real readiness call. Deeper external evidence (drugs / disease associations / clinical trials / constraint) is populated only for the genes the cache covers; every other field shows 'unknown' + a coverage note, never a fabricated zero."
   },
@@ -86,7 +86,7 @@
     { "source": "GWT CD4 Perturb-seq (primary)", "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273", "license": "依論文 / CZI Virtual Cells Platform 條款", "url": "https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" },
     { "source": "Open Targets Platform", "cite": "Ochoa et al. 2024, Nucleic Acids Res (PMID 39657122)", "license": "依 Open Targets 引用政策", "url": "https://platform.opentargets.org/" },
     { "source": "ChEMBL", "cite": "PMID 37933841", "license": "CC BY-SA 3.0", "url": "https://www.ebi.ac.uk/chembl/" },
-    { "source": "gnomAD v4", "cite": "Karczewski et al. 2020 (PMID 32461654)", "license": "免費使用,須引用", "url": "https://gnomad.broadinstitute.org/" },
+    { "source": "gnomAD v2.1.1", "cite": "Karczewski et al. 2020 (PMID 32461654)", "license": "免費使用,須引用", "url": "https://gnomad.broadinstitute.org/" },
     { "source": "GTEx", "cite": "GTEx Consortium 2020 (PMID 32913098)", "license": "依 GTEx 條款", "url": "https://gtexportal.org/" },
     { "source": "Reactome", "cite": "PMID 34788843", "license": "CC BY 4.0", "url": "https://reactome.org/" },
     { "source": "STRING v12", "cite": "PMID 36370105", "license": "CC BY 4.0", "url": "https://string-db.org/" },
