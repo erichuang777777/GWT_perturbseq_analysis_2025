@@ -1,0 +1,27 @@
+disease,gene_symbol,primary_rank,ot_genetic_assoc_score,source,n_ot_disease,n_ct_trial,n_ncbi_disease,dem_621_direct_hits
+Behcet disease,NPHP4,39.0,0.45,Level4_crosscheck,,,,0
+Crohn disease,CYLD,36.0,0.59,Level4_crosscheck,,,,0
+Graves disease,ITM2A,18.0,0.52,Level4_crosscheck,,,,0
+Spondyloenchondrodysplasia with immune dysregulation,ZNF627,15.0,0.94,Level4_crosscheck,,,,0
+acute tonsillitis,MAN2A1,25.0,0.31,Level4_crosscheck,,,,0
+asthma,SIK2,3.0,0.72,Level4_crosscheck,,,,0
+"hyper-IgE syndrome 6, autosomal dominant, with recurrent infections",STAT3,925.0,0.95,Level4_crosscheck,25.0,20.0,2.0,1
+"immune dysregulation, autoimmunity, and autoinflammation",PLCG1,520.0,0.55,Level4_crosscheck,25.0,1.0,1.0,2
+immune system disorder,PLA2G4A,23.0,0.35,Level4_crosscheck,,,,0
+immune system disorder,PDIA6,32.0,0.36,Level4_crosscheck,25.0,0.0,0.0,1
+immunodeficiency 18,CD3E,401.0,0.92,Level4_crosscheck,,,,0
+immunodeficiency 28,IFNGR2,33.0,0.9,Level4_crosscheck,25.0,1.0,1.0,2
+immunodeficiency 37,BCL10,889.0,0.86,Level4_crosscheck,,,,0
+lupus erythematosus,FOXN2,1.0,0.09,Level4_crosscheck,25.0,0.0,0.0,1
+multiple sclerosis,EXTL2,43.0,0.12,Level4_crosscheck,,,,0
+multiple sclerosis,UBAC1,44.0,0.38,Level4_crosscheck,,,,0
+polycythemia,THAP5,7.0,0.34,Level4_crosscheck,25.0,0.0,0.0,1
+primary myelofibrosis,CALR,17.0,0.72,Level4_crosscheck,,,,0
+primary thrombocytopenia,TMEM131,34.0,0.39,Level4_crosscheck,25.0,0.0,0.0,1
+psoriasis,KLHDC10,37.0,0.4,Level4_crosscheck,,,,0
+psoriatic arthritis,KIF16B,46.0,0.47,Level4_crosscheck,,,,0
+rheumatoid arthritis,TBC1D10A,6.0,0.08,Level4_crosscheck,,,,0
+rheumatoid arthritis,TYK2,11.0,0.93,Level4_crosscheck,,,,0
+type 1 diabetes mellitus,DIPK1A,31.0,0.5,Level4_crosscheck,,,,0
+ulcerative colitis,ERN1,21.0,0.45,Level4_crosscheck,25.0,2.0,0.0,1
+vitiligo,TMEM131L,5.0,0.43,Level4_crosscheck,25.0,0.0,0.0,1

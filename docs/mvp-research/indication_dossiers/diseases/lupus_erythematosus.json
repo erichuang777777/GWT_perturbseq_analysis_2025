@@ -1,0 +1,75 @@
+{
+  "disease_name": "Systemic Lupus Erythematosus",
+  "slug": "lupus_erythematosus",
+  "platform_targets": [
+    {
+      "gene": "FOXN2",
+      "primary_rank": 1,
+      "ot_genetic_assoc_score": 0.09
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "SLE is a chronic, relapsing-remitting systemic autoimmune disease driven by loss of tolerance to nuclear self-antigens, causing autoantibody/immune-complex damage across organs; predominantly affects women of childbearing age.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Global modelling study (112 studies) estimated country/region-specific SLE incidence and prevalence. Pediatric-onset SLE (cSLE) is a recognized subgroup studied in a 182-patient belimumab cohort.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/36241363/",
+          "source_type": "pubmed",
+          "quote": "To quantify global, regional and country-specific estimates of epidemiology of systemic lupus erythematosus (SLE)."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42435119/",
+          "source_type": "pubmed",
+          "quote": "This retrospective study included 182 patients with cSLE treated with belimumab"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "biology": {
+      "content": "FOXN2 has no PubMed-indexed literature link to lupus (0 hits on direct search) \u2014 not established in this pass. Peripheral gut-microbiome metaproteomic dysregulation has been reported in SLE patients, but this is not a validated CD4+ T-cell-intrinsic mechanism tying to the platform target.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42429656/",
+          "source_type": "pubmed",
+          "quote": "we utilized quantitative metaproteomics to analyze fecal samples from 103 SLE patients and 62 healthy controls"
+        }
+      ],
+      "coverage": "not_established"
+    },
+    "treatment": {
+      "content": "Belimumab (BENLYSTA), an anti-BLyS/BAFF monoclonal antibody, is FDA-approved for SLE (BLA125370, original approval 2011-03-09) and remains the only biologic approved for childhood-onset SLE.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP drug-regulatory record: application_number=BLA125370, sponsor=HUMAN GENOME SCIENCES INC.)",
+          "source_type": "fda",
+          "quote": "BLA125370, sponsor HUMAN GENOME SCIENCES INC., original approval action 2011-03-09"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42435119/",
+          "source_type": "pubmed",
+          "quote": "Belimumab is the only biologic approved for childhood-onset systemic lupus erythematosus (cSLE)"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov lists 1,086 total interventional trials registered under the condition 'systemic lupus erythematosus'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"systemic lupus erythematosus\", total=1086)",
+          "source_type": "ctgov",
+          "quote": "total=1086 (search_trials API, condition='systemic lupus erythematosus', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "FOXN2-specific mechanistic link to SLE or CD4+ T-cell biology not established in this pass (0 PubMed hits).",
+    "No FDA drug-label or trial-level analysis was pulled beyond the belimumab application summary."
+  ]
+}

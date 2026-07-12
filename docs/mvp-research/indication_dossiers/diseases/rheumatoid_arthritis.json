@@ -1,0 +1,64 @@
+{
+  "disease_name": "Rheumatoid Arthritis",
+  "slug": "rheumatoid_arthritis",
+  "platform_targets": [
+    {
+      "gene": "TBC1D10A",
+      "primary_rank": 6,
+      "ot_genetic_assoc_score": 0.08
+    },
+    {
+      "gene": "TYK2",
+      "primary_rank": 11,
+      "ot_genetic_assoc_score": 0.93
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Chronic systemic autoimmune disease causing symmetric inflammatory polyarthritis; female predominance; mid-adulthood onset. Note: the task brief's claim that a fuller deep-dive RA dossier exists elsewhere in the project could not be verified via artifact-store search in this session.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Not established in this pass \u2014 no epidemiology figures were re-sourced. The task brief's claim that a fuller pre-existing RA dossier holds this detail could not be verified via artifact-store search in this session.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "TYK2 is a JAK-family kinase central to cytokine signaling, actively targeted by TYK2 inhibitors in RA/PsA. TBC1D10A has a much lower OT genetic-association score (0.08 vs TYK2's 0.93), consistent with a lower-confidence platform nomination.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40476606/",
+          "source_type": "pubmed",
+          "quote": "Successful Management of Multidrug-Resistant Psoriatic Arthritis Coexisting With Rheumatoid Arthritis Using a TYK2 Inhibitor Deucravacitinib-Based Regimen"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Standard RA therapy: methotrexate, biologic DMARDs, JAK inhibitors (tofacitinib carries FDA black-box warning). Full detail claimed to exist in a prior dossier per the task brief, but that dossier is unverified via artifact-store search in this session.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/36790724/",
+          "source_type": "pubmed",
+          "quote": "The US Food and Drug Administration (FDA) recently placed a black box warning on this class of medications due to safety concerns based on data from studies investigating tofacitinib in patients with rheumatoid arthritis."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "regulatory_trials": {
+      "content": "2,538 total interventional trials for RA on ClinicalTrials.gov. Example completed Phase 3 biosimilar trial: NCT03789292.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT03789292",
+          "source_type": "ctgov",
+          "quote": "A Randomized, Active-Controlled, Double-Blind, Phase 3 Study to Compare Efficacy and Safety of CT-P17 With Humira When Co-administered With Methotrexate in Patients With Moderate to Severe Active Rheumatoid Arthritis"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "This task's brief asserted a full deep-dive RA dossier (TBC1D10A rank6/TYK2 rank11) already exists elsewhere in the project; artifact-store searches in this session (search='rheumatoid arthritis dossier', 'TYK2 rheumatoid', 'TBC1D10A', project_id='all') did NOT locate it \u2014 its existence is unverified, not confirmed.",
+    "Epidemiology not re-sourced in this pass."
+  ]
+}

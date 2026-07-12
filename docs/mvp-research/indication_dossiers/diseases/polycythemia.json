@@ -1,0 +1,80 @@
+{
+  "disease_name": "Polycythemia (Polycythemia Vera)",
+  "slug": "polycythemia",
+  "platform_targets": [
+    {
+      "gene": "THAP5",
+      "primary_rank": 7,
+      "ot_genetic_assoc_score": 0.34
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "PV is a chronic MPN with clonal RBC overproduction, driven >95% by JAK2 V617F, elevated thrombotic risk, typically presenting in adults over 60.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Swedish registry cohort of 2,604 PV patients over 43,612 patient-years. SEER data show 2005-2008 JAK2/WHO diagnostic changes shifted subtype incidence (21% decrease in PV incidence coincident with new criteria).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/41531010/",
+          "source_type": "pubmed",
+          "quote": "In this nationwide, population-based study, we analyzed 2604 PV and 3141 ET patients using multiple Swedish health care registers, covering 43,612 patient-years"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/25968903/",
+          "source_type": "pubmed",
+          "quote": "The 2005 JAK2 V617F discovery and the 2008 WHO diagnostic guideline for the JAK2 V617F mutation coincide with a 31% increase in ET and a 21% decrease in PV incidence rates"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "THAP5 has no direct PubMed literature link to polycythemia \u2014 not established in this pass. Dominant PV mechanism is JAK2 V617F-driven constitutive JAK-STAT signaling, a myeloid/megakaryocyte progenitor pathway, not a validated CD4+ T-cell-intrinsic mechanism.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42176929/",
+          "source_type": "pubmed",
+          "quote": "a shared codon 617 substitution of JAK2...leads to a constitutively active tyrosine kinase and a pathogenic lesion that unites all three polycythemia vera, essential thrombocythemia, and primary myelofibrosis"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42176929/",
+          "source_type": "pubmed",
+          "quote": "interferes with the autoinhibitory regulation and results in persistent downstream JAK-STAT signaling"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Ruxolitinib (JAKAFI), oral JAK1/2 inhibitor, FDA-approved (NDA202192, original approval 2011-11-16) for hydroxyurea-refractory PV; phlebotomy and hydroxyurea remain first-line per real-world German claims data.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP drug-regulatory record: application_number=NDA202192, sponsor=INCYTE CORP)",
+          "source_type": "fda",
+          "quote": "NDA202192, sponsor INCYTE CORP, original approval action 2011-11-16"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42298215/",
+          "source_type": "pubmed",
+          "quote": "thrombotic outcomes and treatment patterns...phlebotomy frequency, and the development of hydroxyurea (HU) intolerance or resistance"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov lists 306 total interventional trials registered under 'polycythemia vera'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"polycythemia vera\", total=306)",
+          "source_type": "ctgov",
+          "quote": "total=306 (search_trials API, condition='polycythemia vera', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "THAP5-PV mechanistic link not established in this pass; OT score (0.34) not corroborated by PubMed literature.",
+    "Disease label 'polycythemia' interpreted as polycythemia vera (the clinically dominant, JAK2-driven form) \u2014 secondary/relative polycythemia not separately researched."
+  ]
+}

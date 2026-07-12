@@ -1,0 +1,27 @@
+disease,slug,gene_symbol,primary_rank,ot_genetic_assoc_score,n_ot_disease,n_ct_trial,n_ncbi_disease,dossier_md_vid,dossier_json_vid
+lupus erythematosus,lupus_erythematosus,FOXN2,1.0,0.09,25.0,0.0,0.0,25481c13-4682-4f5a-b7b3-2528468132c2,d76f53e5-19a6-4ccf-962e-64bcfd82b4bc
+asthma,asthma,SIK2,3.0,0.72,,,,8e80ff22-7914-458c-96d1-ccd78de5a94e,8d4d8233-64c2-4b99-84ca-5b5ddd1b872a
+vitiligo,vitiligo,TMEM131L,5.0,0.43,25.0,0.0,0.0,e004a31b-ecb5-4488-a1e4-0d1f6b472154,ea94ef76-63b6-4cc7-934d-55541ee07cf7
+rheumatoid arthritis,rheumatoid_arthritis,TBC1D10A,6.0,0.08,,,,03bdbd02-bf0e-4c36-b724-56082dcea290,e13a4db9-311e-4d07-bea9-32011b97173a
+polycythemia,polycythemia,THAP5,7.0,0.34,25.0,0.0,0.0,b19990f5-aea1-4dbf-b15b-0e872b216f06,ae20cdfe-8dcd-4955-b1e6-0080c4dd6326
+rheumatoid arthritis,rheumatoid_arthritis,TYK2,11.0,0.93,,,,03bdbd02-bf0e-4c36-b724-56082dcea290,e13a4db9-311e-4d07-bea9-32011b97173a
+Spondyloenchondrodysplasia with immune dysregulation,spondyloenchondrodysplasia_immune_dysregulation,ZNF627,15.0,0.94,,,,fd60d784-bdf7-4e10-9191-9e183b8d104b,b0f31937-e0e6-46d9-9ee0-4f27c1a02ccb
+primary myelofibrosis,primary_myelofibrosis,CALR,17.0,0.72,,,,0223ebf9-7475-461c-879a-5b112833de3a,8fe673cf-c134-4ca1-bff5-573409a8a8c9
+Graves disease,graves_disease,ITM2A,18.0,0.52,,,,b909b7e5-5018-4e9f-a2bc-c21b1d199a92,8702362a-c20d-4f1e-97f2-dad22c64d310
+ulcerative colitis,ulcerative_colitis,ERN1,21.0,0.45,25.0,2.0,0.0,68bfd81a-b43d-4bb3-b72c-7962d5797449,e77dbde0-a9ad-412b-8316-cfe9ab0b3f3a
+immune system disorder,immune_system_disorder,PLA2G4A,23.0,0.35,,,,b136f358-c61d-4eda-8955-f11556c1c129,d82da902-e942-49a1-b9b5-193acb6233e7
+acute tonsillitis,acute_tonsillitis,MAN2A1,25.0,0.31,,,,8661e972-7a8d-4c1e-aead-b11ec0a982e3,6658f4d4-72f4-441f-b006-c65861b00f63
+type 1 diabetes mellitus,type_1_diabetes_mellitus,DIPK1A,31.0,0.5,,,,bd1470ef-7f32-489d-a490-d56e44b363f5,cf9e62b9-0476-465a-8c94-b7f97d8df6cc
+immune system disorder,immune_system_disorder,PDIA6,32.0,0.36,25.0,0.0,0.0,b136f358-c61d-4eda-8955-f11556c1c129,d82da902-e942-49a1-b9b5-193acb6233e7
+immunodeficiency 28,immunodeficiency_28,IFNGR2,33.0,0.9,25.0,1.0,1.0,b3dead35-6c79-4f34-9139-6bf53ac3b956,20447c9d-71ad-46a1-9596-b9314645336a
+primary thrombocytopenia,primary_thrombocytopenia,TMEM131,34.0,0.39,25.0,0.0,0.0,54d5f07d-0b26-4069-9720-b7ac07919f65,bcebe681-ae22-4ac0-b050-c93987431561
+Crohn disease,crohn_disease,CYLD,36.0,0.59,,,,c39243df-0c08-4127-b82c-13db6da543c0,a21a2617-c26f-4713-9b8f-e772b02077c5
+psoriasis,psoriasis,KLHDC10,37.0,0.4,,,,2734961a-0213-4f03-933d-e683ea233063,24009e2e-9ee1-425e-ba09-c3ffbe06d394
+Behcet disease,behcet_disease,NPHP4,39.0,0.45,,,,e5fd2c16-284a-4cc3-81e8-66dc8e0ff630,ef038d5e-ed5b-4d81-aec5-134f1a3bfdaa
+multiple sclerosis,multiple_sclerosis,EXTL2,43.0,0.12,,,,bd86f002-9cdd-4d66-b6d3-4f7e573e9e85,fd0fd737-45b6-4c3f-9d66-036ed9be3a4d
+multiple sclerosis,multiple_sclerosis,UBAC1,44.0,0.38,,,,bd86f002-9cdd-4d66-b6d3-4f7e573e9e85,fd0fd737-45b6-4c3f-9d66-036ed9be3a4d
+psoriatic arthritis,psoriatic_arthritis,KIF16B,46.0,0.47,,,,57055d99-5b9b-406f-b266-a5c4b305a812,52bf63d9-1d75-4c3e-8048-3f1640721b91
+immunodeficiency 18,immunodeficiency_18,CD3E,401.0,0.92,,,,a42a775b-15ea-471e-b076-9d941065ef8d,88c97a9b-f7a9-4907-bd86-c37eb7e96cbe
+"immune dysregulation, autoimmunity, and autoinflammation",immune_dysregulation_autoimmunity_autoinflammation,PLCG1,520.0,0.55,25.0,1.0,1.0,ad386833-d1e5-4773-9400-024c50fd8315,58dd586d-8248-405a-b6dc-9c06afd3d1f7
+immunodeficiency 37,immunodeficiency_37,BCL10,889.0,0.86,,,,b21a05d7-e1cf-448a-8232-5c5b424db2b0,1fe3b6c2-44cd-46bf-b9b9-d3642b8f75d5
+"hyper-IgE syndrome 6, autosomal dominant, with recurrent infections",hyper_ige_syndrome_6,STAT3,925.0,0.95,25.0,20.0,2.0,679895b0-9287-4b41-b252-caeaf8340437,bd91aa2c-aa83-4eb4-a8d0-5f051bb9e5b0

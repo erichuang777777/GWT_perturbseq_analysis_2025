@@ -1,0 +1,75 @@
+{
+  "disease_name": "Primary Myelofibrosis",
+  "slug": "primary_myelofibrosis",
+  "platform_targets": [
+    {
+      "gene": "CALR",
+      "primary_rank": 17,
+      "ot_genetic_assoc_score": 0.72
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "PMF is a clonal MPN of HSC/progenitors with bone marrow fibrosis, driven by JAK2/CALR/MPL mutations activating JAK-STAT signaling; arises de novo or from prior PV/ET, typically in older adults.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Swedish registry: 1,079 MF patients vs 5,395 controls. Ontario registry: 1,385 MF cases among 10,336 total incident MPN cases (2004-2019).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40117492/",
+          "source_type": "pubmed",
+          "quote": "In this nationwide population-based study, we assessed the frequency of major bleeding, thrombotic events, and all-cause mortality in 1079 patients diagnosed with MF and 5395 matched controls using multiple Swedish health care registers"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/37184988/",
+          "source_type": "pubmed",
+          "quote": "all incident cases of MPN from the Ontario cancer registry between 2004 and 2019 (N=10,336; ET=5108; PV=3843; MF=1385)"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "CALR is one of three canonical MPN driver mutations (JAK2/CALR/MPL); downstream mechanism converges on JAK-STAT pathway activation driving marrow fibrosis. Mechanism is myeloid/megakaryocyte-progenitor centered; no direct CD4+ T-cell literature link identified in this pass.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42371175/",
+          "source_type": "pubmed",
+          "quote": "shar[e] a small set of canonical driver mutations in JAK2, CALR, or MPL"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42324204/",
+          "source_type": "pubmed",
+          "quote": "characterized by abnormal proliferation of hematopoiesis, associated with pathologically increased fibrosis in the bone marrow, which is primarily caused by activation of the JAK2 signaling pathway"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Fedratinib (INREBIC), oral JAK2 inhibitor, FDA-approved for intermediate/high-risk MF (NDA212327, original approval 2019-08-16). Ruxolitinib also widely used.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP drug-regulatory record: application_number=NDA212327, sponsor=BRISTOL-MYERS)",
+          "source_type": "fda",
+          "quote": "NDA212327, sponsor BRISTOL-MYERS, original approval action 2019-08-16"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov lists 558 total interventional trials registered under 'primary myelofibrosis'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"primary myelofibrosis\", total=558)",
+          "source_type": "ctgov",
+          "quote": "total=558 (search_trials API, condition='primary myelofibrosis', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "Direct mechanistic step (mutant CALR activating MPL/JAK-STAT independent of JAK2) is field-standard knowledge but was not directly quoted from a retrieved source in this pass.",
+    "No literature tie between CALR and CD4+ T-cell-intrinsic biology was found \u2014 platform rationale rests on genetic association (OT score 0.72), not T-cell mechanism."
+  ]
+}

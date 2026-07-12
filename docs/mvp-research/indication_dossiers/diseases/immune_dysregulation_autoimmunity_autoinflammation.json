@@ -1,0 +1,40 @@
+{
+  "disease_name": "Immune dysregulation, autoimmunity, and autoinflammation",
+  "slug": "immune_dysregulation_autoimmunity_autoinflammation",
+  "platform_targets": [{"gene": "PLCG1", "primary_rank": 520, "ot_genetic_assoc_score": 0.55}],
+  "sections": {
+    "definition_population": {
+      "content": "Corresponds to a recently described monogenic disease from a germline gain-of-function PLCG1 variant, described as a new immune dysregulation disorder; related to but distinct from PLCG2-associated PLAID/APLAID.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/37422272/", "source_type": "pubmed", "quote": "A gain-of-function variation in PLCG1 causes a new immune dysregulation disease."}
+      ]
+    },
+    "epidemiology": {
+      "content": "No population prevalence/incidence figure found; described from a single new case/family report, consistent with ultra-rare status.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/37769878/", "source_type": "pubmed", "quote": "PLCG2-associated immune dysregulation (PLAID) comprises broad and distinct clinical presentations related to functional classes of genetic variants."}
+      ],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "PLCG1 regulates NF-kB, ERK, MAPK, and NFAT signaling; germline gain-of-function PLCG1 mutation was first reported causal for this disease in 2023; somatic PLCG1 mutations also recur in T-cell lymphomas, underscoring its role in T-cell activation/proliferation.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/37422272/", "source_type": "pubmed", "quote": "Phospholipase C (PLC) gamma1 is a critical enzyme regulating nuclear factor-kB (NF-kB), extracellular signal-related kinase, mitogen-activated protein kinase, and nuclear factor of activated T cells signaling pathways, yet germline PLCG1 mutation in human disease has not been reported."}
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "No FDA-approved disease-specific therapy identified in this pass.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov search on broader term 'immune dysregulation' returned 65 total trials; gene-specific 'PLCG1' search returned zero trials.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=65 (search_trials condition=immune dysregulation, count_total=True); total=0 (condition=PLCG1)"}
+      ],
+      "coverage": "partial"
+    }
+  },
+  "gaps": ["No population prevalence/incidence number found", "No FDA-approved therapy identified", "No PLCG1-specific clinical trial identified"]
+}

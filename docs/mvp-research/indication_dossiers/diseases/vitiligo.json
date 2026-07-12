@@ -1,0 +1,81 @@
+{
+ "disease_name": "Vitiligo",
+ "slug": "vitiligo",
+ "platform_targets": [
+  {
+   "gene": "TMEM131L",
+   "primary_rank": 5,
+   "ot_genetic_assoc_score": 0.43
+  }
+ ],
+ "sections": {
+  "definition_population": {
+   "content": "Chronic autoimmune depigmenting skin disorder from selective melanocyte destruction; affects both sexes, any age.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/32155629/",
+     "source_type": "pubmed",
+     "quote": "Vitiligo, a common depigmenting skin disorder, has an estimated prevalence of 0.5-2% of the population worldwide."
+    }
+   ]
+  },
+  "epidemiology": {
+   "content": "Estimated global prevalence 0.5-2%; formally classified as an autoimmune disease per 2011 international consensus.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/32155629/",
+     "source_type": "pubmed",
+     "quote": "Vitiligo, a common depigmenting skin disorder, has an estimated prevalence of 0.5-2% of the population worldwide."
+    }
+   ],
+   "coverage": "covered"
+  },
+  "biology": {
+   "content": "CD8+ T cells and dendritic cells destroy melanocytes; keratinocyte IL-15 activates memory CD8+ T cells via JAK-STAT; itaconate modulates DC/CD8 axis. TMEM131L is an independently established regulator of thymocyte development and Wnt/Notch signaling; no direct TMEM131L-vitiligo literature link found (0 hits on direct search) \u2014 connection inferred from platform ranking + established T-cell developmental role.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/41466279/",
+     "source_type": "pubmed",
+     "quote": "dendritic cell (DC)- and CD8T cell-mediated autoimmunity is critical for destroying melanocytes in vitiligo"
+    },
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/31078730/",
+     "source_type": "pubmed",
+     "quote": "epidermal IL-15 expression was mainly derived from keratinocytes"
+    },
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/23690469/",
+     "source_type": "pubmed",
+     "quote": "we identify transmembrane protein 131-like (TMEM131L) as a novel regulator of thymocyte proliferation and demonstrate that it corresponds to a not as yet reported inhibitor of Wnt signaling."
+    }
+   ],
+   "coverage": "partial"
+  },
+  "treatment": {
+   "content": "Topical JAK inhibitor ruxolitinib cream (OPZELURA, NDA215309) is an approved standard-of-care option for repigmentation, distinct from oral JAKAFI (NDA202192).",
+   "sources": [
+    {
+     "source_url": null,
+     "source_type": "fda",
+     "quote": "NDA215309 OPZELURA CREAM TOPICAL (ruxolitinib), distinct from NDA202192 JAKAFI TABLET ORAL [application NDA215309; no URL field returned by drug-regulatory MCP tool -- no URL constructed]"
+    }
+   ],
+   "coverage": "covered"
+  },
+  "regulatory_trials": {
+   "content": "261 total interventional trials for vitiligo on ClinicalTrials.gov. Example Phase 1 trial: NCT06813027 (MSC-derived EVs).",
+   "sources": [
+    {
+     "source_url": "https://clinicaltrials.gov/study/NCT06813027",
+     "source_type": "ctgov",
+     "quote": "Use of Allogeneic Extracellular Secretomes (EV) Derived From Umbilical Cord Mesenchymal Stromal Cells: a Phase I Open-label Safety Trial."
+    }
+   ],
+   "coverage": "covered"
+  }
+ },
+ "gaps": [
+  "No direct PubMed evidence linking TMEM131L to vitiligo specifically (0 hits on direct search); connection inferred from platform ranking and TMEM131L's independently known T-cell developmental role.",
+  "Vitiligo-specific FDA label indication text for OPZELURA not independently re-confirmed beyond the Drugs@FDA product listing."
+ ]
+}

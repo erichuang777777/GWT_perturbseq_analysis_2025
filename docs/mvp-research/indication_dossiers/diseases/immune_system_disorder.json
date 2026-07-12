@@ -1,0 +1,41 @@
+{
+  "disease_name": "Immune system disorder",
+  "slug": "immune_system_disorder",
+  "platform_targets": [
+    {"gene": "PLA2G4A", "primary_rank": 23, "ot_genetic_assoc_score": 0.35},
+    {"gene": "PDIA6", "primary_rank": 32, "ot_genetic_assoc_score": 0.36}
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "'Immune system disorder' is a broad disease-ontology umbrella label, not a single defined clinical entity; no unified epidemiology or natural history applies.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Not established in this pass; the label is non-specific and returns an extremely large heterogeneous ClinicalTrials.gov result set rather than mapping to one condition.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "PLA2G4A (cPLA2alpha) regulates TNF-induced inflammatory effectors in rheumatoid arthritis synoviocytes and has been linked to eosinophilic pediatric asthma phenotypes; PDIA6 is an ER protein-folding enzyme shown in a mouse forward genetic screen to be essential for lymphoid and myeloid development.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/24349530/", "source_type": "pubmed", "quote": "Cytosolic phospholipase A2 regulates TNF-induced production of joint destructive effectors in synoviocytes."},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/36623677/", "source_type": "pubmed", "quote": "Association between PLA2G4A and P2RX7 genes and eosinophilic phenotype and environment with pediatric asthma."},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/31985756/", "source_type": "pubmed", "quote": "syndromic disorder marked by growth retardation, diabetes, premature death, and severe lymphoid and myeloid hypoplasia together with diminished T cell-independent (TI) antibody responses"}
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "No FDA-approved disease-specific therapy identified in this pass; no PLA2G4A/PDIA6-targeted drug application found.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov search on 'immune system disorder' returned 48,030 total trial records, reflecting broad umbrella usage rather than a discrete indication.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=48030 (search_trials condition=immune system disorder, count_total=True)"}
+      ],
+      "coverage": "partial"
+    }
+  },
+  "gaps": ["Label is non-specific; no disease-level epidemiology found", "No FDA-approved therapy identified for either target", "No standout Phase 3 trial attributable to this generic label"]
+}

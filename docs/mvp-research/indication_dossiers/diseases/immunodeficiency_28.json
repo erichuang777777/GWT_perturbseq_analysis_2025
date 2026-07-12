@@ -1,0 +1,45 @@
+{
+  "disease_name": "Immunodeficiency 28",
+  "slug": "immunodeficiency_28",
+  "platform_targets": [{"gene": "IFNGR2", "primary_rank": 33, "ot_genetic_assoc_score": 0.9}],
+  "sections": {
+    "definition_population": {
+      "content": "Immunodeficiency 28 is caused by biallelic IFNGR2 mutations disrupting the interferon-gamma receptor 2 subunit; falls within Mendelian Susceptibility to Mycobacterial Disease (MSMD), with complete and partial forms depending on residual receptor function.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/31222290/", "source_type": "pubmed", "quote": "germline bi-allelic mutations of IFNGR2 can underlie partial or complete forms"}
+      ]
+    },
+    "epidemiology": {
+      "content": "No IFNGR2-specific incidence figure found; MSMD overall documented via national retrospective cohorts (Mexico, Iran) rather than a single global prevalence; MSMD spans 16 causal genes and 31 distinct disorders.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/36044171/", "source_type": "pubmed", "quote": "Mendelian susceptibility to mycobacterial disease (MSMD) is a rare genetic disorder characterized by impaired immunity against intracellular pathogens"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/32602053/", "source_type": "pubmed", "quote": "The 16 genes associated with MSMD display a considerable level of allelic heterogeneity, accounting for 31 distinct disorders with variable clinical presentations"}
+      ],
+      "coverage": "partial"
+    },
+    "biology": {
+      "content": "IFNGR2 loss-of-function disrupts IFN-gamma receptor signaling; biallelic mutations cause partial or complete MSMD forms depending on residual activity; dominant-negative variants show dosage-dependent loss of receptor function; iPSC-macrophage models used to study the pathway.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/31222290/", "source_type": "pubmed", "quote": "germline bi-allelic mutations of IFNGR2 can underlie partial or complete forms"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/15356149/", "source_type": "pubmed", "quote": "patients showed no IFN-gammaR activity, their healthy heterozygous parents showed only partial IF"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/32093117/", "source_type": "pubmed", "quote": "Patient iPSC-Derived Macrophages to Study Inborn Errors of the IFN-gamma Responsive Pathway"}
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "ACTIMMUNE (interferon gamma-1b, Horizon Therapeutics Ireland DAC) is FDA-approved but for CGD and severe malignant osteopetrosis, not for IFNGR2 deficiency/MSMD specifically; no MSMD/IFNGR2-specific FDA-approved indication identified.",
+      "sources": [
+        {"source_url": "FDA openFDA drug label API (brand_name=ACTIMMUNE)", "source_type": "fda", "quote": "ACTIMMUNE is indicated for reducing the frequency and severity of serious infections associated with Chronic Granulomatous Disease (CGD). ACTIMMUNE is indicated for delaying time to disease progression in patients with severe, malignant osteopetrosis (SMO)."}
+      ],
+      "coverage": "partial"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov search for 'Mendelian susceptibility to mycobacterial disease' returned only 2 total trial records.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=2 (search_trials condition=Mendelian susceptibility to mycobacterial disease, count_total=True)"}
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": ["No IFNGR2-specific prevalence figure found", "No FDA-approved therapy specific to IFNGR2 deficiency/MSMD identified"]
+}

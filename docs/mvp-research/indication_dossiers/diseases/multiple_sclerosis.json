@@ -1,0 +1,80 @@
+{
+  "disease_name": "Multiple Sclerosis",
+  "slug": "multiple_sclerosis",
+  "platform_targets": [
+    {
+      "gene": "EXTL2",
+      "primary_rank": 43,
+      "ot_genetic_assoc_score": 0.12
+    },
+    {
+      "gene": "UBAC1",
+      "primary_rank": 44,
+      "ot_genetic_assoc_score": 0.38
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "MS is a chronic CNS demyelinating autoimmune disease, classically CD4+ T-cell-driven with growing B-cell involvement; typically presents in young adults with female predominance.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "The Atlas of MS 3rd edition, a global epidemiologic compendium built from country-representative survey data, documented rising worldwide MS prevalence.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/33174475/",
+          "source_type": "pubmed",
+          "quote": "Rising prevalence of multiple sclerosis worldwide: Insights from the Atlas of MS, third edition"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/33174475/",
+          "source_type": "pubmed",
+          "quote": "Country representatives reported epidemiologic data and their sources via survey"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "EXTL2 has a direct literature link: it promotes CSPG deposition and neuroinflammation after demyelination in the EAE model of MS. UBAC1 has no direct PubMed hits despite its higher OT genetic-association score (0.38) \u2014 not established in this pass. Field consensus situates CD4+ T-cell-driven EAE as the historical dominant MS model, with B-cell contributions increasingly recognized.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32703234/",
+          "source_type": "pubmed",
+          "quote": "Chondroitin sulfate proteoglycans (CSPGs)...have also been highlighted as a modulator of macrophage infiltration into the central nervous system in experimental autoimmune encephalomyelitis, an inflammatory model of multiple sclerosis"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42435354/",
+          "source_type": "pubmed",
+          "quote": "Historically, MS animal models of experimental autoimmune encephalomyelitis have featured B cell-independent disease driven by CD4 T cells activated against central nervous [myelin antigens]"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Ocrelizumab (OCREVUS), anti-CD20 B-cell depleting antibody, FDA-approved for MS (BLA761053, original approval 2017-03-28); subcutaneous OCREVUS ZUNOVO approved 2024-09-13.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP drug-regulatory record: application_number=BLA761053, sponsor=GENENTECH INC)",
+          "source_type": "fda",
+          "quote": "BLA761053, sponsor GENENTECH INC, original approval action 2017-03-28"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov lists 2,737 total interventional trials registered under 'multiple sclerosis'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"multiple sclerosis\", total=2737)",
+          "source_type": "ctgov",
+          "quote": "total=2737 (search_trials API, condition='multiple sclerosis', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "UBAC1-MS mechanistic link not established in this pass despite a stronger OT genetic-association score than EXTL2.",
+    "Full DMT class landscape (interferons, S1P modulators, natalizumab) not itemized with dedicated sources in this compact pass."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "disease_name": "Immunodeficiency 37",
+  "slug": "immunodeficiency_37",
+  "platform_targets": [{"gene": "BCL10", "primary_rank": 889, "ot_genetic_assoc_score": 0.86}],
+  "sections": {
+    "definition_population": {
+      "content": "Immunodeficiency 37 is caused by biallelic loss-of-function BCL10 mutations, disrupting the CARD11-BCL10-MALT1 (CBM) signalosome downstream of antigen receptors; can present as SCID escaping newborn screening.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/38159157/", "source_type": "pubmed", "quote": "BCL10 Deficiency Presenting as Severe Combined Immunodeficiency Escaping Newborn Screening."}
+      ]
+    },
+    "epidemiology": {
+      "content": "No population-level prevalence/incidence figure found; documented via individual case reports; grouped with CARD11/MALT1 deficiencies as 'germline CBM-opathies' with heterogeneous clinical phenotypes.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/31060714/", "source_type": "pubmed", "quote": "Germline mutations that alter the function of members of this complex (termed CBM-opathies) cause a broad array of clinical phenotypes, ranging"}
+      ],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "BCL10 forms heterotrimers with MALT1 and CARD-family adaptors essential for NF-kB activation in innate and adaptive immunity; inherited BCL10 deficiency impairs both hematopoietic and nonhematopoietic immunity; CBM complex operates directly downstream of the TCR.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/25365219/", "source_type": "pubmed", "quote": "Heterotrimers composed of B cell CLL/lymphoma 10 (BCL10), mucosa-associated lymphoid tissue lymphoma translocation protein 1 (MALT1), and caspase recruitment domain-containing (CARD) family adaptors play a role in NF-kB activation"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/25365219/", "source_type": "pubmed", "quote": "Inherited BCL10 deficiency impairs hematopoietic and nonhematopoietic immunity"}
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "No FDA-approved disease-specific pharmacologic therapy identified in this pass; general combined-immunodeficiency management (supportive care, HSCT) applies by analogy, but no BCL10-specific FDA drug application found.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov search for 'BCL10 deficiency combined immunodeficiency' returned 0 total trial records.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=0 (search_trials condition=BCL10 deficiency combined immunodeficiency, count_total=True)"}
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": ["No BCL10-deficiency-specific prevalence figure found", "No FDA-approved therapy identified", "No clinical trials identified specific to this indication"]
+}
