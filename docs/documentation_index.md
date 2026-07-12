@@ -101,6 +101,7 @@
 | `docs/external_overlay_integration_concept.md` | 安全+膜蛋白 overlay 概念 | ✅ |
 | `docs/ml_feasibility_assessment.md` | ML 可行性評估(對應 src/10) | ✅ |
 | `docs/human_validation_protocol.md` / `docs/external_qa_review_2026-07-10.md` | 人工驗證協定 / 外部 QA | ✅ |
+| `docs/perturbation_validation_plan.md` | **擾動驗證盤點+計劃**:5 級階梯逐級 MET/GAP + 閉合缺口的優先序計劃(L5 濕實驗設計) | ✅ 新增 |
 | `docs/sandbox_blocked_tasks.md` / `docs/def_followup_plan.md` / `docs/server_northstar.md` | 沙盒受限 / 後續 / north-star | ✅ |
 
 ---
