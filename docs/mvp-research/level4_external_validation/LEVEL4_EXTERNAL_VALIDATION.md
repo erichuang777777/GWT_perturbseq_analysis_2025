@@ -122,7 +122,17 @@ This is a genuine **negative result** for the signed *directionality* ranking an
 2. **Essential-gene dropout (our own known limitation).** 31 of the Schmidt CD4⁺-IL2 top-50 hits are **absent from our ranking entirely** (11 are Hart core-essential) — knocking out core activation machinery kills cells and drops them below our viability gate (consistent with the methodological-validation dropout diagnosis: 237 essential genes lost).
 3. **Weak but highly significant magnitude concordance (post-hoc, exploratory).** Using footprint *breadth* (`n_hits`, the axis the AUROC-0.85 calibration used) instead of directionality: Spearman ρ = +0.119 / +0.108 / +0.283 (p = 7×10⁻³⁴ / 6×10⁻²⁸ / 3×10⁻²²). Bigger-footprint targets are modestly more significant in independent activation screens.
 
-**Honest bottom line:** phenotype-matched external screens do **not** corroborate the directionality ranking at genome-wide enrichment; the null is largely explained by axis choice + essential dropout, with a weak positive magnitude signal underneath. Full per-screen numbers: `track_d_activation_crosschecks_combined.md`.
+**Fair-axis secondary test (exploratory, declared).** Following the interpretation above, the top-N enrichment AUROC was recomputed with the score = footprint **magnitude** (`n_hits`, the axis the AUROC-0.85 calibration used) instead of directionality, additionally excluding Hart core-essential genes:
+
+| Screen | directionality AUROC (pre-registered) | magnitude AUROC (fair, no essentials) | perm p |
+|---|---:|---:|---:|
+| Schmidt 2022 CD4⁺ IL-2 | 0.475 | **0.745** | 2×10⁻⁴ |
+| Schmidt 2022 CD8⁺ IFN-γ | 0.435 | **0.749** | 2×10⁻⁴ |
+| Freimer 2022 | 0.405 | **0.789** | 2×10⁻⁴ |
+
+The magnitude axis **passes** the 0.65 bar on all three (perm p = 2×10⁻⁴), essentially unchanged by excluding essentials — so the platform's footprint-*strength* signal aligns with independent activation screens; it is the *directionality* re-ranking that does not. **Two caveats keep this from upgrading L4:** (1) the axis was chosen *after* seeing the null (post-hoc/exploratory; a clean pass needs pre-registration on a held-out screen); (2) a **detectability confound** — large footprint and external-hit significance both scale with expression/power, so part of 0.74–0.79 may be shared detectability, not shared biology (excluding essentials does not remove this; a clean test must also control baseline expression / cell count).
+
+**Honest bottom line:** phenotype-matched external screens do **not** corroborate the *directionality* ranking at genome-wide enrichment (pre-registered null); the *magnitude* signal does align (secondary AUROC 0.74–0.79) but is exploratory and confounded by detectability — **corroborative-with-confound, not a clean win, L4 stays `partial`**. Full per-screen numbers: `track_d_activation_crosschecks_combined.md`.
 
 ---
 

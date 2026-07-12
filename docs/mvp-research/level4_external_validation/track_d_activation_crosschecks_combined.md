@@ -12,6 +12,16 @@ Real run of the phenotype-matched external cross-check (`perturbation_validation
 | Schmidt2022 CD8+ IFNG | CRISPRi | 10313 | 0.435 | 0.031 | 0.436 | 0/99 | 0/5 |
 | Freimer2022 (IL2/IL2RA/CTLA4) | CRISPR-KO | 1126 | 0.405 | 0.084 | 0.410 | 1/47 | n/a |
 
+### Secondary (fair-axis, EXPLORATORY — declared, does not replace the above)
+
+Scored by footprint **magnitude** (`n_hits`, the axis the AUROC-0.85 calibration used) rather than directionality, and additionally excluding Hart core-essential genes. This tests the narrower hypothesis that our biggest-footprint targets enrich among activation hits once generic essentials are set aside.
+
+| Screen | AUROC (magnitude axis) | perm p | AUROC (magnitude, no essentials) | perm p |
+|---|---:|---:|---:|---:|
+| Schmidt2022 CD4+ IL2 | 0.740 | 0.0002 | 0.745 | 0.0002 |
+| Schmidt2022 CD8+ IFNG | 0.748 | 0.0002 | 0.748 | 0.0002 |
+| Freimer2022 (IL2/IL2RA/CTLA4) | 0.791 | 0.0002 | 0.789 | 0.0002 |
+
 ## Schmidt2022 CD4+ IL2 (CRISPRi)
 - genes present in both tables: **10313**
 - rank–rank Spearman (primary_rank vs |lfc|): rho = 0.0554, p = 0.056, n = 1191 (a good ranking → **negative** rho)
@@ -19,6 +29,7 @@ Real run of the phenotype-matched external cross-check (`perturbation_validation
 - confound control — AUROC excluding 0 essential hits: **0.4754** (n_pos=91, n_neg=1094); 0/91 of the screen hits are Hart core-essential
 - **post-hoc** magnitude concordance (our footprint breadth `n_hits` vs screen −log10 fdr): Spearman rho = 0.1191, p = 7e-34, n = 10313 — a *different, exploratory* axis from the pre-registered directionality AUROC above
 - essential dropout among the screen's top-50 hits: 11 are Hart core-essential and 31 are absent from our ranking entirely (lost to viability dropout in our Perturb-seq screen)
+- **secondary (fair-axis, exploratory)** — AUROC scored by footprint MAGNITUDE (`n_hits`) instead of directionality: **0.7403** (perm p = 0.0002); excluding Hart essentials: **0.7449** (perm p = 0.0002, n_pos=288, n_neg=9963). Declared secondary — does NOT replace the pre-registered directionality AUROC above.
 - flagship direction agreement: 1/5
   - CD3E: our signed_net sign=+1, screen hit_direction=-1, agree=False
   - PLCG1: our signed_net sign=+1, screen hit_direction=-1, agree=False
@@ -33,6 +44,7 @@ Real run of the phenotype-matched external cross-check (`perturbation_validation
 - confound control — AUROC excluding 0 essential hits: **0.4361** (n_pos=99, n_neg=1086); 0/99 of the screen hits are Hart core-essential
 - **post-hoc** magnitude concordance (our footprint breadth `n_hits` vs screen −log10 fdr): Spearman rho = 0.1076, p = 5.99e-28, n = 10313 — a *different, exploratory* axis from the pre-registered directionality AUROC above
 - essential dropout among the screen's top-50 hits: 0 are Hart core-essential and 12 are absent from our ranking entirely (lost to viability dropout in our Perturb-seq screen)
+- **secondary (fair-axis, exploratory)** — AUROC scored by footprint MAGNITUDE (`n_hits`) instead of directionality: **0.7484** (perm p = 0.0002); excluding Hart essentials: **0.7485** (perm p = 0.0002, n_pos=323, n_neg=9928). Declared secondary — does NOT replace the pre-registered directionality AUROC above.
 - flagship direction agreement: 0/5
   - CD3E: our signed_net sign=+1, screen hit_direction=-1, agree=False
   - PLCG1: our signed_net sign=+1, screen hit_direction=-1, agree=False
@@ -47,6 +59,11 @@ Real run of the phenotype-matched external cross-check (`perturbation_validation
 - confound control — AUROC excluding 1 essential hits: **0.4095** (n_pos=46, n_neg=68); 1/47 of the screen hits are Hart core-essential
 - **post-hoc** magnitude concordance (our footprint breadth `n_hits` vs screen −log10 fdr): Spearman rho = 0.2832, p = 3.31e-22, n = 1126 — a *different, exploratory* axis from the pre-registered directionality AUROC above
 - essential dropout among the screen's top-50 hits: 0 are Hart core-essential and 3 are absent from our ranking entirely (lost to viability dropout in our Perturb-seq screen)
+- **secondary (fair-axis, exploratory)** — AUROC scored by footprint MAGNITUDE (`n_hits`) instead of directionality: **0.7907** (perm p = 0.0002); excluding Hart essentials: **0.7892** (perm p = 0.0002, n_pos=115, n_neg=1008). Declared secondary — does NOT replace the pre-registered directionality AUROC above.
 
 ## Honest framing
-**Corroborative, not confirmatory** (same tier as Tracks A–C in `LEVEL4_EXTERNAL_VALIDATION.md`). These are two independently-generated activation screens using a *different method* (arrayed/pooled CRISPRi) than our Perturb-seq; agreement is consistent with — but does not prove — that the signed ranking captures causal drivers of T-cell activation (that is L5). Direction semantics differ between `signed_net` (transcriptional derepression on KO) and the screen's marker `hit_direction` (activation change on knockdown), so the flagship direction column is a coarse diagnostic, not a strict test. Shifrut 2018 could not be run here (not cached; NCBI/Cell blocked by the sandbox network policy) — the generic harness stays turn-key for it.
+**Two axes, two answers.** (1) The **pre-registered** test — does the signed *directionality* ranking (`primary_rank`) enrich among activation hits — is a **NULL** (AUROC ~0.44–0.48). (2) The **secondary, exploratory** fair-axis test — does footprint *magnitude* (`n_hits`) enrich — **passes** (AUROC 0.74–0.79, perm p = 2×10⁻⁴, essentially unchanged after excluding Hart essentials). The magnitude axis is what the AUROC-0.85 internal calibration was built on, so this is consistent internally; but it was chosen **after** seeing the directionality null, so it is exploratory, not confirmatory, and would need pre-registration on a held-out screen to count as a clean pass.
+
+**Key caveat on the secondary result — detectability/power confound.** A large footprint in our screen and a significant hit in the external screen BOTH scale with how well-expressed and well-powered a gene is (cell count, expression). So part of the 0.74–0.79 magnitude AUROC may reflect shared detectability rather than shared activation biology. Excluding essentials does not remove this; a clean test would additionally control for baseline expression / cell count. The magnitude result is therefore **corroborative with a confound**, not a clean win.
+
+**Other bounds.** These screens use a *different method* (arrayed/pooled CRISPRa/i) than our Perturb-seq; agreement is consistent with — but does not prove — causal drivers of activation (that is L5). Direction semantics differ between `signed_net` (transcriptional derepression on KO) and the screen marker `hit_direction`, so the flagship direction column is a coarse diagnostic. Shifrut 2018 could not be run here (not cached; NCBI/Cell blocked by the sandbox network policy) — the generic harness stays turn-key for it.

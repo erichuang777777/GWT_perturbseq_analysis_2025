@@ -29,6 +29,11 @@ interface TrackDResult {
   summary?: string;
   auroc?: { screen: string; auroc: number; perm_p: number }[];
   interpretation?: string;
+  secondary_magnitude_axis?: {
+    summary?: string;
+    auroc_no_essential?: { screen: string; auroc: number; perm_p: number }[];
+    caveat?: string;
+  };
   report?: string;
   shifrut_note?: string;
 }
@@ -351,6 +356,27 @@ export default function Provenance() {
               <p style={{ fontSize: "12px", color: "#7a6a3f", lineHeight: 1.55, margin: 0 }}>
                 {disc.validation.track_d_phenotype_matched.interpretation}
               </p>
+              {disc.validation.track_d_phenotype_matched.secondary_magnitude_axis ? (
+                <div style={{ marginTop: "8px", paddingTop: "8px", borderTop: "1px dashed #e0d3a8" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                    <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#1a1d24" }}>Fair-axis secondary (magnitude, exploratory)</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".4px", color: "#fff", background: "#0d7d5a", borderRadius: "5px", padding: "1px 6px" }}>
+                      passes (w/ confound)
+                    </span>
+                  </div>
+                  {disc.validation.track_d_phenotype_matched.secondary_magnitude_axis.auroc_no_essential?.length ? (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "11.5px", color: "#7a6a3f", marginBottom: "4px" }}>
+                      {disc.validation.track_d_phenotype_matched.secondary_magnitude_axis.auroc_no_essential.map((a) => (
+                        <span key={a.screen}>{a.screen}: AUROC {a.auroc.toFixed(3)} (p {a.perm_p})</span>
+                      ))}
+                    </div>
+                  ) : null}
+                  <p style={{ fontSize: "11.5px", color: "#7a6a3f", lineHeight: 1.5, margin: 0 }}>
+                    {disc.validation.track_d_phenotype_matched.secondary_magnitude_axis.summary}{" "}
+                    {disc.validation.track_d_phenotype_matched.secondary_magnitude_axis.caveat}
+                  </p>
+                </div>
+              ) : null}
               {disc.validation.track_d_phenotype_matched.shifrut_note ? (
                 <p style={{ fontSize: "11px", color: "#9aa1ad", lineHeight: 1.5, margin: "6px 0 0" }}>
                   {disc.validation.track_d_phenotype_matched.shifrut_note}

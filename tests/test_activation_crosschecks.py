@@ -93,6 +93,20 @@ def test_essential_dropout_explains_missing_hits(mod, ranking):
     assert drop["n_absent_from_ranking"] >= 10
 
 
+def test_magnitude_aligned_fair_axis_passes_and_is_robust_to_essentials(mod, ranking):
+    if not SCHMIDT.exists():
+        pytest.skip("Schmidt screen not cached")
+    c = mod.load_schmidt("CD4+ IL2")
+    ma = mod.magnitude_aligned_crosscheck(ranking, c, mod.load_essentials())
+    # SECONDARY (exploratory) finding: scoring by footprint magnitude (not directionality)
+    # clears the 0.65 acceptance bar, and excluding Hart essentials barely moves it
+    # (so the signal is not a generic essential-gene artefact).
+    assert ma["all"]["auroc"] > 0.65
+    assert ma["no_essential"]["auroc"] > 0.65
+    assert abs(ma["all"]["auroc"] - ma["no_essential"]["auroc"]) < 0.05
+    assert ma["no_essential"]["perm_p"] < 0.05
+
+
 def test_freimer_adapter_aggregates_per_gene(mod):
     if not FREIMER.exists():
         pytest.skip("Freimer screen not cached")
