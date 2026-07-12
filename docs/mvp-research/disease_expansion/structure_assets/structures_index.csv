@@ -1,0 +1,51 @@
+gene,uniprot,protein_name,plddt,length,n_domains,n_tm,n_signal,topology_class,cif_filename,has_alphafold,alphafold_note,protter_filename
+FOXN2,P32314,Forkhead box protein N2,60.31,431,1,0,0,soluble,AF-P32314-F1-model_v6.cif,True,,protter_FOXN2_P32314.png
+MGA,Q8IWI9,MAX gene-associated protein,,3065,3,0,0,soluble,,False,no AlphaFold model (sequence length exceeds AF DB limit),protter_MGA_Q8IWI9.png
+ZNF274,Q96GC6,Neurotrophin receptor-interacting factor homolog,59.19,653,8,0,0,soluble,AF-Q96GC6-F1-model_v6.cif,True,,protter_ZNF274_Q96GC6.png
+TMEM131L,A2VDJ0,Transmembrane protein 131-like,52.94,1609,5,1,1,transmembrane,AF-A2VDJ0-F1-model_v6.cif,True,,protter_TMEM131L_A2VDJ0.png
+THAP5,Q7Z6K1,THAP domain-containing protein 5,58.5,395,1,0,0,soluble,AF-Q7Z6K1-F1-model_v6.cif,True,,protter_THAP5_Q7Z6K1.png
+ZNF200,P98182,Zinc finger protein 200,49.5,395,5,0,0,soluble,AF-P98182-F1-model_v6.cif,True,,protter_ZNF200_P98182.png
+RFX1,P22670,MHC class II regulatory factor RFX1,58.88,979,3,0,0,soluble,AF-P22670-F1-model_v6.cif,True,,protter_RFX1_P22670.png
+ERN1,O75460,Serine/threonine-protein kinase/endoribonuclease IRE1,72.69,977,7,1,1,transmembrane,AF-O75460-F1-model_v6.cif,True,,protter_ERN1_O75460.png
+TMEM205,Q6UW68,Transmembrane protein 205,93.12,189,1,4,0,transmembrane,AF-Q6UW68-F1-model_v6.cif,True,,protter_TMEM205_Q6UW68.png
+TRIM39,Q9HCM9,E3 ubiquitin-protein ligase TRIM39,84.88,518,3,0,0,soluble,AF-Q9HCM9-F1-model_v6.cif,True,,protter_TRIM39_Q9HCM9.png
+WASL,O00401,Actin nucleation-promoting factor WASL,68.75,505,4,0,0,soluble,AF-O00401-F1-model_v6.cif,True,,protter_WASL_O00401.png
+PDIA6,Q15084,Protein disulfide-isomerase A6,86.75,440,3,0,1,soluble,AF-Q15084-F1-model_v6.cif,True,,protter_PDIA6_Q15084.png
+IFNGR2,P38484,Interferon gamma receptor 2,83.75,337,2,1,1,transmembrane,AF-P38484-F1-model_v6.cif,True,,protter_IFNGR2_P38484.png
+TMEM131,Q92545,Transmembrane protein 131,59.44,1883,6,1,1,transmembrane,AF-Q92545-F1-model_v6.cif,True,,protter_TMEM131_Q92545.png
+PCGF6,Q9BYE7,Polycomb group RING finger protein 6,72.0,350,2,0,0,soluble,AF-Q9BYE7-F1-model_v6.cif,True,,protter_PCGF6_Q9BYE7.png
+ZNF589,Q86UQ0,Zinc finger protein 589,53.97,364,5,0,0,soluble,AF-Q86UQ0-F1-model_v6.cif,True,,protter_ZNF589_Q86UQ0.png
+LIN37,Q96GY3,Protein lin-37 homolog,69.88,246,0,0,0,soluble,AF-Q96GY3-F1-model_v6.cif,True,,protter_LIN37_Q96GY3.png
+ELOC,Q15369,Elongin-C,89.81,112,1,0,0,soluble,AF-Q15369-F1-model_v6.cif,True,,protter_ELOC_Q15369.png
+BAHD1,Q8TBE0,Bromo adjacent homology domain-containing 1 protein,50.38,780,1,0,0,soluble,AF-Q8TBE0-F1-model_v6.cif,True,,protter_BAHD1_Q8TBE0.png
+GNPAT,O15228,Dihydroxyacetone phosphate acyltransferase,88.5,680,2,0,0,soluble,AF-O15228-F1-model_v6.cif,True,,protter_GNPAT_O15228.png
+EGLN1,Q9GZT9,Egl nine homolog 1,71.88,426,2,0,0,soluble,AF-Q9GZT9-F1-model_v6.cif,True,,protter_EGLN1_Q9GZT9.png
+UBE2G2,P60604,Ubiquitin-conjugating enzyme E2 G2,94.44,165,1,0,0,soluble,AF-P60604-F1-model_v6.cif,True,,protter_UBE2G2_P60604.png
+R3HCC1L,Q7Z5L2,Coiled-coil domain-containing protein R3HCC1L,50.78,792,1,0,0,soluble,AF-Q7Z5L2-F1-model_v6.cif,True,,protter_R3HCC1L_Q7Z5L2.png
+NABP1,Q96AH0,SOSS complex subunit B2,73.88,204,1,0,0,soluble,AF-Q96AH0-F1-model_v6.cif,True,,protter_NABP1_Q96AH0.png
+P4HB,P07237,Protein disulfide-isomerase,88.5,508,2,0,1,soluble,AF-P07237-F1-model_v6.cif,True,,protter_P4HB_P07237.png
+ZNF507,Q8TCN5,Zinc finger protein 507,51.0,953,9,0,0,soluble,AF-Q8TCN5-F1-model_v6.cif,True,,protter_ZNF507_Q8TCN5.png
+NCR3,O14931,Natural cytotoxicity triggering receptor 3,83.56,201,1,1,1,transmembrane,AF-O14931-F1-model_v6.cif,True,,protter_NCR3_O14931.png
+TET2,Q6N021,Methylcytosine dioxygenase TET2,47.12,2002,1,0,0,soluble,AF-Q6N021-F1-model_v6.cif,True,,protter_TET2_Q6N021.png
+CDIPT,O14735,CDP-diacylglycerol--inositol 3-phosphatidyltransferase,90.0,213,0,6,0,transmembrane,AF-O14735-F1-model_v6.cif,True,,protter_CDIPT_O14735.png
+ZC3H4,Q9UPT8,Zinc finger CCCH domain-containing protein 4,50.25,1303,3,0,0,soluble,AF-Q9UPT8-F1-model_v6.cif,True,,protter_ZC3H4_Q9UPT8.png
+GPAA1,O43292,GPI-anchor transamidase component GPAA1,87.25,621,0,8,0,transmembrane,AF-O43292-F1-model_v6.cif,True,,protter_GPAA1_O43292.png
+VPS13A,Q96RL7,Intermembrane lipid transfer protein VPS13A,,3174,4,0,0,soluble,,False,no AlphaFold model (sequence length exceeds AF DB limit),protter_VPS13A_Q96RL7.png
+PHF20,Q9BVI0,PHD finger protein 20,54.47,1012,5,0,0,soluble,AF-Q9BVI0-F1-model_v6.cif,True,,protter_PHF20_Q9BVI0.png
+FBXO11,Q86XK2,F-box only protein 11,82.56,927,8,0,0,soluble,AF-Q86XK2-F1-model_v6.cif,True,,protter_FBXO11_Q86XK2.png
+ZNF35,P13682,Zinc finger protein 35,63.31,527,11,0,0,soluble,AF-P13682-F1-model_v6.cif,True,,protter_ZNF35_P13682.png
+SRR,Q9GZT4,Serine racemase,93.94,340,1,0,0,soluble,AF-Q9GZT4-F1-model_v6.cif,True,,protter_SRR_Q9GZT4.png
+TENT5C,Q5VWP2,Terminal nucleotidyltransferase 5C,87.25,391,0,0,0,soluble,AF-Q5VWP2-F1-model_v6.cif,True,,protter_TENT5C_Q5VWP2.png
+CCNA2,P20248,Cyclin-A2,73.06,432,3,0,0,soluble,AF-P20248-F1-model_v6.cif,True,,protter_CCNA2_P20248.png
+CYTH3,O43739,Cytohesin-3,84.19,400,2,0,0,soluble,AF-O43739-F1-model_v6.cif,True,,protter_CYTH3_O43739.png
+TXNL1,O43396,Thioredoxin-like protein 1,91.62,289,2,0,0,soluble,AF-O43396-F1-model_v6.cif,True,,protter_TXNL1_O43396.png
+UBE2E1,P51965,Ubiquitin-conjugating enzyme E2 E1,86.69,193,1,0,0,soluble,AF-P51965-F1-model_v6.cif,True,,protter_UBE2E1_P51965.png
+PPP6C,O00743,Serine/threonine-protein phosphatase 6 catalytic subunit,95.88,305,1,0,0,soluble,AF-O00743-F1-model_v6.cif,True,,protter_PPP6C_O00743.png
+VHL,P40337,von Hippel-Lindau disease tumor suppressor,84.44,213,1,0,0,soluble,AF-P40337-F1-model_v6.cif,True,,protter_VHL_P40337.png
+IRF8,Q02556,Interferon regulatory factor 8,74.69,426,2,0,0,soluble,AF-Q02556-F1-model_v6.cif,True,,protter_IRF8_Q02556.png
+TGIF2,Q9GZN2,Homeobox protein TGIF2,68.44,237,1,0,0,soluble,AF-Q9GZN2-F1-model_v6.cif,True,,protter_TGIF2_Q9GZN2.png
+XBP1,P17861,X-box-binding protein 1,68.31,261,1,1,0,transmembrane,AF-P17861-F1-model_v6.cif,True,,protter_XBP1_P17861.png
+ATP1B3,P54709,Sodium/potassium-transporting ATPase subunit beta-3,89.69,279,0,1,0,transmembrane,AF-P54709-F1-model_v6.cif,True,,protter_ATP1B3_P54709.png
+SAMD1,Q6SPF0,Sterile alpha motif domain-containing protein 1,62.0,538,3,0,0,soluble,AF-Q6SPF0-F1-model_v6.cif,True,,protter_SAMD1_Q6SPF0.png
+UBE2H,P62256,Ubiquitin-conjugating enzyme E2 H,89.31,183,1,0,0,soluble,AF-P62256-F1-model_v6.cif,True,,protter_UBE2H_P62256.png
+HYKK,A2RU49,Hydroxylysine kinase,93.56,373,1,0,0,soluble,AF-A2RU49-F1-model_v6.cif,True,,protter_HYKK_A2RU49.png
