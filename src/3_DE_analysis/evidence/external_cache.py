@@ -27,12 +27,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
+
 try:
     import requests
 except ImportError:  # pragma: no cover - requests is a project dependency
     requests = None  # type: ignore
 
 from common import degrade, timeutil
+from config import settings
 
 CLINICALTRIALS_API = "https://clinicaltrials.gov/api/v2/studies"
 PUBMED_ESEARCH_API = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
@@ -42,6 +45,13 @@ OPEN_TARGETS_GRAPHQL_API = "https://api.platform.opentargets.org/api/v4/graphql"
 SOURCE_VERSION = "external_evidence_cache/v1"
 DEFAULT_TIMEOUT = 15
 TTL_SECONDS_DEFAULT = 30 * 24 * 3600  # 30 days; external evidence changes slowly
+
+# Offline fallback for _clinicaltrials_count_for_drug: a pre-development literature-scan
+# snapshot (327 rows, 36 immunomodulatory drugs, captured before this connector existed) that
+# sat unused since its initial commit -- confirmed via full git-history search, see
+# docs/data_governance_checklist.md §6. Engaged ONLY when the live API call fails; never
+# presented as live data (source_status: "offline_snapshot", not "ok").
+CLINICALTRIALS_OFFLINE_SNAPSHOT_PATH = settings.REPO_ROOT / "sources" / "topic13_clinicaltrials_flat.csv"
 
 # Immune indications used to scope trial/literature searches to CD4/autoimmune context,
 # consistent with the tool's disease-relevance vocabulary (topic05 benchmark axes).
@@ -328,6 +338,68 @@ def _open_targets_known_drugs(ensembl_id: str) -> List[Dict[str, Any]]:
     return out
 
 
+_OFFLINE_SNAPSHOT_CACHE: Dict[str, Optional[pd.DataFrame]] = {}
+_OFFLINE_SNAPSHOT_LOADED = False
+
+
+def _load_clinicaltrials_offline_snapshot() -> Optional[pd.DataFrame]:
+    """Load the pre-development ClinicalTrials.gov snapshot, once, cached.
+
+    Returns ``None`` (not an exception) when the file is absent -- callers treat that as
+    "no offline fallback available", never a crash.
+    """
+    global _OFFLINE_SNAPSHOT_LOADED
+    if _OFFLINE_SNAPSHOT_LOADED:
+        return _OFFLINE_SNAPSHOT_CACHE.get("df")
+    _OFFLINE_SNAPSHOT_LOADED = True
+    if not CLINICALTRIALS_OFFLINE_SNAPSHOT_PATH.exists():
+        _OFFLINE_SNAPSHOT_CACHE["df"] = None
+        return None
+    df = pd.read_csv(CLINICALTRIALS_OFFLINE_SNAPSHOT_PATH)
+    _OFFLINE_SNAPSHOT_CACHE["df"] = df
+    return df
+
+
+def _clinicaltrials_count_for_drug_offline(drug_name: str, disease_name: str) -> Optional[Dict[str, Any]]:
+    """Offline fallback for ``_clinicaltrials_count_for_drug``, used only when the live API fails.
+
+    Matches ``drug_name`` against the snapshot's ``search_term`` column (case-insensitive
+    substring, since a few search terms are composite phrases like "CD25 daclizumab" rather
+    than a bare drug name), then counts snapshot rows whose free-text ``conditions`` field
+    contains ``disease_name`` as a substring -- an approximation of the live API's
+    ``query.cond`` filter, not an identical query.
+
+    Returns ``None`` (not a 0) when the drug is outside the snapshot's ~36-drug coverage --
+    that is "no offline data available", never "zero trials found". Never returns
+    ``source_status: "ok"`` -- this is stale, partial data, always labelled
+    ``"offline_snapshot"`` with an explicit coverage caveat so a caller can't mistake it for
+    a live count.
+    """
+    df = _load_clinicaltrials_offline_snapshot()
+    if df is None:
+        return None
+    drug_lower = drug_name.strip().lower()
+    matched = df[df["search_term"].astype(str).str.lower().apply(
+        lambda term: drug_lower in term or term in drug_lower
+    )]
+    if matched.empty:
+        return None
+    disease_lower = disease_name.strip().lower()
+    hits = matched[matched["conditions"].astype(str).str.lower().str.contains(disease_lower, na=False)]
+    return {
+        "source_status": "offline_snapshot",
+        "n_trials": int(len(hits)),
+        "reason": "live ClinicalTrials.gov API unreachable; using a pre-development snapshot",
+        "snapshot_note": (
+            "This count is from a static snapshot (sources/topic13_clinicaltrials_flat.csv, "
+            "~36 pre-selected immunomodulatory drugs, captured before this connector existed), "
+            "NOT a live query -- coverage is limited to drugs in that snapshot and the count is "
+            "a substring match on free-text conditions, not the live API's structured filter. "
+            "Treat as directional only; re-run when the live API is reachable for an authoritative count."
+        ),
+    }
+
+
 def _clinicaltrials_count_for_drug(drug_name: str, disease_name: str) -> Dict[str, Any]:
     """Count ClinicalTrials.gov studies actually pairing this drug with this disease.
 
@@ -337,6 +409,10 @@ def _clinicaltrials_count_for_drug(drug_name: str, disease_name: str) -> Dict[st
     indication (e.g. basiliximab -> kidney transplant, not rheumatoid
     arthritis) must be checked against the disease actually queried, not
     assumed from the gene-disease genetic association alone.
+
+    Falls back to a static offline snapshot (``_clinicaltrials_count_for_drug_offline``)
+    ONLY when the live call fails and the drug happens to be in that snapshot's small
+    coverage -- otherwise degrades to ``source_status: "unavailable"`` exactly as before.
     """
     try:
         resp = requests.get(
@@ -354,6 +430,9 @@ def _clinicaltrials_count_for_drug(drug_name: str, disease_name: str) -> Dict[st
         data = resp.json()
         return {"source_status": "ok", "n_trials": data.get("totalCount")}
     except Exception as exc:
+        offline = _clinicaltrials_count_for_drug_offline(drug_name, disease_name)
+        if offline is not None:
+            return offline
         return {"source_status": "unavailable", "reason": f"{type(exc).__name__}: {exc}", "n_trials": None}
 
 
