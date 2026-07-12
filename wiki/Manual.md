@@ -12,7 +12,7 @@
 2. [完整架構圖(ASCII)](#2-完整架構圖ascii)
 3. [數據來源 Data Sources](#3-數據來源-data-sources)
 4. [引用文獻 References](#4-引用文獻-references)
-5. [說明文件與開發文件索引](#5-說明文件與開發文件索引)
+5. [說明文件索引](#5-說明文件索引)
 6. [Commit 紀錄摘要](#6-commit-紀錄摘要)
 7. [附錄:關鍵常數與縮寫](#7-附錄關鍵常數與縮寫)
 
@@ -209,99 +209,14 @@ GWT_perturbseq_analysis_2025/
 
 ## 4. 引用文獻 References
 
-> 完整清單與「如何用於驗證」在 `sources/topic07_key_papers_and_pmids_summary.md`。下表為精選;每項附 PMID/DOI。
+精選引用(主錨點、primary T 細胞驗證、安全/方向性藥理對照、方法學/統計、藥物/疾病、資料庫)之完整清單與 PMID/DOI:
 
-### 4.1 主錨點與 primary T 細胞驗證
-| 研究 | PMID / DOI | 角色 |
-|---|---|---|
-| Zhu / Dann et al.,genome-scale Perturb-seq in primary human CD4⁺ T cells | DOI `10.64898/2025.12.23.696273`(preprint) | **本專案 ground truth** |
-| Shifrut et al.,primary human T-cell SLICE/CROP-seq | PMID `30449619` / `10.1016/j.cell.2018.10.024` | primary T 細胞擾動基準(GSE119450) |
-| Schmidt et al.,CRISPRa/i in primary human T cells | PMID `35113687` / `10.1126/science.abj4008` | IL-2/IFN-γ 方向性基準(GSE190604) |
-| Arce et al.,T-cell rest/activation circuits | PMID `39663454` / `10.1038/s41586-024-08314-y` | Rest vs Stim 驗證集 |
-| Weinstock et al.,CD4 GRN inference | PMID `39395408` / `10.1016/j.xgen.2024.100671` | 網路邊 / JAK-STAT / IEI 驗證 |
-| Freimer et al.,T-cell effector screens | PMID `36356142` / `10.1126/science.abn5647` | 效應/細胞激素調控子交叉核對 |
-| Ho et al.,autoimmune variants + CD4 MPRA/CRISPRi | PMID `40968290` / `10.1038/s41588-025-02301-3` | 自體免疫致病變異連結 |
-| Zhou et al.,in vivo T-cell CRISPR fate regulomes | PMID `37968405` / `10.1038/s41586-023-06733-x` | in-vivo 對照 |
-| Knudsen et al.,CAR T modifiers | PMID `40993381` / `10.1038/s41586-025-09489-8` | 轉譯對照(FITdb) |
+- `docs/technical_methods.md` §8 — 28 條正式編號引用
+- `docs/provenance_registry.csv`(`category=reference`)· `sources/topic07_key_papers_and_pmids_summary.md`(含檢索脈絡與機器可讀原始查詢)
 
-### 4.2 安全性與方向性參考(藥理對照)
-| 藥物 / 主題 | PMID / DOI | 意義 |
-|---|---|---|
-| Ibalizumab(anti-CD4,HIV) | PMID `30110589` / `10.1056/NEJMoa1711460` | CD4 可成藥,但成功在抗病毒進入阻斷 |
-| Teplizumab(anti-CD3,T1D) | PMID `31180194` / `10.1056/NEJMoa1902226` | T 細胞耐受;CRS/淋巴球減少警示 |
-| Abatacept(CD80/86–CD28) | PMID `16785475` | 共刺激阻斷基準 |
-| Cyclosporine(calcineurin/NFAT) | PMID `6350878` | 強 TCR 抑制,窄治療窗 |
-| Tofacitinib ORAL Surveillance(JAK) | PMID `35081280` / `10.1056/NEJMoa2109927` | JAK 類訊號安全上限(MACE/癌/感染) |
-| Fingolimod(S1P,MS) | PMID `20089952` | 運輸效應不被 in-vitro RNA 捕捉 |
-| Ipilimumab(checkpoint) | PMID `20525992` | 免疫增強方向對照 |
+## 5. 說明文件索引
 
-### 4.3 方法學與統計(pipeline 驗證)
-Perturb-seq PMID `27984732`(`10.1016/j.cell.2016.11.038`)· CRISP-seq `27984734` · CROP-seq `28099430`(`10.1038/nmeth.4177`)· ECCITE-seq `31011186` · direct guide capture `32231336` · Replogle genome-scale `35688146`(`10.1016/j.cell.2022.05.013`)· Norman genetic interactions `31395745` · Mixscape/Papalexi `33649593` · Perturb-CITE-seq/Frangieh `33649592` · scMAGeCK `31980032` · **SCEPTRE** `34930414` · SCEPTRE low-MOI `38760839` · **pertpy** `41476114`。
-
-### 4.4 藥物 / 疾病 / 標靶證據
-LINCS/CMap L1000 `29195078`(`10.1016/j.cell.2017.10.049`)· sci-Plex3 `31806696` · Open Problems benchmark `40595413` · OneK1K eQTL `35389779` · DICE `30449622` · Lupus PBMC atlas `35389781` · UC colon atlas `31348891` · Crohn anti-TNF `31474370` · RA synovium AMP `31061532` / phase II `37938773` · Ota perturbation+genetics `41372418`。
-
-### 4.5 資料庫與資源
-Open Targets `39657122` · ChEMBL 2023 `37933841` · CELLxGENE Discover/Census `39607691`(`10.1093/nar/gkae1142`)· scPerturb `38279009` · PerturBase `39377396` · PerturbDB `39265120` · PerturbSeq.db `40381983` · TCPGdb `41270225` · Tahoe-100M/Arc(`10.1101/2025.02.20.639398`,preprint)。
-
-> repo 內另有機器可讀的原始查詢結果:`sources/topic0*_pubmed_*.json`、`topic13_clinicaltrials_*.json`、`topic01_openalex_round1.json` 等,可回溯每個 PMID 的檢索脈絡。
-
----
-
-## 5. 說明文件與開發文件索引
-
-### 5.1 `docs/`(權威規格與計劃)
-| 檔案 | 內容 |
-|---|---|
-| `documentation_index.md` | **說明文件總盤點**:所有文件按用途分組(前端展示 / pipeline 每階段+EDA / 程式各階段 / 權威 / wiki / sources),附現況與 staleness watch |
-| `technical_methods.md` | **技術方法與驗證說明**(peer-review 等級:資料出處、方法、校準、限制、正式參考文獻) |
-| `figure_guide.md` | **圖表導讀**(科研人員):codebase 圖表的正式閱讀路徑,嵌入 EDA/漏斗/排序/模組/驗證/決策圖 + 完整目錄 |
-| `server_modules.md` | **Server 模組參考**:13 個 API router 的用途/端點/輸入輸出、載入容錯、概念層 M01–M20,集中一頁 |
-| `provenance_registry.md` / `.csv` | **Provenance 登錄表**:資料來源 × 演算法 × 參考文獻,對齊同一組固定欄位(機器可讀 CSV;79 列) |
-| `frontend_disclosure_spec.md` | **前端揭露規格**:哪些說明要在 portal 揭露、放哪、來源檔、靜態匯出怎麼供給、外部資料 attribution、待補文件清單 |
-| `data_use_terms.md` | **資料使用與條款**(對外 portal 草稿):用途限定、授權(MIT + 外部來源)、引用、attribution、無個資、無擔保 |
-| `bulk_download_schema.md` | **Bulk download 欄位說明**:`real-dataset.json` / `disclosure.json` / `provenance_registry.csv` 逐欄結構與「null=unknown」規則 |
-| `researcher_guide/` | **研究人員導覽**(單頁網站):判讀標靶卡片/就緒度/校準、API 入口、圖表路徑、建議閱讀順序(科普站的科研人員對應版) |
-| `IMPLEMENTATION_PLAN.md` | **活的實作計劃**(每個 Wave 完成/驗證表,權威狀態) |
-| `DRUG_DISCOVERY_TOOL_DEVELOPMENT_PLAN.md` | 策略層:為什麼做、功能面 |
-| `data_dictionary.md` | 每個產出欄位逐欄定義 |
-| `de_and_baseline_spec.md` | NTC 基線與 DE 方法學 |
-| `data_governance_checklist.md` | 資料治理與授權(`unknown≠0` 原則) |
-| `cache_and_versioning_policy.md` | 快取與版本失效政策 |
-| `external_overlay_integration_concept.md` | 安全性 + 膜蛋白 overlay 整合概念(§1.12) |
-| `architecture_refactor_plan.md` | API 分層/模組拆分重構計劃 |
-| `next_phases_plan.md` / `improvement_roadmap.md` | 後續階段與改進路線 |
-| `server_northstar.md` | 對外服務/資料入口 north-star |
-| `concept_dictionary.md` / `compass_concept_integration_plan.md` | 概念字典 / COMPASS 概念整合 |
-| `sandbox_blocked_tasks.md` | 沙盒受限、需在他處執行的任務 |
-| `API.md` | 消費端 API quickstart |
-| `mvp-research/` | MVP 研究交接:資料清單、候選 shortlist、PR10 執行報告、LINCS/ADC/pathway 資料來源建議、視覺化與 pipeline 子資料夾 |
-
-### 5.2 Wiki(導覽層,本資料夾)
-`Home`(介紹)· `Development-Guide`(開發說明)· `Manual`(本頁)· `Maintenance`(維護)· `Roadmap`(路線圖)· `Plan`(計劃)· `Tech-Debt`(技術債)· `_Sidebar` · `README`。
-
-### 5.3 `sources/` 研究主題索引(topic01–16)
-| Topic | 主題 |
-|---|---|
-| 01 | 本地可成藥標靶 / CD4 藥物開發總結 |
-| 02 | 既有工具盤點 tool inventory |
-| 03 | 開放資料盤點與策略 open data inventory |
-| 04 | 藥物開發需求與就緒度檢查清單 |
-| 05 | 成功藥物 benchmark |
-| 06 | 工具箱架構總結 |
-| 07 | **關鍵論文與 PMID**(§4 來源) |
-| 08 | 批次效應校正 |
-| 09 | EDA 報告與輸出 |
-| 10 | 廣泛掃描相關資訊 |
-| 11 | 突破方向與工具箱機會 |
-| 12 | 臨床試驗痛點 / 論文限制與未來工作 |
-| 13 | CD4 臨床試驗進度 + ClinicalTrials 快照 |
-| 14 | 方法學核心 / target card 規格 / scRNA 生統驗證方法 |
-| 15 | CD4 上下游框架 + seed modules |
-| 16 | 藥物開發工具規格 |
-其他:`project_decision_log.md`(決策日誌)、`project_roadmap.md`、`release_notes_m3_5_upload_import.md`、`broad_effect_genes.txt`(239 基因)、`target_tool_cache/`(建構快取,含 `_evidence/<gene>.json` 種子)。
-
----
+全 repo 文件的完整盤點(前端展示 / pipeline 每階段+EDA / 程式各階段 / 權威 docs / wiki / sources,附現況與 staleness watch)集中在 **`docs/documentation_index.md`**。Wiki 頁導覽見側邊欄 `_Sidebar`。
 
 ## 6. Commit 紀錄摘要
 

@@ -63,17 +63,17 @@
 | 階段 | README | 現況 |
 |---|---|---|
 | `src/1_preprocess/` | ✅ 有 | ✅ |
-| `src/2_embedding/` | ❌ 無 | ⚠️ 缺 README(見主 `README.md` 描述) |
+| `src/2_embedding/` | ✅ 有 | ✅ 已補 |
 | `src/3_DE_analysis/`(工具主體) | ✅ 有 | ✅ |
-| `src/4_polarization_signatures/` | ❌ 無 | ⚠️ 缺 |
-| `src/5_cytokine_regulators/` | ❌ 無 | ⚠️ 缺 |
-| `src/6_functional_interaction/` | ❌ 無 | ⚠️ 缺 |
-| `src/7_1k1k_analysis/` | ❌ 無 | ⚠️ 缺 |
+| `src/4_polarization_signatures/` | ✅ 有 | ✅ 已補 |
+| `src/5_cytokine_regulators/` | ✅ 有 | ✅ 已補 |
+| `src/6_functional_interaction/` | ✅ 有 | ✅ 已補 |
+| `src/7_1k1k_analysis/` | ✅ 有 | ✅ 已補 |
 | `src/8_lymphocyte_counts_LoF/` | ✅ 有 | ✅ |
 | `src/9_cell_integration/`(+ `RUN_ON_REAL_DATA.md`) | ✅ 有 | ✅ 程式就緒,真實資料委外 |
 | `src/10_ml_perturbation_prediction/`(+ gears/results READMEs) | ✅ 有 | ✅ 新增(ML 擾動預測 benchmark) |
 
-> `src/2/4/5/6/7` 無獨立 README,依賴主 `README.md` 的 `src/` 段落與 `metadata/figure_map.md`。若要補齊,見 §6 建議。
+> 所有 `src/1–10` 階段皆有 README(`src/2/4/5/6/7` 已補上簡潔版)。論文圖對照見 `metadata/figure_map.md`。
 
 ---
 
@@ -120,7 +120,7 @@
 |---|---|---|
 | 測試數 18 → **34** | `wiki/Development-Guide.md`、`wiki/Manual.md` | ✅ 本輪修正 |
 | 前端 Streamlit → **React portal** | `wiki/Home.md`、`wiki/Manual.md`、`wiki/Maintenance.md`、`wiki/Map.md` | ✅ 本輪修正 |
-| `src/2/4/5/6/7` 缺 README | `src/` | 🔲 建議補(可代做) |
+| `src/2/4/5/6/7` 缺 README | `src/` | ✅ 已補(簡潔版) |
 | 歷史文件含 Streamlit 字樣 | `docs/frontend_*`、`PIPELINE_LINEAGE`、mvp-research/visualization、closure_audit 等 | ⏸️ 保留(歷史計劃/稽核紀錄,非現況宣稱) |
 | `_docs/stage_manifest.SUPERSEDED.md` | pipeline/_docs | ⏸️ 已標 SUPERSEDED |
 
