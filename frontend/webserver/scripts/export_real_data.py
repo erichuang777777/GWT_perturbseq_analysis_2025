@@ -25,7 +25,16 @@ value that isn't backed by one of these files:
       this deeper external evidence is populated only for the genes this
       cache actually covers, and left empty (not fabricated) for the rest.
   - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
+      Real gnomAD v4 LOEUF / pLI constraint metrics, genome-wide (~19,155 genes).
+  - sources/target_tool_cache/_overlays/gtex_per_tissue.parquet
+      Real GTEx off-context tissue-expression breadth (Blood/Spleen excluded).
+      Combined with the gnomAD overlay above to populate readiness's
+      composite_safety_liability (high/moderate/low/unknown).
+  - src/8_lymphocyte_counts_LoF/input/Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv
+      Real UK Biobank exome-wide rare-LoF-variant lymphocyte-count burden
+      estimates (Backman et al. 2021), zero-network, ~98.5% of selected
+      genes. Complementary to gnomAD: gnomAD is population tolerance for
+      losing the gene; this is the measured phenotypic consequence.
 
 Target selection: every gene whose best-condition statistical_evidence_grade
 is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
@@ -69,12 +78,20 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SRC_3DE = REPO_ROOT / "src" / "3_DE_analysis"
 sys.path.insert(0, str(SRC_3DE))
 
-CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
+CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137" / "target_cards.csv"
 EVIDENCE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_evidence"
 GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
 ESSENTIALS_TSV = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 BROAD_EFFECT_TXT = REPO_ROOT / "sources" / "broad_effect_genes.txt"
+# Local (zero-network) UK Biobank exome-wide rare-LoF-variant lymphocyte-count
+# burden estimates (Backman et al. 2021) -- registered in evidence/registry.py
+# but never previously wired into this export. Feeds the figure atlas's real
+# "burden" panel (perturbation effect vs. measured population LoF burden) and
+# Dossier's "Population genetics" card, alongside gnomAD's constraint signal.
+LYMPHOCYTE_BURDEN_TSV = (
+    REPO_ROOT / "src" / "8_lymphocyte_counts_LoF" / "input" / "Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv"
+)
 
 # Cached full-screen compute_readiness / annotate_targets output (see module
 # docstring). Committed to the repo so nobody has to pay the ~15s recompute
@@ -171,6 +188,8 @@ def main() -> None:
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     from data.loaders import load_gene_set
+    from evidence.population import build_population_hypothesis_card, load_burden_estimates
+    from evidence.safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay
     from individual_concept_profile import load_concept_modules
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
@@ -180,6 +199,18 @@ def main() -> None:
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
     print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
 
+    # Local (zero-network) UK Biobank lymphocyte-count LoF-burden -- see module docstring.
+    burden = load_burden_estimates("lymphocyte_count", path=LYMPHOCYTE_BURDEN_TSV)
+    pop_burden_by_gene: dict = {}
+    if burden["available"]:
+        pop_cards = build_population_hypothesis_card(cards, burden["estimates"], trait="lymphocyte_count")
+        pop_burden_by_gene = {r["target"]: r for _, r in pop_cards.iterrows()}
+    print(
+        f"Population LoF-burden (lymphocyte count): "
+        f"{'unavailable — ' + str(burden['reason']) if not burden['available'] else str(len(pop_burden_by_gene)) + ' genes'}",
+        file=sys.stderr,
+    )
+
     if not args.force and _cache_is_fresh():
         print(f"Reading cached readiness/annotation from {CACHE_DIR} (pass --force to recompute)...", file=sys.stderr)
         readiness = pd.read_parquet(READINESS_CACHE)
@@ -188,6 +219,18 @@ def main() -> None:
         overlays = load_overlays(GENE_LISTS_DIR)
         essentials = load_gene_set(ESSENTIALS_TSV) if ESSENTIALS_TSV.exists() else set()
         broad_effect = load_gene_set(BROAD_EFFECT_TXT) if BROAD_EFFECT_TXT.exists() else set()
+
+        # GTEx off-context breadth + gnomAD constraint, so compute_readiness can
+        # populate composite_safety_liability -- previously omitted here, which
+        # silently left that field "unknown" for every gene even though both
+        # overlay files exist and the engine fully supports them.
+        gtex_overlay = load_gtex_safety_overlay()
+        gnomad_overlay = load_gnomad_constraint_overlay()
+        print(
+            f"GTEx safety overlay: available={gtex_overlay.get('available')} · "
+            f"gnomAD constraint overlay: available={gnomad_overlay.get('available')}",
+            file=sys.stderr,
+        )
 
         def evidence_lookup(gene: str):
             return load_evidence(gene)
@@ -199,6 +242,8 @@ def main() -> None:
             essentials=essentials,
             broad_effect_genes=broad_effect,
             evidence_lookup=evidence_lookup,
+            gtex_overlay=gtex_overlay,
+            gnomad_overlay=gnomad_overlay,
         )
         # disease_relevance_score is int-or-"unknown" (readiness.py's UNKNOWN
         # sentinel) -- a genuinely mixed-type column parquet can't store.
@@ -363,6 +408,20 @@ def main() -> None:
         if r_row is not None and r_row.get("red_flag_override") not in (None, "none"):
             red_flags = str(r_row["red_flag_override"]).split(";")
 
+        pb = pop_burden_by_gene.get(gene)
+        pop_burden_out = None
+        if pb is not None:
+            pop_burden_out = {
+                "trait": pb["trait"],
+                "effectEstimate": nan_to_none(pb["population_effect_estimate"]),
+                "ci95Lower": nan_to_none(pb["ci_95_lower"]),
+                "ci95Upper": nan_to_none(pb["ci_95_upper"]),
+                "ciExcludesZero": bool(pb["ci_excludes_zero"]),
+                "direction": pb["direction"],
+                "hypothesis": pb["population_hypothesis"],
+                "caveat": pb["caveat"],
+            }
+
         targets_out.append({
             "gene": gene,
             "name": GENE_FULL_NAMES.get(gene, gene),
@@ -415,6 +474,7 @@ def main() -> None:
             "clinicalTrials": trials_out,
             "literature": literature_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
+            "populationBurden": pop_burden_out,
         })
 
     call_counts = pd.Series([t["readiness"]["call"] for t in targets_out if t["readiness"]]).value_counts().to_dict()
@@ -422,7 +482,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v4 constraint",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v4 constraint + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules
