@@ -153,6 +153,9 @@ export default function Deck() {
             </ul>
           </div>
         </div>
+        <div style={{ marginTop: "16px", padding: "11px 14px", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", fontSize: "12.5px", lineHeight: 1.5, color: "#7a6a3f" }}>
+          <b style={{ color: "#8a6516" }}>Validation, honestly:</b> internal calibration passes (ranking AUROC 0.85, neg-control 99.96%, rank-stability r=0.943). Phenotype-matched external screens (Track D) were <b>actually run</b>: the directionality ranking is a <b>null</b> (AUROC &lt;0.5); a magnitude-axis fair version passes (0.74–0.79) but is exploratory with a detectability confound. <b>Corroborative, not confirmatory — L5 wet-lab is the gap.</b>
+        </div>
       </Slide>
 
       <Slide n="4 / 4" eyebrow="At a glance · Infographic" title="Data → decision: the story in one figure">

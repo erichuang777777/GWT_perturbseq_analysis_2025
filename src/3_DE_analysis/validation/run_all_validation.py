@@ -62,6 +62,10 @@ DEFAULT_TRACK_C = (
 )
 DEFAULT_STATUS_CSV = REPO_ROOT / "docs/validation_status.csv"
 DEFAULT_REPORT_MD = REPO_ROOT / "docs/validation_report.md"
+TRACK_D_SUMMARY_CSV = (
+    REPO_ROOT
+    / "docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_summary.csv"
+)
 
 # Source docs for the calibration constants (L1/L2/L3/calibration numbers we do
 # NOT recompute here — the underlying artifacts are not fully present in this
@@ -487,6 +491,51 @@ def write_report_md(rows: list[dict], out_path: Path) -> None:
             f"**Note:** {n_skipped} L4 sub-check(s) were SKIPPED because a required "
             "input CSV was missing — see `source_file` above for which one. No "
             "number was fabricated in its place."
+        )
+        lines.append("")
+
+    # ---- Track D — phenotype-matched external activation screens (actual run) ----
+    lines.append("## Track D — phenotype-matched external screens (actual run)")
+    lines.append("")
+    td = _read_csv_or_none(TRACK_D_SUMMARY_CSV)
+    if td is None or td.empty:
+        lines.append(
+            "_Not present in this checkout._ Generate with "
+            "`docs/mvp-research/level4_external_validation/run_activation_crosschecks.py`."
+        )
+        lines.append("")
+    else:
+        lines.append(
+            "Cross-check of the signed ranking against activation-phenotype CRISPR "
+            "screens (Schmidt 2022, Freimer 2022). Two axes, two answers — reported "
+            "honestly, and this does **not** upgrade L4 (stays `partial`)."
+        )
+        lines.append("")
+        lines.append("| Screen | directionality AUROC (pre-registered) | perm p | magnitude AUROC (fair, no essentials) | perm p |")
+        lines.append("|---|---|---|---|---|")
+        for _, r in td.iterrows():
+            lines.append(
+                f"| {r.get('screen','?')} | {float(r.get('auroc', float('nan'))):.3f} | "
+                f"{float(r.get('perm_p', float('nan'))):.2g} | "
+                f"{float(r.get('magaxis_auroc_no_essential', float('nan'))):.3f} | "
+                f"{float(r.get('magaxis_auroc_no_essential_perm_p', float('nan'))):.2g} |"
+            )
+        lines.append("")
+        lines.append(
+            "- **Pre-registered (directionality) test = NULL** (AUROC < 0.5): the signed "
+            "directionality ranking does not enrich among activation hits — different axis + "
+            "essential-gene viability dropout."
+        )
+        lines.append(
+            "- **Secondary (magnitude) test passes** (AUROC 0.74–0.79, perm p ≈ 2e-4, robust "
+            "to excluding essentials) but is **exploratory** and carries a **detectability "
+            "confound** (footprint size and external-hit significance both scale with "
+            "expression/power). Corroborative-with-confound, not a clean win."
+        )
+        lines.append(
+            "- Full report: "
+            "`docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_combined.md`. "
+            "Shifrut 2018 not runnable here (not cached; NCBI/Cell network-blocked)."
         )
         lines.append("")
 

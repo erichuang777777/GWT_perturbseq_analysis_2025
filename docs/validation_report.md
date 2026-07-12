@@ -25,6 +25,20 @@ This report consolidates the 5-level validation ladder and calibration status fr
 | L4_track_b_cd3e_recovery | met | CD3E_recovery_frac_pct | 58% (raw=0.5846) | ~58% | MATCH | docs/mvp-research/level4_external_validation/track_b_string_partner_recovery.csv |
 | L4_track_c_coverage | met | n_validation_targets_in_screen_library (in_library=True) | 52/55 | 52/55 | MATCH | docs/mvp-research/level4_external_validation/track_c_gse318876_target_evidence.csv |
 
+## Track D — phenotype-matched external screens (actual run)
+
+Cross-check of the signed ranking against activation-phenotype CRISPR screens (Schmidt 2022, Freimer 2022). Two axes, two answers — reported honestly, and this does **not** upgrade L4 (stays `partial`).
+
+| Screen | directionality AUROC (pre-registered) | perm p | magnitude AUROC (fair, no essentials) | perm p |
+|---|---|---|---|---|
+| Schmidt2022 CD4+ IL2 | 0.475 | 0.42 | 0.745 | 0.0002 |
+| Schmidt2022 CD8+ IFNG | 0.435 | 0.031 | 0.748 | 0.0002 |
+| Freimer2022 (IL2/IL2RA/CTLA4) | 0.405 | 0.084 | 0.789 | 0.0002 |
+
+- **Pre-registered (directionality) test = NULL** (AUROC < 0.5): the signed directionality ranking does not enrich among activation hits — different axis + essential-gene viability dropout.
+- **Secondary (magnitude) test passes** (AUROC 0.74–0.79, perm p ≈ 2e-4, robust to excluding essentials) but is **exploratory** and carries a **detectability confound** (footprint size and external-hit significance both scale with expression/power). Corroborative-with-confound, not a clean win.
+- Full report: `docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_combined.md`. Shifrut 2018 not runnable here (not cached; NCBI/Cell network-blocked).
+
 ## Calibration constants (documented, not recomputed here)
 
 - Ranking benchmark **AUROC = 0.85** (13 canonical positives vs 1,211 rest; AP = 0.47 = 44.7x random baseline; Mann-Whitney p = 8.8e-06).

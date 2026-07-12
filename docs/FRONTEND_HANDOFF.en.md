@@ -50,7 +50,7 @@ The portal discloses everything by reading three files in `public/`: `real-datas
 
 | Location | What |
 |---|---|
-| `views/Provenance.tsx` | Disclosure page: renders `disclosure.json` + `provenance_registry.csv` (versions/coverage/registry/principles/limitations/concept layer/attribution). Header + Footer entry points |
+| `views/Provenance.tsx` | Disclosure page: renders `disclosure.json` + `provenance_registry.csv` (versions/coverage/registry/principles/limitations/concept layer/attribution) **and the validation ladder L1–L5 incl. the Track D phenotype-matched result — directionality null, magnitude fair-version passes-with-confound, honestly labelled**. Header + Footer entry points |
 | `views/Deck.tsx` | Overview: the 4-slide project summary (overview/method/results/infographic). Header + Footer entry points |
 | `views/ApiDocs.tsx` | REST API docs page |
 | `views/Home.tsx` | Two persona cards + flagship figures |

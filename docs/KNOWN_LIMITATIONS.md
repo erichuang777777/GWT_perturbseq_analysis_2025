@@ -63,6 +63,13 @@ the paper's scientific claims.
   interaction test (`ctx_specific_de` is a difference-of-DE-counts ranking).
 - **Strict grade 3/4 is a narrow gate** — it covers only ~20% of the 21-gene
   positive-control panel. Read it together with the readiness call, never alone.
+- **Phenotype-matched external validation is null for the directionality ranking**
+  (Track D). Run against activation-phenotype CRISPR screens (Schmidt 2022,
+  Freimer 2022), the signed *directionality* ranking does not enrich among
+  activation hits (AUROC 0.41–0.48, < 0.5) — different axis + essential-gene
+  viability dropout. A *magnitude*-axis fair-version passes (AUROC 0.74–0.79)
+  but is exploratory and carries a detectability confound, so **L4 stays
+  `partial`**. See `docs/mvp-research/level4_external_validation/LEVEL4_EXTERNAL_VALIDATION.md` §5.
 - **Explicit descope:** signed module scoring (the DE tables carry up/down counts,
   no per-gene direction, so a signed score would be fabricated — `/api/modules`
   stays binary-overlap); SCEPTRE not reimplemented (honest external R hook or
