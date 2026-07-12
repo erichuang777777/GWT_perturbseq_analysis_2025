@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { StoreProvider, useStore } from "./store/store";
@@ -14,6 +14,9 @@ const Figures = lazy(() => import("./views/Figures"));
 
 function Router() {
   const { state } = useStore();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [state.view]);
   switch (state.view) {
     case "home":
       return <Home />;

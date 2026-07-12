@@ -30,8 +30,8 @@ export default function Header() {
         gap: "20px",
         padding: "0 28px",
         height: "60px",
-        background: "rgba(255,255,255,.92)",
-        backdropFilter: "blur(8px)",
+        background: "rgba(255,255,255,.97)",
+        backdropFilter: "blur(12px)",
         borderBottom: "1px solid #e2e5ea",
       }}
     >

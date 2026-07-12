@@ -90,7 +90,7 @@ export default function Clinical() {
             gColor: Gg.color,
             gBg: Gg.bg,
             hasTrials: nTrials > 0,
-            trialLabel: nTrials > 0 ? `${nTrials} clinical trial${nTrials === 1 ? "" : "s"} indexed for this target` : "no clinical trial evidence indexed for this target",
+            trialLabel: nTrials > 0 ? `${nTrials} clinical trial${nTrials === 1 ? "" : "s"} indexed for this target` : "no trial indexed",
           };
         })
         .sort((a, b) => parseFloat(b.assoc) - parseFloat(a.assoc))
@@ -274,6 +274,7 @@ export default function Clinical() {
         <div>
           <div style={{ fontSize: "13px", fontWeight: 600, color: "#3a414d", marginBottom: "5px" }}>Select a disease context</div>
           <div style={{ fontSize: "11.5px", color: "#9aa1ad", marginBottom: "11px" }}>Real Open Targets disease associations across the screened targets in this dataset, most-referenced first.</div>
+          <div style={{ fontSize: "11px", color: "#9aa1ad", marginBottom: "11px", fontStyle: "italic" }}>Ranked by disease-association evidence only — this view does not perform live drug matching (that needs a per-target Open Targets API call this export doesn't run in bulk; see docs/frontend_evidence_coverage_expansion_plan.md).</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "28px" }}>
             {diseaseChips.map((d) => (
               <div key={d.id} className="navlink" onClick={() => setState({ selectedDisease: d.id })} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "9px 15px", border: `1.5px solid ${d.border}`, borderRadius: "22px", background: d.bg, color: d.color, fontSize: "13.5px", fontWeight: 500 }}>
@@ -365,7 +366,7 @@ export default function Clinical() {
                 ))}
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.6, color: "#3a414d", background: "#f7f8fa", borderRadius: "10px", padding: "15px 17px" }}>{popTarget.interpretation}</div>
-              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4 constraint (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4.1 constraint, genome-wide (sources/target_tool_cache/_overlays/gnomad_v4.1_constraint_full.csv)</div>
             </div>
           )}
           {!pt && pq.length > 0 && (

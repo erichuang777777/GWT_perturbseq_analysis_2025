@@ -257,9 +257,10 @@ export default function Explorer() {
             {readinessFacets.map((f) => (
               <div
                 key={f.k}
-                className="navlink"
-                onClick={() => setState((s) => ({ readinessSel: { ...s.readinessSel, [f.k]: !s.readinessSel[f.k] } }))}
-                style={{ display: "flex", alignItems: "center", gap: "9px", padding: "7px 9px", borderRadius: "8px", background: f.bg }}
+                className={f.count === 0 ? "" : "navlink"}
+                onClick={f.count === 0 ? undefined : () => setState((s) => ({ readinessSel: { ...s.readinessSel, [f.k]: !s.readinessSel[f.k] } }))}
+                title={f.count === 0 ? "No targets currently carry this call — the target-selection threshold excludes deprioritize-graded genes below grade 2" : undefined}
+                style={{ display: "flex", alignItems: "center", gap: "9px", padding: "7px 9px", borderRadius: "8px", background: f.bg, opacity: f.count === 0 ? 0.45 : 1, cursor: f.count === 0 ? "default" : "pointer" }}
               >
                 <span style={{ width: "9px", height: "9px", borderRadius: "3px", background: f.dot }} />
                 <span style={{ fontSize: "13px", fontWeight: 500, color: f.color, flex: 1 }}>{f.label}</span>

@@ -61,7 +61,7 @@ export default function Compare() {
     { label: "FDR (BH)", kind: "fdr", get: (c) => c.fdr },
     { label: "Cross-donor correlation", kind: "num", get: (c) => c.robust, dir: "hi", fmt: (v) => v + "%" },
     { label: "Safety sub-score", kind: "num", get: (c) => c.safe, dir: "hi", fmt: (v) => v + " / 100" },
-    { label: "gnomAD LOEUF", kind: "num", get: (c) => c.loeuf, dir: "lo", fmt: (v) => v.toFixed(3) },
+    { label: "gnomAD LOEUF", kind: "num", get: (c) => c.loeuf, dir: "hi", fmt: (v) => v.toFixed(3) },
     { label: "Concept module", kind: "text", get: (c) => c.topConcept },
     { label: "Review consensus", kind: "badge", get: (c) => ({ label: c.cm2.label, color: c.cm2.color, bg: c.cm2.bg, dot: c.cm2.dot }) },
   ];

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { TARGETS, targetByGene } from "../data/dataset";
 import { CONSTRAINT_META, DECISION_META, GRADE, READINESS, RED_FLAG_LABELS, REVIEWERS, WKEYS } from "../data/reference";
 import type { VoteStatus } from "../data/types";
-import { consensus, fmtEffect, fmtFdr, fmtTs, initials, rankedTargets, similarTargets, subScores } from "../lib/logic";
+import { consensus, fmtEffect, fmtFdr, fmtStatus, fmtTs, initials, rankedTargets, similarTargets, subScores } from "../lib/logic";
 import { useStore } from "../store/store";
 
 const CONDITION_LABEL: Record<string, string> = { Rest: "Rest", Stim8hr: "Stim 8 hr", Stim48hr: "Stim 48 hr" };
@@ -497,7 +497,7 @@ export default function Dossier() {
                     <a key={c.nctId} href={c.url} target="_blank" rel="noreferrer" style={{ display: "block", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
                       <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24" }}>{c.title}</div>
                       <div style={{ fontSize: "11px", color: "#8a92a0", marginTop: "3px" }}>
-                        {c.nctId} · {c.phase || "phase unknown"} · {c.status} · {c.conditions.join(", ")}
+                        {c.nctId} · {c.phase || "phase unknown"} · {fmtStatus(c.status)} · {c.conditions.join(", ")}
                       </div>
                     </a>
                   ))}

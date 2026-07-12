@@ -40,6 +40,10 @@ export default function ApiDocs() {
         Read-only programmatic access to the same target calls, disease matches and population-genetics data shown in this portal. All endpoints are versioned and stamped with the dataset build — never a silent update.
       </p>
 
+      <div style={{ display: "flex", alignItems: "start", gap: "8px", padding: "14px 16px", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "11px", fontSize: "12.5px", color: "#7a6420", lineHeight: 1.55, marginBottom: "24px" }}>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> <strong>Illustrative API specification — not a live, deployed backend.</strong> This page documents the shape a REST API over this dataset would have; the base URL below does not resolve. The actual portal you're browsing fetches real data from a pre-built static file (see <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>src/data/dataset.ts</span>), not this API.
+      </div>
+
       <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "13px 16px", background: "#f7f8fa", border: "1px solid #e2e5ea", borderRadius: "10px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "13px", marginBottom: "30px" }}>
         <span style={{ fontWeight: 600, color: "#8a92a0" }}>Base URL</span>
         <span style={{ color: "#1a1d24" }}>https://api.cd4-target-portal.org/{API_VERSION}</span>

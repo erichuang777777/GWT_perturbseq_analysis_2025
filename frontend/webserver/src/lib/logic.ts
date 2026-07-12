@@ -158,3 +158,5 @@ export const fmtTs = (ts: number): string => {
 
 export const fmtFdr = (v: number | null): string => (v == null ? "unknown" : v.toExponential(1));
 export const fmtEffect = (v: number | null): string => (v == null ? "unknown" : v.toFixed(2));
+export const fmtStatus = (v: string | null): string =>
+  v ? v.toLowerCase().split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") : "unknown";
