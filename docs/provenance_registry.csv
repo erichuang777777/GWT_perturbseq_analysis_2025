@@ -1,0 +1,80 @@
+category,component,type,identifier,version,source_url_or_id,produced_by,notes
+data_source,GWT CD4 Perturb-seq (primary),primary_dataset,gwt_marson2025,DATASET_VERSION=gwt_marson2025/bioRxiv-10.64898-2025.12.23.696273v1,bioRxiv 10.64898/2025.12.23.696273 | SRA SRP643211 | GEO GSE314342 | CZI VCP,upstream (consumed not recomputed),4 donors x 3 conditions x 2 runs
+data_source,DE_stats.suppl_table.csv,suppl_table,DE_stats,data_version (per-build MD5),metadata/suppl_tables/DE_stats.suppl_table.csv,upstream DESeq2,33983 rows = 11526 targets x 3 conditions
+data_source,guide_kd_efficiency.suppl_table.csv,suppl_table,guide_kd,data_version (per-build MD5),metadata/suppl_tables/guide_kd_efficiency.suppl_table.csv,upstream Welch t-test,73765 rows; NTC condition-matched
+data_source,sgrna_library_metadata.suppl_table.csv,suppl_table,sgrna_library,data_version (per-build MD5),metadata/suppl_tables/sgrna_library_metadata.suppl_table.csv,upstream,guide design / TSS / off-target
+data_source,sample_metadata.suppl_table.csv,suppl_table,sample_metadata,data_version (per-build MD5),metadata/suppl_tables/sample_metadata.suppl_table.csv,upstream,donor demographics + batch
+data_source,cell-level h5ad (D*_*.assigned_guide),primary_dataset_deep,GWCD4i_cell,DATASET_VERSION,CZI VCP public S3,upstream,~1.7 TiB; not run in sandbox
+data_source,Open Targets Platform,external_db,open_targets,external_evidence_cache/v1,https://platform.opentargets.org | PMID 39657122,evidence/external_cache.py + evidence/disease.py,tractability/genetics/drugs; 30-day TTL
+data_source,ClinicalTrials.gov v2,external_db,clinicaltrials,external_evidence_cache/v1,https://clinicaltrials.gov,evidence/external_cache.py,trials by target/indication/phase
+data_source,PubMed / PMC,external_db,pubmed,external_evidence_cache/v1,https://pubmed.ncbi.nlm.nih.gov,evidence/external_cache.py,literature evidence per gene
+data_source,gnomAD v4,external_db,gnomad,-,https://gnomad.broadinstitute.org | PMID 32461654,evidence/safety_overlay.py,LOEUF/pLI; threshold 0.6
+data_source,GTEx,external_db,gtex,-,https://gtexportal.org | PMID 32913098,evidence/safety_overlay.py,tissue expression safety window
+data_source,LINCS/CMap L1000,external_db,lincs,-,https://clue.io | PMID 29195078,evidence/lincs_reference_cache.py,compound-reversal signatures
+data_source,Reactome,external_db,reactome,pathway_network_cache/v1,https://reactome.org | PMID 34788843,evidence/pathway_cache.py + evidence/mechanism_graph.py,mechanism graph
+data_source,STRING v12,external_db,string,pathway_network_cache/v1,https://string-db.org | PMID 36370105,evidence/pathway_cache.py + evidence/mechanism_graph.py,protein-protein associations
+data_source,AlphaFold DB,external_db,alphafold,-,https://alphafold.ebi.ac.uk | PMID 34265844,committed .cif snapshots,broad-effect target structures
+data_source,ChEMBL,external_db,chembl,-,https://www.ebi.ac.uk/chembl | PMID 37933841,evidence layer,bioactivity/mechanism/ADMET
+data_source,CELLxGENE Census (CZI),external_db,cellxgene,-,https://cellxgene.cziscience.com | PMID 39607691,concept (external overlay),baseline expression/atlas context
+data_source,Human Protein Atlas,in_repo_overlay,hpa,-,https://www.proteinatlas.org,metadata/rna_tissue_consensus.tsv.zip,tissue expression
+data_source,broad_effect_genes.txt,in_repo_overlay,broad_effect,-,sources/broad_effect_genes.txt,EDA offenders + CORUM,239 genes; broad_effect red flag
+data_source,core_essentials_hart.tsv,in_repo_overlay,hart_essentials,-,metadata/gene_lists/core_essentials_hart.tsv | PMID 26627737,Hart et al. 2015,essential-gene red flag
+data_source,druggability class lists,in_repo_overlay,druggable_classes,-,metadata/gene_lists/*.tsv,curated,kinase/GPCR/enzyme/ion-channel/etc
+data_source,GWAS catalog + ClinVar,in_repo_overlay,human_genetics,-,metadata/gene_lists/gwascatalog.tsv | clinvar_path_likelypath.tsv,curated,genetic support domain
+data_source,IUIS-IEI list,in_repo_overlay,iuis_iei,-,metadata/IUIS-IEI-list-July-2024V2.csv,IUIS 2024,inborn errors of immunity
+data_source,Open Targets disease associations,in_repo_overlay,ot_disease_assoc,-,metadata (Open Targets export),evidence/disease.py,13 indications / 7528 rows
+data_source,Lambert 2018 Human TFs,in_repo_overlay,lambert_tf,-,metadata/Lambert_2018_HumanTF.csv | PMID 30290144,Lambert et al. 2018,transcription factor list
+data_source,Freimer 2022 screen,in_repo_reference,freimer2022,-,metadata/Freimer2022_Screen.csv | PMID 36356142,external screen,T-cell effector screen cross-check
+data_source,Schmidt 2022 screen,in_repo_reference,schmidt2022,-,metadata/Schmidt2022_hits_Supplementary_table_2.xlsx | PMID 35113687,external screen,CRISPRa/i primary T-cell
+data_source,Arce 2024/2025 screen,in_repo_reference,arce,-,metadata/Arce2024_*.csv | Arce2025_Screen.csv,external screen,rest/activation
+data_source,Weinstock et al. DE,in_repo_reference,weinstock,-,metadata/TableS4_weinstock_et_al_DE.csv | PMID 39395408,external,CD4 GRN
+data_source,Replogle 2022 clusters,in_repo_reference,replogle2022,-,metadata/Replogle2022_TableS3_perturb_clusters.xlsx | PMID 35688146,external,genome-scale Perturb-seq
+data_source,Tahoe-100M cell-line stats,in_repo_reference,tahoe100m,-,metadata/Tahoe100M_cellline_stats.csv,external,chemical perturbation atlas
+algorithm,DESeq2 differential expression,statistical_test,deseq2,upstream,PMID 25516281 | DOI 10.1186/s13059-014-0550-8,upstream (pseudobulk),consumed not recomputed; 10% FDR
+algorithm,Pseudobulk aggregation,pipeline_step,pseudobulk,upstream,de_and_baseline_spec.md,upstream,unit = guide x donor x condition
+algorithm,Guide knockdown test,statistical_test,guide_kd_test,upstream,de_and_baseline_spec.md,upstream,Welch t vs condition-matched NTC
+algorithm,kd_status causal gate,algorithm,kd_status,KD_THRESHOLD_VERSION=kd_status/v2,de_and_baseline_spec.md §3,core/kd_status.py,4 states; floor 0.001
+algorithm,Target-card build + evidence grade,pipeline_step,build_target_cards,ENGINE_VERSION=1.3.0 | CARD_SCHEMA_VERSION=card_schema/v2,technical_methods.md §3.2,core/cards.py,grade 1-4; conservative cap
+algorithm,Condition-specificity score,heuristic,condition_specificity,ENGINE_VERSION=1.3.0,technical_methods.md §3.7,core/cards.py,HEURISTIC not interaction test
+algorithm,Robustness (cross-donor/guide),pipeline_step,robustness,upstream fields,technical_methods.md §3.4,core/cards.py,replicate_pass_flag
+algorithm,Readiness engine (12 domains -> R0-R5),scoring,readiness_engine,ENGINE_VERSION=1.3.0,technical_methods.md §3.5,core/readiness.py,+ red-flag override
+algorithm,Scoring helpers,scoring,scoring,ENGINE_VERSION=1.3.0,-,core/scoring.py,domain scoring
+algorithm,Calibration harness,validation,calibration,ENGINE_VERSION=1.3.0,de_and_baseline_spec.md §5,core/calibration.py,pos/neg control panels
+algorithm,Disease translation,pipeline_step,disease_translator,-,technical_methods.md §3.9,evidence/disease.py,Open Targets export ranking
+algorithm,Mechanism graph,pipeline_step,mechanism_graph,-,-,evidence/mechanism_graph.py,Reactome+STRING; descriptive only
+algorithm,Population LoF hypothesis,pipeline_step,population_hypothesis,-,-,evidence/population.py,research-use
+algorithm,Concept modules M01-M20,scoring,concept_modules,-,concept_dictionary.md,api/deps.py::_module_scores,seed-gene overlap; never feeds decisions
+algorithm,Gene resolver + fuzzy search,pipeline_step,gene_resolver,-,-,resolve/resolver.py + resolve/search.py,Ensembl primary key + difflib
+algorithm,External evidence fetcher,pipeline_step,external_evidence,external_evidence_cache/v1,cache_and_versioning_policy.md,evidence/external_cache.py,cache-first; 30-day TTL
+algorithm,Pathway/network cache,pipeline_step,pathway_cache,pathway_network_cache/v1,-,evidence/pathway_cache.py,Reactome+STRING offline
+algorithm,Safety/tractability overlay,pipeline_step,safety_overlay,-,-,evidence/safety_overlay.py,gnomAD/GTEx/membrane
+algorithm,SCEPTRE (external hook),external_tool,sceptre,-,PMID 34930414,honest R shell-out,not reimplemented (descope)
+algorithm,Mixscape-analog classifier,algorithm,mixscape_analog,-,PMID 33649593,src/9_cell_integration,scikit-learn PCA+GMM; deliberate substitute
+reference,Zhu & Dann et al. 2025 (primary),paper,ref01,-,DOI 10.64898/2025.12.23.696273,-,primary dataset
+reference,Dixit et al. 2016 Perturb-seq,paper,ref02,-,PMID 27984732 | DOI 10.1016/j.cell.2016.11.038,-,method origin
+reference,Datlinger et al. 2017 CROP-seq,paper,ref03,-,PMID 28099430 | DOI 10.1038/nmeth.4177,-,method
+reference,Replogle et al. 2022 genome-scale,paper,ref04,-,PMID 35688146 | DOI 10.1016/j.cell.2022.05.013,-,method
+reference,Shifrut et al. 2018,paper,ref05,-,PMID 30449619 | DOI 10.1016/j.cell.2018.10.024,-,primary T-cell validation
+reference,Schmidt et al. 2022,paper,ref06,-,PMID 35113687 | DOI 10.1126/science.abj4008,-,primary T-cell validation
+reference,Freimer et al. 2022,paper,ref07,-,PMID 36356142 | DOI 10.1126/science.abn5647,-,effector screen
+reference,Weinstock et al. 2024,paper,ref08,-,PMID 39395408 | DOI 10.1016/j.xgen.2024.100671,-,CD4 GRN
+reference,Love et al. 2014 DESeq2,paper,ref09,-,PMID 25516281 | DOI 10.1186/s13059-014-0550-8,-,DE method
+reference,Benjamini-Hochberg 1995,paper,ref10,-,DOI 10.1111/j.2517-6161.1995.tb02031.x,-,FDR control
+reference,Barry et al. 2021 SCEPTRE,paper,ref11,-,PMID 34930414 | DOI 10.1186/s13059-021-02545-2,-,scCRISPR calibration
+reference,Barry et al. 2024 SCEPTRE low-MOI,paper,ref12,-,PMID 38760839 | DOI 10.1186/s13059-024-03254-2,-,low-MOI testing
+reference,Papalexi et al. 2021 Mixscape,paper,ref13,-,PMID 33649593 | DOI 10.1038/s41588-021-00778-2,-,perturbation QC
+reference,Replogle et al. 2020 guide capture,paper,ref14,-,PMID 32231336 | DOI 10.1038/s41587-020-0470-y,-,guide assignment
+reference,Hart et al. 2015 essential genes,paper,ref15,-,PMID 26627737 | DOI 10.1016/j.cell.2015.11.015,-,essential-gene overlay
+reference,Ochoa et al. 2024 Open Targets,paper,ref16,-,PMID 39657122 | DOI 10.1093/nar/gkae1128,-,target-disease evidence
+reference,Karczewski et al. 2020 gnomAD,paper,ref17,-,PMID 32461654 | DOI 10.1038/s41586-020-2308-7,-,constraint
+reference,GTEx Consortium 2020,paper,ref18,-,PMID 32913098 | DOI 10.1126/science.aaz1776,-,tissue expression
+reference,Subramanian et al. 2017 LINCS,paper,ref19,-,PMID 29195078 | DOI 10.1016/j.cell.2017.10.049,-,drug signatures
+reference,Gillespie et al. 2022 Reactome,paper,ref20,-,PMID 34788843 | DOI 10.1093/nar/gkab1028,-,pathways
+reference,Szklarczyk et al. 2023 STRING,paper,ref21,-,PMID 36370105 | DOI 10.1093/nar/gkac1000,-,PPI network
+reference,Jumper et al. 2021 AlphaFold,paper,ref22,-,PMID 34265844 | DOI 10.1038/s41586-021-03819-2,-,structure
+reference,CZ CELLxGENE 2024,paper,ref23,-,PMID 39607691 | DOI 10.1093/nar/gkae1142,-,atlas
+reference,Zdrazil et al. 2024 ChEMBL,paper,ref24,-,PMID 37933841 | DOI 10.1093/nar/gkad1004,-,bioactivity
+reference,ClinicalTrials.gov (NLM),database,ref25,-,https://clinicaltrials.gov,-,trials registry
+reference,Lambert et al. 2018 Human TFs,paper,ref26,-,PMID 30290144 | DOI 10.1016/j.cell.2018.01.029,-,TF list
+reference,Ytterberg et al. 2022 ORAL Surveillance,paper,ref27,-,PMID 35081280 | DOI 10.1056/NEJMoa2109927,-,JAK safety
+reference,Herold et al. 2019 Teplizumab,paper,ref28,-,PMID 31180194 | DOI 10.1056/NEJMoa1902226,-,anti-CD3 safety
