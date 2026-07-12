@@ -3,8 +3,8 @@
 
 The machine behind "每個相位凍結且隔離,改一個模組不會污染別的相位".
 
-Reads ``docs/structure/FREEZE_MANIFEST_UNIFIED.csv`` (94 modules across the 9
-phases). For every module it recomputes a single deterministic freeze value
+Reads ``docs/structure/FREEZE_MANIFEST_UNIFIED.csv`` (97 modules across the 9
+phases + a shared-infra layer). For every module it recomputes a single deterministic freeze value
 from the live checkout and compares to the pinned value. Because THIS script is
 also the generator (``--freeze`` rewrites the pins with the same recipe), the
 shipped manifest reproduces 100% by construction.
