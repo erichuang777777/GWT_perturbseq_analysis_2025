@@ -592,7 +592,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `explainer`
 - **Directories:** docs/explainer/
 - **Purpose:** Human-readable explainer bundle (index.html + README)
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Static HTML explainer
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit under docs/explainer/ only; combined sha re-pinned on change
@@ -700,7 +700,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `researcher_guide`
 - **Directories:** docs/researcher_guide/
 - **Purpose:** Human-readable researcher_guide bundle (index.html + README)
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Static HTML explainer
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit under docs/researcher_guide/ only; combined sha re-pinned on change
@@ -727,7 +727,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `slides`
 - **Directories:** docs/slides/
 - **Purpose:** Human-readable slides bundle (index.html + README)
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Static HTML explainer
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit under docs/slides/ only; combined sha re-pinned on change
@@ -790,7 +790,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `wiki`
 - **Directories:** wiki/
 - **Purpose:** Project wiki: Home/Manual/Map/Plan/Roadmap/Maintenance/Development-Guide/Tech-Debt/_Sidebar
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable wiki pages
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit under wiki/ only; combined sha re-pinned on deliberate change
@@ -811,7 +811,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `DATA_LICENSE`
 - **Directories:** DATA_LICENSE.md
 - **Purpose:** Data usage license/terms
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable reference
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit file only; blob sha re-pinned on change
@@ -820,7 +820,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `LICENSE`
 - **Directories:** LICENSE
 - **Purpose:** Code license
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable reference
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit file only; blob sha re-pinned on change
@@ -829,7 +829,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `README`
 - **Directories:** README.md
 - **Purpose:** Top-level repo README / entry point
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable reference
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit file only; blob sha re-pinned on change
@@ -847,7 +847,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `project_decision_log`
 - **Directories:** sources/project_decision_log.md
 - **Purpose:** Chronological project decision log
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable reference
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit file only; blob sha re-pinned on change
@@ -856,7 +856,7 @@ Every module talks to its neighbours **only through file/API artifacts with a fi
 ### `provenance_registry`
 - **Directories:** docs/provenance_registry.md
 - **Purpose:** Provenance registry (human-readable)
-- **INPUT contract:** —
+- **INPUT contract:** — (no upstream module; leaf doc/reference)
 - **OUTPUT contract:** Human-readable reference
 - **Shared dependencies:** none
 - **ISOLATION RULE:** Edit file only; blob sha re-pinned on change
