@@ -42,6 +42,7 @@ EXPLICIT_PATHS: Dict[str, Path] = {
     "real-dataset.json": REPO / "frontend" / "webserver" / "public" / "real-dataset.json",
     "signed_module_effect.parquet": REPO / "sources" / "target_tool_cache" / "_overlays" / "signed_module_effect.parquet",
     "gnomad_constraint_seed.csv": REPO / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv",
+    "hpa_singlecell_breadth_seed.parquet": REPO / "sources" / "target_tool_cache" / "_overlays" / "hpa_singlecell_breadth_seed.parquet",
 }
 
 

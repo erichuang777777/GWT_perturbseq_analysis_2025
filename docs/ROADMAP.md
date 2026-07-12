@@ -65,23 +65,35 @@ underused.
   `curation_tier` column) — blocked on this sandbox's network policy (see that doc §2),
   ready to execute once network access allows it.
 
-## Data already in the repo, not yet wired in
+## Data already in the repo, now wired in
 
 Found during a release-prep sweep for prepared-but-unused data (full git-history check, not
 just the current tree — see `docs/data_governance_checklist.md` §6 for the complete audit,
-including files confirmed correctly unused and a documentation bug fixed along the way):
+including files confirmed correctly unused, one deliberately declined by the project owner, and
+a documentation bug fixed along the way). All three actionable items below were local-only
+integrations (no external network needed) and are now shipped:
 
-- **HPA single-cell tissue-expression data** (`metadata/rna_single_cell_datasets.tsv.zip`,
-  `metadata/rna_single_cell_type_group.tsv.zip`) — never opened by any notebook/script; the
-  bulk-tissue sibling file (`rna_tissue_consensus.tsv.zip`) was fully used by
-  `src/6_functional_interaction/tissue_specificity.ipynb`, but scope stopped there. Candidate
-  to widen `safety_window_from_gtex`'s off-context-breadth signal with single-cell resolution.
-- **ClinicalTrials.gov snapshot** (`sources/topic13_clinicaltrials_flat.csv`, 327 rows) — a
-  pre-development literature-scan capture, never wired in as a seed or offline fallback for
-  the live `external_evidence_cache.py` ClinicalTrials fetcher, even though that fetcher's
-  target host is sometimes policy-blocked in sandboxed environments (as confirmed this
-  session for Open Targets/GWAS Catalog). Would need an explicit freshness caveat if ever
-  used this way — never present it as current.
+- ✅ **HPA single-cell breadth overlay** (§6.1) — **shipped**: the bulk-tissue sibling file
+  (`rna_tissue_consensus.tsv.zip`) had been fully used by
+  `src/6_functional_interaction/tissue_specificity.ipynb`, but the single-cell-resolution files
+  (`rna_single_cell_datasets.tsv.zip`, `rna_single_cell_type_group.tsv.zip`) sat unused.
+  `hpa_singlecell_breadth.py` + `GET /api/hpa_singlecell_breadth/{gene}` now surface
+  single-cell-type-resolution off-context breadth (20,162 genes), excluding "T-cells" the same
+  way the existing GTEx overlay excludes Blood/Spleen. **Standalone** signal — deliberately not
+  folded into `composite_safety_liability`, to avoid silently shifting its calibrated tiers.
+- ✅ **ClinicalTrials.gov offline fallback** (§6.2) — **shipped**: `sources/topic13_clinicaltrials_flat.csv`
+  (a pre-development literature-scan capture, 327 rows) is now an offline fallback in
+  `evidence/external_cache.py::_clinicaltrials_count_for_drug`, engaged only when the live API
+  fails, always labelled `source_status: "offline_snapshot"` (never `"ok"`). Verified end-to-end
+  this session — `clinicaltrials.gov` was policy-blocked, and the fallback engaged for real.
+- ✅ **Freimer2022 independent-screen cross-check** (§6.3) — **shipped**: `docs/provenance_registry.csv`
+  had registered `metadata/Freimer2022_Screen.csv` as a cross-check source since the initial
+  commit, but no code ever did the join. `freimer2022_crosscheck.py` +
+  `GET /api/freimer2022_crosscheck/{gene}` now make good on that stated intent.
+- **Not integrated, by design**: `metadata/donor_info.csv` (declined — small-*n* re-identification
+  risk per §2), `sources/topic01_local_druggable_targets_summary.csv` (role already fulfilled by
+  `build_target_cards.py`), `metadata/suppl_tables/stabl_constructs.csv` (wet-lab construct data,
+  not analysis data). See `docs/data_governance_checklist.md` §6 for the full reasoning per file.
 
 ## Medium-term (evidence & modeling)
 
