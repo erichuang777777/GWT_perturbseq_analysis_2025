@@ -72,6 +72,11 @@ POLARIZATION_COEFS_CSV = REPO_ROOT / "src" / "4_polarization_signatures" / "resu
 CLUSTERING_ANNOTATED_CSV = (
     REPO_ROOT / "src" / "6_functional_interaction" / "results" / "clustering_nde75ntotal50_enrichment_annotated.csv"
 )
+# Real per-condition intra-cluster correlation (corr_rest/stim8hr/stim48hr) that
+# genuinely varies across conditions -- this is the true condition-specificity
+# signal for the heatmap. (The *_count columns in the file above are constant
+# across conditions, so they can't drive a condition-specificity heatmap.)
+CLUSTERING_CONDITION_CSV = REPO_ROOT / "metadata" / "suppl_tables" / "clustering_results_and_annotations.csv"
 GWAS_ENRICHMENT_CSV = REPO_ROOT / "src" / "6_functional_interaction" / "results" / "cluster_autoimmune_enrichment_results.csv"
 POWER_ANALYSIS_CSV = REPO_ROOT / "src" / "3_DE_analysis" / "power_analysis" / "heldout_correlation_results.csv"
 
@@ -183,27 +188,21 @@ def main() -> None:
     print(f"polar: {len(polar)} genes present in both Th1 and Th2", file=sys.stderr)
 
     # ---------------------------------------------------------------
-    # heatmap: fraction of cluster members active per condition
+    # heatmap: real per-condition intra-cluster correlation (condition
+    # specificity). z = [corr_rest, corr_stim8hr, corr_stim48hr] per cluster --
+    # these genuinely differ across conditions (the *_count columns don't).
     # ---------------------------------------------------------------
-    print(f"Loading cluster enrichment/annotation table from {CLUSTERING_ANNOTATED_CSV}", file=sys.stderr)
-    clust = pd.read_csv(CLUSTERING_ANNOTATED_CSV)
+    print(f"Loading cluster condition-specificity table from {CLUSTERING_CONDITION_CSV}", file=sys.stderr)
+    clust = pd.read_csv(CLUSTERING_CONDITION_CSV)
 
-    def frac(count, size):
-        size = float(size) if pd.notna(size) else 0.0
-        if size <= 0:
-            return 0.0
-        return float(count) / size
+    def numz(v):
+        return r4(float(v)) if pd.notna(v) else 0.0
 
     heatmap_entries = []
     for row in clust.itertuples(index=False):
         ann = getattr(row, "manual_annotation")
         label = ann if (pd.notna(ann) and ann != "unknown") else f"cluster {row.cluster}"
-        size = row.cluster_gene_size
-        z_row = [
-            r4(frac(row.rest_count, size)),
-            r4(frac(row.stim8hr_count, size)),
-            r4(frac(row.stim48hr_count, size)),
-        ]
+        z_row = [numz(row.corr_rest), numz(row.corr_stim8hr), numz(row.corr_stim48hr)]
         heatmap_entries.append({"cluster": row.cluster, "label": label, "z": z_row})
     heatmap_entries.sort(key=lambda e: e["label"])
     heatmap = {
