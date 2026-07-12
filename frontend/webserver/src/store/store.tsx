@@ -19,6 +19,7 @@ export type View =
   | "clinical"
   | "compare"
   | "figures"
+  | "gallery"
   | "apidocs"
   | "provenance"
   | "deck";

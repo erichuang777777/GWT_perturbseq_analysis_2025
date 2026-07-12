@@ -13,6 +13,7 @@ import Provenance from "./views/Provenance";
 
 // Figure atlas pulls in Plotly (~4 MB) — load it only when the atlas is opened.
 const Figures = lazy(() => import("./views/Figures"));
+const Gallery = lazy(() => import("./views/Gallery"));
 
 function Router() {
   const { state } = useStore();
@@ -37,6 +38,18 @@ function Router() {
           }
         >
           <Figures />
+        </Suspense>
+      );
+    case "gallery":
+      return (
+        <Suspense
+          fallback={
+            <main style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#9aa1ad", fontSize: "14px" }}>
+              Loading gallery…
+            </main>
+          }
+        >
+          <Gallery />
         </Suspense>
       );
     case "apidocs":
