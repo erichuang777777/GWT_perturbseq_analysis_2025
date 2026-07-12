@@ -102,7 +102,7 @@ function initialState(): AppState {
     figThresh: 2,
     figCluster: "all",
     figCytokine: "IFNG",
-    figDisease: "RA",
+    figDisease: "rheumatoid arthritis",
     figTrait: "Lymphocyte count",
   };
 }
