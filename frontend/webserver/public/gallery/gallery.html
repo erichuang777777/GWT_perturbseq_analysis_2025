@@ -39,7 +39,7 @@ main{padding:20px 22px;max-width:1500px;margin:0 auto}
 <body>
 <header>
   <div class="brand">Perturb<span>base</span></div>
-  <div class="tabs"><button class="tab on" data-tab="charts" id="tabCharts">Figures</button><button class="tab" data-tab="struct" id="tabStruct">Structures</button></div>
+  <div class="tabs"><button class="tab on" data-tab="charts" id="tabCharts">Figures</button><button class="tab" data-tab="struct" id="tabStruct">Structures</button><button class="tab" data-tab="anim" id="tabAnim">Animations</button></div>
   <input id="q" placeholder="Search…">
   <select id="grp"><option value="">All groups</option></select>
   <div class="lang"><button id="bEN" class="on">EN</button><button id="bZH">中文</button></div>
@@ -47,6 +47,7 @@ main{padding:20px 22px;max-width:1500px;margin:0 auto}
 <main>
   <div id="viewCharts"><div class="grid" id="grid"></div></div>
   <div id="viewStruct" class="hidden"><div class="stack" id="stack"></div></div>
+  <div id="viewAnim" class="hidden"><div class="grid" id="animgrid"></div></div>
 </main>
 <div class="modal" id="modal"><div class="mbox"><span class="close" id="close">&times;</span><img id="mimg"><div class="mbody">
   <h2 id="mttl"></h2><div class="grp" id="mgrp"></div>
@@ -56,6 +57,12 @@ main{padding:20px 22px;max-width:1500px;margin:0 auto}
 </div></div></div>
 <script>
 let LANG="en", TAB="charts", CHARTS=[], STRUCT=[];
+let ANIM=[];
+fetch("extra/animations/index.json").then(r=>r.json()).then(a=>{ANIM=a;renderAnim();}).catch(()=>{});
+function renderAnim(){const q=document.getElementById("q").value.toLowerCase(),g=document.getElementById("animgrid");if(!g)return;g.innerHTML="";
+  ANIM.filter(a=>!q||a.title.toLowerCase().includes(q)).forEach(a=>{const el=document.createElement("div");el.className="card";
+    el.innerHTML=`<img loading="lazy" src="extra/${a.file}"><div class="cap"><div class="ttl">${a.title}</div></div>`;g.appendChild(el);});}
+
 const UI={en:{desc:"Description",data:"What the data means",src:"Data source",allg:"All groups",search:"Search…"},
          zh:{desc:"圖表說明",data:"數據背後的意義",src:"數據來源",allg:"全部分類",search:"搜尋…"}};
 const L=d=>d[LANG]||d.en||{};
@@ -84,16 +91,18 @@ function renderStruct(){const q=document.getElementById("q").value.toLowerCase()
       <div class="meta">${s.plddt!=null?`<span>pLDDT <b>${s.plddt}</b></span>`:""}${s.length!=null?`<span>len <b>${s.length}</b></span>`:""}${s.n_domains!=null?`<span>domains <b>${s.n_domains}</b></span>`:""}${s.n_tm?`<span>TM <b>${s.n_tm}</b></span>`:""}<span>${s.topology_class||""}</span></div>
       ${mol}`;
     stack.appendChild(el);});}
-document.getElementById("q").oninput=()=>{render();renderStruct();};
+document.getElementById("q").oninput=()=>{render();renderStruct();renderAnim();};
 document.getElementById("grp").onchange=render;
 document.getElementById("close").onclick=()=>document.getElementById("modal").classList.remove("on");
 document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")document.getElementById("modal").classList.remove("on");};
 function setTab(t){TAB=t;document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
   document.getElementById("viewCharts").classList.toggle("hidden",t!=="charts");
   document.getElementById("viewStruct").classList.toggle("hidden",t!=="struct");
+  document.getElementById("viewAnim").classList.toggle("hidden",t!=="anim");
   document.getElementById("grp").style.display=t==="charts"?"":"none";}
 document.getElementById("tabCharts").onclick=()=>setTab("charts");
 document.getElementById("tabStruct").onclick=()=>setTab("struct");
+document.getElementById("tabAnim").onclick=()=>setTab("anim");
 function setLang(l){LANG=l;document.documentElement.lang=l;document.getElementById("bEN").classList.toggle("on",l==="en");document.getElementById("bZH").classList.toggle("on",l==="zh");
   document.getElementById("hDesc").textContent=UI[l].desc;document.getElementById("hData").textContent=UI[l].data;document.getElementById("hSrc").textContent=UI[l].src;
   document.getElementById("q").placeholder=UI[l].search;render();renderStruct();}
