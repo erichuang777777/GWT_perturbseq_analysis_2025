@@ -1,5 +1,10 @@
 # Metadata
 
+> **Which of these files does the toolkit actually use?** See
+> `docs/data_governance_checklist.md` §6 for an audited inventory of files listed below that
+> are never read by any code (full git-history check, not just the current tree), with the
+> reason for each and a recommended action.
+
 ## Documentation
 - `data_sharing_readme.md` - Info on publicly available data artifacts
 - `figure_map.md` - Mapping of all figures in the paper to scripts/notebooks
@@ -31,7 +36,7 @@ Curated supplementary tables for paper (see detailed descriptions [here](https:/
 - `immune_effector_genes.csv` - Immune effector genes list
 - `Lambert_2018_HumanTF.csv` - Human transcription factors (Lambert et al. 2018)
 - `cytokine_receptors.tsv` - Cytokine receptor genes
-- `rest_functional_group.csv` - ??
+- `rest_functional_group.csv` - **not present in this checkout** (listed here historically but the file does not exist; not investigated further — see `docs/data_governance_checklist.md` §6)
 - `protein_sumoylation_GO0016925.txt` - Protein sumoylation genes (GO:0016925)
 - `IUIS-IEI-list-July-2024V2.csv` - IUIS inborn errors of immunity list (July 2024)
 - `th1_th2_known_regulators.yaml` - Known regulators of Th1/Th2 polarization
@@ -59,7 +64,7 @@ Curated gene lists by functional category:
 - `Arce2025_Screen.csv` - Arce et al. 2025 screen results
 - `Freimer2022_Screen.csv` - Freimer et al. 2022 screen results
 - `Freimer_et_al_raw.csv` - Freimer et al. raw data
-- `Replogle2022_TableS3_perturb_clusters.xlsx` - ??
+- `Replogle2022_TableS3_perturb_clusters.xlsx` - **not present in this checkout** (listed here historically but the file does not exist; not investigated further — see `docs/data_governance_checklist.md` §6)
 - `Schmidt2022_hits_Supplementary_table_2.xlsx` - Schmidt et al. 2022 screen hits
 - `SchmidtSteinhart2022_CRISPRi_screen_gene_phenotypes.csv` - Schmidt & Steinhart 2022 phenotypes
 - `TableS4_weinstock_et_al_DE.csv` - Weinstock et al. DE results

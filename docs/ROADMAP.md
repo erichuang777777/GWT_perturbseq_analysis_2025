@@ -60,7 +60,28 @@ underused.
   axis is now limited by the GTEx breadth overlay (~5k genes), not gnomAD.
 - **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's
   autoimmune-GWAS emphasis): expand disease association beyond the current 13 curated
-  indications / 17% coverage.
+  indications / 17% coverage. Plan drafted in `docs/tier2-gene-for-Claude science.md`
+  (scope decided: EFO immune-disease branch, coexists with the curated 13 via a
+  `curation_tier` column) — blocked on this sandbox's network policy (see that doc §2),
+  ready to execute once network access allows it.
+
+## Data already in the repo, not yet wired in
+
+Found during a release-prep sweep for prepared-but-unused data (full git-history check, not
+just the current tree — see `docs/data_governance_checklist.md` §6 for the complete audit,
+including files confirmed correctly unused and a documentation bug fixed along the way):
+
+- **HPA single-cell tissue-expression data** (`metadata/rna_single_cell_datasets.tsv.zip`,
+  `metadata/rna_single_cell_type_group.tsv.zip`) — never opened by any notebook/script; the
+  bulk-tissue sibling file (`rna_tissue_consensus.tsv.zip`) was fully used by
+  `src/6_functional_interaction/tissue_specificity.ipynb`, but scope stopped there. Candidate
+  to widen `safety_window_from_gtex`'s off-context-breadth signal with single-cell resolution.
+- **ClinicalTrials.gov snapshot** (`sources/topic13_clinicaltrials_flat.csv`, 327 rows) — a
+  pre-development literature-scan capture, never wired in as a seed or offline fallback for
+  the live `external_evidence_cache.py` ClinicalTrials fetcher, even though that fetcher's
+  target host is sometimes policy-blocked in sandboxed environments (as confirmed this
+  session for Open Targets/GWAS Catalog). Would need an explicit freshness caveat if ever
+  used this way — never present it as current.
 
 ## Medium-term (evidence & modeling)
 
