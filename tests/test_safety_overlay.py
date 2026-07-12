@@ -8,9 +8,11 @@ present in this checkout, so both halves of §1.12 are covered with live data,
 not honest-fallback placeholders.
 
 Also covers the gnomAD LOEUF/pLI constraint overlay (§C of
-docs/next_phases_plan.md): an 8-gene seed
-(sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv) derived from
-the real, independently-verified values in
+docs/next_phases_plan.md): now an authentic full-genome gnomAD v2.1.1 by-gene
+snapshot (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv,
+~19k genes, one row per gene, chrX included), built by
+src/3_DE_analysis/data_acquisition/build_gnomad_constraint_overlay.py -- it
+replaced the earlier 15-gene demo shortlist derived from
 docs/mvp-research/connector_enrichment_demo.csv.
 """
 from __future__ import annotations
@@ -270,26 +272,28 @@ def test_readiness_engine_without_overlays_is_unchanged_regression():
 
 
 def test_load_gnomad_constraint_overlay_real_seed_file():
-    """The seed (now the real gnomAD v4 LOEUF/pLI snapshot, expanded from the
-    original 8-gene demo seed to 15 shortlist genes) loads with all 15 genes
-    and the exact required columns."""
+    """The overlay (now the full-genome gnomAD v2.1.1 by-gene LOEUF/pLI
+    snapshot, expanded from the earlier 15-gene demo shortlist to the whole
+    genome) loads with the whole-genome gene count and the exact required
+    columns."""
     from safety_overlay import load_gnomad_constraint_overlay
 
     result = load_gnomad_constraint_overlay()
     assert result["available"] is True
     table = result["table"]
-    assert len(table) == 15
+    # full-genome gnomAD v2.1.1 by-gene snapshot (~19k genes, one row per gene)
+    assert len(table) == 19155
     assert set(["ensembl_id", "gene_symbol", "loeuf", "pli"]).issubset(table.columns)
 
 
-def test_gnomad_constraint_seed_is_valid_and_pins_known_v4_values():
-    """Validates the seed directly (it is now an independent real gnomAD v4
-    snapshot, no longer derived from the 8-gene connector_enrichment_demo.csv):
-    valid schema, no nulls, no duplicate ids, values in the metrics' real
-    ranges, and a regression pin on three known genes' v4 values so a future
-    edit can't silently drift from the verified numbers."""
-    import pandas as pd
-
+def test_gnomad_constraint_seed_is_valid_and_pins_known_v211_values():
+    """Validates the overlay directly (now an authentic full-genome gnomAD
+    v2.1.1 by-gene snapshot, no longer the demo shortlist derived from
+    connector_enrichment_demo.csv): valid schema, no nulls, no duplicate ids,
+    values in the metrics' real ranges, and a regression pin on known genes'
+    real v2.1.1 values so a future rebuild can't silently drift. Includes
+    FOXP3 (chrX) to guard against an autosomes-only source silently dropping
+    the master Treg regulator."""
     from safety_overlay import load_gnomad_constraint_overlay
 
     seed = load_gnomad_constraint_overlay()["table"]
@@ -299,11 +303,12 @@ def test_gnomad_constraint_seed_is_valid_and_pins_known_v4_values():
     # LOEUF is a non-negative observed/expected ratio; pLI is a probability in [0, 1]
     assert (seed["loeuf"].astype(float) >= 0).all()
     assert ((seed["pli"].astype(float) >= 0) & (seed["pli"].astype(float) <= 1)).all()
-    # regression pins on verified v4 values
+    # regression pins on real gnomAD v2.1.1 oe_lof_upper (LOEUF) values
     by_gene = seed.set_index("gene_symbol")
-    assert by_gene.loc["CD3E", "loeuf"] == pytest.approx(0.7008)
-    assert by_gene.loc["VAV1", "loeuf"] == pytest.approx(0.3444)
-    assert by_gene.loc["MED12", "loeuf"] == pytest.approx(0.0955)
+    assert by_gene.loc["CD3E", "loeuf"] == pytest.approx(0.923)
+    assert by_gene.loc["VAV1", "loeuf"] == pytest.approx(0.226)
+    assert by_gene.loc["MED12", "loeuf"] == pytest.approx(0.071)   # chrX, constrained
+    assert by_gene.loc["FOXP3", "loeuf"] == pytest.approx(0.195)   # chrX, must not be dropped
 
 
 def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
@@ -315,7 +320,7 @@ def test_load_gnomad_constraint_overlay_missing_file_is_honest(tmp_path):
 
 
 def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
-    """VAV1: LOEUF 0.3444 < 0.6 (gnomAD v4) threshold -> loss_intolerant."""
+    """VAV1: LOEUF 0.226 < 0.6 threshold -> loss_intolerant."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
@@ -323,7 +328,7 @@ def test_gnomad_flag_from_constraint_vav1_is_loss_intolerant():
 
 
 def test_gnomad_flag_from_constraint_cd3e_is_none():
-    """CD3E: LOEUF 0.7008 >= 0.6 (gnomAD v4) threshold -> present but not flagged ('none')."""
+    """CD3E: LOEUF 0.923 >= 0.6 threshold -> present but not flagged ('none')."""
     from safety_overlay import gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
@@ -335,7 +340,8 @@ def test_gnomad_flag_from_constraint_absent_gene_is_unknown():
     from safety_overlay import UNKNOWN, gnomad_flag_from_constraint, load_gnomad_constraint_overlay
 
     overlay = load_gnomad_constraint_overlay()
-    assert gnomad_flag_from_constraint("ENSG00000134460", overlay) == UNKNOWN  # IL2RA, not in seed
+    # a synthetic Ensembl id present in no gnomAD release -> genuinely unchecked
+    assert gnomad_flag_from_constraint("ENSG00000000000", overlay) == UNKNOWN
 
 
 def test_gnomad_flag_from_constraint_unavailable_overlay_is_unknown():
@@ -383,8 +389,8 @@ def test_readiness_engine_gnomad_overlay_alone_does_not_change_readiness_call(re
     if not vav1_rows.empty:
         vav1 = vav1_rows.iloc[0]
         assert vav1["gnomad_constraint_flag"] == "loss_intolerant"
-        assert vav1["gnomad_loeuf"] == pytest.approx(0.3444)
-        assert vav1["gnomad_pli"] == pytest.approx(1.0)
+        assert vav1["gnomad_loeuf"] == pytest.approx(0.226)   # gnomAD v2.1.1
+        assert vav1["gnomad_pli"] == pytest.approx(0.9999)
 
 
 def test_readiness_engine_without_gnomad_overlay_columns_are_unknown_regression():

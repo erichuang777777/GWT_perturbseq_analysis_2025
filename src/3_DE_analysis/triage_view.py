@@ -256,7 +256,8 @@ def _score_row(row: pd.Series, weights: Dict[str, float]) -> Dict[str, Any]:
             total += weights.get(axis, 0.0)
     # Safety liability is the only demoting axis: a KNOWN-high on-target
     # liability subtracts; unknown safety contributes exactly 0 (never credited,
-    # never punished) so the sparse ~15-gene axis cannot dominate the ranking.
+    # never punished) so the partially-covered composite axis (gnomAD is now
+    # whole-genome but GTEx breadth is still ~5k genes) cannot dominate the ranking.
     if row.get("composite_safety_liability") == "high":
         total += weights.get("safety_high_liability", 0.0)
     n_axes = int(sum(hits.values()))
@@ -355,8 +356,10 @@ def _provenance_block(
             "safety_covered": n_safety_known,
             "safety_unknown": n_targets - n_safety_known,
             "note": (
-                "safety is a SPARSE axis (gnomAD seed ~15 genes); uncovered genes "
-                "are 'unknown', never coerced to safe/0, and never scored."
+                "composite safety needs BOTH gnomAD constraint (now whole-genome, "
+                "~19k genes) AND GTEx breadth (~5k-gene partial overlay), so GTEx is "
+                "the limiting axis; uncovered genes are 'unknown', never coerced to "
+                "safe/0, and never scored."
             ),
         }
     return {

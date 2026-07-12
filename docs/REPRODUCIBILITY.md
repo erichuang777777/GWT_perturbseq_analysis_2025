@@ -78,7 +78,7 @@
 
 | 來源 | 檔案 | 檔內基因 | 交集 11,526 | % | 性質 |
 |---|---|---|---|---|---|
-| gnomAD constraint | `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` | 15(LOEUF 門檻 0.6) | 15 | 0.1% | **種子** |
+| gnomAD constraint | `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv`(v2.1.1 by-gene 全基因組,LOEUF 門檻 0.6) | 19,155 | 11,267 | 97.8% | 全量 |
 | GTEx 組織廣度 | `sources/target_tool_cache/_overlays/gtex_per_tissue.parquet` | 9,718 | 5,266(Ensembl)/5,358(symbol) | 45.7% | 實質 |
 | 成藥性 gene-lists | `metadata/gene_lists/*`（15 檔）| 10 類 union 3,290 | 1,551 | 13.5% | 中等 |
 | LINCS | `sources/target_tool_cache/_lincs/*`(shortlist 15,covered 4;demo 978×4) | 15 | 15 | 0.1% | **demo** |
@@ -200,7 +200,7 @@ python build_target_cards.py --de-stats ../../metadata/suppl_tables/DE_stats.sup
 | 原始單細胞 → DE_stats(Stage 0–4) | ❌ 可稽核不可重跑 | 需 OAK 單細胞資料 + SLURM + pertpy/PyDESeq2 env;`.h5ad` 全 git-ignore |
 | DE_stats → cards → readiness(Stage 5–7) | ✅ | 起點檔全 committed 且寫死於 `config/settings.py` |
 | 描述性層 + API + dashboard(Stage 8–9) | ✅ | 全唯讀、additive、descriptive-only,known-answer 已實測 |
-| 外部 overlay 全量(gnomAD/LINCS/機制圖) | ⚠ 種子/demo | 全量需外部網路/資料,見 `docs/sandbox_blocked_tasks.md` |
+| 外部 overlay(gnomAD 全量 v2.1.1;LINCS/機制圖 種子/demo) | gnomAD ✅ 全量,其餘 ⚠ | gnomAD 已換全基因組(`data_acquisition/build_gnomad_constraint_overlay.py`);LINCS/機制圖全量需外部網路/資料,見 `docs/sandbox_blocked_tasks.md` |
 
 **貫穿保證(每一步都守)**:`unknown != 0`(缺資料誠實標 unknown,不補 0)· descriptive-vs-decision 分離(新欄位永不進 `readiness_call`)· never-fabricate · provenance 標記(版本 + 檔指紋)· 全 pytest 綠。
 </content>

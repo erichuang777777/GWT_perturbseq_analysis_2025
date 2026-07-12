@@ -39,7 +39,9 @@ def test_per_target_axes_known_answer_plcg1():
     # every descriptive axis is present on the composite
     for key in ("stimulation_gated", "switch_type", "robustness_tier", "double_support", "composite_safety_liability"):
         assert key in axes
-    # unknown != 0: PLCG1 is not in the ~15-gene gnomAD seed -> safety is 'unknown', never a number/'safe'
+    # unknown != 0: PLCG1 now has gnomAD constraint (LOEUF 0.411) but is absent
+    # from the ~5k-gene GTEx breadth overlay, so the COMPOSITE (needs both axes)
+    # is 'unknown' -- never coerced to a number/'safe'.
     assert axes["composite_safety_liability"] == "unknown"
     assert body["provenance"].get("concept_set_version")
 

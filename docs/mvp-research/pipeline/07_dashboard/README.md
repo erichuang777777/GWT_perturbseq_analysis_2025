@@ -115,7 +115,7 @@ flowchart LR
 
 ### ⑤ 安全 overlay
 在卡片上疊加安全窗口風險提示（soft 註記，不僭越封頂邏輯）。
-- **讀取來源**：`gnomad_constraint_seed.csv`（15 基因 `loeuf`/`pli`）＋ ADC/表面蛋白 overlay（`adc_overlay_gwt_overlap_full.csv`：`is_surface_protein`/`has_extracellular_domain`/`is_druggable`）。
+- **讀取來源**：`gnomad_constraint_seed.csv`（gnomAD v2.1.1 全基因組 19,155 基因 `loeuf`/`pli`）＋ ADC/表面蛋白 overlay（`adc_overlay_gwt_overlap_full.csv`：`is_surface_protein`/`has_extracellular_domain`/`is_druggable`）。
 - **解讀規則**：`LOEUF < 0.35 → tight`（LoF 高度不耐、抑制安全窗口窄）加 soft 註記，**不自動封頂**（LoF 不耐 ≠ 藥理抑制不耐）。範例 VAV1（LOEUF 0.344、pLI≈1.0）標為安全窗口窄。
 - **provenance**：每欄帶 `fetched_at` + 來源版本，沿用 `external_evidence_cache` 快照格式。
 
@@ -147,7 +147,7 @@ FastAPI 後端一律 cache-first、唯讀，絕不把連結器放進請求路徑
 | 04_statistical | `condition_stats.csv` | 條件別擾動方向摘要 |
 | 04_statistical | `_evidence/<gene>.json`（15 基因） | 證據匹配面板 + `/api/evidence` |
 | 04_statistical | `_pathway/<gene>.json`（15 基因） | 機制圖面板 + `/api/pathway` |
-| overlay | `gnomad_constraint_seed.csv`（15 基因） | 安全 overlay（LOEUF/pLI） |
+| overlay | `gnomad_constraint_seed.csv`（gnomAD v2.1.1 全基因組 19,155 基因） | 安全 overlay（LOEUF/pLI） |
 | overlay | `adc_overlay_gwt_overlap_full.csv` | 安全 overlay（表面蛋白/可成藥性） |
 
 ---

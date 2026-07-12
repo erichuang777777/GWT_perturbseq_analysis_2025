@@ -166,10 +166,11 @@ def test_composite_unknown_when_either_component_unknown():
 
 
 def test_composite_on_real_overlays_med12_high_vav1_unknown_cd3e_low():
-    """End-to-end on the REAL committed overlays: MED12 (LOEUF 0.0955 -> loss
-    intolerant; GTEx breadth 28) -> high; CD3E (LOEUF 0.7008 -> none; breadth 21
-    < 26) -> low; VAV1 (loss intolerant but ABSENT from the GTEx overlay) ->
-    unknown, demonstrating honest availability propagation."""
+    """End-to-end on the REAL committed overlays (authentic gnomAD v2.1.1):
+    MED12 (LOEUF 0.071 -> loss intolerant; GTEx breadth 28) -> high; CD3E
+    (LOEUF 0.923 -> none; breadth 21 < 26) -> low; VAV1 (loss intolerant but
+    ABSENT from the GTEx overlay) -> unknown, demonstrating honest availability
+    propagation."""
     from safety_overlay import (
         composite_safety_liability,
         gnomad_flag_from_constraint,
