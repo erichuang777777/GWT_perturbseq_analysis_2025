@@ -216,7 +216,7 @@ The following primary sources were retrieved and DOI-verified during the literat
 **Primary human T-cell functional genomics**
 - Shifrut E., et al. (2018) Genome-wide CRISPR screens in primary human T cells. *Cell.* doi:10.1016/j.cell.2018.10.024
 - Schmidt R., et al. (2022) CRISPR activation and interference screens decode stimulation responses in primary human T cells. *Science.* doi:10.1126/science.abj4008
-- Freitas K.A., Belk J.A., Sotillo E., et al. (2022) Enhanced T cell effector activity by targeting the Mediator kinase module. *Science.* doi:10.1126/science.abn5647
+- Freitas, Belk, Sotillo, et al. (2022) Enhanced T cell effector activity by targeting the Mediator kinase module. *Science.* doi:10.1126/science.abn5647
 - Carnevale J., et al. (2022) RASA2 ablation in T cells boosts antigen sensitivity and long-term function. *Nature.* doi:10.1038/s41586-022-05126-w
 
 **TYK2 / deucravacitinib worked example**
