@@ -161,7 +161,7 @@ The figure deck (33 main-display figures) was assessed by a handling-editor narr
 - *Hook* — currently diluted across two pipeline banners with different denominators (33,983 rows vs 10,851/11,526 targets vs 1,235 shortlist). Collapse to one canonical pipeline with one denominator held constant across all figures.
 - *Mechanism* — the strongest-told act: the signed directionality axis separating repressor-like (net-derepressing on KO) from activator-like knockdowns, plus the three T-cell modules (TCR-proximal / SAGA / Mediator) and the silent-at-rest, surge-on-stim heatmap.
 - *Evidence* — the strongest asset, currently inverted with the hook: the independent benchmark and the two artefact-rejection analyses (237 essential-dropout suspects; 11 near-zero-baseline artefacts; funnel 1,235 → 96 → 84 → 34).
-- *Application* — present but missing its centrepiece: the deliverable the entire vision promises — an actual versioned target card — is never shown.
+- *Application* — present across the delivery-modality, kinetic-archetype, clinical-avoid-list and dev-vs-user-gap panels. Note: the reviewer flagged the "missing" centrepiece as the target card itself, but the target card is a **live webserver feature**, not a manuscript figure — a static mock would be a screenshot of software, not a scientific result. It is documented in the product/UI materials and belongs in a supplementary UI walkthrough, not the narrative figure deck.
 
 **Revision plan applied to the figure set:**
 1. **Promote the benchmark PR/ROC into Figure 1** as the anchor panel — its module-independent ground truth is the whole argument and must be unmissable.
@@ -171,15 +171,14 @@ The figure deck (33 main-display figures) was assessed by a handling-editor narr
 5. **Consolidate the three artefact-rejection panels** (RNA/cell-cycle dotplot, LOEUF essential-dropout scatter, baseline-correction) into one "how the system rejects false positives" figure.
 6. **Collapse the three LINCS concordance panels** into a single supplementary panel (a demo-level, *n* = 4, non-T-cell check should not be told three times).
 
-**Missing panels to build (analyses to run):**
-- **The target card itself** — the biggest gap. Render 2–3 exemplar cards from the existing ranking + gate + overlay tables: one *advance* (TYK2), one *watchlist* (a novel primary hit with sparse annotation), one *deprioritize* (an essential-dropout artefact demoted by the red-flag override).
+**Missing panels to build (analyses to run):** *(the reviewer's fourth item — "show the target card" — is deliberately excluded: the target card is a live webserver feature, not a scientific figure, and is covered by the product/UI documentation, not the narrative deck. The three panels below are genuine analytical results.)*
 - **Call calibration, not just rank discrimination** — precision at each of the four tiers against the 13 positives and the 237 + 11 artefacts as negatives, converting a ranking metric (AUROC) into a decision metric (what the tool actually outputs).
 - **Red-flag override demonstration** — a before/after panel for 2–3 targets that scored high on signed-DE and were demoted, showing pre-override rank, the flag triggered, and the final tier.
 - **Audit-trail / versioning view** — a schematic tracing one call back to its inputs (screen row → signed rank → gate decision → each external overlay with source + version), giving the "auditable / versioned" claim a figure.
 
 **Cut from the paper (chart-range demonstrations, not the argument):** the seven `gallery_*` chart-family composites; the two Protter topology cartoons (unless tied to a modality claim); two of three cover concepts; both brand assets; and de-duplicated benchmark/LINCS instances.
 
-**Boldest defensible Figure 1** — four panels, leading with proof and a named win: (a) one pipeline line, single denominator; (b) the benchmark PR/ROC as the anchor, with the module-independence note explicit; (c) the TYK2 target card as the worked deliverable; (d) one honesty panel showing the system deprioritises the 237 + 11 artefacts as confidently as it advances real hits. This trades four defensive panels for a single calibrated claim — *"we recover known CD4 biology, we flag the junk, and here is a druggable win"* — told in the order a reviewer needs to hear it.
+**Boldest defensible Figure 1** — four panels, leading with proof and a named win: (a) one pipeline line, single denominator; (b) the benchmark PR/ROC as the anchor, with the module-independence note explicit; (c) the TYK2 worked example as a data panel — signed-DE rank, gate PASS, RA genetic association, and marketed-inhibitor annotation converging on an *advance* call (the evidence behind the call, not a screenshot of the card UI); (d) one honesty panel showing the system deprioritises the 237 + 11 artefacts as confidently as it advances real hits. This trades four defensive panels for a single calibrated claim — *"we recover known CD4 biology, we flag the junk, and here is a druggable win"* — told in the order a reviewer needs to hear it.
 
 ---
 
