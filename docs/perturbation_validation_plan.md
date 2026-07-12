@@ -120,6 +120,18 @@
 
 ---
 
+## 5b. 執行軌(non-wet-lab)— 現在就做,提升工具鏈完整度
+
+濕實驗(P3)暫緩。以下把**計算/工程可立即執行**的部分拆成三個互不重疊的工作包(disjoint files,可並行),每個都可在 sandbox 內驗證(pytest / `npm run build`),且**都不碰凍結的決策邏輯**(維持 causal isolation、unknown≠0、descriptive-vs-decision 不變量)。
+
+| 工作包 | 交付 | 驗收 | 觸及範圍 |
+|---|---|---|---|
+| **WP1 — 表型匹配驗證 harness(P1)** | `docs/mvp-research/level4_external_validation/phenotype_matched_crosscheck.py`(對 `signed_ranking_v2.csv` × 外部活化表型篩選 hit 表計算 rank–rank Spearman / top-N AUROC / 方向一致性;外部表缺→誠實 SKIP 不捏造,沿用 `reproduce_signed_tracks.py` 的 assert-or-skip 模式)+ `track_d_*` 輸出 scaffold + `tests/test_phenotype_matched_crosscheck.py`(合成 fixture) | `pytest tests/test_phenotype_matched_crosscheck.py` 綠 | 新檔,不改既有程式 |
+| **WP2 — 前端驗證揭露** | `disclosure.json` 新增 `validation` 區塊(5 級階梯狀態 + L4 三限制 + L5 缺口 + 連 `perturbation_validation_plan.md`);`Provenance.tsx` 新增「Validation ladder」段落渲染之;`doc_links` 加驗證計劃 | `npm run build` + oxlint 通過 | 僅前端 |
+| **WP3 — 一鍵驗證報告 runner** | `src/3_DE_analysis/validation/run_all_validation.py`(串起既有 calibration / rank-stability / L4 檢查,缺資料則優雅 skip),輸出單一真相源 `validation_status.csv` + `validation_report.md`;登錄進 `documentation_index.md` | `pytest tests/test_run_all_validation.py` 綠 | 新 runner,唯讀既有函式 |
+
+執行方式:以 sonnet subagent 並行執行三個工作包,各自只跑自己的驗證、**不做 git commit/push**;由主控整合、跑全套測試後統一提交。
+
 ## 5. 一句話交代(給決策者)
 
 > 我們的證據在**計算層(L1–L4)實質達成**、校準通過(AUROC 0.85、負對照 99.96%、r=0.943),並有 **TYK2 三線收斂**這種強外部錨點——足以**可信地排序哪些標靶值得投入濕實驗**。但**尚未跨過 L5**,因此**不能宣稱因果或治療效果**。閉合方式已排定:P1(表型匹配外部篩選,可立即做)、P2(細胞層真實資料,委外)、**P3(L5 濕實驗,設計已 turn-key,待合作與經費)**。這份計劃就是把「經排序」升級為「經驗證」的路線圖。
