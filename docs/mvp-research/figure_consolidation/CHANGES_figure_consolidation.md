@@ -9,10 +9,11 @@
 
 | | count |
 |---|---|
-| Total unique figures audited | 93 source PNGs |
-| **Main display** (kept for front-end / publication) | **33** |
-| **Archived** (retained, not deleted) | **62** |
+| Source PNGs audited | 93 |
 | New composite figures created | 2 (H, C series) |
+| **Total figures in decision table** | **95** (93 source + 2 new composites) |
+| → Main display (kept for front-end / publication) | 33 (31 source + 2 new composites) |
+| → Archived (retained, not deleted) | 62 (all source) |
 
 No file was deleted. Every superseded chart moved to `archive/` with a documented reason.
 
