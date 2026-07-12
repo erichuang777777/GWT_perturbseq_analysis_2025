@@ -49,8 +49,15 @@ underused.
   only, `unknown != 0`; guarded by `tests/test_autoimmune_clusters.py`. **Still not surfaced**
   (lower priority): the raw signature DE tables (`Th2_Th1_polarization_signature_DE`,
   `CD4T_aging_signature_DE`).
-- **Full gnomAD constraint** (Tier-2, biggest external win): replace the 15-gene seed
-  (0.13% coverage) with the full-genome public gnomAD LOEUF/pLI snapshot.
+- ✅ **Full gnomAD constraint** (Tier-2, biggest external win) — **shipped**: replaced the
+  15-gene demo seed (0.13% coverage) with an authentic full-genome gnomAD **v2.1.1** by-gene
+  LOEUF/pLI snapshot (19,155 genes, one row per gene, chrX included), covering 11,267 / 11,526
+  targets (~97.8%). Built reproducibly by
+  `src/3_DE_analysis/data_acquisition/build_gnomad_constraint_overlay.py` from gnomAD's public
+  GCS bucket; v2.1.1 chosen over v4.1 because the v4.1 flat distribution reachable in-env was
+  autosomes-only (would have dropped FOXP3/MED12/CD40LG). Still descriptive-only, `unknown != 0`,
+  never caps `readiness_call`; guarded by `tests/test_safety_overlay.py`. The composite safety
+  axis is now limited by the GTEx breadth overlay (~5k genes), not gnomAD.
 - **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's
   autoimmune-GWAS emphasis): expand disease association beyond the current 13 curated
   indications / 17% coverage.

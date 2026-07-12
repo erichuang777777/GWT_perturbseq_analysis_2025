@@ -154,8 +154,8 @@ def triage(
 ) -> Dict[str, Any]:
     """One row per target with every descriptive axis laid out on a single card:
     immune concept modules + stimulation-gating, stimulation-switch class, the
-    on-target safety-liability axis (gnomAD constraint + GTEx off-context breadth,
-    a SPARSE ~15-gene axis), druggability, robustness tier (D), and disease x
+    on-target safety-liability axis (gnomAD constraint, now whole-genome, + GTEx
+    off-context breadth, still a ~5k-gene partial axis), druggability, robustness tier (D), and disease x
     population genetic double support (E). Scored transparently with the
     documented ``DEFAULT_WEIGHTS`` and sorted by ``(total_score, n_axes,
     |effect|)``.
