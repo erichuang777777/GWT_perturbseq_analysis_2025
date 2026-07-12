@@ -18,12 +18,26 @@ interface DocLink {
   path: string;
   kind: string;
 }
+interface ValidationLadderRung {
+  level: string;
+  label: string;
+  status: "met" | "partial" | "gap" | string;
+  evidence: string;
+}
+interface ValidationBlock {
+  plan_doc: string;
+  summary: string;
+  ladder: ValidationLadderRung[];
+  calibration?: Record<string, unknown>;
+  l4_limitations?: string[];
+}
 interface Disclosure {
   versions: Record<string, string>;
   coverage: Record<string, unknown> & { note?: string };
   disclaimer: { short: string; long: string };
   principles: { key: string; text: string }[];
   limitations: string[];
+  validation?: ValidationBlock;
   attribution: Attribution[];
   concept_layer: Record<string, string | number>;
   doc_links: DocLink[];
@@ -271,6 +285,58 @@ export default function Provenance() {
           <li key={i} style={{ fontSize: "13px", color: "#4a515e", lineHeight: 1.55 }}>{l}</li>
         ))}
       </ul>
+
+      {/* validation ladder */}
+      {disc.validation?.ladder?.length ? (
+        <>
+          <div style={sec}>Validation ladder</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {disc.validation.ladder.map((rung) => {
+              const statusColor =
+                rung.status === "met" ? "#0d7d5a" : rung.status === "partial" ? "#b7791f" : rung.status === "gap" ? "#c0392b" : "#6b7280";
+              return (
+                <div
+                  key={rung.level}
+                  style={{ display: "flex", gap: "12px", alignItems: "baseline", flexWrap: "wrap", border: "1px solid #e2e5ea", borderRadius: "9px", padding: "11px 14px" }}
+                >
+                  <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "12px", fontWeight: 700, color: "#1a5fb4", minWidth: "28px" }}>
+                    {rung.level}
+                  </span>
+                  <span style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24", minWidth: "140px" }}>{rung.label}</span>
+                  <span
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: "10.5px",
+                      fontWeight: 700,
+                      letterSpacing: ".4px",
+                      textTransform: "uppercase",
+                      color: "#fff",
+                      background: statusColor,
+                      borderRadius: "5px",
+                      padding: "2px 7px",
+                    }}
+                  >
+                    {rung.status}
+                  </span>
+                  <span style={{ fontSize: "12.5px", color: "#4a515e", lineHeight: 1.5, flex: "1 1 320px" }}>{rung.evidence}</span>
+                </div>
+              );
+            })}
+          </div>
+          <p style={{ fontSize: "13px", color: "#4a515e", lineHeight: 1.6, margin: "12px 0 0" }}>{disc.validation.summary}</p>
+          <p style={{ fontSize: "11.5px", color: "#9aa1ad", marginTop: "6px" }}>
+            src:{" "}
+            <a
+              href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/perturbation_validation_plan.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#1a5fb4" }}
+            >
+              {disc.validation.plan_doc}
+            </a>
+          </p>
+        </>
+      ) : null}
 
       {/* concept layer */}
       <div style={sec}>Concept layer (M01–M20)</div>
