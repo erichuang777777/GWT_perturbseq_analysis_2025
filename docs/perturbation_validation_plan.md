@@ -132,6 +132,26 @@
 
 執行方式:以 sonnet subagent 並行執行三個工作包,各自只跑自己的驗證、**不做 git commit/push**;由主控整合、跑全套測試後統一提交。
 
+## 5c. P1 實跑結果(ACTUAL RUN)— 誠實記錄:**未達標(null)**
+
+WP1 harness 已**實際對真實資料跑過**(`run_activation_crosschecks.py`,對 `metadata/` 內快取的活化表型篩選)。**Shifrut 2018 無法在本 sandbox 跑**(未快取,且 NCBI/Cell 被網路政策封鎖 403);改跑三個已快取的活化篩選。**結果誠實記錄:未通過預先登記的驗收準則(AUROC ≥ 0.65, perm p < 0.05)。**
+
+| 篩選(表型) | 模態 | n merged | 預登記 AUROC | perm p | 判定 |
+|---|---|---:|---:|---:|---|
+| Schmidt 2022 CD4⁺ IL2 | CRISPRi | 10,313 | **0.475** | 0.42 | ❌ 未達標(~0.5, 不顯著) |
+| Schmidt 2022 CD8⁺ IFNG | CRISPRi | 10,313 | **0.435** | 0.031 | ❌ 顯著**低於** 0.5(反向) |
+| Freimer 2022(IL2/IL2RA/CTLA4) | CRISPR-KO | 1,126 | **0.405** | 0.084 | ❌ 未達標 |
+
+**但這個 null 是可解釋的,且另有一個弱正訊號**(皆為實算,非事後美化):
+
+1. **軸不同**:`signed_ranking_v2` 的 `primary_rank` 排的是**轉錄方向性(directionality)**(KO 後淨去抑制),把 repressor 型基因(FOXN2/MGA)排在最前;活化篩選的 top hits 是核心 TCR 機器(VAV1/CD3/STAT5B 等正向調控子)。兩者量的是**不同的量**,方向性排序對活化 hit 的全基因體富集本就接近 0.5。
+2. **必需基因 dropout(我們自己已知的限制)**:Schmidt CD4 IL2 的 **top-50 hits 有 31 個根本不在我們的排序裡**(11 個是 Hart core-essential)——因為敲低核心活化機器會殺死細胞、在我們的 viability Perturb-seq 篩選中掉出門檻。這直接解釋了為何富集是 null。
+3. **弱但高度顯著的正向 magnitude 一致性(post-hoc, 探索性)**:改用**足跡廣度 `n_hits`**(即 AUROC 0.85 校準所用的量,而非方向性)對篩選顯著度,Spearman rho = **+0.119 / +0.108 / +0.283**,p = **7e-34 / 6e-28 / 3e-22**。即「足跡大的標靶在獨立活化篩選裡確實較顯著」,只是效應弱。
+
+**誠實結論**:phenotype-matched 外部驗證(Schmidt/Freimer)**沒有**在全基因體富集層次確證我們的**方向性排序**(這是真實的負面證據,**不上修 L4 狀態**);但存在一個弱正向的 magnitude 一致性,且 null 大部分由必需基因 dropout + 軸差異解釋。這正是**不進濕實驗就先用免費資料發現**的價值——它縮小了我們能宣稱的範圍,並指出若要 phenotype-matched 對齊,應對齊 magnitude 軸並處理 essential dropout。完整逐篩選數字見 `level4_external_validation/track_d_activation_crosschecks_combined.md`。
+
+> 產出:`run_activation_crosschecks.py`、`track_d_activation_crosschecks_combined.md`、`track_d_activation_crosschecks_summary.csv`、`track_d_phenotype_matched_crosscheck.{csv,md}`(canonical=Schmidt CD4 IL2);守護測試 `tests/test_activation_crosschecks.py`(鎖定 null 與弱正訊號兩個誠實發現)。
+
 ## 5. 一句話交代(給決策者)
 
 > 我們的證據在**計算層(L1–L4)實質達成**、校準通過(AUROC 0.85、負對照 99.96%、r=0.943),並有 **TYK2 三線收斂**這種強外部錨點——足以**可信地排序哪些標靶值得投入濕實驗**。但**尚未跨過 L5**,因此**不能宣稱因果或治療效果**。閉合方式已排定:P1(表型匹配外部篩選,可立即做)、P2(細胞層真實資料,委外)、**P3(L5 濕實驗,設計已 turn-key,待合作與經費)**。這份計劃就是把「經排序」升級為「經驗證」的路線圖。

@@ -50,14 +50,27 @@
       {"level":"L1","label":"計算可重現","status":"met","evidence":"golden-file + known-answer 對 33,983 列釘選;34 測試檔;四層版本戳"},
       {"level":"L2","label":"統計穩健","status":"met","evidence":"排序穩定 Spearman r=0.943(誠實揭露天真 top-50 僅 13/50 重疊)"},
       {"level":"L3","label":"內部方向一致","status":"met","evidence":"Stim8hr 全部 8 個 TCR 近端正對照落 top decile"},
-      {"level":"L4","label":"正交計算驗證","status":"partial","evidence":"TYK2 rank 11=deucravacitinib 標靶;VAV1 62%/CD3E 58% STRING 網路重建。佐證非確證(關聯≠因果、GSE318876 表型不匹配、n=55)"},
+      {"level":"L4","label":"正交計算驗證","status":"partial","evidence":"TYK2 rank 11=deucravacitinib 標靶;VAV1 62%/CD3E 58% STRING 網路重建。佐證非確證(關聯≠因果、GSE318876 表型不匹配、n=55)。表型匹配活化篩選(Track D)實跑為 null(見下)"},
       {"level":"L5","label":"濕實驗前瞻驗證","status":"gap","evidence":"無任何前瞻濕實驗資料 — 唯一根本缺口"}
     ],
     "calibration": {"status":"met","ranking_auroc":0.85,"neg_control_grade1_pct":99.96,"neg_control_advance_pct":0},
+    "track_d_phenotype_matched": {
+      "status": "null_result",
+      "summary": "實跑表型匹配的活化篩選(Schmidt 2022 CD4⁺ IL2 / CD8⁺ IFNG、Freimer 2022)後,方向性排序未達預登記驗收(AUROC 0.41–0.48,全部 <0.5)。誠實記錄為負面證據,不上修 L4。",
+      "auroc": [
+        {"screen": "Schmidt2022 CD4+ IL2 (CRISPRi)", "auroc": 0.475, "perm_p": 0.42},
+        {"screen": "Schmidt2022 CD8+ IFNG (CRISPRi)", "auroc": 0.435, "perm_p": 0.031},
+        {"screen": "Freimer2022 (CRISPR-KO)", "auroc": 0.405, "perm_p": 0.084}
+      ],
+      "interpretation": "null 可解釋:(1) primary_rank 排的是轉錄方向性、非活化 hit 強度(不同軸);(2) 篩選 top-50 hits 有 31/50 因必需基因 viability dropout 根本不在我們排序裡。改用足跡廣度(magnitude)則有弱但高度顯著正相關(Spearman ρ +0.11~+0.28, p≤7e-34)。",
+      "report": "docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_combined.md",
+      "shifrut_note": "Shifrut 2018 未快取且 NCBI/Cell 被 sandbox 網路政策封鎖,無法在此跑;harness 對其保持 turn-key。"
+    },
     "l4_limitations": [
       "關聯≠因果(Track A GWAS/Open Targets)",
       "表型不匹配:唯一全基因體 CD4 CRISPR 篩選 GSE318876 量的是 HIV 感染,非 T 細胞活化",
-      "n 小且文獻偏差:55 驗證標靶,STRING 回復受研究投入偏誤"
+      "n 小且文獻偏差:55 驗證標靶,STRING 回復受研究投入偏誤",
+      "表型匹配活化篩選(Track D, Schmidt/Freimer)實跑為 null:方向性排序 AUROC <0.5、未達 0.65 驗收;主因軸差異 + 必需基因 dropout,另有弱正向 magnitude 一致性"
     ]
   },
   "attribution": [
