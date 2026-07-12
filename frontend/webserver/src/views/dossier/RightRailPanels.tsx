@@ -1,7 +1,8 @@
 import { CONSTRAINT_META, RED_FLAG_LABELS } from "../../data/reference";
 import type { RealTarget } from "../../data/types";
 import { similarTargets } from "../../lib/logic";
-import { downloadJson } from "../../lib/download";
+import { downloadJson, downloadFile, toCSV } from "../../lib/download";
+import { SOURCE_VERSION } from "../../data/dataset";
 import { useStore } from "../../store/store";
 import { READINESS as R } from "../../data/reference";
 
@@ -124,11 +125,37 @@ export function SimilarTargetsPanel({ t }: { t: RealTarget }) {
 // No backend call, no fake alert() -- what you see is what you get.
 export function ExportDossierButton({ t }: { t: RealTarget }) {
   return (
-    <button
-      onClick={() => downloadJson(`${t.gene}_dossier.json`, t)}
-      style={{ width: "100%", padding: "12px", border: "1.5px solid #1a5fb4", borderRadius: "10px", background: "#fff", color: "#1a5fb4", fontSize: "13.5px", fontWeight: 600, cursor: "pointer" }}
-    >
-      Export target dossier (JSON)
-    </button>
+    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <button
+        onClick={() => downloadJson(`${t.gene}_dossier.json`, t)}
+        style={{ width: "100%", padding: "12px", border: "1.5px solid #1a5fb4", borderRadius: "10px", background: "#fff", color: "#1a5fb4", fontSize: "13.5px", fontWeight: 600, cursor: "pointer" }}
+      >
+        Export target dossier (JSON)
+      </button>
+      <button
+        onClick={() => {
+          const csv = toCSV<RealTarget>([t], [
+            ["gene", (x) => x.gene],
+            ["name", (x) => x.name],
+            ["module_id", (x) => x.module?.id ?? ""],
+            ["module_name", (x) => x.module?.name ?? ""],
+            ["primary_condition", (x) => x.primaryCondition],
+            ["readiness_call", (x) => x.readiness?.call ?? "unknown"],
+            ["readiness_stage", (x) => x.readiness?.stage ?? "unknown"],
+            ["evidence_grade", (x) => x.grade ?? "unknown"],
+            ["abs_log2fc", (x) => x.effect ?? ""],
+            ["fdr", (x) => x.fdr ?? ""],
+            ["cross_donor_corr_mean", (x) => x.crossDonorCorrelationMean ?? ""],
+            ["gnomad_loeuf", (x) => x.gnomad.loeuf ?? ""],
+            ["gnomad_pli", (x) => x.gnomad.pli ?? ""],
+            ["source_version", () => SOURCE_VERSION],
+          ]);
+          downloadFile(`${t.gene}_dossier.csv`, csv, "text/csv;charset=utf-8");
+        }}
+        style={{ width: "100%", padding: "12px", border: "1.5px solid #d6dbe3", borderRadius: "10px", background: "#fff", color: "#3a414d", fontSize: "13.5px", fontWeight: 600, cursor: "pointer" }}
+      >
+        Export target dossier (CSV)
+      </button>
+    </div>
   );
 }
