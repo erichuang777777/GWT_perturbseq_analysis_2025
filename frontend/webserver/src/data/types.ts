@@ -63,6 +63,12 @@ export interface DiseaseAssoc {
   id: string;
   overallScore: number | null;
   geneticAssociationScore: number | null;
+  // Which of the two disease-association sources this entry came from --
+  // the live 21-gene Open Targets fetch, or the local 13-indication export
+  // (src/6_functional_interaction/results/disease_gene_associations_detailed.csv,
+  // 1,266 genes) merged in alongside it. Same underlying data provider
+  // (Open Targets genetic-association scoring), different acquisition path.
+  source: string;
 }
 
 export interface ClinicalTrial {
@@ -120,6 +126,22 @@ export interface MembraneOverlay {
   druggablePathway: string | null;
 }
 
+// Real UK Biobank exome-wide rare-LoF-variant lymphocyte-count burden
+// (Backman et al. 2021) -- a population-level statistical association, zero
+// network calls, 98.5% of targets. Independent of gnomAD's constraint
+// signal: gnomAD says how tolerant the population is to losing the gene;
+// this says what actually happens to lymphocyte count when it's lost.
+export interface PopulationBurden {
+  trait: string;
+  effectEstimate: number | null;
+  ci95Lower: number | null;
+  ci95Upper: number | null;
+  ciExcludesZero: boolean;
+  direction: "higher" | "lower";
+  hypothesis: string;
+  caveat: string;
+}
+
 export interface RealTarget {
   gene: string;
   name: string;
@@ -152,6 +174,7 @@ export interface RealTarget {
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
+  populationBurden: PopulationBurden | null;
 }
 
 export interface RealDataset {

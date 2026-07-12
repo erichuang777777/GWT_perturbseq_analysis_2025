@@ -111,6 +111,8 @@ export default function Dossier() {
     id: d.id,
     score: d.overallScore != null ? d.overallScore.toFixed(2) : "unknown",
     width: d.overallScore != null ? Math.round(d.overallScore * 100) + "%" : "0%",
+    source: d.source,
+    isLocalExport: d.source.includes("local"),
   }));
 
   // real tractability flags, grouped by modality — show only modalities/flags that are true
@@ -327,14 +329,21 @@ export default function Dossier() {
           <div style={card}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={h3}>External evidence &amp; disease links</h3>
-              <span style={src}>src: Open Targets (cached fetch)</span>
+              <span style={src}>src: Open Targets (live fetch + local export)</span>
             </div>
             {diseases.length > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
                 {diseases.map((d) => (
-                  <div key={d.id} className="navlink" onClick={() => navTo("disease", d.id)} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
+                  <div key={d.id + d.source} className="navlink" onClick={() => navTo("disease", d.id)} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "11px 14px", background: "#f7f8fa", borderRadius: "10px" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#1a1d24" }}>{d.name}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span style={{ fontSize: "13.5px", fontWeight: 600, color: "#1a1d24" }}>{d.name}</span>
+                        {d.isLocalExport && (
+                          <span title="From the local 13-indication autoimmune/inflammatory export, not a live per-gene fetch" style={{ fontSize: "9.5px", fontWeight: 600, color: "#6b7280", background: "#eef0f3", padding: "1.5px 6px", borderRadius: "20px" }}>
+                            local export
+                          </span>
+                        )}
+                      </div>
                       <div style={{ fontSize: "11.5px", color: "#8a92a0", fontFamily: "'IBM Plex Mono', monospace" }}>{d.id}</div>
                     </div>
                     <div style={{ width: "130px" }}>
@@ -569,6 +578,33 @@ export default function Dossier() {
             <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "13px", paddingTop: "12px", borderTop: "1px dashed #e2e5ea", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span>src: gnomAD v4</span>
               <span className="navlink" onClick={() => navTo("popgen", t.gene)} style={{ color: "#1a5fb4" }}>Open lookup →</span>
+            </div>
+
+            <div style={{ marginTop: "16px", paddingTop: "14px", borderTop: "1px dashed #e2e5ea" }}>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#8a92a0", textTransform: "uppercase" as const, letterSpacing: ".5px", marginBottom: "8px" }}>
+                Lymphocyte-count LoF burden
+              </div>
+              {t.populationBurden ? (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                    <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Effect estimate (95% CI)</span>
+                    <span style={{ fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>
+                      {t.populationBurden.effectEstimate != null ? t.populationBurden.effectEstimate.toFixed(3) : "unknown"}
+                      {t.populationBurden.ci95Lower != null && t.populationBurden.ci95Upper != null
+                        ? ` [${t.populationBurden.ci95Lower.toFixed(3)}, ${t.populationBurden.ci95Upper.toFixed(3)}]`
+                        : ""}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: "11.5px", lineHeight: 1.5, color: t.populationBurden.ciExcludesZero ? "#1a1d24" : "#6b7280" }}>
+                    {t.populationBurden.hypothesis}
+                  </div>
+                </>
+              ) : (
+                <div style={{ fontSize: "11.5px", color: "#9aa1ad" }}>unknown — gene not in the UK Biobank burden estimate table</div>
+              )}
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", marginTop: "8px" }}>
+                src: UK Biobank exome-wide LoF burden (Backman et al. 2021) — {t.populationBurden?.caveat ?? "population-level statistical association, not a patient-level prediction"}
+              </div>
             </div>
           </div>
 

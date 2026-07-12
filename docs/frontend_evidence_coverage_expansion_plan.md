@@ -1,14 +1,20 @@
 # 前端深度證據覆蓋率擴充規劃
 
-**狀態更新（已執行軸線 A + B）**：
+**狀態更新（已執行軸線 A、B，以及後續追加發現的兩個零網路資料源）**：
 
 | 軸線 | 狀態 | 實際結果 |
 |---|---|---|
 | A：ADC 膜蛋白 + GTEx overlay | ✅ 已完成 | `membraneOverlay` 覆蓋 3,637/7,249（50.2%）；`safetyWindowScore`/`compositeSafetyLiability` 覆蓋 3,412/3,261（47.1%/45.0%） |
 | B：gnomAD 全基因組 | ✅ 已完成 | 下載 gnomAD v4.1 constraint metrics（17,473 基因），LOEUF/pLI 覆蓋從 15 基因跳到 6,834/7,249（94.3%） |
+| D（追加）：本地疾病關聯表 | ✅ 已完成 | `src/6_functional_interaction/results/disease_gene_associations_detailed.csv`（13 種自體免疫/發炎疾病，零網路）併入 `diseases` 欄位，疾病關聯覆蓋從 15 個基因跳到 1,266/7,249（17.5%） |
+| E（追加）：UK Biobank 淋巴球 LoF burden | ✅ 已完成 | `evidence/population.py`（零網路，已註冊在 registry.py 卻沒人接線）新增 `populationBurden` 欄位，覆蓋 7,140/7,249（98.5%） |
 | C：Open Targets / ClinicalTrials.gov / PubMed | 📝 規劃已寫下，未執行（本 session 網路政策封鎖三個 API） | 見下方軸線 C 章節 |
 
-軸線 A、B 的實作、驗證（Playwright 抽測 CD3E 有資料、ACOT9 誠實顯示 unknown）、`export_real_data.py`/`types.ts`/`Dossier.tsx`/README 更新都已完成並可 commit。以下維持原始規劃內容供參考，軸線 C 尚未執行。
+D、E 兩軸是在使用者追問「除了這些資料還缺什麼可以補」時，重新掃過 `evidence/registry.py`、`docs/mvp-research/`、`sources/` 找到的：兩個都是**已經在硬碟上、完全不需要網路呼叫**的真實資料，`evidence/population.py` 甚至已經在 registry 裡註冊卻從未真正被 `export_real_data.py` 使用過。
+
+軸線 A、B、D、E 的實作、驗證（Playwright 抽測多個基因確認新欄位正確顯示、無覆蓋的基因誠實顯示 unknown）、`export_real_data.py`/`types.ts`/`Dossier.tsx`/README 更新都已完成並可 commit。以下維持原始規劃內容供參考，軸線 C 尚未執行。
+
+也評估過但**不建議接**的資料源：LINCS/CMap L1000（`evidence/lincs_reference_cache.py`，只有 4 個基因、且全部是癌細胞株，模組自己的文件都寫明只能當弱假說參考）；`docs/mvp-research/level4_external_validation/` 的驗證用資料（只涵蓋約 55 個 flagship 基因，規模太小）；`sources/topic13_clinicaltrials_flat.csv`（用藥物名稱索引，不是基因，跟 Dossier 頁的缺口無關）。
 
 ---
 

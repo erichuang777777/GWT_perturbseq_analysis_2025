@@ -44,6 +44,28 @@ value that isn't backed by one of these files:
       membrane-overlay flags are additionally surfaced as their own
       `membraneOverlay` field — a different vocabulary than Open Targets'
       tractability buckets, so the two are never merged into one field.
+  - src/6_functional_interaction/results/disease_gene_associations_detailed.csv
+      A real Open Targets genetic-association export already produced by
+      prior repo research (evidence/disease.py) -- 7,528 rows across 13
+      autoimmune/inflammatory indications (Crohn's, RA, SLE, IBD, psoriasis,
+      T1D, asthma, ...), no live fetch needed. Merged into the same
+      `diseases` field as the live 21-gene Open Targets evidence cache above
+      (same semantic meaning -- association_score is the same 0-1 scale as
+      that cache's overallScore), deduplicated by disease name, each entry
+      tagged with which of the two sources it came from. Covers 1,256 of the
+      7,249 selected genes.
+  - src/3_DE_analysis/evidence/population.py (load_burden_estimates,
+      build_population_hypothesis_card) + src/8_lymphocyte_counts_LoF/input/
+      Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv
+      Real UK Biobank exome-wide rare-LoF-variant lymphocyte-count burden
+      estimates (Backman et al. 2021) -- a population-level statistical
+      association ("if a population carries a LoF variant in this gene, does
+      lymphocyte count shift on average"), entirely local (zero network
+      calls), registered in evidence/registry.py but never previously wired
+      into this export. Covers 7,140 of the 7,249 selected genes (98.5%) --
+      independent of and complementary to gnomAD's constraint signal above
+      (gnomAD: population tolerance for loss of the gene; this: the actual
+      measured phenotypic consequence for one CD4-relevant trait).
 
 Target selection: every gene whose best-condition statistical_evidence_grade
 is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
@@ -96,6 +118,13 @@ GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
 ESSENTIALS_TSV = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 BROAD_EFFECT_TXT = REPO_ROOT / "sources" / "broad_effect_genes.txt"
+# Local (zero-network) Open Targets genetic-association export, 13 real
+# autoimmune/inflammatory indications -- see module docstring.
+DISEASE_ASSOC_CSV = REPO_ROOT / "src" / "6_functional_interaction" / "results" / "disease_gene_associations_detailed.csv"
+# Local (zero-network) UK Biobank LoF-burden estimates -- see module docstring.
+LYMPHOCYTE_BURDEN_TSV = (
+    REPO_ROOT / "src" / "8_lymphocyte_counts_LoF" / "input" / "Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv"
+)
 
 # Cached full-screen compute_readiness / annotate_targets output (see module
 # docstring). Committed to the repo so nobody has to pay the ~15s recompute
@@ -192,6 +221,8 @@ def main() -> None:
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     from data.loaders import load_gene_set
+    from evidence.disease import load_disease_associations
+    from evidence.population import build_population_hypothesis_card, load_burden_estimates
     from evidence.safety_overlay import (
         load_gnomad_constraint_overlay,
         load_gtex_safety_overlay,
@@ -205,6 +236,21 @@ def main() -> None:
 
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
     print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
+
+    # Local (zero-network) disease-association export -- see module docstring.
+    disease_assoc = load_disease_associations(DISEASE_ASSOC_CSV)
+    disease_assoc_by_gene: dict[str, list] = {}
+    for _, r in disease_assoc.iterrows():
+        disease_assoc_by_gene.setdefault(r["gene_symbol"], []).append(r)
+    print(f"Local disease-association export: {len(disease_assoc_by_gene)} genes across {disease_assoc['disease_name'].nunique() if not disease_assoc.empty else 0} indications", file=sys.stderr)
+
+    # Local (zero-network) UK Biobank lymphocyte-count LoF-burden -- see module docstring.
+    burden = load_burden_estimates("lymphocyte_count", path=LYMPHOCYTE_BURDEN_TSV)
+    pop_burden_by_gene: dict[str, "pd.Series"] = {}
+    if burden["available"]:
+        pop_cards = build_population_hypothesis_card(cards, burden["estimates"], trait="lymphocyte_count")
+        pop_burden_by_gene = {r["target"]: r for _, r in pop_cards.iterrows()}
+    print(f"Population LoF-burden (lymphocyte count): {'unavailable — ' + burden['reason'] if not burden['available'] else str(len(pop_burden_by_gene)) + ' genes'}", file=sys.stderr)
 
     if not args.force and _cache_is_fresh():
         print(f"Reading cached readiness/annotation from {CACHE_DIR} (pass --force to recompute)...", file=sys.stderr)
@@ -368,15 +414,30 @@ def main() -> None:
         ev = load_evidence(gene) or {}
         ot = ev.get("sources", {}).get("open_targets", {})
         diseases = ot.get("associated_diseases", []) or []
-        diseases_out = [
+        diseases_merged = [
             {
                 "name": d.get("disease"),
                 "id": d.get("disease_id"),
                 "overallScore": nan_to_none(d.get("overall_score")),
                 "geneticAssociationScore": nan_to_none(d.get("genetic_association_score")),
+                "source": "Open Targets (cached fetch)",
             }
-            for d in sorted(diseases, key=lambda d: d.get("overall_score") or 0, reverse=True)[:6]
+            for d in diseases
         ]
+        seen_disease_names = {(d["name"] or "").strip().lower() for d in diseases_merged}
+        for row in disease_assoc_by_gene.get(gene, []):
+            name = str(row.get("disease_name") or "").strip()
+            if name.lower() in seen_disease_names:
+                continue
+            seen_disease_names.add(name.lower())
+            diseases_merged.append({
+                "name": name,
+                "id": row.get("disease_efo"),
+                "overallScore": nan_to_none(row.get("association_score")),
+                "geneticAssociationScore": nan_to_none(row.get("genetic_evidence_score")),
+                "source": "Open Targets (local autoimmune-disease export)",
+            })
+        diseases_out = sorted(diseases_merged, key=lambda d: d["overallScore"] or 0, reverse=True)[:8]
 
         tract_flags = ot.get("tractability", []) or []
         modality_summary: dict[str, dict[str, bool]] = {}
@@ -414,6 +475,20 @@ def main() -> None:
         constraint_tier = None
         if loeuf is not None:
             constraint_tier = "high" if loeuf < 0.35 else ("moderate" if loeuf < 0.6 else "low")
+
+        pb = pop_burden_by_gene.get(gene)
+        pop_burden_out = None
+        if pb is not None:
+            pop_burden_out = {
+                "trait": pb["trait"],
+                "effectEstimate": nan_to_none(pb["population_effect_estimate"]),
+                "ci95Lower": nan_to_none(pb["ci_95_lower"]),
+                "ci95Upper": nan_to_none(pb["ci_95_upper"]),
+                "ciExcludesZero": bool(pb["ci_excludes_zero"]),
+                "direction": pb["direction"],
+                "hypothesis": pb["population_hypothesis"],
+                "caveat": pb["caveat"],
+            }
 
         mb = membrane_by_ensembl.get(primary_row.get("target_id"))
         membrane_overlay_out = None
@@ -485,6 +560,7 @@ def main() -> None:
             "clinicalTrials": trials_out,
             "literature": literature_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
+            "populationBurden": pop_burden_out,
         })
 
     call_counts = pd.Series([t["readiness"]["call"] for t in targets_out if t["readiness"]]).value_counts().to_dict()
@@ -492,7 +568,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08, 21 genes) + gnomAD v4.1 genome-wide constraint + ADC membrane overlay + GTEx safety-window overlay",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08, 21 genes) + local Open Targets disease-association export (13 indications) + gnomAD v4.1 genome-wide constraint + ADC membrane overlay + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules

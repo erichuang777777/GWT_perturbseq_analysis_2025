@@ -54,6 +54,23 @@ repo's own pipeline** — not mock or illustrative values. `scripts/export_real_
   wherever the gene's Ensembl id is covered. The raw membrane-overlay flags are additionally
   surfaced as their own `membraneOverlay` field (Dossier's "Membrane / ADC overlay" card) — a
   different vocabulary than Open Targets' tractability buckets, so the two are never merged.
+- `src/6_functional_interaction/results/disease_gene_associations_detailed.csv` — a real Open
+  Targets genetic-association export already produced by prior repo research
+  (`evidence/disease.py`), 13 autoimmune/inflammatory indications, **zero live fetch needed**.
+  Merged into the same `diseases` field as the 21-gene live evidence cache above (same
+  underlying data provider, same 0–1 score scale), deduplicated by disease name, each entry
+  tagged with which of the two sources it came from — covers **1,266 of the 7,249 selected
+  genes**, up from 15 before this file was wired in.
+- `src/3_DE_analysis/evidence/population.py` (`load_burden_estimates`,
+  `build_population_hypothesis_card`) + `src/8_lymphocyte_counts_LoF/input/
+  Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv` — real UK Biobank exome-wide
+  rare-LoF-variant lymphocyte-count burden estimates (Backman et al. 2021), entirely local
+  (**zero network calls**), registered in `evidence/registry.py` but never previously wired
+  into this export. Covers **7,140 of the 7,249 selected genes (98.5%)** — a population-level
+  statistical association ("if a population carries a LoF variant in this gene, does
+  lymphocyte count shift on average"), independent of and complementary to gnomAD's constraint
+  signal (gnomAD: population tolerance for losing the gene; this: the measured phenotypic
+  consequence). Surfaced in Dossier's "Population genetics" card below the gnomAD panel.
 
 **Target selection (7,249 genes):** every gene whose best-condition `statistical_evidence_grade`
 is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose primary-condition
@@ -70,8 +87,10 @@ own real coverage, never padded to match another:
 | Panel | Source | Coverage of the 7,249 selected genes |
 |---|---|---|
 | gnomAD LOEUF/pLI, constraint tier | gnomAD v4.1 genome-wide download | **94%** (6,834 genes) |
+| Lymphocyte-count LoF burden | UK Biobank (Backman et al. 2021), local file | **98.5%** (7,140 genes) |
 | Tractability score/modality, safety window, composite safety liability | ADC membrane overlay + GTEx overlay (both wired into `compute_readiness`) | **45–50%** (~3,300–3,600 genes) |
-| Disease associations, Open-Targets-vocabulary tractability flags, Open-Targets safety liabilities, clinical trials, literature | Open Targets / ClinicalTrials.gov / PubMed evidence cache | **21 genes** — these three need live API calls per gene; see "Widening the 21-gene evidence cache" below |
+| Disease associations | 21-gene live Open Targets evidence cache **+** local 13-indication export, merged | **17.5%** (1,266 genes) |
+| Open-Targets-vocabulary tractability flags, Open-Targets safety liabilities, clinical trials, literature | Open Targets / ClinicalTrials.gov / PubMed evidence cache | **21 genes** — these need live API calls per gene; see "Widening the 21-gene evidence cache" below |
 
 Every panel honestly renders `unknown` / "no record indexed" / "gene not in the ADC × GWT
 overlap overlay" wherever the gene isn't covered by that panel's specific source — never a
@@ -108,7 +127,7 @@ to the repo so nobody has to pay that recompute just to regenerate the frontend 
 is trusted whenever it's newer than `target_cards.csv`; pass `--force` after changing
 `readiness.py` / `concept_annotation.py` themselves.
 
-Writes `public/real-dataset.json` (~19.8 MB / ~1.1 MB gzipped — see "Build" below for why this is
+Writes `public/real-dataset.json` (~24.4 MB / ~1.5 MB gzipped — see "Build" below for why this is
 a runtime-fetched static asset rather than a JS import).
 
 ### Widening the 21-gene evidence cache (disease/trials/literature)
@@ -156,7 +175,7 @@ npm run preview    # serve the production build locally
 ```
 
 Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened. The
-real dataset (~19.8 MB / ~1.1 MB gzipped at 7,249 genes) is **not** bundled into the JS — it's
+real dataset (~24.4 MB / ~1.5 MB gzipped at 7,249 genes) is **not** bundled into the JS — it's
 fetched once at startup from `public/real-dataset.json` (see `src/data/dataset.ts`'s
 `loadDataset()`, gated in `main.tsx` behind a small loading screen), which keeps the main JS
 bundle itself at ~94 kB gzipped and lets the browser cache the data independently of app-code
