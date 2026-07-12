@@ -10,6 +10,7 @@ import Explorer from "./views/Explorer";
 import Deck from "./views/Deck";
 import Home from "./views/Home";
 import Provenance from "./views/Provenance";
+import { InlineScreen } from "./components/ui/ScreenState";
 
 // Figure atlas pulls in Plotly (~4 MB) — load it only when the atlas is opened.
 const Figures = lazy(() => import("./views/Figures"));
@@ -30,25 +31,13 @@ function Router() {
       return <Clinical />;
     case "figures":
       return (
-        <Suspense
-          fallback={
-            <main style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#9aa1ad", fontSize: "14px" }}>
-              Loading figure atlas…
-            </main>
-          }
-        >
+        <Suspense fallback={<InlineScreen>Loading figure atlas…</InlineScreen>}>
           <Figures />
         </Suspense>
       );
     case "gallery":
       return (
-        <Suspense
-          fallback={
-            <main style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#9aa1ad", fontSize: "14px" }}>
-              Loading gallery…
-            </main>
-          }
-        >
+        <Suspense fallback={<InlineScreen>Loading gallery…</InlineScreen>}>
           <Gallery />
         </Suspense>
       );

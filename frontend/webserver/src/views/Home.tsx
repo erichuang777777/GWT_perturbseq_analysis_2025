@@ -1,5 +1,6 @@
-import { TARGETS } from "../data/dataset";
+import { MODULES, TARGETS } from "../data/dataset";
 import { useStore } from "../store/store";
+import StatTile from "../components/ui/StatTile";
 
 export default function Home() {
   const { state, setState } = useStore();
@@ -7,9 +8,9 @@ export default function Home() {
 
   const stats = [
     { value: all.length, label: "CD4 perturbations profiled" },
-    { value: "20", label: "Immune concept modules" },
+    { value: MODULES.length, label: "Immune concept modules" },
     { value: all.filter((x) => x.readiness?.call === "advance").length, label: "Targets called Advance" },
-    { value: "~30", label: "REST API endpoints" },
+    { value: 6, label: "REST API endpoints" },
   ];
 
   const onSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -37,7 +38,7 @@ export default function Home() {
           }}
         >
           <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#1a5fb4" }} />
-          Research-use portal · {all.length} perturbations · 20 immune concepts
+          Research-use portal · {all.length} perturbations · {MODULES.length} immune concepts
         </div>
         <h1 style={{ fontSize: "46px", lineHeight: 1.06, letterSpacing: "-1.3px", fontWeight: 700, margin: "0 0 18px", maxWidth: "780px" }}>
           Drug-target discovery from CD4 T-cell Perturb-seq, made legible.
@@ -207,8 +208,7 @@ export default function Home() {
         >
           {stats.map((s) => (
             <div key={s.label} style={{ background: "#fff", padding: "22px 24px" }}>
-              <div style={{ fontSize: "28px", fontWeight: 700, letterSpacing: "-.6px", color: "#1a1d24" }}>{s.value}</div>
-              <div style={{ fontSize: "12.5px", color: "#6b7280", marginTop: "3px", fontWeight: 500 }}>{s.label}</div>
+              <StatTile size="lg" label={s.label} value={s.value} />
             </div>
           ))}
         </div>
