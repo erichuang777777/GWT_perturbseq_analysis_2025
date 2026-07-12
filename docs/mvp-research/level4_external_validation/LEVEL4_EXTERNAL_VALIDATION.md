@@ -104,5 +104,27 @@ These are exactly the gaps **Level 5 (prospective wet-lab validation)** is desig
 
 ---
 
+## 5. Track D — Phenotype-MATCHED external screens (actual run, honest null)
+
+Track C's phenotype mismatch (HIV, not activation) motivated a fourth track that matches the phenotype axis. `run_activation_crosschecks.py` was **actually run** against activation-phenotype CRISPR screens cached in `metadata/`: **Schmidt & Steinhart 2022** (CD4⁺ IL-2 and CD8⁺ IFN-γ, CRISPRi — same modality as our screen) and **Freimer 2022** (IL2/IL2RA/CTLA4 regulators). (Shifrut 2018 could not be run: not cached, and NCBI/Cell are blocked by the sandbox network policy — the generic `phenotype_matched_crosscheck.py` harness stays turn-key for it.)
+
+**Result — the pre-registered acceptance criterion (AUROC ≥ 0.65, permutation p < 0.05) was NOT met:**
+
+| Screen (phenotype) | modality | n merged | AUROC | perm p |
+|---|---|---:|---:|---:|
+| Schmidt 2022 CD4⁺ IL-2 | CRISPRi | 10,313 | **0.475** | 0.42 |
+| Schmidt 2022 CD8⁺ IFN-γ | CRISPRi | 10,313 | **0.435** | 0.031 (below 0.5) |
+| Freimer 2022 (IL2/IL2RA/CTLA4) | CRISPR-KO | 1,126 | **0.405** | 0.084 |
+
+This is a genuine **negative result** for the signed *directionality* ranking and is reported as-is — it does **not** upgrade the L4 status. Two computed observations explain it, and one weak positive signal survives:
+
+1. **Axis mismatch.** `primary_rank` ranks transcriptional *directionality* (net derepression on KO), placing repressor-like genes (FOXN2, MGA) at the top; the activation screens' top hits are the core TCR machinery (VAV1, CD3, STAT5B — positive regulators). These are different quantities, so genome-wide enrichment of the directionality rank against an activation screen is ~0.5 by construction.
+2. **Essential-gene dropout (our own known limitation).** 31 of the Schmidt CD4⁺-IL2 top-50 hits are **absent from our ranking entirely** (11 are Hart core-essential) — knocking out core activation machinery kills cells and drops them below our viability gate (consistent with the methodological-validation dropout diagnosis: 237 essential genes lost).
+3. **Weak but highly significant magnitude concordance (post-hoc, exploratory).** Using footprint *breadth* (`n_hits`, the axis the AUROC-0.85 calibration used) instead of directionality: Spearman ρ = +0.119 / +0.108 / +0.283 (p = 7×10⁻³⁴ / 6×10⁻²⁸ / 3×10⁻²²). Bigger-footprint targets are modestly more significant in independent activation screens.
+
+**Honest bottom line:** phenotype-matched external screens do **not** corroborate the directionality ranking at genome-wide enrichment; the null is largely explained by axis choice + essential dropout, with a weak positive magnitude signal underneath. Full per-screen numbers: `track_d_activation_crosschecks_combined.md`.
+
+---
+
 *Figure:* `level4_external_validation_figure.png` (3 panels: A — GWAS immune association vs signed rank; B — STRING partner recovery; C — GSE318876 functional coverage).
 *Tables:* `ot_genetic_association_crosscheck.csv`, `string_partner_recovery.csv`, `gse318876_target_evidence.csv`, `signed_ranking_v2.csv`.

@@ -43,6 +43,15 @@ export default function Footer() {
           <a href={`${import.meta.env.BASE_URL}real-dataset.json`} download style={{ color: "#1a5fb4" }}>
             Bulk download
           </a>
+          <a
+            href="https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/FRONTEND_HANDOFF.en.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Frontend integration handoff (dev)"
+            style={{ color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", fontSize: "11px" }}
+          >
+            handoff (dev)
+          </a>
         </div>
       </div>
     </footer>

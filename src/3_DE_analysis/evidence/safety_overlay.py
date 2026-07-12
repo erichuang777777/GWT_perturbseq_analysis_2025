@@ -82,6 +82,7 @@ from common.overlay_lookup import (
     composite_safety_liability,
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
+    singlecell_breadth_from_hpa,
     tractability_from_membrane_overlay,
 )
 from config import settings
@@ -93,9 +94,13 @@ GTEX_PER_TISSUE_PATH_DEFAULT = settings.REPO_ROOT / "sources" / "target_tool_cac
 GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT = (
     settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 )
+HPA_SINGLECELL_PATH_DEFAULT = (
+    settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "hpa_singlecell_breadth_seed.parquet"
+)
 
 GTEX_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_tissues_expressed", "max_expression_outside_cd4_context"]
 GNOMAD_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "loeuf", "pli"]
+HPA_SINGLECELL_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_celltypes_expressed", "max_expression_outside_tcell_context"]
 
 MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "gene_symbol",
@@ -163,6 +168,38 @@ def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
     if missing:
         return degrade.unavailable_available(
             f"GTEx overlay file missing required columns: {missing}", data_key="table", empty=_empty_gtex_summary()
+        )
+    return {"available": True, "reason": None, "table": df}
+
+
+def _empty_hpa_singlecell_summary() -> pd.DataFrame:
+    return pd.DataFrame(columns=HPA_SINGLECELL_REQUIRED_COLUMNS)
+
+
+def load_hpa_singlecell_breadth_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
+    """Load the single-cell-resolution off-context expression-breadth overlay (HPA).
+
+    Returns ``{"available": bool, "reason": str|None, "table": DataFrame}``.
+    Never raises; a missing or malformed file produces an explicit
+    ``available: False`` with an empty table -- never a fabricated breadth
+    count. See ``build_hpa_singlecell_breadth_overlay.py`` for provenance;
+    this is a standalone signal alongside ``load_gtex_safety_overlay``, not a
+    replacement.
+    """
+    resolved = Path(path) if path is not None else HPA_SINGLECELL_PATH_DEFAULT
+    if not resolved.exists():
+        return degrade.unavailable_available(
+            f"HPA single-cell breadth overlay file not found: {resolved}",
+            data_key="table",
+            empty=_empty_hpa_singlecell_summary(),
+        )
+    df = pd.read_parquet(resolved)
+    missing = [c for c in HPA_SINGLECELL_REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        return degrade.unavailable_available(
+            f"HPA single-cell breadth overlay file missing required columns: {missing}",
+            data_key="table",
+            empty=_empty_hpa_singlecell_summary(),
         )
     return {"available": True, "reason": None, "table": df}
 

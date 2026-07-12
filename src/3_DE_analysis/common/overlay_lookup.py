@@ -154,6 +154,37 @@ def safety_window_from_gtex(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
     return int(row.iloc[0]["n_tissues_expressed"])
 
 
+def singlecell_breadth_from_hpa(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
+    """Count of off-context HPA single-cell types (T-cells excluded) where this
+    gene clears the expression threshold, else ``unknown``. Keyed by Ensembl
+    gene ID, same convention as ``safety_window_from_gtex``.
+
+    This is a standalone, ADDITIONAL descriptive signal alongside
+    ``safety_window_from_gtex`` -- single-CELL-TYPE resolution (51 HPA
+    consensus categories) rather than bulk-TISSUE resolution, a materially
+    finer-grained off-target signal for an immunology platform (a tissue can
+    look narrow in bulk while containing several off-target immune cell
+    populations only single-cell resolution resolves). It is deliberately
+    NOT folded into ``composite_safety_liability`` -- that composite is
+    already calibrated/tested on the two-way gnomAD+GTEx signal, and adding a
+    third correlated breadth axis without re-deriving the tier thresholds
+    would silently shift every gene's tier. Surface this column alongside the
+    composite, not inside it.
+
+    Coverage is ~20,162 genes (built from
+    ``data_acquisition/build_hpa_singlecell_breadth_overlay.py``); a gene
+    absent from the overlay is unchecked, not "safe" -- returns ``unknown``,
+    never `0`.
+    """
+    if not overlay.get("available") or not gene_ensembl:
+        return UNKNOWN
+    table = overlay["table"]
+    row = table[table["ensembl_id"] == gene_ensembl]
+    if row.empty:
+        return UNKNOWN
+    return int(row.iloc[0]["n_celltypes_expressed"])
+
+
 def gnomad_flag_from_constraint(gene_ensembl: str, overlay: Dict[str, Any]) -> str:
     """Soft LoF-constraint flag from gnomAD LOEUF, keyed by Ensembl gene ID.
 

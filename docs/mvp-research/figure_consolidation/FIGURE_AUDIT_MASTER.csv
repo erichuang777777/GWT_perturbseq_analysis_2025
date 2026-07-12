@@ -1,0 +1,96 @@
+filename,class,destination,version_id,note
+C1_dotplot.png,feeds_composite,archive,58d1ca82-18a0-4fcf-9695-56ab3ab6f57e,C系列單圖→待建 C composite(本次新增)
+C2_pseudovolcano.png,feeds_composite,archive,b600c45e-fcea-48c9-af1e-dc95cae575e9,C系列單圖→待建 C composite(本次新增)
+C3_funnel.png,feeds_composite,archive,351c5b08-ea9b-4dbd-a695-bdc94fd3316b,C系列單圖→待建 C composite(本次新增)
+D10_qq.png,feeds_composite,archive,328afa4e-05d7-4232-9997-05b27952c801,D系列單圖→已整合入 gallery_1_distributions
+D1_violin.png,feeds_composite,archive,532d8935-c1c4-496c-8ef8-bd2478dc455c,D系列單圖→已整合入 gallery_1_distributions
+D2_box.png,feeds_composite,archive,0409ff00-6126-4dd3-bac3-70d64aea4935,D系列單圖→已整合入 gallery_1_distributions
+D3_ridgeline.png,feeds_composite,archive,17367d8b-d456-4faf-9eea-f8ed4a18640c,D系列單圖→已整合入 gallery_1_distributions
+D4_histogram.png,feeds_composite,archive,599e5635-ed4d-4e3a-b6d7-0af3f1c455b3,D系列單圖→已整合入 gallery_1_distributions
+D5_ecdf.png,feeds_composite,archive,ae171601-877d-46bc-b157-f4db203e1b8f,D系列單圖→已整合入 gallery_1_distributions
+D6_strip.png,feeds_composite,archive,99421cf6-2345-4344-846e-117e910ae93e,D系列單圖→已整合入 gallery_1_distributions
+D7_swarm.png,feeds_composite,archive,541bd46d-088a-48b4-bd67-75e745f95082,D系列單圖→已整合入 gallery_1_distributions
+D8_raincloud.png,feeds_composite,archive,c0b892a7-bd3c-4c52-8485-f8972241e9ac,D系列單圖→已整合入 gallery_1_distributions
+D9_kde.png,feeds_composite,archive,6c95e626-d432-481f-9c6b-477056955cf6,D系列單圖→已整合入 gallery_1_distributions
+H1_treemap.png,feeds_composite,archive,d3f1979c-178b-4ec5-9925-72a36dfbd023,H系列單圖→待建 H composite(本次新增)
+H2_sunburst.png,feeds_composite,archive,729cd116-f4ff-4f62-a11b-3d3efba30c55,H系列單圖→待建 H composite(本次新增)
+H3_icicle.png,feeds_composite,archive,8a788643-cce9-4895-a50e-efff224d710a,H系列單圖→待建 H composite(本次新增)
+H4_sankey.png,feeds_composite,archive,4805c26c-72fd-43f7-97e1-dd90728e7c2d,H系列單圖→待建 H composite(本次新增)
+H5_funnel.png,feeds_composite,archive,9d1466bd-ded1-4a74-a109-34cd20cf3072,H系列單圖→待建 H composite(本次新增)
+H6_parallel_coords.png,feeds_composite,archive,5255eaf2-450a-4732-a34b-3db1c3d9ab6c,H系列單圖→待建 H composite(本次新增)
+H7_parallel_categories.png,feeds_composite,archive,d6306673-86f7-4afb-9758-0ad22cb656a0,H系列單圖→待建 H composite(本次新增)
+M10_gene_condition_DE.png,feeds_composite,archive,b40d9294-52b5-4710-81c5-6950191913b0,M系列單圖→已整合入 gallery_2_matrices
+M1_corr_heatmap.png,feeds_composite,archive,83641d05-e1bd-459a-b083-44b64f349424,M系列單圖→已整合入 gallery_2_matrices
+M2_cluster_heatmap.png,feeds_composite,archive,cf645e23-b6db-40bd-b81a-84029f5e7751,M系列單圖→已整合入 gallery_2_matrices
+M3_hexbin.png,feeds_composite,archive,5f540aee-2e7b-4712-8d8b-37cf4d1a8bfb,M系列單圖→已整合入 gallery_2_matrices
+M4_density_scatter.png,feeds_composite,archive,23035b79-eb5c-4707-9d2b-581428425047,M系列單圖→已整合入 gallery_2_matrices
+M5_scatter_matrix.png,feeds_composite,archive,4712945d-edaa-4e21-9afe-31a2286951f9,M系列單圖→已整合入 gallery_2_matrices
+M6_condition_metric_heatmap.png,feeds_composite,archive,57843977-5cae-44f3-bd16-125e11194fb9,M系列單圖→已整合入 gallery_2_matrices
+M7_joint_scatter.png,feeds_composite,archive,3761f44a-31ce-4d93-b5bb-bd02fd800ac9,M系列單圖→已整合入 gallery_2_matrices
+M8_dendrogram.png,feeds_composite,archive,f5b11d6d-ebc1-47d7-98fa-a7acbf6e9f49,M系列單圖→已整合入 gallery_2_matrices
+M9_contour.png,feeds_composite,archive,854699e6-999d-4ff4-a170-9a1fa06cb57a,M系列單圖→已整合入 gallery_2_matrices
+N1_string.png,feeds_composite,archive,dc159141-611d-4867-bab6-676720839471,N系列單圖→已整合入 gallery_5_networks
+N2_chord.png,feeds_composite,archive,96b6076d-dc97-49bc-99d7-3a2e78c528dd,N系列單圖→已整合入 gallery_5_networks
+N3_venn.png,feeds_composite,archive,fdd1782c-4f48-46da-ac8c-8e4c2b6a8b47,N系列單圖→已整合入 gallery_5_networks
+N4_manhattan.png,feeds_composite,archive,7ee3801b-289e-4b8d-a104-22c269b4e4b9,N系列單圖→已整合入 gallery_5_networks
+N5_slope.png,feeds_composite,archive,b7d68ed3-0431-47d1-90ba-4a00e6735ac1,N系列單圖→已整合入 gallery_5_networks
+N6_stacked_area.png,feeds_composite,archive,f4a4ed8d-023f-48d8-841e-f44ca5f6945a,N系列單圖→已整合入 gallery_5_networks
+N7_upset.png,feeds_composite,archive,98b90a52-6a6e-469e-bd23-fe53aafe3c6d,N系列單圖→已整合入 gallery_5_networks
+R10_dotmatrix.png,feeds_composite,archive,53b27092-085e-49a6-919a-5a147046496a,R系列單圖→已整合入 gallery_3_ranking
+R1_lollipop.png,feeds_composite,archive,cb340056-2f57-4399-a6f9-bcda65770065,R系列單圖→已整合入 gallery_3_ranking
+R2_diverging_bar.png,feeds_composite,archive,642b5eb3-1e64-466c-8f91-a835b9bd8f20,R系列單圖→已整合入 gallery_3_ranking
+R3_stacked_bar.png,feeds_composite,archive,0085c032-6c45-4425-81f0-1eaa994db5ed,R系列單圖→已整合入 gallery_3_ranking
+R4_waterfall.png,feeds_composite,archive,5a5120ee-3271-49dd-81df-5742c38aa093,R系列單圖→已整合入 gallery_3_ranking
+R5_bubble.png,feeds_composite,archive,1bb4dae4-e464-431d-bbc9-ee1c864279c6,R系列單圖→已整合入 gallery_3_ranking
+R6_grouped_bar.png,feeds_composite,archive,12fcbe86-c89c-43c5-beb7-3a88c21e3381,R系列單圖→已整合入 gallery_3_ranking
+R7_errorbar.png,feeds_composite,archive,b640a7f5-5f88-4b72-a72d-713797a7890f,R系列單圖→已整合入 gallery_3_ranking
+R8_point.png,feeds_composite,archive,1ee05fb9-2c1b-4558-bcf7-42da2ca05864,R系列單圖→已整合入 gallery_3_ranking
+R9_MA.png,feeds_composite,archive,fbceab01-445f-461d-af46-ab60179e9dfe,R系列單圖→已整合入 gallery_3_ranking
+V1_PCA.png,feeds_composite,archive,4e4d9665-a50b-442b-ae2b-82af6dad4220,V系列單圖→已整合入 gallery_4_dimred
+V2_tSNE.png,feeds_composite,archive,a48cc5c7-7afe-47d0-8236-a50d8172d804,V系列單圖→已整合入 gallery_4_dimred
+V3_UMAP.png,feeds_composite,archive,c6722321-6266-4302-a80a-0c377d10bd90,V系列單圖→已整合入 gallery_4_dimred
+V4_radar.png,feeds_composite,archive,d7109547-2a88-43b9-9056-ab97b69f5bde,V系列單圖→已整合入 gallery_4_dimred
+V5_circular_bar.png,feeds_composite,archive,93338205-e03d-4367-bb14-6aca66cba045,V系列單圖→已整合入 gallery_4_dimred
+V6_pca_biplot.png,feeds_composite,archive,2e206c36-f172-4feb-bb2a-2309ec7c641c,V系列單圖→已整合入 gallery_4_dimred
+viz_dotplot_3d.png,old_prototype,archive,80e8356d-cf44-495f-8387-8f2c66040f83,"早期探索原型,已被精修目錄取代"
+viz_prototype_4panel.png,old_prototype,archive,62674612-dd9c-4fbf-b43e-13b4e95400a6,"早期探索原型,已被精修目錄取代"
+panel_a.png,redundant,archive,33e15964-b453-4950-b624-14ea5a9a545c,已合成入 Figure1_integrated_story / mechanism flagship
+panel_b.png,redundant,archive,d2da1659-248b-4e64-8362-f99b3821c8a4,已合成入 Figure1_integrated_story / mechanism flagship
+panel_c.png,redundant,archive,2b989956-52d4-4bf6-8ef0-c81a9b19230a,已合成入 Figure1_integrated_story / mechanism flagship
+panel_d.png,redundant,archive,d036fd0f-a8cb-413f-93c0-6e669bf4b720,已合成入 Figure1_integrated_story / mechanism flagship
+panel_e.png,redundant,archive,11ee353b-0e45-4bc5-a31b-3dd8f7bba307,已合成入 Figure1_integrated_story / mechanism flagship
+panel_f.png,redundant,archive,71d9a85a-dde7-4ed5-8cf3-0d6dca0ebb9f,已合成入 Figure1_integrated_story / mechanism flagship
+gallery_7_ranking_variants.png,redundant_cjk_stub,archive,c9666325-93cd-4215-9f78-443914b7b19f,含 CJK 佔位 UpSet stub panel(違反全英文);UpSet 已由 gallery_7b_upset 覆蓋→歸檔
+logo_scientific.png,branding,main,f3e8e5bb-6279-4308-bafd-93705468a1ae,品牌 logo
+logo_wordmark.png,branding,main,0ea3a8a1-f1bc-4038-8096-b760cca7838a,品牌 logo
+C_composite_special.png,composite_main,main,62c3b9ba-2882-4e20-a0e8-5e09373875c7,"新整合圖:C 特殊系列 3→2 代表(dotplot+pseudovolcano),移除與 curation funnel 重複的 C3"
+H_composite_hierarchical.png,composite_main,main,a3b73418-cfab-49a2-95ec-bbcffaa642aa,"新整合圖:H 層級系列 7→3 代表(mosaic+funnel+parallel-coords),消除 sunburst/icicle/sankey 冗餘"
+gallery_1_distributions.png,composite_main,main,f21408e9-015b-4e9b-9780-5909c14f0d18,chart-family 整合 composite(主展示)
+gallery_2_matrices.png,composite_main,main,a6f7b897-7b87-4fca-a930-96f5c51c3b9d,chart-family 整合 composite(主展示)
+gallery_3_ranking.png,composite_main,main,cd1ab30f-d1a9-47f5-bdcb-6ac9f7949eed,chart-family 整合 composite(主展示)
+gallery_4_dimred.png,composite_main,main,01979a18-f906-43d4-8600-71a164ff7248,chart-family 整合 composite(主展示)
+gallery_5_networks.png,composite_main,main,38dcff51-b28b-440e-bf43-3eed42ee27b8,chart-family 整合 composite(主展示)
+gallery_6_dist_matrix.png,composite_main,main,91786822-c330-4a1e-8e39-cbcb4d80365d,chart-family 整合 composite(主展示)
+gallery_7b_upset.png,composite_main,main,b9debc24-acb8-4fbe-a9ad-10e2bc900668,chart-family 整合 composite(主展示)
+COVER_target_ranking.png,cover_main,main,e4bf3aa6-ad4c-4f78-91c4-3480da2d5475,封面圖
+cover_dual_perspective.png,cover_main,main,f3a1c212-c8c2-4fea-9e6c-797adab1558c,封面圖
+evidence_coverage_fix.png,cover_main,main,7d437f96-7365-4a25-b7d6-a5954e28dbd8,封面圖
+context_specific_shortlist_slope.png,domain_main,main,636eff26-7896-4b41-8797-0563dc30bedc,領域分析主圖
+delivery_decision_funnel.png,domain_main,main,62940e75-5bce-4c27-8321-5b195b88cdc0,領域分析主圖
+dev_vs_user_gap.png,domain_main,main,564bd548-e1e9-4204-a66b-f9c5c862f16b,領域分析主圖
+kinetics_and_avoid.png,domain_main,main,4f709b31-b915-4a8d-a425-57cbac4732f7,領域分析主圖
+lincs_concordance.png,domain_main,main,2e6232de-ecdf-4b71-8cc9-734749b7398a,領域分析主圖
+Figure1_integrated_story.png,flagship_main,main,10d09f33-7576-43bf-944f-e920dc947b9e,旗艦圖:平台 pipeline(curation→3 模組)
+figure1.png,flagship_main,main,d18af2c5-f0e9-4427-9147-2651408dfbef,旗艦圖:signed 軸→機制→外部佐證(a-g)
+mechanism_map.png,flagship_main,main,a8366a69-4c05-4368-b378-a28c233d63e6,機制圖:三 T 細胞模組網路
+signed_application.png,signed_main,main,555fcb0f-94c9-465f-a05d-d74fa9a0366d,signed 應用/方向 主圖(PR#53 交付)
+signed_direction.png,signed_main,main,a6102067-eb0a-4439-8c5d-7539d9c85d78,signed 應用/方向 主圖(PR#53 交付)
+protter_GPAA1_O43292.png,structure_main,main,314a77e6-8973-47cc-b25c-085d4f8e98d7,Protter 拓撲圖(結構展示)
+protter_TRIM39_Q9HCM9.png,structure_main,main,63d388d6-2727-4dc3-8037-0a5d448a5234,Protter 拓撲圖(結構展示)
+benchmark_pr_roc.png,validation_main,main,38d1fa9a-76f2-4d95-8edf-6edfb124f3d0,方法學驗證圖
+context_specific_corrected.png,validation_main,main,b35533f0-bd7c-4377-9c55-59a15d8d5105,方法學驗證圖
+dropout_diagnosis.png,validation_main,main,68fe12e0-c55b-45ad-bc08-ab8a4de99985,方法學驗證圖
+figure_target_validation.png,validation_main,main,6e897994-9565-4c05-a752-06c2a8c05fec,方法學驗證圖
+level4_external_validation_figure.png,validation_main,main,6d7dc3b3-683e-4e1e-a548-d006ca244779,Level 4 外部驗證三軌
+methodological_validation.png,validation_main,main,b41f0923-eceb-4a8f-a3d6-4d874ea20305,方法學驗證圖
+threshold_sensitivity_figure.png,validation_main,main,30b0f351-3550-4173-8991-3d88940e690b,方法學驗證圖
