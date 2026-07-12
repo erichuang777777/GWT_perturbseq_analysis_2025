@@ -99,6 +99,25 @@ export interface Readiness {
   compositeSafetyLiability: string;
   geneticSupportConfidence: string;
   hasExternalEvidence: boolean;
+  // Count of GTEx tissues (Blood/Spleen excluded) where this gene clears the
+  // expression threshold -- higher = more broadly expressed outside CD4
+  // context = plausibly a narrower safety window. Real GTEx data for ~47%
+  // of targets (sources/target_tool_cache/_overlays/gtex_per_tissue.parquet);
+  // "unknown" (not 0) for the rest -- absent from the overlay, not "narrow".
+  safetyWindowScore: number | "unknown";
+}
+
+// Raw ADC-derived membrane/druggability overlay flags (docs/mvp-research/
+// adc_overlay_gwt_overlap_full.csv, ~50% of targets) -- a different
+// vocabulary than Open Targets' tractabilityFlags (SM/AB/PR/OC buckets), so
+// never merged into that field. null when the gene isn't in this overlay
+// (unchecked, not "not druggable").
+export interface MembraneOverlay {
+  isSurfaceProtein: boolean;
+  hasTransmembraneDomain: boolean;
+  hasExtracellularDomain: boolean;
+  isDruggable: boolean;
+  druggablePathway: string | null;
 }
 
 export interface RealTarget {
@@ -128,6 +147,7 @@ export interface RealTarget {
   readiness: Readiness | null;
   diseases: DiseaseAssoc[];
   tractabilityFlags: Record<string, Record<string, boolean>>;
+  membraneOverlay: MembraneOverlay | null;
   safetyLiabilities: { event: string; tissues: string[] }[];
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];

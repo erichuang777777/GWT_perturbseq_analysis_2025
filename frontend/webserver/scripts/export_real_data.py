@@ -19,13 +19,31 @@ value that isn't backed by one of these files:
       Real "stimulation_gated" descriptive tagging.
   - sources/target_tool_cache/_evidence/<GENE>.json
       Real, already-fetched Open Targets / ClinicalTrials.gov / PubMed
-      snapshots (tractability, disease associations, safety liabilities,
-      clinical trials, literature) — only fetched for 21 genes. Every target
-      in the portal gets real statistics + a real readiness call regardless;
-      this deeper external evidence is populated only for the genes this
-      cache actually covers, and left empty (not fabricated) for the rest.
-  - sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv
-      Real gnomAD v4 LOEUF / pLI constraint metrics (16 genes).
+      snapshots (disease associations, Open-Targets-vocabulary tractability,
+      Open-Targets-curated safety liabilities, clinical trials, literature)
+      — only fetched for 21 genes. Every target in the portal gets real
+      statistics + a real readiness call regardless; this deeper external
+      evidence is populated only for the genes this cache actually covers,
+      and left empty (not fabricated) for the rest.
+  - sources/target_tool_cache/_overlays/gnomad_v4.1_constraint_full.csv
+      Real gnomAD v4.1 LOEUF / pLI constraint metrics, genome-wide (17,473
+      genes; MANE Select protein-coding transcripts only) — downloaded
+      directly from gnomAD's public release bucket and filtered, superseding
+      the earlier 16-gene gnomad_constraint_seed.csv (kept only because a
+      backend test pins its exact values; this export no longer reads it).
+  - src/3_DE_analysis/evidence/safety_overlay.py's
+      load_membrane_tractability_overlay() / load_gtex_safety_overlay()
+      Real ADC-derived membrane/surface-protein/druggability overlay
+      (docs/mvp-research/adc_overlay_gwt_overlap_full.csv, 5,588 genes) and
+      real GTEx per-tissue expression-breadth overlay
+      (sources/target_tool_cache/_overlays/gtex_per_tissue.parquet, 9,718
+      genes). Both are passed into compute_readiness() (it already accepted
+      these parameters; this export previously never supplied them), which
+      upgrades tractability_score/tractability_modality and adds a real
+      safety_window_score wherever the gene's Ensembl id is covered. The raw
+      membrane-overlay flags are additionally surfaced as their own
+      `membraneOverlay` field — a different vocabulary than Open Targets'
+      tractability buckets, so the two are never merged into one field.
 
 Target selection: every gene whose best-condition statistical_evidence_grade
 is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
@@ -71,7 +89,10 @@ sys.path.insert(0, str(SRC_3DE))
 
 CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137" / "target_cards.csv"
 EVIDENCE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_evidence"
-GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
+# Genome-wide gnomAD v4.1 constraint (17,473 genes) -- see module docstring.
+# NOT the same file as evidence/safety_overlay.py's default 16-gene seed
+# (gnomad_constraint_seed.csv); this export always uses the wider file.
+GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_v4.1_constraint_full.csv"
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
 ESSENTIALS_TSV = GENE_LISTS_DIR / "core_essentials_hart.tsv"
 BROAD_EFFECT_TXT = REPO_ROOT / "sources" / "broad_effect_genes.txt"
@@ -171,6 +192,11 @@ def main() -> None:
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     from data.loaders import load_gene_set
+    from evidence.safety_overlay import (
+        load_gnomad_constraint_overlay,
+        load_gtex_safety_overlay,
+        load_membrane_tractability_overlay,
+    )
     from individual_concept_profile import load_concept_modules
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
@@ -192,6 +218,15 @@ def main() -> None:
         def evidence_lookup(gene: str):
             return load_evidence(gene)
 
+        membrane = load_membrane_tractability_overlay()
+        gtex = load_gtex_safety_overlay()
+        gnomad_readiness_overlay = load_gnomad_constraint_overlay(path=GNOMAD_CSV)
+        print(
+            f"Overlays for compute_readiness(): membrane={membrane['available']}, "
+            f"gtex={gtex['available']}, gnomad={gnomad_readiness_overlay['available']}",
+            file=sys.stderr,
+        )
+
         print("Running the repo's real readiness engine (core.readiness.compute_readiness) on the full screen (~15s, cached after)...", file=sys.stderr)
         readiness = compute_readiness(
             cards,
@@ -199,12 +234,18 @@ def main() -> None:
             essentials=essentials,
             broad_effect_genes=broad_effect,
             evidence_lookup=evidence_lookup,
+            membrane_overlay=membrane if membrane["available"] else None,
+            gtex_overlay=gtex if gtex["available"] else None,
+            gnomad_overlay=gnomad_readiness_overlay if gnomad_readiness_overlay["available"] else None,
         )
-        # disease_relevance_score is int-or-"unknown" (readiness.py's UNKNOWN
-        # sentinel) -- a genuinely mixed-type column parquet can't store.
-        # Stringify uniformly here so the cached and freshly-computed frames
-        # have identical dtypes; parse_score() below undoes this on read.
+        # disease_relevance_score and safety_window_score are int-or-"unknown"
+        # (readiness.py's UNKNOWN sentinel) -- genuinely mixed-type columns
+        # parquet can't store. Stringify uniformly here so the cached and
+        # freshly-computed frames have identical dtypes; parse_score() below
+        # undoes this on read (safety_window_score reuses the same helper --
+        # both are int-or-"unknown", nothing score-specific about it).
         readiness["disease_relevance_score"] = readiness["disease_relevance_score"].apply(str)
+        readiness["safety_window_score"] = readiness["safety_window_score"].apply(str)
         # Keep only the columns this export actually reads -- shrinks the
         # cache and drops other mixed-type/unused columns (e.g.
         # genetic_support_max_genetic_score) we'd otherwise have to placate
@@ -216,7 +257,7 @@ def main() -> None:
             "tractability_score", "tractability_modality", "human_genetic_support",
             "disease_relevance_score", "clinical_feasibility_score",
             "composite_safety_liability", "genetic_support_confidence",
-            "has_external_evidence",
+            "has_external_evidence", "safety_window_score",
         ]].copy()
 
         print("Running real concept-module annotation (concept_annotation.annotate_targets) on the full screen...", file=sys.stderr)
@@ -238,6 +279,22 @@ def main() -> None:
 
     gnomad = pd.read_csv(GNOMAD_CSV) if GNOMAD_CSV.exists() else pd.DataFrame(columns=["ensembl_id", "gene_symbol", "loeuf", "pli"])
     gnomad_by_gene = {r["gene_symbol"]: r for _, r in gnomad.iterrows()}
+
+    # Raw ADC membrane/tractability overlay flags, keyed by Ensembl id -- a
+    # different vocabulary than Open Targets' SM/AB/PR/OC tractability
+    # buckets (see module docstring), so surfaced as its own field rather
+    # than merged into tractabilityFlags. compute_readiness() above already
+    # used this same overlay to upgrade readiness.tractabilityScore/Modality;
+    # this is the raw signal underneath that upgrade.
+    membrane_overlay_result = load_membrane_tractability_overlay()
+    membrane_by_ensembl: dict[str, pd.Series] = {}
+    if membrane_overlay_result["available"]:
+        for _, r in membrane_overlay_result["table"].iterrows():
+            membrane_by_ensembl[r["ensembl_id"]] = r
+    print(
+        f"Membrane overlay: {'available, ' + str(len(membrane_by_ensembl)) + ' genes' if membrane_overlay_result['available'] else membrane_overlay_result['reason']}",
+        file=sys.stderr,
+    )
 
     module_by_gene: dict[str, list[dict]] = {}
     for m in modules:
@@ -358,6 +415,17 @@ def main() -> None:
         if loeuf is not None:
             constraint_tier = "high" if loeuf < 0.35 else ("moderate" if loeuf < 0.6 else "low")
 
+        mb = membrane_by_ensembl.get(primary_row.get("target_id"))
+        membrane_overlay_out = None
+        if mb is not None:
+            membrane_overlay_out = {
+                "isSurfaceProtein": bool(mb["is_surface_protein"]),
+                "hasTransmembraneDomain": bool(mb["has_transmembrane_domain"]),
+                "hasExtracellularDomain": bool(mb["has_extracellular_domain"]),
+                "isDruggable": bool(mb["is_druggable"]),
+                "druggablePathway": nan_to_none(mb.get("druggable_pathway")),
+            }
+
         grade_num = int(primary_row["_grade"]) if primary_row["_grade"] else None
         red_flags = []
         if r_row is not None and r_row.get("red_flag_override") not in (None, "none"):
@@ -408,9 +476,11 @@ def main() -> None:
                 "compositeSafetyLiability": r_row.get("composite_safety_liability"),
                 "geneticSupportConfidence": r_row.get("genetic_support_confidence"),
                 "hasExternalEvidence": bool(r_row.get("has_external_evidence")),
+                "safetyWindowScore": parse_score(r_row.get("safety_window_score")),
             },
             "diseases": diseases_out,
             "tractabilityFlags": modality_summary,
+            "membraneOverlay": membrane_overlay_out,
             "safetyLiabilities": safety_liabilities,
             "clinicalTrials": trials_out,
             "literature": literature_out,
@@ -422,7 +492,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08) + gnomAD v4 constraint",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08, 21 genes) + gnomAD v4.1 genome-wide constraint + ADC membrane overlay + GTEx safety-window overlay",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules

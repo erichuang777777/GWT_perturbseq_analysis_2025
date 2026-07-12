@@ -378,6 +378,33 @@ export default function Dossier() {
             )}
           </div>
 
+          {/* membrane / ADC overlay: a different vocabulary than Open Targets
+              tractability above, so kept in its own card rather than merged in */}
+          <div style={card}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+              <h3 style={h3}>Membrane / ADC overlay</h3>
+              <span style={src}>src: project ADC target-discovery DB × GWT overlap</span>
+            </div>
+            {t.membraneOverlay ? (
+              <div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: t.membraneOverlay.druggablePathway ? "10px" : 0 }}>
+                  {t.membraneOverlay.isSurfaceProtein && <span style={{ fontSize: "11px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "3px 9px", borderRadius: "20px" }}>✓ surface protein</span>}
+                  {t.membraneOverlay.hasTransmembraneDomain && <span style={{ fontSize: "11px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "3px 9px", borderRadius: "20px" }}>✓ transmembrane domain</span>}
+                  {t.membraneOverlay.hasExtracellularDomain && <span style={{ fontSize: "11px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "3px 9px", borderRadius: "20px" }}>✓ extracellular domain</span>}
+                  {t.membraneOverlay.isDruggable && <span style={{ fontSize: "11px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "3px 9px", borderRadius: "20px" }}>✓ druggable genome</span>}
+                  {!t.membraneOverlay.isSurfaceProtein && !t.membraneOverlay.hasTransmembraneDomain && !t.membraneOverlay.hasExtracellularDomain && !t.membraneOverlay.isDruggable && (
+                    <span style={{ fontSize: "12px", color: "#6b7280" }}>Checked — no positive membrane/druggability flags for this gene.</span>
+                  )}
+                </div>
+                {t.membraneOverlay.druggablePathway && (
+                  <div style={{ fontSize: "11px", color: "#8a92a0", lineHeight: 1.5 }}>{t.membraneOverlay.druggablePathway.split(";").join(" · ")}</div>
+                )}
+              </div>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>unknown — gene not in the ADC × GWT overlap overlay (~50% coverage)</div>
+            )}
+          </div>
+
           {/* clinical trial evidence + literature (real) */}
           {(t.clinicalTrials.length > 0 || t.literature.length > 0) && (
             <div style={card}>
@@ -482,6 +509,36 @@ export default function Dossier() {
             ) : (
               <div style={{ fontSize: "11.5px", color: "#6b7280", marginBottom: "10px" }}>No adverse-event liabilities indexed in Open Targets for this gene.</div>
             )}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "10px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Off-context GTEx breadth</span>
+                <span style={{ fontSize: "12.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>
+                  {t.readiness?.safetyWindowScore != null && t.readiness.safetyWindowScore !== "unknown" ? `${t.readiness.safetyWindowScore} tissues` : "unknown"}
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Composite safety liability</span>
+                <span
+                  style={{
+                    fontSize: "12.5px",
+                    fontWeight: 600,
+                    color:
+                      t.readiness?.compositeSafetyLiability === "high"
+                        ? "#8a2f2f"
+                        : t.readiness?.compositeSafetyLiability === "moderate"
+                          ? "#8a6a1f"
+                          : t.readiness?.compositeSafetyLiability === "low"
+                            ? "#0a6e4f"
+                            : "#9aa1ad",
+                  }}
+                >
+                  {t.readiness?.compositeSafetyLiability ?? "unknown"}
+                </span>
+              </div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", lineHeight: 1.4 }}>
+                gnomAD LoF constraint + GTEx off-context breadth — higher constraint plus broader expression = more concern; a liability flag, not a "this target is safe" signal.
+              </div>
+            </div>
             {redFlags.length > 0 ? (
               <div style={{ fontSize: "11.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "8px", padding: "9px 11px" }}>
                 {redFlags.length} pipeline red flag{redFlags.length === 1 ? "" : "s"} triggered (see rationale panel).

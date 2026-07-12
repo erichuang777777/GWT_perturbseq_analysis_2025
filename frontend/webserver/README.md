@@ -35,10 +35,25 @@ repo's own pipeline** — not mock or illustrative values. `scripts/export_real_
 - `src/3_DE_analysis/concept_annotation.py` (`annotate_targets`) — real "stimulation-gated"
   tagging.
 - `sources/target_tool_cache/_evidence/<GENE>.json` — real, already-fetched Open Targets /
-  ClinicalTrials.gov / PubMed snapshots (tractability, disease associations, safety
-  liabilities, clinical trials, literature) — fetched for 21 genes only.
-- `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` — real gnomAD v4 LOEUF/pLI
-  (16 genes).
+  ClinicalTrials.gov / PubMed snapshots (Open-Targets-vocabulary tractability, disease
+  associations, Open-Targets-curated safety liabilities, clinical trials, literature) —
+  fetched for 21 genes only (these three sources need live API calls; see "Widening the
+  21-gene evidence cache" below for why the rest aren't fetched yet).
+- `sources/target_tool_cache/_overlays/gnomad_v4.1_constraint_full.csv` — real gnomAD v4.1
+  LOEUF/pLI, genome-wide (17,473 genes; MANE Select protein-coding transcripts, downloaded
+  directly from gnomAD's public release bucket) — **94% of the 7,249 selected genes** have a
+  real value here. Supersedes the older 16-gene `gnomad_constraint_seed.csv` for this export
+  (that file is kept only because a backend test pins its exact values).
+- `src/3_DE_analysis/evidence/safety_overlay.py`'s `load_membrane_tractability_overlay()` /
+  `load_gtex_safety_overlay()` — real ADC-derived membrane/surface-protein/druggability overlay
+  (`docs/mvp-research/adc_overlay_gwt_overlap_full.csv`, **50% of selected genes**) and real
+  GTEx per-tissue expression-breadth overlay (`gtex_per_tissue.parquet`, **47% of selected
+  genes**). Both are passed into `compute_readiness()` — it already accepted these parameters;
+  this export previously never supplied them — which upgrades `tractability_score`/
+  `tractability_modality` and adds a real `safety_window_score` + `composite_safety_liability`
+  wherever the gene's Ensembl id is covered. The raw membrane-overlay flags are additionally
+  surfaced as their own `membraneOverlay` field (Dossier's "Membrane / ADC overlay" card) — a
+  different vocabulary than Open Targets' tractability buckets, so the two are never merged.
 
 **Target selection (7,249 genes):** every gene whose best-condition `statistical_evidence_grade`
 is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose primary-condition
@@ -47,13 +62,22 @@ is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose pri
 the remaining 4,290 lower-grade genes) are intentionally excluded; only the 13 lower-grade genes
 that still call `watchlist` are added back in, alongside the 302 `advance` genes (already a
 subset of the grade threshold). Every one of these 7,249 targets gets real statistics, a real
-readiness call, and real concept-module membership (where applicable). The deeper external-evidence
-panels (disease associations, tractability flags, safety liabilities, clinical trials,
-literature, gnomAD constraint) are populated only for the 21 genes the evidence cache covers —
-the rest honestly render `unknown` / "no record indexed" in those panels rather than a
-fabricated value. Gene "name" is standard HGNC nomenclature (hand-verified) for the 21
-evidence-cache genes; every other gene displays its symbol as its name rather than a guessed
-full name.
+readiness call, and real concept-module membership (where applicable).
+
+External-evidence coverage is **not uniform across panels** — each source was integrated on its
+own real coverage, never padded to match another:
+
+| Panel | Source | Coverage of the 7,249 selected genes |
+|---|---|---|
+| gnomAD LOEUF/pLI, constraint tier | gnomAD v4.1 genome-wide download | **94%** (6,834 genes) |
+| Tractability score/modality, safety window, composite safety liability | ADC membrane overlay + GTEx overlay (both wired into `compute_readiness`) | **45–50%** (~3,300–3,600 genes) |
+| Disease associations, Open-Targets-vocabulary tractability flags, Open-Targets safety liabilities, clinical trials, literature | Open Targets / ClinicalTrials.gov / PubMed evidence cache | **21 genes** — these three need live API calls per gene; see "Widening the 21-gene evidence cache" below |
+
+Every panel honestly renders `unknown` / "no record indexed" / "gene not in the ADC × GWT
+overlap overlay" wherever the gene isn't covered by that panel's specific source — never a
+fabricated value, and never backfilled from a different panel's coverage. Gene "name" is
+standard HGNC nomenclature (hand-verified) for the 21 evidence-cache genes; every other gene
+displays its symbol as its name rather than a guessed full name.
 
 Anything a source didn't have is emitted as `null` / rendered as `unknown` — never a fabricated
 value (see `unknown ≠ 0` below). The **figure atlas is the one section that still renders
@@ -84,8 +108,28 @@ to the repo so nobody has to pay that recompute just to regenerate the frontend 
 is trusted whenever it's newer than `target_cards.csv`; pass `--force` after changing
 `readiness.py` / `concept_annotation.py` themselves.
 
-Writes `public/real-dataset.json` (~18 MB / ~965 kB gzipped — see "Build" below for why this is
+Writes `public/real-dataset.json` (~19.8 MB / ~1.1 MB gzipped — see "Build" below for why this is
 a runtime-fetched static asset rather than a JS import).
+
+### Widening the 21-gene evidence cache (disease/trials/literature)
+
+The Open Targets / ClinicalTrials.gov / PubMed evidence cache (`sources/target_tool_cache/_evidence/`)
+still covers only 21 genes because, unlike the gnomAD/ADC/GTEx overlays above, widening it needs
+live calls to three external APIs (no API key needed for any of them):
+
+```bash
+cd src/3_DE_analysis
+python3 -m evidence.external_cache GENE1 GENE2 ... --cache-dir ../../sources/target_tool_cache/_evidence
+```
+
+This is the exact code path that already produced the current 21 genes — same honest
+degrade-to-`unavailable` contract, safe to re-run. See
+`docs/frontend_evidence_coverage_expansion_plan.md` for the full plan, including a suggested
+Tier 1 batch (the 621 genes currently called `advance`/`validate` — the ones a user is most
+likely to actually open) and why this step can't run inside every environment (some sandboxed
+network policies block `clinicaltrials.gov` / `api.platform.opentargets.org` /
+`eutils.ncbi.nlm.nih.gov`, verified with `curl` at the time that plan was written — run it
+wherever those three domains are reachable, then commit the new `_evidence/*.json` files).
 
 ### Wiring to the live API (follow-up)
 
@@ -112,7 +156,7 @@ npm run preview    # serve the production build locally
 ```
 
 Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened. The
-real dataset (~18 MB / ~965 kB gzipped at 7,249 genes) is **not** bundled into the JS — it's
+real dataset (~19.8 MB / ~1.1 MB gzipped at 7,249 genes) is **not** bundled into the JS — it's
 fetched once at startup from `public/real-dataset.json` (see `src/data/dataset.ts`'s
 `loadDataset()`, gated in `main.tsx` behind a small loading screen), which keeps the main JS
 bundle itself at ~94 kB gzipped and lets the browser cache the data independently of app-code
