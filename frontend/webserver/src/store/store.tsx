@@ -20,7 +20,8 @@ export type View =
   | "compare"
   | "figures"
   | "apidocs"
-  | "provenance";
+  | "provenance"
+  | "deck";
 
 export interface AppState {
   view: View;

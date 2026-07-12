@@ -155,6 +155,14 @@ export default function Header() {
         <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
         <span
           className="navlink"
+          onClick={() => setState({ view: "deck" })}
+          style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
+        >
+          Overview
+        </span>
+        <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
+        <span
+          className="navlink"
           onClick={() => setState({ view: "provenance" })}
           style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
         >

@@ -7,6 +7,7 @@ import Clinical from "./views/Clinical";
 import Compare from "./views/Compare";
 import Dossier from "./views/Dossier";
 import Explorer from "./views/Explorer";
+import Deck from "./views/Deck";
 import Home from "./views/Home";
 import Provenance from "./views/Provenance";
 
@@ -42,6 +43,8 @@ function Router() {
       return <ApiDocs />;
     case "provenance":
       return <Provenance />;
+    case "deck":
+      return <Deck />;
     default:
       return <Home />;
   }
