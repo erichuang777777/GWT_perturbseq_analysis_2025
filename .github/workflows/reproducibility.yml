@@ -128,8 +128,18 @@ jobs:
           # sidestepping the source-compile failure entirely; this matches how
           # environment.md's own "Recreate" recipe installs R (conda-forge
           # binaries), just via a different binary channel.
+          # NOTE: do NOT set options(pkgType = "binary") -- "binary" is not a
+          # valid pkgType value on Linux (base R only recognises "source" or
+          # a platform-specific type like "mac.binary"/"win.binary" there).
+          # PPM/RSPM instead serves precompiled binaries transparently over
+          # the normal "source" pkgType via server-side content negotiation
+          # (keyed off the HTTPUserAgent that use-public-rspm: true already
+          # configured on the R session above) -- so pointing repos at the
+          # RSPM URL is sufficient on its own; forcing pkgType="binary" only
+          # breaks install.packages() with "type 'binary' is not supported
+          # on this platform", which is exactly what happened here.
           rspm <- Sys.getenv("RSPM")
-          options(repos = c(RSPM = rspm), pkgType = "binary")
+          options(repos = c(RSPM = rspm))
           install.packages("remotes", repos = rspm)
           pins <- c(
             tibble    = Sys.getenv("R_TIBBLE_VERSION"),
