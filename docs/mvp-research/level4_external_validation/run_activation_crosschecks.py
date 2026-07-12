@@ -199,6 +199,60 @@ def magnitude_concordance(ranking: pd.DataFrame, contract: pd.DataFrame) -> dict
     return {"rho": float(rho), "p": float(p), "n": int(len(m))}
 
 
+def _perm_p_generic(score: np.ndarray, is_hit: np.ndarray, observed: float,
+                    n_perm: int = PERM_N, seed: int = PERM_SEED) -> float:
+    """Two-sided permutation p for an AUROC computed from (score, is_hit)."""
+    if np.isnan(observed):
+        return float("nan")
+    n_pos = int(is_hit.sum())
+    if n_pos == 0 or n_pos == len(is_hit):
+        return float("nan")
+    rng = np.random.default_rng(seed)
+    obs_dev = abs(observed - 0.5)
+    idx = np.arange(len(score))
+    count = 0
+    for _ in range(n_perm):
+        perm = rng.permutation(idx)[:n_pos]
+        mask = np.zeros(len(score), dtype=bool)
+        mask[perm] = True
+        a = _auroc(score[mask], score[~mask])
+        if abs(a - 0.5) >= obs_dev:
+            count += 1
+    return (count + 1) / (n_perm + 1)
+
+
+def magnitude_aligned_crosscheck(ranking: pd.DataFrame, contract: pd.DataFrame,
+                                 essentials: set[str]) -> dict:
+    """SECONDARY / EXPLORATORY (declared, not the pre-registered test): the fair-axis
+    version of the top-N enrichment AUROC. Instead of `primary_rank` (transcriptional
+    DIRECTIONALITY), score genes by footprint MAGNITUDE `n_hits` (the axis the AUROC-0.85
+    calibration was built on), and additionally drop Hart core-essential genes to remove
+    the generic essential/proliferation confound. Asks the narrower, fairer question:
+    'do our BIGGEST-footprint targets enrich among the screen's activation hits, once
+    generic essentials are set aside?' Reported alongside — never replacing — the
+    pre-registered directionality result. Genes lost to viability dropout are absent from
+    the merge and cannot be rescued computationally (an acknowledged floor)."""
+    c = contract.rename(columns={"gene": "target_gene"}).copy()
+    m = ranking.merge(c[["target_gene", "fdr"]], on="target_gene", how="inner")
+    m = m.dropna(subset=["n_hits", "fdr"]).copy()
+    m["is_hit"] = m["fdr"] < FDR_HIT_THRESHOLD
+    m["is_essential"] = m["target_gene"].str.upper().isin(essentials)
+    m["score"] = m["n_hits"].astype(float)  # higher footprint = expected "more hit-like"
+
+    def _one(sub: pd.DataFrame) -> dict:
+        pos = sub.loc[sub["is_hit"], "score"].to_numpy()
+        neg = sub.loc[~sub["is_hit"], "score"].to_numpy()
+        a = _auroc(pos, neg)
+        pp = _perm_p_generic(sub["score"].to_numpy(), sub["is_hit"].to_numpy(), a)
+        return {"auroc": a, "n_pos": int(len(pos)), "n_neg": int(len(neg)), "perm_p": pp}
+
+    return {
+        "all": _one(m),
+        "no_essential": _one(m[~m["is_essential"]]),
+        "n_merged": int(len(m)),
+    }
+
+
 def essential_dropout_among_top_hits(ranking: pd.DataFrame, contract: pd.DataFrame,
                                      essentials: set[str], top_n: int = 50) -> dict:
     """Of the screen's TOP-N most-significant hits, how many are (a) Hart core-essential
@@ -220,8 +274,9 @@ def run_one(name: str, contract: pd.DataFrame, ranking: pd.DataFrame,
     perm_p = permutation_p(res["merged"], res["auroc"])
     mag = magnitude_concordance(ranking, contract)
     drop = essential_dropout_among_top_hits(ranking, contract, essentials)
+    magaln = magnitude_aligned_crosscheck(ranking, contract, essentials)
     return {"name": name, "res": res, "conf": conf, "perm_p": perm_p,
-            "mag": mag, "drop": drop}
+            "mag": mag, "drop": drop, "magaln": magaln}
 
 
 def format_report(runs: list[dict]) -> str:
@@ -257,6 +312,22 @@ def format_report(runs: list[dict]) -> str:
             f"{conf['auroc_no_essential']:.3f} | {fe} | {dir_s} |"
         )
     L.append("")
+    L.append("### Secondary (fair-axis, EXPLORATORY — declared, does not replace the above)")
+    L.append("")
+    L.append("Scored by footprint **magnitude** (`n_hits`, the axis the AUROC-0.85 calibration "
+             "used) rather than directionality, and additionally excluding Hart core-essential "
+             "genes. This tests the narrower hypothesis that our biggest-footprint targets "
+             "enrich among activation hits once generic essentials are set aside.")
+    L.append("")
+    L.append("| Screen | AUROC (magnitude axis) | perm p | AUROC (magnitude, no essentials) | perm p |")
+    L.append("|---|---:|---:|---:|---:|")
+    for r in runs:
+        ma = r["magaln"]
+        L.append(
+            f"| {r['name']} | {ma['all']['auroc']:.3f} | {ma['all']['perm_p']:.2g} | "
+            f"{ma['no_essential']['auroc']:.3f} | {ma['no_essential']['perm_p']:.2g} |"
+        )
+    L.append("")
     for r in runs:
         res, conf = r["res"], r["conf"]
         L.append(f"## {r['name']} ({r['modality']})")
@@ -281,6 +352,15 @@ def format_report(runs: list[dict]) -> str:
                  f"{drop['n_essential']} are Hart core-essential and "
                  f"{drop['n_absent_from_ranking']} are absent from our ranking entirely "
                  f"(lost to viability dropout in our Perturb-seq screen)")
+        ma = r["magaln"]
+        L.append(f"- **secondary (fair-axis, exploratory)** — AUROC scored by footprint "
+                 f"MAGNITUDE (`n_hits`) instead of directionality: "
+                 f"**{ma['all']['auroc']:.4f}** (perm p = {ma['all']['perm_p']:.3g}); "
+                 f"excluding Hart essentials: **{ma['no_essential']['auroc']:.4f}** "
+                 f"(perm p = {ma['no_essential']['perm_p']:.3g}, "
+                 f"n_pos={ma['no_essential']['n_pos']}, n_neg={ma['no_essential']['n_neg']}). "
+                 f"Declared secondary — does NOT replace the pre-registered directionality "
+                 f"AUROC above.")
         if res["direction_n_total"]:
             L.append(f"- flagship direction agreement: {res['direction_n_agree']}/"
                      f"{res['direction_n_total']}")
@@ -288,16 +368,31 @@ def format_report(runs: list[dict]) -> str:
                 L.append(f"  - {g}: our signed_net sign={our:+d}, screen hit_direction={hit:+d}, agree={agree}")
         L.append("")
     L.append("## Honest framing")
-    L.append("**Corroborative, not confirmatory** (same tier as Tracks A–C in "
-             "`LEVEL4_EXTERNAL_VALIDATION.md`). These are two independently-generated "
-             "activation screens using a *different method* (arrayed/pooled CRISPRi) than "
-             "our Perturb-seq; agreement is consistent with — but does not prove — that "
-             "the signed ranking captures causal drivers of T-cell activation (that is L5). "
-             "Direction semantics differ between `signed_net` (transcriptional derepression "
-             "on KO) and the screen's marker `hit_direction` (activation change on "
-             "knockdown), so the flagship direction column is a coarse diagnostic, not a "
-             "strict test. Shifrut 2018 could not be run here (not cached; NCBI/Cell blocked "
-             "by the sandbox network policy) — the generic harness stays turn-key for it.")
+    L.append("**Two axes, two answers.** (1) The **pre-registered** test — does the signed "
+             "*directionality* ranking (`primary_rank`) enrich among activation hits — is a "
+             "**NULL** (AUROC ~0.44–0.48). (2) The **secondary, exploratory** fair-axis test — "
+             "does footprint *magnitude* (`n_hits`) enrich — **passes** (AUROC 0.74–0.79, perm "
+             "p = 2×10⁻⁴, essentially unchanged after excluding Hart essentials). The magnitude "
+             "axis is what the AUROC-0.85 internal calibration was built on, so this is "
+             "consistent internally; but it was chosen **after** seeing the directionality null, "
+             "so it is exploratory, not confirmatory, and would need pre-registration on a "
+             "held-out screen to count as a clean pass.")
+    L.append("")
+    L.append("**Key caveat on the secondary result — detectability/power confound.** A large "
+             "footprint in our screen and a significant hit in the external screen BOTH scale "
+             "with how well-expressed and well-powered a gene is (cell count, expression). So "
+             "part of the 0.74–0.79 magnitude AUROC may reflect shared detectability rather "
+             "than shared activation biology. Excluding essentials does not remove this; a "
+             "clean test would additionally control for baseline expression / cell count. The "
+             "magnitude result is therefore **corroborative with a confound**, not a clean win.")
+    L.append("")
+    L.append("**Other bounds.** These screens use a *different method* (arrayed/pooled "
+             "CRISPRa/i) than our Perturb-seq; agreement is consistent with — but does not "
+             "prove — causal drivers of activation (that is L5). Direction semantics differ "
+             "between `signed_net` (transcriptional derepression on KO) and the screen marker "
+             "`hit_direction`, so the flagship direction column is a coarse diagnostic. Shifrut "
+             "2018 could not be run here (not cached; NCBI/Cell blocked by the sandbox network "
+             "policy) — the generic harness stays turn-key for it.")
     return "\n".join(L) + "\n"
 
 
@@ -324,9 +419,11 @@ def main() -> int:
         r["modality"] = modality
         runs.append(r)
         res = r["res"]
-        print(f"[{name}] merged={res['n_merged']} AUROC={res['auroc']:.4f} "
-              f"perm_p={r['perm_p']:.3g} AUROC_noEss={r['conf']['auroc_no_essential']:.4f} "
-              f"dir={res['direction_n_agree']}/{res['direction_n_total']}")
+        print(f"[{name}] dirAUROC={res['auroc']:.4f} (p={r['perm_p']:.3g}) | "
+              f"magAUROC={r['magaln']['all']['auroc']:.4f} "
+              f"magAUROC_noEss={r['magaln']['no_essential']['auroc']:.4f} "
+              f"(p={r['magaln']['no_essential']['perm_p']:.3g}) | "
+              f"merged={res['n_merged']}")
 
     if not runs:
         print("No activation screens available — nothing run (honest SKIP).")
@@ -348,6 +445,10 @@ def main() -> int:
             "auroc_no_essential": conf["auroc_no_essential"],
             "n_hits_total": conf["n_hits_total"], "n_hits_essential": conf["n_hits_essential"],
             "magnitude_rho": r["mag"]["rho"], "magnitude_p": r["mag"]["p"],
+            "magaxis_auroc": r["magaln"]["all"]["auroc"],
+            "magaxis_auroc_perm_p": r["magaln"]["all"]["perm_p"],
+            "magaxis_auroc_no_essential": r["magaln"]["no_essential"]["auroc"],
+            "magaxis_auroc_no_essential_perm_p": r["magaln"]["no_essential"]["perm_p"],
             "top50_essential": r["drop"]["n_essential"],
             "top50_absent_from_ranking": r["drop"]["n_absent_from_ranking"],
             "direction_agree": res["direction_n_agree"], "direction_total": res["direction_n_total"],

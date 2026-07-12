@@ -63,6 +63,15 @@
         {"screen": "Freimer2022 (CRISPR-KO)", "auroc": 0.405, "perm_p": 0.084}
       ],
       "interpretation": "null 可解釋:(1) primary_rank 排的是轉錄方向性、非活化 hit 強度(不同軸);(2) 篩選 top-50 hits 有 31/50 因必需基因 viability dropout 根本不在我們排序裡。改用足跡廣度(magnitude)則有弱但高度顯著正相關(Spearman ρ +0.11~+0.28, p≤7e-34)。",
+      "secondary_magnitude_axis": {
+        "summary": "公平版(次要、探索性):改用足跡廣度 n_hits 當 score(=AUROC 0.85 校準所用的軸)並排除 Hart essential,AUROC 過關。即平台的足跡強度訊號確實與獨立活化篩選對齊;不對齊的是方向性 re-ranking。",
+        "auroc_no_essential": [
+          {"screen": "Schmidt2022 CD4+ IL2", "auroc": 0.745, "perm_p": 0.0002},
+          {"screen": "Schmidt2022 CD8+ IFNG", "auroc": 0.749, "perm_p": 0.0002},
+          {"screen": "Freimer2022", "auroc": 0.789, "perm_p": 0.0002}
+        ],
+        "caveat": "探索性(選軸在看到 null 之後),且有未除 confound:『我們足跡大』與『他們篩選顯著』都隨表現量/檢定力上升,0.74–0.79 有一部分可能是共同可偵測性而非共同生物學。corroborative-with-confound,不是乾淨勝利,仍不上修 L4 至 met。"
+      },
       "report": "docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_combined.md",
       "shifrut_note": "Shifrut 2018 未快取且 NCBI/Cell 被 sandbox 網路政策封鎖,無法在此跑;harness 對其保持 turn-key。"
     },
