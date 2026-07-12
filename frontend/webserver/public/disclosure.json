@@ -1,0 +1,75 @@
+{
+  "schema_version": "disclosure/v1",
+  "_note": "Static disclosure content bundle for the portal's Provenance/Methods/About page and Footer. Grounded in repo docs (docs/provenance_registry.csv, docs/technical_methods.md, docs/data_dictionary.md, docs/concept_dictionary.md). Dynamic build fields (data_version, generated_at) should be merged from real-dataset.json (sourceVersion/generatedAt) at render time. See docs/frontend_disclosure_spec.md.",
+  "versions": {
+    "engine_version": "1.3.0",
+    "dataset_version": "gwt_marson2025/bioRxiv-10.64898-2025.12.23.696273v1",
+    "card_schema_version": "card_schema/v2",
+    "kd_threshold_version": "kd_status/v2",
+    "evidence_source_version": "external_evidence_cache/v1",
+    "pathway_source_version": "pathway_network_cache/v1",
+    "data_version_label": "GWT-CD4 real-data v1"
+  },
+  "coverage": {
+    "targets_in_portal": 7249,
+    "genome_total_targets": 11526,
+    "de_rows_total": 33983,
+    "measured_downstream_genes": 10282,
+    "conditions": ["Rest", "Stim8hr", "Stim48hr"],
+    "donors": 4,
+    "runs": 2,
+    "deep_external_evidence_genes": 21,
+    "gnomad_constraint_genes": 16,
+    "evidence_fetched_at": "2026-07-08",
+    "note": "Every target carries real statistics + a real readiness call. Deeper external evidence (drugs / disease associations / clinical trials / constraint) is populated only for the genes the cache covers; every other field shows 'unknown' + a coverage note, never a fabricated zero."
+  },
+  "disclaimer": {
+    "short": "Research use only — not clinical software.",
+    "long": "本工具輸出為研究用標靶優先排序,不診斷、不建議治療、不得用於病人管理。CRISPRi ≠ 藥理學:體外 CD4 T 細胞情境下的強訊號是研究線索,並非療效或安全性的保證;安全與可成藥性須拉回人體證據判讀。"
+  },
+  "principles": [
+    { "key": "unknown ≠ 0", "text": "任何無資料的證據領域顯示明確的 'unknown' + 覆蓋說明,絕不補 0 或預設值。" },
+    { "key": "紅旗覆蓋 red-flag override", "text": "不論下游統計多強,命中 essential / broad-effect / off-target / 敲低未確認 / 批次混淆 / 方向不明即封頂決策。" },
+    { "key": "CRISPRi ≠ 藥理學", "text": "體外 CD4 情境注意事項始終顯示;體外強訊號不等於臨床療效。" },
+    { "key": "descriptive vs decision 分離", "text": "概念層(M01–M20)、機制圖、safety overlay 為描述性,永不進就緒度決策。" },
+    { "key": "上傳資料隔離", "text": "使用者上傳資料集以 usr_ 命名空間隔離,絕不混入 GWT 參考集。" },
+    { "key": "可重現與版本化", "text": "每個資料集帶四層版本(engine / dataset / schema / kd_threshold),provenance 是欄位不是註腳。" }
+  ],
+  "limitations": [
+    "上傳路徑已知技術債:kd_status 對純上傳資料、n_total_de_genes 對應遺失(Tech-Debt A.1 / A.2)。",
+    "情境專一性(condition_specificity_score)為 heuristic,非統計交互作用檢定。",
+    "signed module scoring 放棄(DE 無 per-gene 方向);SCEPTRE 用外部 hook、Mixscape 用 scikit-learn 替代(刻意)。",
+    "細胞層級真實資料未跑(~1.7 TiB);僅對合成 fixture 驗證。",
+    "深層外部證據僅 21 個基因有;其餘留空(非 0)。",
+    "平台無存取控制,usr_ 命名僅防意外混料,非授權隔離。"
+  ],
+  "attribution": [
+    { "source": "GWT CD4 Perturb-seq (primary)", "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273", "license": "依論文 / CZI Virtual Cells Platform 條款", "url": "https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" },
+    { "source": "Open Targets Platform", "cite": "Ochoa et al. 2024, Nucleic Acids Res (PMID 39657122)", "license": "依 Open Targets 引用政策", "url": "https://platform.opentargets.org/" },
+    { "source": "ChEMBL", "cite": "PMID 37933841", "license": "CC BY-SA 3.0", "url": "https://www.ebi.ac.uk/chembl/" },
+    { "source": "gnomAD v4", "cite": "Karczewski et al. 2020 (PMID 32461654)", "license": "免費使用,須引用", "url": "https://gnomad.broadinstitute.org/" },
+    { "source": "GTEx", "cite": "GTEx Consortium 2020 (PMID 32913098)", "license": "依 GTEx 條款", "url": "https://gtexportal.org/" },
+    { "source": "Reactome", "cite": "PMID 34788843", "license": "CC BY 4.0", "url": "https://reactome.org/" },
+    { "source": "STRING v12", "cite": "PMID 36370105", "license": "CC BY 4.0", "url": "https://string-db.org/" },
+    { "source": "AlphaFold DB", "cite": "Jumper et al. 2021 (PMID 34265844)", "license": "CC BY 4.0", "url": "https://alphafold.ebi.ac.uk/" },
+    { "source": "ClinicalTrials.gov", "cite": "U.S. NLM", "license": "公眾領域(建議標註來源)", "url": "https://clinicaltrials.gov/" },
+    { "source": "PubMed / PMC", "cite": "U.S. NLM", "license": "依 NLM 條款", "url": "https://pubmed.ncbi.nlm.nih.gov/" },
+    { "source": "CELLxGENE Census", "cite": "CZI (PMID 39607691)", "license": "依 CZI 條款", "url": "https://cellxgene.cziscience.com/" },
+    { "source": "LINCS / CMap L1000", "cite": "Subramanian et al. 2017 (PMID 29195078)", "license": "依 LINCS 條款", "url": "https://clue.io/" }
+  ],
+  "concept_layer": {
+    "count": 20,
+    "id_range": "M01–M20",
+    "scoring": "seed-gene overlap (可手算稽核,無黑箱權重)",
+    "invariant": "概念活化分數為描述性,永不餵 readiness_call / _stage()。",
+    "source_doc": "docs/concept_dictionary.md"
+  },
+  "doc_links": [
+    { "label": "Provenance registry (資料來源 × 演算法 × 參考)", "path": "provenance_registry.csv", "kind": "csv" },
+    { "label": "技術方法與驗證 Technical methods", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/technical_methods.md", "kind": "external" },
+    { "label": "資料字典 Data dictionary", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/data_dictionary.md", "kind": "external" },
+    { "label": "概念詞典 M01–M20", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/concept_dictionary.md", "kind": "external" },
+    { "label": "圖表導讀 Figure guide", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/figure_guide.md", "kind": "external" },
+    { "label": "Server 模組參考", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/server_modules.md", "kind": "external" }
+  ]
+}
