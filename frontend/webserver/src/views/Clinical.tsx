@@ -15,7 +15,7 @@ export default function Clinical() {
   const clinicalTabs = [
     { key: "scope", label: "Scope & guardrails" },
     { key: "concept", label: "Individual concept profile" },
-    { key: "drug", label: "Disease × drug evidence" },
+    { key: "drug", label: "Disease association" },
     { key: "popgen", label: "Population genetics" },
   ].map((tb) => ({
     key: tb.key,

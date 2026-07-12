@@ -1,8 +1,9 @@
 import { useMemo } from "react";
-import { TARGETS, targetByGene } from "../data/dataset";
+import { TARGETS, targetByGene, SOURCE_VERSION } from "../data/dataset";
 import { CONSTRAINT_META, DECISION_META, GRADE, READINESS, RED_FLAG_LABELS, REVIEWERS, WKEYS } from "../data/reference";
 import type { VoteStatus } from "../data/types";
 import { consensus, fmtEffect, fmtFdr, fmtStatus, fmtTs, initials, rankedTargets, similarTargets, subScores } from "../lib/logic";
+import { downloadFile } from "../lib/download";
 import { useStore } from "../store/store";
 
 const CONDITION_LABEL: Record<string, string> = { Rest: "Rest", Stim8hr: "Stim 8 hr", Stim48hr: "Stim 48 hr" };
@@ -772,7 +773,14 @@ export default function Dossier() {
           </div>
 
           <button
-            onClick={() => alert("Exporting " + t.gene + " dossier as JSON with full provenance…\n\nGET /api/targets/" + t.gene + "?format=json")}
+            onClick={() => {
+              const payload = {
+                sourceVersion: SOURCE_VERSION,
+                exportedFrom: "CD4 Target Discovery Portal (client-side export; no server involved)",
+                target: t,
+              };
+              downloadFile(`cd4-dossier_${t.gene}.json`, JSON.stringify(payload, null, 2), "application/json");
+            }}
             style={{ width: "100%", padding: "12px", border: "1.5px solid #1a5fb4", borderRadius: "10px", background: "#fff", color: "#1a5fb4", fontSize: "13.5px", fontWeight: 600, cursor: "pointer" }}
           >
             Export target dossier (JSON)

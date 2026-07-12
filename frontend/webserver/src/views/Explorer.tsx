@@ -1,9 +1,11 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useMemo, useRef } from "react";
-import { TARGETS } from "../data/dataset";
+import { TARGETS, SOURCE_VERSION } from "../data/dataset";
 import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
 import { consensus, fmtEffect, rankedTargets } from "../lib/logic";
+import type { RankedTarget } from "../lib/logic";
+import { downloadFile, toCSV } from "../lib/download";
 import { useStore } from "../store/store";
 
 const ROW_HEIGHT = 54;
@@ -346,13 +348,27 @@ export default function Explorer() {
               />
             </div>
             <button
-              onClick={() =>
-                alert(
-                  "Exporting " +
-                    rankedFiltered.length +
-                    " targets as CSV (with provenance + current composite columns)…\n\nIn the live portal this streams from /api/exports/{id}.csv",
-                )
-              }
+              onClick={() => {
+                const csv = toCSV<RankedTarget>(rankedFiltered, [
+                  ["rank", (t) => t._rank],
+                  ["gene", (t) => t.gene],
+                  ["name", (t) => t.name],
+                  ["module_id", (t) => t.module?.id ?? ""],
+                  ["module_name", (t) => t.module?.name ?? ""],
+                  ["composite_priority", (t) => t._comp],
+                  ["readiness_call", (t) => t.readiness?.call ?? "unknown"],
+                  ["readiness_stage", (t) => t.readiness?.stage ?? "unknown"],
+                  ["evidence_grade", (t) => t.grade ?? "unknown"],
+                  ["abs_log2fc", (t) => t.effect ?? ""],
+                  ["fdr", (t) => t.fdr ?? ""],
+                  ["cross_donor_corr_mean", (t) => t.crossDonorCorrelationMean ?? ""],
+                  ["gnomad_loeuf", (t) => t.gnomad.loeuf ?? ""],
+                  ["gnomad_pli", (t) => t.gnomad.pli ?? ""],
+                  ["primary_condition", (t) => t.primaryCondition],
+                  ["source_version", () => SOURCE_VERSION],
+                ]);
+                downloadFile(`cd4-targets_${rankedFiltered.length}.csv`, csv, "text/csv;charset=utf-8");
+              }}
               style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "9px 14px", border: "1.5px solid #d6dbe3", borderRadius: "9px", background: "#fff", fontSize: "13px", fontWeight: 500, color: "#3a414d", cursor: "pointer" }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
