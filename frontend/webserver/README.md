@@ -71,6 +71,29 @@ repo's own pipeline** — not mock or illustrative values. `scripts/export_real_
   lymphocyte count shift on average"), independent of and complementary to gnomAD's constraint
   signal (gnomAD: population tolerance for losing the gene; this: the measured phenotypic
   consequence). Surfaced in Dossier's "Population genetics" card below the gnomAD panel.
+- `docs/mvp-research/signed_de_application/signed_ranking_v2.csv` — this repo's own
+  signed/directional re-analysis of the same GB10 screen: whether knockout nets more up- or
+  down-regulated downstream genes (`directionality_index`, `footprint_class`), an axis
+  `target_cards.csv` itself doesn't carry. The source file's own header cautions that
+  `footprint_class` is a net transcriptional footprint direction, **not** a molecular
+  activator/repressor role assignment — that caveat is carried verbatim into Dossier's
+  "Downstream footprint" card. Covers **7,246 of the 7,249 selected genes (~100%)**.
+- `metadata/SchmidtSteinhart2022_CRISPRi_screen_gene_phenotypes.csv`,
+  `Arce2025_Screen.csv`, `Freimer2022_Screen.csv`, `Umhoefer2025_FOXP3_Teff.csv` — four
+  independent, already-published external CRISPR screens (real MAGeCK-style enrichment
+  statistics), surfaced as "independent screen replication" in the Dossier. Combined coverage:
+  **6,921 of the 7,249 selected genes (95.5%)** have at least one hit record.
+- `docs/mvp-research/pipeline/kinetics_avoid/target_master_table.csv` — this repo's own
+  **prior curated editorial judgment** (`avoid_tier`, `avoid_flags`, `delivery_modality`,
+  `kinetic_archetype`) — explicitly not a new independent measurement, so Dossier labels this
+  card "editorial" and keeps it visually separate from the raw evidence sources above. Covers
+  **1,235 of the 7,249 selected genes (17.0%)** — the 1,235-gene "gate shortlist" this repo's
+  prior research curated most deeply.
+- `metadata/suppl_tables/clustering_results_and_annotations.csv` — real CORUM/STRINGdb/KEGG/
+  Reactome functional-complex overlap analysis over this screen's own co-regulation clusters.
+  Only the 50 clusters with a resolved (non-"unknown") manual annotation are surfaced, a
+  complement to the M01–M20 concept modules, not a replacement. Covers **611 of the 7,249
+  selected genes (8.4%)**.
 
 **Target selection (7,249 genes):** every gene whose best-condition `statistical_evidence_grade`
 is ≥ 2 (`MIN_GRADE` in the script), **union** every gene (any grade) whose primary-condition
@@ -86,10 +109,14 @@ own real coverage, never padded to match another:
 
 | Panel | Source | Coverage of the 7,249 selected genes |
 |---|---|---|
-| gnomAD LOEUF/pLI, constraint tier | gnomAD v4.1 genome-wide download | **94%** (6,834 genes) |
+| Downstream footprint (directionality/net up-down) | This repo's signed re-analysis | **~100%** (7,246 genes) |
 | Lymphocyte-count LoF burden | UK Biobank (Backman et al. 2021), local file | **98.5%** (7,140 genes) |
+| gnomAD LOEUF/pLI, constraint tier | gnomAD v4.1 genome-wide download | **94%** (6,834 genes) |
+| Independent screen replication | 4 published external CRISPR screens | **95.5%** (6,921 genes) |
 | Tractability score/modality, safety window, composite safety liability | ADC membrane overlay + GTEx overlay (both wired into `compute_readiness`) | **45–50%** (~3,300–3,600 genes) |
 | Disease associations | 21-gene live Open Targets evidence cache **+** local 13-indication export, merged | **17.5%** (1,266 genes) |
+| Prior curated avoid/delivery assessment | This repo's own editorial judgment (not raw evidence) | **17.0%** (1,235 genes) |
+| Functional complex membership | CORUM/STRINGdb/KEGG/Reactome clustering | **8.4%** (611 genes) |
 | Open-Targets-vocabulary tractability flags, Open-Targets safety liabilities, clinical trials, literature | Open Targets / ClinicalTrials.gov / PubMed evidence cache | **21 genes** — these need live API calls per gene; see "Widening the 21-gene evidence cache" below |
 
 Every panel honestly renders `unknown` / "no record indexed" / "gene not in the ADC × GWT
@@ -127,7 +154,7 @@ to the repo so nobody has to pay that recompute just to regenerate the frontend 
 is trusted whenever it's newer than `target_cards.csv`; pass `--force` after changing
 `readiness.py` / `concept_annotation.py` themselves.
 
-Writes `public/real-dataset.json` (~24.4 MB / ~1.5 MB gzipped — see "Build" below for why this is
+Writes `public/real-dataset.json` (~31.9 MB / ~2.5 MB gzipped — see "Build" below for why this is
 a runtime-fetched static asset rather than a JS import).
 
 ### Widening the 21-gene evidence cache (disease/trials/literature)
@@ -175,7 +202,7 @@ npm run preview    # serve the production build locally
 ```
 
 Plotly is code-split into a lazy chunk, so it only loads when the Figure atlas is opened. The
-real dataset (~24.4 MB / ~1.5 MB gzipped at 7,249 genes) is **not** bundled into the JS — it's
+real dataset (~31.9 MB / ~2.5 MB gzipped at 7,249 genes) is **not** bundled into the JS — it's
 fetched once at startup from `public/real-dataset.json` (see `src/data/dataset.ts`'s
 `loadDataset()`, gated in `main.tsx` behind a small loading screen), which keeps the main JS
 bundle itself at ~94 kB gzipped and lets the browser cache the data independently of app-code

@@ -296,6 +296,55 @@ export default function Dossier() {
             </div>
           </div>
 
+          {/* downstream footprint: this repo's own signed re-analysis of the same screen */}
+          <div style={card}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+              <h3 style={h3}>Downstream footprint</h3>
+              <span style={src}>src: signed_ranking_v2 (this repo's signed re-analysis)</span>
+            </div>
+            {t.downstreamFootprint ? (
+              <>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "14px", marginBottom: "12px" }}>
+                  <div>
+                    <div style={{ fontSize: "18px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>
+                      {t.downstreamFootprint.directionalityIndex != null ? t.downstreamFootprint.directionalityIndex.toFixed(2) : "unknown"}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#6b7280", marginTop: "2px" }}>Directionality index</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "18px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#0a6e4f" }}>{t.downstreamFootprint.nUp ?? "—"}</div>
+                    <div style={{ fontSize: "11px", color: "#6b7280", marginTop: "2px" }}>Up on KO</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "18px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#8a2f2f" }}>{t.downstreamFootprint.nDown ?? "—"}</div>
+                    <div style={{ fontSize: "11px", color: "#6b7280", marginTop: "2px" }}>Down on KO</div>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    display: "inline-block",
+                    fontSize: "11.5px",
+                    fontWeight: 600,
+                    padding: "4px 10px",
+                    borderRadius: "20px",
+                    color: t.downstreamFootprint.footprintClass === "net_derepressed_on_KO" ? "#0a6e4f" : t.downstreamFootprint.footprintClass === "net_reduced_on_KO" ? "#8a2f2f" : "#5b6270",
+                    background: t.downstreamFootprint.footprintClass === "net_derepressed_on_KO" ? "#e4f3ec" : t.downstreamFootprint.footprintClass === "net_reduced_on_KO" ? "#f6e5e5" : "#eef0f3",
+                  }}
+                >
+                  {t.downstreamFootprint.footprintClass.replace(/_/g, " ")}
+                </span>
+                {t.downstreamFootprint.inGateShortlist && (
+                  <span style={{ marginLeft: "8px", fontSize: "10.5px", color: "#9aa1ad" }}>in the 1,235-gene gate shortlist</span>
+                )}
+                <div style={{ fontSize: "10.5px", color: "#9aa1ad", lineHeight: 1.5, marginTop: "10px" }}>
+                  Net transcriptional footprint direction on knockout — NOT a molecular activator/repressor role assignment (a TCR component can be net-derepressed without being a transcriptional repressor).
+                </div>
+              </>
+            ) : (
+              <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", fontFamily: "'IBM Plex Mono', monospace" }}>unknown — not in this re-analysis</div>
+            )}
+          </div>
+
           {/* concept module membership (real; no fabricated cross-module profile) */}
           <div style={card}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "5px" }}>
@@ -324,6 +373,27 @@ export default function Dossier() {
               </div>
             )}
           </div>
+
+          {/* functional-complex clustering: a complement to concept modules, not a replacement */}
+          {t.functionalComplexes.length > 0 && (
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "5px" }}>
+                <h3 style={h3}>Functional complex membership</h3>
+                <span style={src}>src: CORUM / STRINGdb / KEGG / Reactome clustering</span>
+              </div>
+              <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 12px", lineHeight: 1.5 }}>
+                Real co-regulation cluster overlap with known complex/pathway databases — a complement to the immune-concept modules above, not a replacement.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {t.functionalComplexes.map((c, i) => (
+                  <div key={i} style={{ padding: "10px 13px", background: "#f7f8fa", borderRadius: "9px" }}>
+                    <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24" }}>{c.clusterAnnotation}</div>
+                    <div style={{ fontSize: "11.5px", color: "#8a92a0", marginTop: "2px" }}>{c.bestDescribedBy}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* external evidence: real disease associations */}
           <div style={card}>
@@ -475,6 +545,35 @@ export default function Dossier() {
               })}
             </div>
           </div>
+
+          {/* independent screen replication: real hits from other published studies */}
+          {t.externalScreens.length > 0 && (
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
+                <h3 style={h3}>Independent screen replication</h3>
+                <span style={src}>src: 4 published external CRISPR screens</span>
+              </div>
+              <p style={{ fontSize: "12px", color: "#8a92a0", margin: "0 0 14px", lineHeight: 1.5 }}>
+                Real MAGeCK-style enrichment statistics from separately published studies — does an independent screen also see a hit at this gene. neg = depleted for the phenotype, pos = enriched.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {t.externalScreens.map((h, i) => (
+                  <div key={i} style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr", gap: "10px", alignItems: "center", padding: "9px 12px", background: "#f7f8fa", borderRadius: "9px" }}>
+                    <div>
+                      <div style={{ fontSize: "12.5px", fontWeight: 600, color: "#1a1d24" }}>{h.study}</div>
+                      <div style={{ fontSize: "11px", color: "#8a92a0" }}>{h.phenotype}</div>
+                    </div>
+                    <div style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: h.negFdr != null && h.negFdr < 0.05 ? "#0a6e4f" : "#6b7280" }}>
+                      neg fdr {fmtFdr(h.negFdr)}
+                    </div>
+                    <div style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: h.posFdr != null && h.posFdr < 0.05 ? "#0a6e4f" : "#6b7280" }}>
+                      pos fdr {fmtFdr(h.posFdr)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* right rail */}
@@ -556,6 +655,53 @@ export default function Dossier() {
               <div style={{ fontSize: "11.5px", color: "#6b7280" }}>No pipeline red flags triggered for this target.</div>
             )}
           </div>
+
+          {/* prior curated avoid/delivery assessment -- this repo's own editorial
+              judgment, deliberately labeled apart from the raw evidence sources above */}
+          {t.avoidAssessment && (
+            <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
+                <h3 style={{ fontSize: "14px", fontWeight: 700, margin: 0 }}>This repo's prior avoid/delivery assessment</h3>
+                <span style={{ fontSize: "10px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace" }}>editorial</span>
+              </div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", lineHeight: 1.4, marginBottom: "12px" }}>
+                A prior curated judgment layer from this repo's own research, not a new independent measurement — shown separately from the evidence sources above for that reason.
+              </div>
+              <span
+                style={{
+                  display: "inline-block",
+                  fontSize: "11.5px",
+                  fontWeight: 700,
+                  padding: "4px 10px",
+                  borderRadius: "20px",
+                  marginBottom: "10px",
+                  color:
+                    t.avoidAssessment.avoidTier === "avoid" ? "#fff" : t.avoidAssessment.avoidTier === "high_risk" ? "#8a2f2f" : t.avoidAssessment.avoidTier === "caution" ? "#8a6a1f" : "#0a6e4f",
+                  background:
+                    t.avoidAssessment.avoidTier === "avoid" ? "#8a2f2f" : t.avoidAssessment.avoidTier === "high_risk" ? "#f6e5e5" : t.avoidAssessment.avoidTier === "caution" ? "#fbf1de" : "#e4f3ec",
+                }}
+              >
+                {t.avoidAssessment.avoidTier}
+              </span>
+              {t.avoidAssessment.avoidFlags.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "12px" }}>
+                  {t.avoidAssessment.avoidFlags.map((f) => (
+                    <div key={f} style={{ fontSize: "11.5px", color: "#6b7280" }}>· {f}</div>
+                  ))}
+                </div>
+              )}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Delivery modality</span>
+                  <span style={{ fontSize: "12px", fontWeight: 600, color: "#1a1d24", textAlign: "right", maxWidth: "180px" }}>{t.avoidAssessment.deliveryModality}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "12.5px", color: "#6b7280" }}>Kinetic archetype</span>
+                  <span style={{ fontSize: "12px", fontWeight: 600, color: "#1a1d24" }}>{t.avoidAssessment.kineticArchetype.replace(/_/g, " ")}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "20px" }}>
             <h3 style={{ fontSize: "14px", fontWeight: 700, margin: "0 0 13px" }}>Population genetics</h3>

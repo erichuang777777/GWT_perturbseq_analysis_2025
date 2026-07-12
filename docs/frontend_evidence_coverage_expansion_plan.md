@@ -8,13 +8,17 @@
 | B：gnomAD 全基因組 | ✅ 已完成 | 下載 gnomAD v4.1 constraint metrics（17,473 基因），LOEUF/pLI 覆蓋從 15 基因跳到 6,834/7,249（94.3%） |
 | D（追加）：本地疾病關聯表 | ✅ 已完成 | `src/6_functional_interaction/results/disease_gene_associations_detailed.csv`（13 種自體免疫/發炎疾病，零網路）併入 `diseases` 欄位，疾病關聯覆蓋從 15 個基因跳到 1,266/7,249（17.5%） |
 | E（追加）：UK Biobank 淋巴球 LoF burden | ✅ 已完成 | `evidence/population.py`（零網路，已註冊在 registry.py 卻沒人接線）新增 `populationBurden` 欄位，覆蓋 7,140/7,249（98.5%） |
+| F（追加）：本 repo 自己的 signed 足跡再分析 | ✅ 已完成 | `signed_ranking_v2.csv`（零網路）新增 `downstreamFootprint` 欄位，覆蓋 7,246/7,249（~100%），完整保留原檔「這是淨足跡方向、不是分子活化/抑制角色判定」的警語 |
+| G（追加）：4 個已發表外部 screen 交叉驗證 | ✅ 已完成 | SchmidtSteinhart2022/Arce2025/Freimer2022/Umhoefer2025（零網路）新增 `externalScreens` 欄位，合併覆蓋 6,921/7,249（95.5%） |
+| H（追加）：本 repo 先前的避免/給藥編輯建議 | ✅ 已完成 | `kinetics_avoid/target_master_table.csv`（零網路）新增 `avoidAssessment` 欄位，**UI 上明確標示「editorial」、與原始證據來源視覺區隔**，覆蓋 1,235/7,249（17.0%） |
+| I（追加）：功能複合體分群 | ✅ 已完成 | `clustering_results_and_annotations.csv`（零網路，只取 50 個非 unknown 的分群）新增 `functionalComplexes` 欄位，覆蓋 611/7,249（8.4%） |
 | C：Open Targets / ClinicalTrials.gov / PubMed | 📝 規劃已寫下，未執行（本 session 網路政策封鎖三個 API） | 見下方軸線 C 章節 |
 
-D、E 兩軸是在使用者追問「除了這些資料還缺什麼可以補」時，重新掃過 `evidence/registry.py`、`docs/mvp-research/`、`sources/` 找到的：兩個都是**已經在硬碟上、完全不需要網路呼叫**的真實資料，`evidence/population.py` 甚至已經在 registry 裡註冊卻從未真正被 `export_real_data.py` 使用過。
+D、E 兩軸是在使用者追問「除了這些資料還缺什麼可以補」（第一次）時找到的；F、G、H、I 四軸是第二次追問「請你檢查一遍是否有整理好的資料但是沒有接進來展示的」時，動用 subagent 徹底掃過 `docs/mvp-research/` 全部子目錄、`sources/topic*`、`metadata/` 找到並逐一驗證覆蓋率後接上的。全部六個追加軸線都是**已經在硬碟上、完全不需要網路呼叫**的真實資料。
 
-軸線 A、B、D、E 的實作、驗證（Playwright 抽測多個基因確認新欄位正確顯示、無覆蓋的基因誠實顯示 unknown）、`export_real_data.py`/`types.ts`/`Dossier.tsx`/README 更新都已完成並可 commit。以下維持原始規劃內容供參考，軸線 C 尚未執行。
+軸線 A、B、D、E、F、G、H、I 的實作、驗證（Playwright 抽測多個基因確認新欄位正確顯示、無覆蓋的基因誠實顯示 unknown、真實重複值如 CD3E 同時屬於兩個標註相同的功能分群已去重）、`export_real_data.py`/`types.ts`/`Dossier.tsx`/README 更新都已完成並可 commit。以下維持原始規劃內容供參考，軸線 C 尚未執行。
 
-也評估過但**不建議接**的資料源：LINCS/CMap L1000（`evidence/lincs_reference_cache.py`，只有 4 個基因、且全部是癌細胞株，模組自己的文件都寫明只能當弱假說參考）；`docs/mvp-research/level4_external_validation/` 的驗證用資料（只涵蓋約 55 個 flagship 基因，規模太小）；`sources/topic13_clinicaltrials_flat.csv`（用藥物名稱索引，不是基因，跟 Dossier 頁的缺口無關）。
+也評估過但**不建議接**的資料源：LINCS/CMap L1000（`evidence/lincs_reference_cache.py`，只有 4 個基因、且全部是癌細胞株，模組自己的文件都寫明只能當弱假說參考）；`docs/mvp-research/level4_external_validation/` 的驗證用資料（只涵蓋約 55 個 flagship 基因，規模太小）；`sources/topic13_clinicaltrials_flat.csv`（用藥物名稱索引，不是基因，跟 Dossier 頁的缺口無關）；`downstream_enrichment_v2.csv`／`lincs_concordance.csv`（signed_ranking_v2 的姊妹檔，但只涵蓋 5 個或標明「DEMO-level」的 4 個基因）；`dropout_diagnosis.csv`／`gene_gate_diagnosis.csv`（雖涵蓋全部 11,526 基因，但內容是品管診斷不是 dossier 內容）；`T_activation_regulators.csv`（291 基因，偏小）；`track_c_gse318876_target_evidence.csv`（HIV 宿主因子 screen，跟 CD4 藥物標的受眾關聯性邊緣）；幾個 ~96 基因的 blindspot_fixes 檔案（太窄）；`TableS4_weinstock_et_al_DE.csv`（實際被剔除的基因只有 84 個，其餘是下游讀出而非標的）。
 
 ---
 

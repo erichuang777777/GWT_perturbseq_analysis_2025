@@ -66,6 +66,40 @@ value that isn't backed by one of these files:
       independent of and complementary to gnomAD's constraint signal above
       (gnomAD: population tolerance for loss of the gene; this: the actual
       measured phenotypic consequence for one CD4-relevant trait).
+  - docs/mvp-research/signed_de_application/signed_ranking_v2.csv
+      This repo's own signed/directional re-analysis of the same GB10 CD4+
+      T-cell KO Perturb-seq screen -- for each target, whether knockout nets
+      MORE up- or down-regulated downstream genes (directionality_index,
+      footprint_class), a real axis target_cards.csv itself doesn't carry.
+      The file's own header explicitly cautions that footprint_class is a
+      net transcriptional FOOTPRINT direction, NOT a molecular
+      activator/repressor role assignment -- that caveat is carried verbatim
+      into the frontend copy, not paraphrased away. Covers 7,173 of the
+      7,249 selected genes (99.0%).
+  - metadata/SchmidtSteinhart2022_CRISPRi_screen_gene_phenotypes.csv,
+      Arce2025_Screen.csv, Freimer2022_Screen.csv, Umhoefer2025_FOXP3_Teff.csv
+      Four independent, already-published external CRISPR screens (real
+      MAGeCK-style neg/pos enrichment statistics per gene per
+      phenotype/condition) -- Arce/Freimer/Umhoefer share the identical
+      1,351-gene druggable-genome panel; SchmidtSteinhart is genome-wide
+      (18,939 genes, CD4+ IL2 / CD8+ IFNG phenotypes). Surfaced as
+      "independent screen replication" -- does an external, separately
+      published study also see a hit at this gene. Combined coverage: 6,921
+      of the 7,249 selected genes (95.5%) have at least one entry.
+  - docs/mvp-research/pipeline/kinetics_avoid/target_master_table.csv
+      This repo's own PRIOR CURATED editorial judgment layer (avoid_tier,
+      avoid_flags with reasons, delivery_modality, kinetic_archetype) --
+      explicitly NOT a new independent measurement, so the frontend labels
+      it as this repo's own assessment rather than presenting it alongside
+      raw evidence sources as if it were on the same footing. Covers 1,228
+      of the 7,249 selected genes (16.9%) -- the 1,235-gene "gate shortlist"
+      this repo's prior research curated most deeply.
+  - metadata/suppl_tables/clustering_results_and_annotations.csv
+      Real CORUM/STRINGdb/KEGG/Reactome functional-complex overlap analysis
+      over this screen's own co-regulation clusters (112 clusters). Only the
+      50 clusters with a resolved (non-"unknown") manual_annotation are
+      surfaced -- covers 611 of the 7,249 selected genes (8.4%), a
+      complement to the M01-M20 concept modules above, not a replacement.
 
 Target selection: every gene whose best-condition statistical_evidence_grade
 is >= MIN_GRADE (2 = C or better), UNION every gene (any grade) whose
@@ -98,6 +132,7 @@ bundled into the JS -- see src/data/dataset.ts).
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import sys
 from pathlib import Path
@@ -125,6 +160,21 @@ DISEASE_ASSOC_CSV = REPO_ROOT / "src" / "6_functional_interaction" / "results" /
 LYMPHOCYTE_BURDEN_TSV = (
     REPO_ROOT / "src" / "8_lymphocyte_counts_LoF" / "input" / "Backman_LymphocyteCount_fullFeatures.per_gene_estimates.tsv"
 )
+# This repo's own signed/directional re-analysis of the same GB10 screen --
+# see module docstring.
+SIGNED_RANKING_CSV = REPO_ROOT / "docs" / "mvp-research" / "signed_de_application" / "signed_ranking_v2.csv"
+# Independent published external screens (all real, all gene-symbol keyed) --
+# see module docstring.
+SCHMIDT_STEINHART_CSV = REPO_ROOT / "metadata" / "SchmidtSteinhart2022_CRISPRi_screen_gene_phenotypes.csv"
+ARCE2025_CSV = REPO_ROOT / "metadata" / "Arce2025_Screen.csv"
+FREIMER2022_CSV = REPO_ROOT / "metadata" / "Freimer2022_Screen.csv"
+UMHOEFER2025_CSV = REPO_ROOT / "metadata" / "Umhoefer2025_FOXP3_Teff.csv"
+# This repo's own prior curated avoid/delivery assessment (an editorial
+# judgment layer, not a new independent measurement) -- see module docstring.
+KINETICS_AVOID_CSV = REPO_ROOT / "docs" / "mvp-research" / "pipeline" / "kinetics_avoid" / "target_master_table.csv"
+# Real CORUM/STRINGdb/KEGG/Reactome functional-complex clustering -- see
+# module docstring.
+CLUSTERING_CSV = REPO_ROOT / "metadata" / "suppl_tables" / "clustering_results_and_annotations.csv"
 
 # Cached full-screen compute_readiness / annotate_targets output (see module
 # docstring). Committed to the repo so nobody has to pay the ~15s recompute
@@ -251,6 +301,82 @@ def main() -> None:
         pop_cards = build_population_hypothesis_card(cards, burden["estimates"], trait="lymphocyte_count")
         pop_burden_by_gene = {r["target"]: r for _, r in pop_cards.iterrows()}
     print(f"Population LoF-burden (lymphocyte count): {'unavailable — ' + burden['reason'] if not burden['available'] else str(len(pop_burden_by_gene)) + ' genes'}", file=sys.stderr)
+
+    # Local (zero-network) signed/directional re-analysis of this repo's own
+    # screen -- see module docstring.
+    signed_ranking = pd.read_csv(SIGNED_RANKING_CSV, comment="#")
+    footprint_by_gene = {r["target_gene"]: r for _, r in signed_ranking.iterrows()}
+    print(f"Signed footprint re-analysis: {len(footprint_by_gene)} genes", file=sys.stderr)
+
+    # Local (zero-network) independent published external screens -- see
+    # module docstring. Normalized into one gene -> list-of-hits lookup;
+    # "Non-Targeting" rows are screen negative controls, not genes.
+    external_screens_by_gene: dict[str, list] = {}
+
+    def _add_external_hit(gene: str, study: str, phenotype: str, row) -> None:
+        if gene == "Non-Targeting" or pd.isna(gene):
+            return
+        external_screens_by_gene.setdefault(gene, []).append({
+            "study": study,
+            "phenotype": phenotype,
+            "negScore": nan_to_none(row.get("neg|score")),
+            "negFdr": nan_to_none(row.get("neg|fdr")),
+            "negRank": nan_to_none(row.get("neg|rank")),
+            "posScore": nan_to_none(row.get("pos|score")),
+            "posFdr": nan_to_none(row.get("pos|fdr")),
+            "posRank": nan_to_none(row.get("pos|rank")),
+        })
+
+    schmidt = pd.read_csv(SCHMIDT_STEINHART_CSV)
+    for _, r in schmidt.iterrows():
+        _add_external_hit(r["id"], "SchmidtSteinhart2022", r["phenotype"], r)
+
+    freimer = pd.read_csv(FREIMER2022_CSV)
+    for _, r in freimer.iterrows():
+        _add_external_hit(r["id"], "Freimer2022", r["screen"], r)
+
+    umhoefer = pd.read_csv(UMHOEFER2025_CSV)
+    for _, r in umhoefer.iterrows():
+        _add_external_hit(r["id"], "Umhoefer2025", "FOXP3_Teff", r)
+
+    arce = pd.read_csv(ARCE2025_CSV)
+    arce_conditions = sorted({c.split(".", 1)[1] for c in arce.columns if "." in c})
+    for _, r in arce.iterrows():
+        for cond in arce_conditions:
+            sub = {
+                "neg|score": r.get(f"neg|score.{cond}"),
+                "neg|fdr": r.get(f"neg|fdr.{cond}"),
+                "neg|rank": r.get(f"neg|rank.{cond}"),
+                "pos|score": r.get(f"pos|score.{cond}"),
+                "pos|fdr": r.get(f"pos|fdr.{cond}"),
+                "pos|rank": r.get(f"pos|rank.{cond}"),
+            }
+            _add_external_hit(r["id"], "Arce2025", cond, sub)
+
+    n_screen_genes = len({g for g in external_screens_by_gene})
+    print(f"External screen replication: {n_screen_genes} genes across 4 published studies", file=sys.stderr)
+
+    # Local (zero-network) prior curated avoid/delivery assessment -- an
+    # editorial judgment layer, not a new independent measurement (see
+    # module docstring).
+    kinetics_avoid = pd.read_csv(KINETICS_AVOID_CSV)
+    avoid_by_gene = {r["gene"]: r for _, r in kinetics_avoid.iterrows()}
+    print(f"Prior curated avoid/delivery assessment: {len(avoid_by_gene)} genes (gate shortlist)", file=sys.stderr)
+
+    # Local (zero-network) real CORUM/STRINGdb/KEGG/Reactome functional-
+    # complex clustering -- see module docstring. Only non-"unknown" clusters
+    # are surfaced; a gene can belong to more than one cluster.
+    clustering = pd.read_csv(CLUSTERING_CSV)
+    clustering = clustering[clustering["manual_annotation"] != "unknown"]
+    complexes_by_gene: dict[str, list] = {}
+    for _, r in clustering.iterrows():
+        members = ast.literal_eval(r["cluster_member"])
+        for g in members:
+            complexes_by_gene.setdefault(g, []).append({
+                "clusterAnnotation": r["manual_annotation"],
+                "bestDescribedBy": r["best_described_by"],
+            })
+    print(f"Functional-complex clustering: {len(complexes_by_gene)} genes across {len(clustering)} resolved clusters", file=sys.stderr)
 
     if not args.force and _cache_is_fresh():
         print(f"Reading cached readiness/annotation from {CACHE_DIR} (pass --force to recompute)...", file=sys.stderr)
@@ -501,6 +627,49 @@ def main() -> None:
                 "druggablePathway": nan_to_none(mb.get("druggable_pathway")),
             }
 
+        fp = footprint_by_gene.get(gene)
+        downstream_footprint_out = None
+        if fp is not None:
+            downstream_footprint_out = {
+                "directionalityIndex": nan_to_none(fp["directionality_index"]),
+                "footprintClass": fp["footprint_class"],
+                "binomFdr": nan_to_none(fp["binom_fdr"]),
+                "nUp": nan_to_none(fp["n_up"]),
+                "nDown": nan_to_none(fp["n_down"]),
+                "netLogfc": nan_to_none(fp["net_logfc"]),
+                "inGateShortlist": bool(fp["in_gate_shortlist"]),
+            }
+
+        external_screens_out = sorted(
+            external_screens_by_gene.get(gene, []),
+            key=lambda h: min(h["negFdr"] if h["negFdr"] is not None else 1.0, h["posFdr"] if h["posFdr"] is not None else 1.0),
+        )[:6]
+
+        av = avoid_by_gene.get(gene)
+        avoid_assessment_out = None
+        if av is not None:
+            flags_raw = av.get("avoid_flags")
+            avoid_assessment_out = {
+                "avoidTier": av["avoid_tier"],
+                "avoidFlags": [f.strip() for f in str(flags_raw).split(";") if f.strip()] if isinstance(flags_raw, str) else [],
+                "deliveryModality": av["delivery_modality"],
+                "kineticArchetype": av["kinetic_archetype"],
+                "isContextSpecific": bool(av["is_ctx_specific"]),
+            }
+
+        # A gene can genuinely belong to more than one real cluster (e.g. a
+        # tight core cluster and a larger looser one) that happen to share
+        # the same manual annotation text -- dedupe by the displayed label
+        # pair so the UI doesn't show an apparently-identical row twice.
+        seen_complex_labels = set()
+        functional_complexes_out = []
+        for c in complexes_by_gene.get(gene, []):
+            key = (c["clusterAnnotation"], c["bestDescribedBy"])
+            if key in seen_complex_labels:
+                continue
+            seen_complex_labels.add(key)
+            functional_complexes_out.append(c)
+
         grade_num = int(primary_row["_grade"]) if primary_row["_grade"] else None
         red_flags = []
         if r_row is not None and r_row.get("red_flag_override") not in (None, "none"):
@@ -561,6 +730,10 @@ def main() -> None:
             "literature": literature_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
+            "downstreamFootprint": downstream_footprint_out,
+            "externalScreens": external_screens_out,
+            "avoidAssessment": avoid_assessment_out,
+            "functionalComplexes": functional_complexes_out,
         })
 
     call_counts = pd.Series([t["readiness"]["call"] for t in targets_out if t["readiness"]]).value_counts().to_dict()
@@ -568,7 +741,7 @@ def main() -> None:
 
     out = {
         "generatedAt": None,  # stamped by the caller/build step if needed; kept out of the deterministic export
-        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08, 21 genes) + local Open Targets disease-association export (13 indications) + gnomAD v4.1 genome-wide constraint + ADC membrane overlay + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden",
+        "sourceVersion": "GWT_perturbseq_analysis_2025 · target_cards.csv (marson2025_data DE) + readiness_engine + Open Targets/ClinicalTrials.gov/PubMed evidence cache (fetched 2026-07-08, 21 genes) + local Open Targets disease-association export (13 indications) + gnomAD v4.1 genome-wide constraint + ADC membrane overlay + GTEx safety-window overlay + UK Biobank lymphocyte-count LoF burden + signed footprint re-analysis + 4 external screens (SchmidtSteinhart2022/Arce2025/Freimer2022/Umhoefer2025) + prior curated avoid/delivery assessment + CORUM/STRINGdb/KEGG/Reactome clustering",
         "modules": [
             {"id": m["module_id"], "name": m["module_name"], "category": m["category"], "seedGenes": m["seed_genes"]}
             for m in modules

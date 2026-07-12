@@ -142,6 +142,64 @@ export interface PopulationBurden {
   caveat: string;
 }
 
+// This repo's own signed/directional re-analysis of the same GB10 screen
+// (docs/mvp-research/signed_de_application/signed_ranking_v2.csv, 99% of
+// targets) -- whether knockout nets more up- or down-regulated downstream
+// genes. footprintClass is a net transcriptional FOOTPRINT direction, NOT a
+// molecular activator/repressor role assignment (the source file itself
+// cautions this explicitly).
+export type FootprintClass = "net_derepressed_on_KO" | "net_reduced_on_KO" | "balanced";
+export interface DownstreamFootprint {
+  directionalityIndex: number | null;
+  footprintClass: FootprintClass;
+  binomFdr: number | null;
+  nUp: number | null;
+  nDown: number | null;
+  netLogfc: number | null;
+  inGateShortlist: boolean;
+}
+
+// One hit record from an independent, already-published external CRISPR
+// screen (SchmidtSteinhart2022, Arce2025, Freimer2022, or Umhoefer2025;
+// combined 95.5% of targets have at least one). neg = depleted for the
+// phenotype, pos = enriched; both real MAGeCK-style statistics from that
+// study, not recomputed here.
+export interface ExternalScreenHit {
+  study: string;
+  phenotype: string;
+  negScore: number | null;
+  negFdr: number | null;
+  negRank: number | null;
+  posScore: number | null;
+  posFdr: number | null;
+  posRank: number | null;
+}
+
+// This repo's own PRIOR CURATED avoid/delivery editorial judgment
+// (docs/mvp-research/pipeline/kinetics_avoid/target_master_table.csv, 17%
+// of targets -- the 1,235-gene "gate shortlist") -- explicitly NOT a new
+// independent measurement, so render it as this repo's own assessment, not
+// alongside raw evidence sources as if on the same footing.
+export type AvoidTier = "clear" | "caution" | "high_risk" | "avoid";
+export interface AvoidAssessment {
+  avoidTier: AvoidTier;
+  avoidFlags: string[];
+  deliveryModality: string;
+  kineticArchetype: string;
+  isContextSpecific: boolean;
+}
+
+// Real CORUM/STRINGdb/KEGG/Reactome functional-complex membership over this
+// screen's own co-regulation clusters (metadata/suppl_tables/
+// clustering_results_and_annotations.csv, 8.4% of targets -- only clusters
+// with a resolved, non-"unknown" annotation). A complement to the M01-M20
+// concept modules, not a replacement; a gene can belong to more than one
+// cluster.
+export interface FunctionalComplex {
+  clusterAnnotation: string;
+  bestDescribedBy: string;
+}
+
 export interface RealTarget {
   gene: string;
   name: string;
@@ -175,6 +233,10 @@ export interface RealTarget {
   literature: LiteratureItem[];
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
   populationBurden: PopulationBurden | null;
+  downstreamFootprint: DownstreamFootprint | null;
+  externalScreens: ExternalScreenHit[];
+  avoidAssessment: AvoidAssessment | null;
+  functionalComplexes: FunctionalComplex[];
 }
 
 export interface RealDataset {
