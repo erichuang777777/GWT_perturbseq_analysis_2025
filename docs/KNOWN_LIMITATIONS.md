@@ -6,6 +6,48 @@ a core value of this project (`unknown != 0`); nothing here is hidden or spun.
 Per-stage caveats are also surfaced in the EDA reports (`docs/mvp-research/pipeline/EDA_INDEX.md`)
 and the in-app research-use-only banner.
 
+## Scope & positioning relative to the source paper
+
+This toolkit is **not a reproduction or extension of the source paper's methodology**
+(Zhu, Dann, …, Marson — bioRxiv `10.64898/2025.12.23.696273`, *"Genome-scale perturb-seq
+in primary human CD4+ T cells maps context-specific regulators of T cell programs and
+human immune traits"*). It is a **drug-target-prioritization translation layer** built on
+top of the *same* screen data. Do not present it as validating, reproducing, or extending
+the paper's scientific claims.
+
+- **It does not re-derive the paper's gene-regulatory networks.** The paper's core
+  contribution is *inferring* context-specific regulatory networks and nominating
+  regulators (Th1/Th2 polarization, age-related phenotypes, autoimmune-risk pathways)
+  from the raw single-cell perturbation signatures. That modeling is **not reimplemented
+  here.** What looks like "pathways" in this tool is either (a) static, hand-curated
+  concept-module membership (`concept_annotation.py`, M01–M20, **binary overlap** — the
+  *aggregate* DE table that the cards are built from carries only up/down counts, no
+  per-gene direction), or (b) **external** Reactome/STRING pathway graphs
+  (`mechanism_graph`) annotated with this platform's evidence — not pathways derived from
+  this screen.
+  - **Partial exception (`signed_module_effect.py`, `GET /api/signed_module_effect/{gene}`):**
+    a *directional* readout — "does knocking this target down activate or repress each
+    concept module's program?" — IS now computed, but from a *different* in-repo table
+    (`full_signed_DE`, which carries per-downstream-gene `log_fc`), not from the cards.
+    It recovers known master regulators with the correct sign (GATA3→Th2, TBX21→Th1,
+    FOXP3→Treg all score as activators). It is still **descriptive only** (never a
+    readiness input), **sparse** (only ~3,739 targets perturb any module marker
+    measurably; the rest are `unknown`, not 0), and is **not** a reproduction of the
+    paper's regulatory-network inference — it is a directional overlay on the same screen.
+- **It does not find genes beyond the paper's screen.** The target cards reprocess the
+  *same* 11,526-gene, 4-donor screen — the gene universe is identical to the paper's, so
+  there are no "additional" genes to discover. The ML tracks that *attempted* predictive
+  discovery (`src/10_ml_perturbation_prediction/`: GenePT+Ridge, GEARS, T2 classifier,
+  T1-rework) all honestly lost to, or failed to beat, simple baselines (see each track's
+  README).
+- **What it genuinely adds is an external translation layer** the paper's dataset does not
+  contain: population genetics (UK Biobank LoF burden), disease/drug clinical evidence
+  (Open Targets / ClinicalTrials.gov / PubMed), evolutionary constraint (gnomAD),
+  tissue-expression breadth (GTEx, for on-target safety), and druggability / tractability.
+  These overlays are real but mostly **sparse** (see the coverage figures throughout this
+  doc; `unknown != 0`) — the tool's value is triage-support for a *different* goal
+  (therapeutic target prioritization), reading the paper's data as its substrate.
+
 ## Resolved since the original review
 
 - **Upload-path A.1 / A.2 (was "block before merge").** `kd_status/v2` now gives
@@ -38,6 +80,11 @@ and the in-app research-use-only banner.
   `01_raw/DE_stats.suppl_table.csv` needs the S3 data + SLURM/pertpy (see
   `docs/REPRODUCIBILITY.md` §8). Everything after it is in-repo reproducible and
   checked by `make freeze`.
+- **`n_donors` is a permanent placeholder — always `NaN`.** Verified live on the
+  canonical 39-col dataset: **0 / 33,983 rows** populated. This is `unknown`, not
+  a broken join — no per-target donor-count source is wired in. Already flagged
+  as OF-4 in `docs/human_validation_protocol.md` §9; listed here so it surfaces
+  in the consolidated release register, not only the adjudication log.
 
 ## Product / deployment limitations
 
