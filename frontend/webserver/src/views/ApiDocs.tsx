@@ -1,28 +1,34 @@
 const API_VERSION = "v1";
 
 const apiEndpoints = [
-  { path: "/targets", desc: "List all screened targets with rank, readiness call, grade and effect size." },
-  { path: "/targets/{gene}", desc: "Full dossier for one target — statistical evidence, readiness-engine domains, tractability and module membership." },
-  { path: "/diseases", desc: "List real disease associations (MONDO id, name, referencing targets) aggregated from Open Targets." },
-  { path: "/diseases/{id}/targets", desc: "Targets matched to a disease context, ranked by real Open Targets association score." },
-  { path: "/popgen/{gene}", desc: "Population-genetics constraint metrics (gnomAD-derived) for one gene." },
-  { path: "/figures/{id}", desc: "Metadata and underlying data series for one figure in the atlas (still illustrative demo data)." },
+  { path: "/api/v1/meta.json", desc: "Dataset version, counts, and the endpoint index." },
+  { path: "/api/v1/targets.json", desc: "Slim index of all screened targets (gene, name, module, grade, effect, readiness call) — each with an href to its full record." },
+  { path: "/api/v1/targets/{gene}.json", desc: "Full real record for one target — statistics, readiness-engine domains, disease links, tractability, gnomAD, external screens, and more." },
+  { path: "/api/v1/diseases.json", desc: "Index of every disease association across the screen, each with an href to its target list." },
+  { path: "/api/v1/diseases/{id}/targets.json", desc: "Targets referencing one disease, ranked by real Open Targets association score (use the href from diseases.json)." },
+  { path: "/api/v1/popgen/{gene}.json", desc: "gnomAD constraint (LOEUF/pLI) and UK Biobank lymphocyte-count LoF burden for one gene." },
 ];
 
 const apiSample = `{
-  "gene": "PLCG1",
-  "name": "Phospholipase C gamma 1",
-  "module": "M02",
-  "readiness_call": "advance",
-  "grade": "A",
-  "effect_size": 14.10,
-  "fdr": "1e-16",
-  "cross_donor_correlation_mean": 0.735,
-  "primary_condition": "Stim8hr",
-  "dataset_version": "GWT-CD4 real-data v1"
+  "sourceVersion": "GWT_perturbseq_analysis_2025 ...",
+  "target": {
+    "gene": "PLCG1",
+    "name": "Phospholipase C gamma 1",
+    "module": { "id": "M02", "name": "TCR_Proximal_Signaling" },
+    "grade": "A",
+    "gradeNum": 4,
+    "effect": 14.10,
+    "fdr": 1e-16,
+    "primaryCondition": "Stim8hr",
+    "readiness": { "call": "advance", "stage": "R3" },
+    "...": "plus statistics, tractabilityFlags, diseases, gnomad, and more"
+  }
 }`;
 
 export default function ApiDocs() {
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const base = `${origin}/api/${API_VERSION}`;
+
   const preStyle: React.CSSProperties = {
     margin: 0,
     fontFamily: "'IBM Plex Mono', monospace",
@@ -40,19 +46,18 @@ export default function ApiDocs() {
         Read-only programmatic access to the same target calls, disease matches and population-genetics data shown in this portal. All endpoints are versioned and stamped with the dataset build — never a silent update.
       </p>
 
-      <div style={{ display: "flex", alignItems: "start", gap: "8px", padding: "14px 16px", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "11px", fontSize: "12.5px", color: "#7a6420", lineHeight: 1.55, marginBottom: "24px" }}>
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> <strong>Illustrative API specification — not a live, deployed backend.</strong> This page documents the shape a REST API over this dataset would have; the base URL below does not resolve. The actual portal you're browsing fetches real data from a pre-built static file (see <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>src/data/dataset.ts</span>), not this API.
+      <div style={{ display: "flex", alignItems: "start", gap: "8px", padding: "14px 16px", background: "#e4f3ec", border: "1px solid #b9e0cd", color: "#0a6e4f", borderRadius: "11px", fontSize: "12.5px", lineHeight: 1.55, marginBottom: "24px" }}>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> <strong>Real, static, read-only API.</strong> These endpoints are generated at build time from this repo's own pipeline output and served as same-origin JSON files on the CDN — no server, no auth, no rate limit. They are read-only and by-id (GET), and are regenerated on every deploy so they always match the portal you're browsing.
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "13px 16px", background: "#f7f8fa", border: "1px solid #e2e5ea", borderRadius: "10px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "13px", marginBottom: "30px" }}>
         <span style={{ fontWeight: 600, color: "#8a92a0" }}>Base URL</span>
-        <span style={{ color: "#1a1d24" }}>https://api.cd4-target-portal.org/{API_VERSION}</span>
+        <span style={{ color: "#1a1d24" }}>{base}</span>
       </div>
 
       <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "12px" }}>Authentication</div>
       <p style={{ fontSize: "13.5px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 30px" }}>
-        Send an API key issued from your account as a bearer token:{" "}
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", background: "#f7f8fa", padding: "2px 6px", borderRadius: "5px", fontSize: "12.5px" }}>Authorization: Bearer &lt;key&gt;</span>. Requests without a key are rate-limited to 60/hour.
+        None — these are public, read-only static files. Fetch them directly with no key.
       </p>
 
       <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "14px" }}>Endpoints</div>
@@ -70,8 +75,7 @@ export default function ApiDocs() {
 
       <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "12px" }}>Example request</div>
       <div style={{ background: "#1a1d24", borderRadius: "12px", padding: "18px 20px", marginBottom: "14px", overflowX: "auto" }}>
-        <pre style={preStyle}>{`curl https://api.cd4-target-portal.org/${API_VERSION}/targets/PLCG1 \\
-  -H "Authorization: Bearer <key>"`}</pre>
+        <pre style={preStyle}>{`curl ${base}/targets/PLCG1.json`}</pre>
       </div>
       <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "12px" }}>Example response</div>
       <div style={{ background: "#1a1d24", borderRadius: "12px", padding: "18px 20px", marginBottom: "30px", overflowX: "auto" }}>
