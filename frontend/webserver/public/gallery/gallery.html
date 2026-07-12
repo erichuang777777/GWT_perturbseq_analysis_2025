@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Perturbase — Figure & Structure Gallery</title>
+<style>
+:root{--bg:#0f1620;--panel:#182230;--ink:#e8eef5;--mut:#93a4b8;--acc:#e8833a;--blu:#4a7fb5;--line:#26323f}
+*{box-sizing:border-box}body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:14px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;z-index:10}
+.brand{font-weight:700;font-size:19px}.brand span{color:var(--acc)}
+.tabs{display:flex;gap:6px}.tab{padding:7px 15px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--mut);cursor:pointer;font-size:14px}
+.tab.on{background:var(--blu);color:#fff;border-color:var(--blu)}
+.lang{margin-left:auto;display:flex;gap:4px}.lang button{padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--mut);cursor:pointer}
+.lang button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+input#q{flex:1;min-width:180px;padding:8px 12px;border-radius:7px;border:1px solid var(--line);background:#0d141d;color:var(--ink);font-size:14px}
+select{padding:8px 10px;border-radius:7px;border:1px solid var(--line);background:#0d141d;color:var(--ink)}
+main{padding:20px 22px;max-width:1500px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .12s,border-color .12s}
+.card:hover{transform:translateY(-3px);border-color:var(--blu)}
+.card img{width:100%;height:190px;object-fit:contain;background:#fff;display:block}
+.card .cap{padding:10px 12px}.card .ttl{font-size:13.5px;font-weight:600;line-height:1.35}.card .grp{font-size:11px;color:var(--mut);margin-top:4px}
+.hidden{display:none}
+.modal{position:fixed;inset:0;background:rgba(4,8,12,.86);display:none;align-items:center;justify-content:center;padding:28px;z-index:50}
+.modal.on{display:flex}.mbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-width:1050px;width:100%;max-height:92vh;overflow:auto}
+.mbox img{width:100%;background:#fff;border-radius:12px 12px 0 0}
+.mbody{padding:18px 22px}.mbody h2{margin:.2em 0 .1em;font-size:19px}.mbody .grp{color:var(--mut);font-size:12px;margin-bottom:12px}
+.mbody h4{color:var(--acc);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin:16px 0 4px}
+.mbody p{margin:0;line-height:1.55;color:#d3dde8;font-size:14px}
+.close{position:sticky;top:0;float:right;font-size:26px;color:var(--mut);cursor:pointer;padding:6px 10px}
+.stack{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.scard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+.scard .g{font-size:16px;font-weight:700}.scard .u{color:var(--mut);font-size:12px}
+.scard img{width:100%;background:#fff;border-radius:8px;margin-top:8px}
+.meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:8px}
+.meta b{color:var(--ink)}
+.viewbtn{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:6px;background:var(--blu);color:#fff;text-decoration:none;font-size:12.5px}
+.note{color:var(--acc);font-size:12px;margin-top:6px}
+.mol{width:100%;height:340px;border:0;border-radius:8px;background:#fff}
+</style></head>
+<body>
+<header>
+  <div class="brand">Perturb<span>base</span></div>
+  <div class="tabs"><button class="tab on" data-tab="charts" id="tabCharts">Figures</button><button class="tab" data-tab="struct" id="tabStruct">Structures</button><button class="tab" data-tab="anim" id="tabAnim">Animations</button></div>
+  <input id="q" placeholder="Search…">
+  <select id="grp"><option value="">All groups</option></select>
+  <div class="lang"><button id="bEN" class="on">EN</button><button id="bZH">中文</button></div>
+</header>
+<main>
+  <div id="viewCharts"><div class="grid" id="grid"></div></div>
+  <div id="viewStruct" class="hidden"><div class="stack" id="stack"></div></div>
+  <div id="viewAnim" class="hidden"><div class="grid" id="animgrid"></div></div>
+</main>
+<div class="modal" id="modal"><div class="mbox"><span class="close" id="close">&times;</span><img id="mimg"><div class="mbody">
+  <h2 id="mttl"></h2><div class="grp" id="mgrp"></div>
+  <h4 id="hDesc">Description</h4><p id="mdesc"></p>
+  <h4 id="hData">What the data means</h4><p id="mdata"></p>
+  <h4 id="hSrc">Data source</h4><p id="msrc"></p>
+</div></div></div>
+<script>
+let LANG="en", TAB="charts", CHARTS=[], STRUCT=[];
+let ANIM=[];
+fetch("extra/animations/index.json").then(r=>r.json()).then(a=>{ANIM=a;renderAnim();}).catch(()=>{});
+function renderAnim(){const q=document.getElementById("q").value.toLowerCase(),g=document.getElementById("animgrid");if(!g)return;g.innerHTML="";
+  ANIM.filter(a=>!q||a.title.toLowerCase().includes(q)).forEach(a=>{const el=document.createElement("div");el.className="card";
+    el.innerHTML=`<img loading="lazy" src="extra/${a.file}"><div class="cap"><div class="ttl">${a.title}</div></div>`;g.appendChild(el);});}
+
+const UI={en:{desc:"Description",data:"What the data means",src:"Data source",allg:"All groups",search:"Search…"},
+         zh:{desc:"圖表說明",data:"數據背後的意義",src:"數據來源",allg:"全部分類",search:"搜尋…"}};
+const L=d=>d[LANG]||d.en||{};
+Promise.all([fetch("data/charts.json").then(r=>r.json()),fetch("data/structures.json").then(r=>r.json())]).then(([c,s])=>{
+  CHARTS=c;STRUCT=s;buildGrp();render();renderStruct();
+});
+function buildGrp(){const g=document.getElementById("grp");[...new Set(CHARTS.map(d=>d.group))].sort().forEach(x=>{if(!x)return;const o=document.createElement("option");o.value=x;o.textContent=x;g.appendChild(o);});}
+function render(){const q=document.getElementById("q").value.toLowerCase(),gf=document.getElementById("grp").value,grid=document.getElementById("grid");grid.innerHTML="";
+  CHARTS.filter(d=>{const t=L(d);const hay=((t.title||"")+(t.description||"")+(t.data_explanation||"")+(d.group||"")).toLowerCase();return (!gf||d.group===gf)&&(!q||hay.includes(q));})
+  .forEach(d=>{const t=L(d);const el=document.createElement("div");el.className="card";
+    el.innerHTML=`<img loading="lazy" src="${d.img}"><div class="cap"><div class="ttl">${t.title||d.id}</div><div class="grp">${d.group||""}</div></div>`;
+    el.onclick=()=>openM(d);grid.appendChild(el);});}
+function openM(d){const t=L(d);document.getElementById("mimg").src=d.img;document.getElementById("mttl").textContent=t.title||d.id;
+  document.getElementById("mgrp").textContent=d.group||"";document.getElementById("mdesc").textContent=t.description||"";
+  document.getElementById("mdata").textContent=t.data_explanation||"";document.getElementById("msrc").textContent=d.raw_source||"";
+  document.getElementById("modal").classList.add("on");}
+function renderStruct(){const q=document.getElementById("q").value.toLowerCase(),stack=document.getElementById("stack");stack.innerHTML="";
+  STRUCT.filter(s=>!q||(s.gene+s.uniprot+(s.protein_name||"")).toLowerCase().includes(q)).forEach(s=>{
+    const el=document.createElement("div");el.className="scard";
+    const molv = LANG==="zh"?"3D 檢視":"View 3D";
+    let mol = s.cif ? `<a class="viewbtn" target="_blank" href="https://www.rcsb.org/3d-view">${molv} (Mol*)</a>
+      <div style="font-size:11px;color:var(--mut);margin-top:4px">CIF: ${s.cif.split('/').pop()}</div>`
+      : `<div class="note">${s.note||"No AlphaFold model"}</div>`;
+    el.innerHTML=`<div class="g">${s.gene}</div><div class="u">${s.uniprot} · ${s.protein_name||""}</div>
+      ${s.protter?`<img loading="lazy" src="${s.protter}">`:""}
+      <div class="meta">${s.plddt!=null?`<span>pLDDT <b>${s.plddt}</b></span>`:""}${s.length!=null?`<span>len <b>${s.length}</b></span>`:""}${s.n_domains!=null?`<span>domains <b>${s.n_domains}</b></span>`:""}${s.n_tm?`<span>TM <b>${s.n_tm}</b></span>`:""}<span>${s.topology_class||""}</span></div>
+      ${mol}`;
+    stack.appendChild(el);});}
+document.getElementById("q").oninput=()=>{render();renderStruct();renderAnim();};
+document.getElementById("grp").onchange=render;
+document.getElementById("close").onclick=()=>document.getElementById("modal").classList.remove("on");
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")document.getElementById("modal").classList.remove("on");};
+function setTab(t){TAB=t;document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+  document.getElementById("viewCharts").classList.toggle("hidden",t!=="charts");
+  document.getElementById("viewStruct").classList.toggle("hidden",t!=="struct");
+  document.getElementById("viewAnim").classList.toggle("hidden",t!=="anim");
+  document.getElementById("grp").style.display=t==="charts"?"":"none";}
+document.getElementById("tabCharts").onclick=()=>setTab("charts");
+document.getElementById("tabStruct").onclick=()=>setTab("struct");
+document.getElementById("tabAnim").onclick=()=>setTab("anim");
+function setLang(l){LANG=l;document.documentElement.lang=l;document.getElementById("bEN").classList.toggle("on",l==="en");document.getElementById("bZH").classList.toggle("on",l==="zh");
+  document.getElementById("hDesc").textContent=UI[l].desc;document.getElementById("hData").textContent=UI[l].data;document.getElementById("hSrc").textContent=UI[l].src;
+  document.getElementById("q").placeholder=UI[l].search;render();renderStruct();}
+document.getElementById("bEN").onclick=()=>setLang("en");
+document.getElementById("bZH").onclick=()=>setLang("zh");
+</script></body></html>
