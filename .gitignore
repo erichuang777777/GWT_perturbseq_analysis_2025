@@ -208,6 +208,11 @@ sources/target_tool_cache/usr_*/
 sources/target_tool_cache/imports/*/
 sources/target_tool_cache/[0-9a-f]*-[0-9a-f]*/
 
+# CI reproducibility guard: the bundle is committed compressed
+# (reproducibility_bundle_v2.tar.gz); the workflow extracts it to this
+# directory at runtime. Never commit the extracted copy.
+docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle/
+
 # Keep the committed explainer site (overrides **/*.html above)
 !docs/explainer/index.html
 
