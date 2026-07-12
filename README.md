@@ -21,47 +21,67 @@ Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analys
 
 On top of the manuscript analysis code above, this repo also ships a **target-discovery toolkit**:
 a FastAPI service (`src/3_DE_analysis/target_card_api.py`) serving prioritized, evidence-integrated
-target cards over the CRISPRi screen, and a Streamlit dashboard (`frontend/dashboard/`) with a
-researcher workspace and a clinical-evidence lookup workspace. **Research / hypothesis-generating
-use only — not clinical software.**
+target cards over the CRISPRi screen, and the **CD4 Target Discovery Portal**
+(`frontend/webserver/`) — a React web app with a researcher workspace and a clinical-evidence
+lookup workspace, rendering real statistics, readiness calls, and evidence for **7,249 real
+targets** from this repo's own pipeline. **Research / hypothesis-generating use only — not
+clinical software.**
 
-This toolkit runtime is deliberately **lighter** than the conda environment above — it does not need
-scanpy/pertpy/anndata, and a fresh clone already ships a built, git-tracked reference dataset, so
-there's nothing to build before you can see real data.
+|  |  |
+|---|---|
+| ![Target explorer](docs/screenshots/explorer.png) | ![Target dossier](docs/screenshots/dossier.png) |
+| **Target explorer** — every one of the 7,249 real targets, ranked by an adjustable composite-priority score (statistical strength, robustness, safety, population genetics, external evidence), faceted by readiness call and evidence grade. | **Target dossier** — every number on this page is real and source-stamped: screen statistics, a rule-based readiness call, this repo's own signed footprint re-analysis, concept-module and functional-complex membership, disease associations, gnomAD constraint, an independent-screen-replication check, and (clearly labeled apart from the raw evidence) this repo's own prior curated risk assessment. |
+
+### Installation
+
+This toolkit runtime is deliberately **lighter** than the conda environment above — the webserver
+doesn't need scanpy/pertpy/anndata, and a fresh clone already ships a built, git-tracked real
+dataset (`frontend/webserver/public/real-dataset.json`), so there's nothing to build before you
+can see real data.
 
 ```bash
-# One-command run (starts the API in the background, the dashboard in the foreground;
-# Ctrl-C stops both — see Makefile)
-make dev
+# Node 18+ and npm are the only prerequisites for the webserver.
+make webserver          # installs frontend/webserver's npm deps, then starts it
+# -> http://localhost:5173
 
-# Or run each piece separately, in two terminals:
-make api          # http://127.0.0.1:8000 — Swagger UI at /docs
-make dashboard     # opens the Streamlit dashboard in your browser
+# Optional: the FastAPI service, if you want to hit the JSON API directly
+make api                # installs src/3_DE_analysis's Python deps, then starts it
+# -> http://127.0.0.1:8000 — Swagger UI at /docs
 ```
 
-Once the dashboard is open, paste `a6bba17b-f194-4a50-8cf8-96e03eededd6` into the sidebar's
-`dataset_id` field. This is the active validated reference dataset: it has the current 39-column
-`card_schema/v2` target-card schema, passes `validate_cards(strict=True)`, and is the canonical
-dataset named in [`docs/human_validation_protocol.md`](docs/human_validation_protocol.md).
+Or by hand:
 
-The older git-tracked dataset `e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137` remains available only as a
-**legacy/stale** reference. It has the old 31-column schema, fails strict card validation, and is
-missing the eight v2 columns `kd_status`, `kd_threshold_version`, `druggable_class`,
-`tractability_modality`, `safety_note`, `condition_specificity_zscore`,
-`effect_direction_flip_flag`, and `target_baseline_expression`; its metadata also contains stale
-Windows-style source paths. Do not use it for new validation or reviewer-facing demos unless you are
-explicitly reproducing legacy behavior.
+```bash
+cd frontend/webserver
+npm install
+npm run dev              # http://localhost:5173
+```
 
-**How to identify the active validated dataset:** before sharing a `dataset_id`, check the
-"Active-dataset banner" in [`docs/human_validation_protocol.md`](docs/human_validation_protocol.md)
-and the cache/versioning guidance in [`docs/cache_and_versioning_policy.md`](docs/cache_and_versioning_policy.md).
-The active dataset should match the current schema version, pass strict validation, and have clean
-metadata provenance; older UUIDs are immutable snapshots and may be stale.
+### Usage
 
-For the full data-provenance/reproducibility record (what's real vs. sparse/seed-only, exact
-coverage numbers, versioning) see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — the
-dashboard's own `unknown != 0` discipline and `advance`/`grade` glossary are explained there and
-inside the app itself (look for the ℹ️ 名詞解釋 expander).
+Open `http://localhost:5173` — no `dataset_id`, no backend, no build step needed; the real dataset
+is fetched once at startup from the committed `public/real-dataset.json`.
+
+- **Researcher** (top nav) — the target explorer above. Drag the scoring-weight sliders to re-rank
+  by what you care about (they reorder your *view*, never the underlying evidence or readiness
+  call); filter by readiness call, evidence grade, or concept module; click any row to open its
+  full dossier; shortlist targets and open the side-by-side **Compare** view.
+- **Clinical evidence** (top nav) — scope & guardrails, per-concept-module profiles (M01–M20),
+  a disease × drug evidence match, and a population-genetics constraint lookup.
+- **Figure atlas** — 8 interactive figures. **Still illustrative demo data**, not yet wired to
+  real outputs — every figure's own caption says so.
+- Every panel that has no real data for a given target says `unknown` — never a fabricated value.
+  See [`frontend/webserver/README.md`](frontend/webserver/README.md) for exactly which repo file
+  feeds which panel, and its current per-panel coverage.
+
+To regenerate `real-dataset.json` after the underlying pipeline output changes, see
+["Regenerating the dataset"](frontend/webserver/README.md#regenerating-the-dataset) in the
+webserver's own README.
+
+For the full data-provenance/reproducibility record for the target-card pipeline itself (what's
+real vs. sparse/seed-only, exact coverage numbers, versioning) see
+[`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — the toolkit's `unknown != 0` discipline and
+`advance`/`grade` glossary are explained there.
 
 ### Limitations
 
