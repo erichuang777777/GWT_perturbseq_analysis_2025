@@ -1,5 +1,5 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { TARGETS } from "../data/dataset";
 import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
@@ -103,7 +103,11 @@ export default function Explorer() {
   });
   const filtGenes = new Set(filtered.map((t) => t.gene));
   const dfilter = S.decisionFilter;
-  const rankedFiltered = rankedTargets(w).filter((t) => {
+  // Sorting + composite-scoring all targets is only a function of the
+  // weights, so it's memoized separately from filtering/search — otherwise
+  // every keystroke in the search box would re-rank all 7,000+ targets.
+  const rankedAll = useMemo(() => rankedTargets(w), [w]);
+  const rankedFiltered = rankedAll.filter((t) => {
     if (!filtGenes.has(t.gene)) return false;
     if (dfilter !== "all") {
       const c = consensus(votesFor(t.gene));
@@ -114,36 +118,42 @@ export default function Explorer() {
     return true;
   });
 
-  const rows = rankedFiltered.map((t) => {
-    const call = t.readiness?.call;
-    const R2 = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
-    const G2 = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
-    const c = consensus(votesFor(t.gene));
-    const cm2 = DECISION_META[c.status];
-    const listed = inShortlist(t.gene);
-    return {
-      rank: t._rank,
-      comp: t._comp,
-      gene: t.gene,
-      name: t.name,
-      moduleId: t.module?.id ?? "—",
-      moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned concept module",
-      effect: fmtEffect(t.effect),
-      rLabel: R2.label,
-      rColor: R2.color,
-      rBg: R2.bg,
-      grade: t.grade ?? "—",
-      gColor: G2.color,
-      gBg: G2.bg,
-      checkBg: listed ? "#1a5fb4" : "#fff",
-      checkBorder: listed ? "#1a5fb4" : "#c8ced7",
-      checkOpacity: listed ? "1" : "0.35",
-      decLabel: c.n ? (c.split ? "split" : cm2.label) : "—",
-      decColor: cm2.color,
-      decBg: cm2.bg,
-      decDot: cm2.dot,
-    };
-  });
+  // Row view-models are built only for the rows the virtualizer actually
+  // mounts, not the whole (possibly 7,000+ row) filtered list.
+  const buildRow = useCallback(
+    (t: (typeof rankedFiltered)[number]) => {
+      const call = t.readiness?.call;
+      const R2 = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+      const G2 = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
+      const c = consensus(votesFor(t.gene));
+      const cm2 = DECISION_META[c.status];
+      const listed = inShortlist(t.gene);
+      return {
+        rank: t._rank,
+        comp: t._comp,
+        gene: t.gene,
+        name: t.name,
+        moduleId: t.module?.id ?? "—",
+        moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned concept module",
+        effect: fmtEffect(t.effect),
+        rLabel: R2.label,
+        rColor: R2.color,
+        rBg: R2.bg,
+        grade: t.grade ?? "—",
+        gColor: G2.color,
+        gBg: G2.bg,
+        checkBg: listed ? "#1a5fb4" : "#fff",
+        checkBorder: listed ? "#1a5fb4" : "#c8ced7",
+        checkOpacity: listed ? "1" : "0.35",
+        decLabel: c.n ? (c.split ? "split" : cm2.label) : "—",
+        decColor: cm2.color,
+        decBg: cm2.bg,
+        decDot: cm2.dot,
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [votesFor, inShortlist],
+  );
 
   const decisionFacets = [
     { k: "all", label: "All" },
@@ -162,7 +172,7 @@ export default function Explorer() {
   // render the rows currently scrolled into view.
   const scrollRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
-    count: rows.length,
+    count: rankedFiltered.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 12,
@@ -382,11 +392,11 @@ export default function Explorer() {
             <div style={{ textAlign: "center" }}>Grade</div>
             <div style={{ textAlign: "center" }}>Review</div>
           </div>
-          {rows.length > 0 && (
+          {rankedFiltered.length > 0 && (
             <div ref={scrollRef} style={{ height: TABLE_HEIGHT + "px", overflowY: "auto" }}>
               <div style={{ height: rowVirtualizer.getTotalSize() + "px", position: "relative", width: "100%" }}>
                 {rowVirtualizer.getVirtualItems().map((vi) => {
-                  const r = rows[vi.index];
+                  const r = buildRow(rankedFiltered[vi.index]);
                   return (
                     <div
                       key={r.gene}

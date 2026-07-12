@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { TARGETS, targetByGene } from "../data/dataset";
 import { CONSTRAINT_META, DECISION_META, GRADE, READINESS, RED_FLAG_LABELS, REVIEWERS, WKEYS } from "../data/reference";
 import type { VoteStatus } from "../data/types";
@@ -20,7 +21,11 @@ export default function Dossier() {
   const Gt = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
 
   const wsum = WKEYS.reduce((a, x) => a + (w[x.k] || 0), 0) || 1;
-  const rankedAll = rankedTargets(w);
+  // Sorting all 7,000+ targets is only a function of the weights, so it's
+  // memoized here too -- otherwise every unrelated re-render (a vote click,
+  // a note keystroke) would re-rank the whole dataset just to look up one
+  // gene's rank.
+  const rankedAll = useMemo(() => rankedTargets(w), [w]);
   const tRankInfo = rankedAll.find((x) => x.gene === t.gene)!;
   const subs = subScores(t);
 
