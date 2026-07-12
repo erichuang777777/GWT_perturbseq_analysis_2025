@@ -24,7 +24,9 @@ export interface Vote {
   ts: number;
 }
 
-// Figure-atlas metadata shape (still illustrative demo data — see Figures.tsx).
+// Figure-atlas metadata shape. The atlas itself renders real data fetched
+// from public/figures.json + real-dataset.json (see Figures.tsx and
+// lib/drawFigure.ts) -- this is just the per-figure caption/title/source.
 export interface Figure {
   id: string;
   num: string;

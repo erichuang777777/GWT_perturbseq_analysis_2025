@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { loadDataset } from './data/dataset'
+import { loadFigures } from './data/figuresData'
 
 function Screen({ children }: { children: React.ReactNode }) {
   return (
@@ -26,7 +27,7 @@ function Root() {
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
 
   useEffect(() => {
-    loadDataset()
+    Promise.all([loadDataset(), loadFigures()])
       .then(() => setStatus('ready'))
       .catch(() => setStatus('error'))
   }, [])

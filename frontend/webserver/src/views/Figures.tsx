@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { DATA_VERSION, FIGURES, FIGURE_DISEASES, clusterNames } from "../data/reference";
+import { DATA_VERSION, FIGURES } from "../data/reference";
+import { FIGURES_DATA } from "../data/figuresData";
 import { drawFigure } from "../lib/drawFigure";
 import { useStore } from "../store/store";
 
@@ -64,22 +65,11 @@ export default function Figures() {
   if (S.figureId === "volcano") {
     segControls = [mkSeg("Culture condition", conds, S.figCondition, (k) => ({ figCondition: k }))];
     fdrSlider = true;
-  } else if (S.figureId === "heatmap") {
-    segControls = [mkSeg("Culture condition", conds, S.figCondition, (k) => ({ figCondition: k }))];
-  } else if (S.figureId === "umap") {
-    segControls = [
-      mkSeg(
-        "Highlight cluster",
-        [{ k: "all", l: "All" }].concat(clusterNames().map((n) => ({ k: n, l: n }))),
-        S.figCluster,
-        (k) => ({ figCluster: k }),
-      ),
-    ];
   } else if (S.figureId === "cytokine") {
     segControls = [
       mkSeg(
         "Cytokine",
-        ["IFNG", "IL2", "IL4", "IL13", "IL17A", "IL10", "IL21", "TNF"].map((c) => ({ k: c, l: c })),
+        FIGURES_DATA.cytokines.map((c) => ({ k: c, l: c })),
         S.figCytokine,
         (k) => ({ figCytokine: k }),
       ),
@@ -88,18 +78,9 @@ export default function Figures() {
     segControls = [
       mkSeg(
         "Disease",
-        FIGURE_DISEASES.map((d) => ({ k: d.key, l: d.name })),
+        FIGURES_DATA.diseases.map((d) => ({ k: d, l: d })),
         S.figDisease,
         (k) => ({ figDisease: k }),
-      ),
-    ];
-  } else if (S.figureId === "burden") {
-    segControls = [
-      mkSeg(
-        "Blood trait",
-        ["Lymphocyte count", "Lymphocyte %", "Neutrophil count", "Eosinophil count"].map((t) => ({ k: t, l: t })),
-        S.figTrait,
-        (k) => ({ figTrait: k }),
       ),
     ];
   }
@@ -107,7 +88,7 @@ export default function Figures() {
   useEffect(() => {
     if (panelRef.current) drawFigure(panelRef.current, S);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [S.figureId, S.figCondition, S.figThresh, S.figCluster, S.figCytokine, S.figDisease, S.figTrait]);
+  }, [S.figureId, S.figCondition, S.figThresh, S.figCytokine, S.figDisease]);
 
   return (
     <main style={{ flex: 1, display: "flex", maxWidth: "1400px", margin: "0 auto", width: "100%" }}>
@@ -158,15 +139,30 @@ export default function Figures() {
           )}
         </div>
 
-        {/* chart */}
-        <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "14px 12px 8px" }}>
-          <div ref={panelRef} style={{ width: "100%", height: "462px" }} />
-        </div>
+        {/* chart — keyed per-branch so React unmounts rather than reuses the DOM
+            node between the Plotly-managed div and the plain message div (Plotly
+            mutates its element imperatively, e.g. adding the "js-plotly-plot"
+            class, which React would otherwise silently carry over on reuse) */}
+        {S.figureId === "umap" ? (
+          <div key="umap-message" style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "28px 24px", minHeight: "462px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ maxWidth: "560px", textAlign: "center", color: "#4a515e", fontSize: "13.5px", lineHeight: 1.6 }}>
+              <div style={{ fontSize: "22px", marginBottom: "10px" }}>—</div>
+              <div style={{ fontWeight: 700, marginBottom: "8px", color: "#3a414d" }}>UMAP not available</div>
+              <div>
+                A faithful functional-clustering UMAP needs 2D embedding coordinates computed from the pipeline&apos;s AnnData objects, which are <strong>not included in this repository</strong>. Real gene→cluster assignments exist (112 clusters — see the heatmap figure) but not 2D positions, so this figure is <strong>intentionally not drawn rather than fabricated</strong>.
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div key="chart-panel" style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "14px 12px 8px" }}>
+            <div ref={panelRef} style={{ width: "100%", height: "462px" }} />
+          </div>
+        )}
 
         <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginTop: "14px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "820px" }}>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span>{" "}
           <span>
-            Drag to zoom, double-click to reset, hover a point for its gene. Values shown are <strong>illustrative for this research demo</strong> — in the live portal each figure is rendered from the notebook outputs in <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{figMeta.src}</span> with full provenance. Descriptive figures never feed any readiness or evidence-grade call.
+            Values are real data extracted from this repo&apos;s pipeline outputs (see each figure&apos;s source). Drag to zoom, double-click to reset, hover for the gene. Descriptive figures never feed any readiness or evidence-grade call.
           </span>
         </div>
       </section>

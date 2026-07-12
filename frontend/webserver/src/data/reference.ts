@@ -63,16 +63,16 @@ export const WKEYS: { k: string; label: string; short: string; color: string }[]
   { k: "external", label: "External", short: "Extern", color: "#c0503f" },
 ];
 
-// ---------- figure atlas (still illustrative — see Figures.tsx caption) ----------
+// ---------- figure atlas (real data — see public/figures.json + real-dataset.json) ----------
 export const FIGURES: Figure[] = [
-  { id: "volcano", num: "S6", title: "Trans-effect volcano", cat: "Differential expression", src: "3_DE_analysis/DE_results_figure.ipynb", desc: "Genome-scale perturbation trans-effects — effect size against statistical significance. Positive and negative regulators separate by direction; move the FDR threshold to re-call significance." },
-  { id: "umap", num: "3A", title: "Functional clustering (UMAP)", cat: "Functional interaction", src: "6_functional_interaction/cluster_plot.ipynb", desc: "Regulators embedded by downstream transcriptional similarity and grouped into functional clusters. Hover any point for its gene; highlight one cluster to isolate a program." },
-  { id: "heatmap", num: "3B", title: "Regulator × program heatmap", cat: "Functional interaction", src: "6_functional_interaction/condition_specificity.ipynb", desc: "Perturbation effect of each top regulator on downstream transcriptional programs, on a diverging blue–red (vlag) scale. Switch culture condition to see context specificity." },
-  { id: "cytokine", num: "2A", title: "Cytokine regulators", cat: "Cytokine regulators", src: "5_cytokine_regulators/cytokine_regulators_overview.ipynb", desc: "The strongest positive and negative regulators of a selected cytokine, ranked by effect. Pick a cytokine to re-rank." },
-  { id: "polar", num: "4C", title: "Th1 / Th2 polarization", cat: "Polarization signatures", src: "4_polarization_signatures/polarization_signature.ipynb", desc: "Each perturbation placed on the Th1↔Th2 polarization axis against the magnitude of its effect. Hover for the gene." },
-  { id: "gwas", num: "7", title: "Autoimmune GWAS enrichment", cat: "Disease genetics", src: "6_functional_interaction/autoimmune_analysis/opentargets_autoimmune_analysis.ipynb", desc: "Enrichment of autoimmune-disease GWAS genes across functional regulator clusters (Open Targets). Choose a disease; the dashed line marks nominal significance." },
-  { id: "power", num: "1G", title: "Power analysis", cat: "Study design", src: "3_DE_analysis/power_analysis/power_analysis.ipynb", desc: "Detection power as a function of cells captured per perturbation, for a range of true effect sizes. Dashed line marks 80% power." },
-  { id: "burden", num: "6", title: "Regulator–LoF burden", cat: "Population genetics", src: "8_lymphocyte_counts_LoF/lymph_reg_burden_correlation.ipynb", desc: "Perturbation effect on a blood-trait signature against rare loss-of-function burden association for the same gene, with a linear fit. Switch the trait to re-fit." },
+  { id: "volcano", num: "S6", title: "Trans-effect volcano", cat: "Differential expression", src: "3_DE_analysis/DE_results_figure.ipynb", desc: "Signed on-target knockdown effect (log2 fold-change) vs statistical significance for every perturbed gene, by culture condition — real differential-expression output. Move the FDR threshold to re-call significance." },
+  { id: "umap", num: "3A", title: "Functional clustering (UMAP)", cat: "Functional interaction", src: "6_functional_interaction/cluster_plot.ipynb", desc: "A faithful functional-clustering UMAP needs 2D embedding coordinates computed from the pipeline's AnnData objects, which are not included in this repository. Real gene→cluster assignments exist (112 clusters) but not 2D positions, so this figure is intentionally not drawn rather than fabricated." },
+  { id: "heatmap", num: "3B", title: "Regulator × program heatmap", cat: "Functional interaction", src: "6_functional_interaction/condition_specificity.ipynb", desc: "Real per-condition intra-cluster transcriptional correlation for each of 112 functional regulator clusters (Rest / Stim 8 hr / Stim 48 hr). Darker = more coherent co-regulation in that condition." },
+  { id: "cytokine", num: "2A", title: "Cytokine regulators", cat: "Cytokine regulators", src: "5_cytokine_regulators/cytokine_regulators_overview.ipynb", desc: "The strongest positive and negative real regulators of a selected cytokine, ranked by signed knockdown effect (genome-scale signed DE table). Pick a cytokine to re-rank." },
+  { id: "polar", num: "4C", title: "Th1 / Th2 polarization", cat: "Polarization signatures", src: "4_polarization_signatures/polarization_signature.ipynb", desc: "Each gene placed on the Th1↔Th2 axis by its real polarization-model coefficients (Th2 − Th1) against effect magnitude. Coefficient magnitudes are small — hover for the gene." },
+  { id: "gwas", num: "7", title: "Autoimmune GWAS enrichment", cat: "Disease genetics", src: "6_functional_interaction/autoimmune_analysis/opentargets_autoimmune_analysis.ipynb", desc: "Real enrichment of autoimmune-disease GWAS genes across functional regulator clusters (Open Targets). Choose a disease; the dashed line marks nominal significance (p = 0.05)." },
+  { id: "power", num: "1G", title: "Replication power", cat: "Study design", src: "3_DE_analysis/power_analysis/power_analysis.ipynb", desc: "Real held-out replication correlation of perturbation effects vs cells captured, at three sequencing depths — a reproducibility/power proxy (not a theoretical power curve). More cells → higher replication." },
+  { id: "burden", num: "6", title: "Regulator–LoF burden", cat: "Population genetics", src: "8_lymphocyte_counts_LoF/lymph_reg_burden_correlation.ipynb", desc: "Real perturbation effect vs UK Biobank rare loss-of-function burden association (β) on lymphocyte count for the same gene, with a linear fit (~7,140 genes)." },
 ];
 
 export const CLUSTER_MAP: Record<string, string> = {
@@ -94,10 +94,11 @@ export const CLUSTER_COLORS: Record<string, string> = {
 
 export const clusterNames = () => Object.keys(CLUSTER_COLORS);
 
-// Small illustrative disease list for the figure atlas's GWAS-enrichment demo
-// control only (that figure's whole series is synthetic — see Figures.tsx
-// caption). Not used anywhere real data is shown; the Clinical tab's disease
-// catalog is built from real Open Targets associations in Clinical.tsx.
+// No longer used by the figure atlas: the GWAS-enrichment figure's disease
+// control now lists the real diseases in figures.json (FIGURES_DATA.diseases,
+// via Figures.tsx). Kept only in case another view wants this short curated
+// list; the Clinical tab's own disease catalog is built from real Open
+// Targets associations in Clinical.tsx.
 export const FIGURE_DISEASES: { key: string; name: string }[] = [
   { key: "RA", name: "Rheumatoid arthritis" },
   { key: "IBD", name: "Inflammatory bowel disease" },
