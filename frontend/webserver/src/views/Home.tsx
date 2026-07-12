@@ -83,6 +83,12 @@ export default function Home() {
             onClick={() => setState({ view: "explorer" })}
             style={{ border: "1px solid #e2e5ea", borderRadius: "16px", padding: "28px", cursor: "pointer", background: "#fff" }}
           >
+            <img
+              src={`${import.meta.env.BASE_URL}flagship/screen_story.png`}
+              alt="Integrated screen-curation story — curation funnel, recovered TCR-proximal / SAGA / Mediator modules, TCR context specificity"
+              loading="lazy"
+              style={{ width: "calc(100% + 56px)", height: "170px", objectFit: "cover", objectPosition: "center", display: "block", margin: "-28px -28px 20px", borderRadius: "15px 15px 0 0", borderBottom: "1px solid #e2e5ea", background: "#f7f8fa" }}
+            />
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "15px" }}>
               <div style={{ width: "42px", height: "42px", borderRadius: "11px", background: "#eaf1fb", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a5fb4" strokeWidth="1.8">
@@ -117,6 +123,12 @@ export default function Home() {
             onClick={() => setState({ view: "clinical" })}
             style={{ border: "1px solid #e2e5ea", borderRadius: "16px", padding: "28px", cursor: "pointer", background: "#fff" }}
           >
+            <img
+              src={`${import.meta.env.BASE_URL}flagship/delivery_funnel.png`}
+              alt="Drug-delivery decision layer — filter funnel from genome-wide to deliverable targets, grouped by drug modality and knockdown polarity"
+              loading="lazy"
+              style={{ width: "calc(100% + 56px)", height: "170px", objectFit: "cover", objectPosition: "center", display: "block", margin: "-28px -28px 20px", borderRadius: "15px 15px 0 0", borderBottom: "1px solid #e2e5ea", background: "#f7f8fa" }}
+            />
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "15px" }}>
               <div style={{ width: "42px", height: "42px", borderRadius: "11px", background: "#e6f4ee", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d7d5a" strokeWidth="1.8">
