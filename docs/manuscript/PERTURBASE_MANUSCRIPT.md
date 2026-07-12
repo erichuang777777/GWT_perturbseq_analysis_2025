@@ -216,13 +216,13 @@ The following primary sources were retrieved and DOI-verified during the literat
 **Primary human T-cell functional genomics**
 - Shifrut E., et al. (2018) Genome-wide CRISPR screens in primary human T cells. *Cell.* doi:10.1016/j.cell.2018.10.024
 - Schmidt R., et al. (2022) CRISPR activation and interference screens decode stimulation responses in primary human T cells. *Science.* doi:10.1126/science.abj4008
-- Freimer J.W., et al. (2022) Enhanced T cell effector activity by targeting the Mediator kinase module. *Science.* doi:10.1126/science.abn5647
+- Freitas K.A., Belk J.A., Sotillo E., et al. (2022) Enhanced T cell effector activity by targeting the Mediator kinase module. *Science.* doi:10.1126/science.abn5647
 - Carnevale J., et al. (2022) RASA2 ablation in T cells boosts antigen sensitivity and long-term function. *Nature.* doi:10.1038/s41586-022-05126-w
 
 **TYK2 / deucravacitinib worked example**
 - Wrobleski S.T., et al. (2019) Highly selective inhibition of tyrosine kinase 2 (TYK2). *J Med Chem.* doi:10.1021/acs.jmedchem.9b00444
 - Armstrong A.W., et al. (2023) Deucravacitinib versus placebo and apremilast in plaque psoriasis (POETYK PSO-1). *J Am Acad Dermatol.* doi:10.1016/j.jaad.2022.07.002
-- Strober B., et al. (2022) Deucravacitinib versus placebo and apremilast (POETYK PSO-2). *J Am Acad Dermatol.* doi:10.1016/j.jaad.2022.08.061
+- Strober B., et al. (2023) Deucravacitinib versus placebo and apremilast (POETYK PSO-2). *J Am Acad Dermatol.* doi:10.1016/j.jaad.2022.08.061
 - Morand E.F., et al. (2022) Deucravacitinib in systemic lupus erythematosus (phase 2). *Arthritis Rheumatol.* doi:10.1002/art.42391
 
 *The full methods-and-domain reference list (DESeq2, Benjamini–Hochberg, Perturb-seq foundational methods, external databases) is maintained in `docs/technical_methods.md §8`; this section adds the appraisal's verified evidence-appraisal sources.*
