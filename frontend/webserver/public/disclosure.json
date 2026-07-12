@@ -43,6 +43,23 @@
     "深層外部證據僅 21 個基因有;其餘留空(非 0)。",
     "平台無存取控制,usr_ 命名僅防意外混料,非授權隔離。"
   ],
+  "validation": {
+    "plan_doc": "docs/perturbation_validation_plan.md",
+    "summary": "計算層 L1–L4 實質達成、校準通過;根本缺口為 L5 濕實驗(從未做)。證據支持『排序哪些標靶進濕實驗』,但不足以宣稱因果/治療效果。",
+    "ladder": [
+      {"level":"L1","label":"計算可重現","status":"met","evidence":"golden-file + known-answer 對 33,983 列釘選;34 測試檔;四層版本戳"},
+      {"level":"L2","label":"統計穩健","status":"met","evidence":"排序穩定 Spearman r=0.943(誠實揭露天真 top-50 僅 13/50 重疊)"},
+      {"level":"L3","label":"內部方向一致","status":"met","evidence":"Stim8hr 全部 8 個 TCR 近端正對照落 top decile"},
+      {"level":"L4","label":"正交計算驗證","status":"partial","evidence":"TYK2 rank 11=deucravacitinib 標靶;VAV1 62%/CD3E 58% STRING 網路重建。佐證非確證(關聯≠因果、GSE318876 表型不匹配、n=55)"},
+      {"level":"L5","label":"濕實驗前瞻驗證","status":"gap","evidence":"無任何前瞻濕實驗資料 — 唯一根本缺口"}
+    ],
+    "calibration": {"status":"met","ranking_auroc":0.85,"neg_control_grade1_pct":99.96,"neg_control_advance_pct":0},
+    "l4_limitations": [
+      "關聯≠因果(Track A GWAS/Open Targets)",
+      "表型不匹配:唯一全基因體 CD4 CRISPR 篩選 GSE318876 量的是 HIV 感染,非 T 細胞活化",
+      "n 小且文獻偏差:55 驗證標靶,STRING 回復受研究投入偏誤"
+    ]
+  },
   "attribution": [
     { "source": "GWT CD4 Perturb-seq (primary)", "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273", "license": "依論文 / CZI Virtual Cells Platform 條款", "url": "https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" },
     { "source": "Open Targets Platform", "cite": "Ochoa et al. 2024, Nucleic Acids Res (PMID 39657122)", "license": "依 Open Targets 引用政策", "url": "https://platform.opentargets.org/" },
