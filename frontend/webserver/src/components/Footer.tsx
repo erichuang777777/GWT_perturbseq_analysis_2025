@@ -23,12 +23,18 @@ export default function Footer() {
           descriptive-vs-decision separation · unknown ≠ 0
         </div>
         <div style={{ display: "flex", gap: "18px", fontSize: "12px", fontWeight: 500 }}>
-          <a href="#">Data dictionary</a>
-          <a href="#">Provenance</a>
+          {/* Real destinations: the static API's provenance manifest and the full
+              dataset download (both served by the CDN). "Data dictionary" was a
+              dead href="#" with no served artifact, so it's removed rather than faked. */}
+          <a href={`${import.meta.env.BASE_URL}api/v1/meta.json`} target="_blank" rel="noreferrer" style={{ color: "#1a5fb4" }}>
+            Provenance
+          </a>
           <span className="navlink" onClick={() => setState({ view: "apidocs" })} style={{ color: "#1a5fb4" }}>
             REST API
           </span>
-          <a href="#">Bulk download</a>
+          <a href={`${import.meta.env.BASE_URL}real-dataset.json`} download style={{ color: "#1a5fb4" }}>
+            Bulk download
+          </a>
         </div>
       </div>
     </footer>

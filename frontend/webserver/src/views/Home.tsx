@@ -1,4 +1,4 @@
-import { TARGETS } from "../data/dataset";
+import { MODULES, TARGETS } from "../data/dataset";
 import { useStore } from "../store/store";
 
 export default function Home() {
@@ -7,9 +7,9 @@ export default function Home() {
 
   const stats = [
     { value: all.length, label: "CD4 perturbations profiled" },
-    { value: "20", label: "Immune concept modules" },
+    { value: MODULES.length, label: "Immune concept modules" },
     { value: all.filter((x) => x.readiness?.call === "advance").length, label: "Targets called Advance" },
-    { value: "~30", label: "REST API endpoints" },
+    { value: "6", label: "REST API endpoints" },
   ];
 
   const onSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
