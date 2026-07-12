@@ -15,7 +15,7 @@ CD4 Perturb-seq 標靶探索工具是一套建立在 **Marson lab CD4 T 細胞 P
 | 疾病轉譯 | `src/3_DE_analysis/disease_translator.py` | 把標靶卡片對接到 13 個自體免疫適應症的基因關聯(Open Targets 匯出) |
 | 基因識別與搜尋 | `gene_identifier_resolver.py` / `gene_search.py` | 以 Ensembl gene ID 為主鍵的別名解析 + difflib 模糊搜尋 |
 | 研究者資料上傳 | `import_manager.py` + API | 暫存優先(staging-first)的上傳流程,含欄位對應精靈與合併到卡片 |
-| API / 儀表板 | `target_card_api.py`(FastAPI)/ `target_card_dashboard.py`(Streamlit) | 對外服務與互動介面 |
+| API / 前端 | `api/app.py`(FastAPI, 13 routers)/ `frontend/webserver/`(React + Vite static portal) | 對外服務與互動介面(舊版 Streamlit 儀表板已由 React portal 取代) |
 | 細胞層級延伸 | `src/9_cell_integration/perturbation_response_analysis.py` | h5ad 回應者/逃逸者分類、CD4 program 評分(程式完成,尚待真實資料執行) |
 
 ## 設計原則(貫穿全平台)

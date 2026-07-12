@@ -69,8 +69,8 @@ cd frontend/webserver && npm install && npm run dev
 | `src/3_DE_analysis/` | **標靶探索工具主體**(見下表細分) |
 | `src/9_cell_integration/` | 細胞層級(h5ad)延伸;真實資料執行說明在 `RUN_ON_REAL_DATA.md` |
 | `docs/` | **權威規格與計劃**(IMPLEMENTATION_PLAN、data_dictionary、各 spec/policy) |
-| `frontend/` | 獨立可部署的前端(目前是 Streamlit 儀表板),只走 API |
-| `tests/` | 18 個測試檔(golden-file / join-integrity / known-answer / empty-state 等) |
+| `frontend/webserver/` | 獨立可部署的前端(React + Vite static portal;讀匯出 JSON,`/upload` 走即時 API) |
+| `tests/` | 34 個測試檔(golden-file / join-integrity / known-answer / empty-state 等) |
 | `metadata/` | 樣本與實驗 metadata、config、基因註釋、supplementary tables |
 | `sources/` | 研究/證據快照與快取(含 `broad_effect_genes.txt`、target_tool_cache) |
 | `wiki/` | 本 Wiki 的原始 Markdown(對應 `.wiki.git`) |

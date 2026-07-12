@@ -47,7 +47,7 @@
  src/3_DE_analysis  ── build_target_cards → readiness_engine(12 領域→R0–R5→紅旗覆蓋)→ 決策
         │              + calibration · external_evidence · disease_translator · concept 層(M01–M20)
         ▼
- api/(FastAPI, 13 routers) ──HTTP/JSON──▶ frontend/(Streamlit 儀表板)
+ api/(FastAPI, 13 routers) ──匯出 JSON──▶ frontend/webserver/(React + Vite static portal)
         │
         └─ upload/(usr_ 隔離的研究者上傳)
 ```

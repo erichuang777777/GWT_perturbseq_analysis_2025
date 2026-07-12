@@ -71,8 +71,8 @@
                     │ HTTP / JSON(唯一契約)
                     ▼
 ┌──────────────────────────────────────────────┐
-│  frontend/ (Streamlit 儀表板, 獨立可部署)      │
-│   標靶瀏覽 · target dossier · QC funnel · 校準  │
+│  frontend/webserver/ (React+Vite static portal) │
+│   標靶瀏覽 · target dossier · QC funnel · 校準 · Provenance │
 └──────────────────────────────────────────────┘
 ```
 
@@ -143,9 +143,9 @@ GWT_perturbseq_analysis_2025/
 │   └── _misc/                   雜項工具
 ├── metadata/                    ★ 樣本/實驗 metadata、config、基因清單、suppl_tables/
 ├── docs/                        ★ 權威規格與計劃(+ mvp-research/)
-├── frontend/                    獨立前端(Streamlit 儀表板,只走 API)
+├── frontend/webserver/          獨立前端(React + Vite static portal;讀匯出 JSON)
 ├── sources/                     研究/證據快照(topic01–16)+ 快取 target_tool_cache/
-├── tests/                       18 個測試檔(177 個 test 函式)
+├── tests/                       34 個測試檔
 ├── wiki/                        本 Wiki 原始檔(對應 .wiki.git)
 ├── README.md  LICENSE  environment.yaml  pytest.ini  .gitignore
 ```
@@ -253,6 +253,7 @@ Open Targets `39657122` · ChEMBL 2023 `37933841` · CELLxGENE Discover/Census `
 ### 5.1 `docs/`(權威規格與計劃)
 | 檔案 | 內容 |
 |---|---|
+| `documentation_index.md` | **說明文件總盤點**:所有文件按用途分組(前端展示 / pipeline 每階段+EDA / 程式各階段 / 權威 / wiki / sources),附現況與 staleness watch |
 | `technical_methods.md` | **技術方法與驗證說明**(peer-review 等級:資料出處、方法、校準、限制、正式參考文獻) |
 | `figure_guide.md` | **圖表導讀**(科研人員):codebase 圖表的正式閱讀路徑,嵌入 EDA/漏斗/排序/模組/驗證/決策圖 + 完整目錄 |
 | `server_modules.md` | **Server 模組參考**:13 個 API router 的用途/端點/輸入輸出、載入容錯、概念層 M01–M20,集中一頁 |
