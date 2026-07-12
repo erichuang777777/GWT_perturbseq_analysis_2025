@@ -32,12 +32,15 @@ underused.
   regulators with the correct sign (GATA3→Th2, TBX21→Th1, FOXP3→Treg as activators).
   Descriptive only, sparse (`unknown != 0`), guarded by `tests/test_signed_module_effect.py`,
   freeze-pinned. Does NOT reproduce the paper's network inference (see KNOWN_LIMITATIONS).
-- **Surface the paper's own regulator/signature tables** (Tier-1 ②, not yet built):
-  `Th2_Th1_polarization_signature_DE`, `CD4T_aging_signature_DE`,
-  `cluster_autoimmune_enrichment`, and the paper's `*_regulator_coefficients` tables are
-  in `metadata/suppl_tables/` but not referenced by `core/`/`api/`. Surfacing them as
-  dossier overlays would present the paper's *own* nominated Th1/Th2/aging/autoimmune
-  regulators directly.
+- ✅ **Surface the paper's own regulator nominations** (Tier-1 ②) — **shipped** for the
+  regulator-coefficient tables: `paper_regulators.py` + `GET /api/paper_regulators/{gene}`
+  serve the paper's `*_regulator_coefficients` tables verbatim (per gene: signed `coef_mean`,
+  `coef_rank` 0-1 percentile, and the paper's own known/novel flag), keyed by gene, across
+  polarization + aging signatures × context. Recovers the paper's own top calls (GATA3
+  polarization rank 1.0 known; BCL6 a novel nomination). Descriptive only, `unknown != 0`,
+  guarded by `tests/test_paper_regulators.py`. **Still not surfaced** (lower priority): the
+  raw signature DE tables (`Th2_Th1_polarization_signature_DE`, `CD4T_aging_signature_DE`)
+  and the cluster-level `cluster_autoimmune_enrichment` (needs gene↔cluster explosion).
 - **Full gnomAD constraint** (Tier-2, biggest external win): replace the 15-gene seed
   (0.13% coverage) with the full-genome public gnomAD LOEUF/pLI snapshot.
 - **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's
