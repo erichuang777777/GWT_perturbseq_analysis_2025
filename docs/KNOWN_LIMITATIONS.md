@@ -47,17 +47,31 @@ and the in-app research-use-only banner.
   `export_real_data.py` run; it does not call the live FastAPI backend at runtime.
   The live upload flow (`/api/imports/*`) exists in the backend but is surfaced
   only via a separate standalone tool, not the static portal (by design).
-- **Stale build wiring (found during freeze, not yet fixed):**
-  - `Makefile` `dashboard`/`dev` targets still launch the **removed** Streamlit
-    app (`frontend/dashboard/target_card_dashboard.py`); they fail on current
-    `main` (the frontend is now `frontend/webserver/`, React+Vite).
-  - `frontend/webserver/scripts/export_real_data.py` reads the **legacy** 31-col
-    dataset (`e7ecd8d5-…`) rather than the canonical 39-col `a6bba17b`; the
-    committed portal export therefore predates the v2 columns.
-  - `frontend/webserver/src/data/dataset.ts` imports `./generated/real-dataset.json`
-    while the committed artifact lives at `public/real-dataset.json` — confirm the
-    build copies/points correctly from a clean checkout.
-  These are tracked here and in `docs/ROADMAP.md`; they belong to the frontend /
-  upload workstream, not the data-freeze.
+- **Stale build wiring (found during freeze, resolved):**
+  - ✅ `Makefile` `dashboard`/`dev` targets used to launch the **removed** Streamlit
+    app. Renamed `dashboard`→`web` (+ `install-dashboard`→`install-web`), now
+    running the React `frontend/webserver/` Vite dev server; `make dev` runs the
+    API + portal together. README, `src/3_DE_analysis/README.md`,
+    `wiki/Maintenance.md`, `wiki/Development-Guide.md`, and
+    `docs/mvp-research/closure_audit/MODULE_ISOLATION_POLICY.md` updated to
+    match (the dated proposal doc `docs/ux_trust_fix_plan.md` is left as a
+    historical record, not corrected retroactively).
+  - ✅ `frontend/webserver/scripts/export_real_data.py` used to read the
+    **legacy** 31-col dataset (`e7ecd8d5-…`). Switched to the canonical 39-col
+    `a6bba17b` and regenerated `public/real-dataset.json` (+ its readiness/
+    concept-annotation caches). Impact was real, not cosmetic: the legacy
+    dataset was silently missing 2,325 `batch_confounded`, 1 `kd_not_measurable`,
+    and 10 `kd_weak` red flags (columns absent from the 31-col schema) — the
+    portal was under-reporting due-diligence caveats for ~32% of its targets.
+    Gene selection, grades, and aggregate readiness-call distribution were
+    unaffected (2,325 of those flags cap to `watchlist`, which those genes
+    already were for other reasons).
+  - ✅ `frontend/webserver/src/data/dataset.ts` was suspected of importing
+    `./generated/real-dataset.json` vs. the committed `public/real-dataset.json`.
+    Re-verified against the actual code: `dataset.ts` does a runtime `fetch()`
+    from `BASE_URL` (Vite serves `public/` at the site root), which already
+    correctly resolves to the committed file — this was a stale **comment** in
+    `types.ts` (fixed), not a real build bug. `npm run build` confirmed clean
+    both before and after.
 - **Some external fetches are policy-blocked in the sandbox** (evidence overlay
   covers only the ~20 cache-covered genes; others stay `unknown`, never `0`).

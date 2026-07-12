@@ -124,7 +124,7 @@ When ranking targets or writing biological claims, distinguish the **primary DE 
 - `{datadir}/DE_results_{run_name}/{experiment_name}.merged_DE_results.h5ad` - DE analysis statistics for each perturbation and condition
 - `{datadir}/DE_results_{run_name}/DE_summary_stats_per_target.csv` - Summary of on-target effects and overall effect for each perturbation and condition
 
-## Target card API + dashboard (optional dev flow)
+## Target card API + web portal (optional dev flow)
 
 Use these commands from repo root:
 
@@ -132,16 +132,19 @@ Use these commands from repo root:
 conda activate gwt-env
 python -m pip install fastapi uvicorn pyarrow  # pyarrow: reads the §1.12 overlay .parquet snapshots
 
-# run API
+# run API (also serves the live upload tool at /upload)
 uvicorn target_card_api:app --app-dir src/3_DE_analysis --reload --port 8000
 
-# open another terminal and run the dashboard (now an independent frontend package,
-# see frontend/README.md — it talks to the API above purely over HTTP)
-pip install -r frontend/dashboard/requirements.txt
-streamlit run frontend/dashboard/target_card_dashboard.py
+# open another terminal and run the portal (now an independent frontend package,
+# see frontend/README.md and frontend/webserver/README.md — it talks to the API
+# above purely over HTTP, only for the /upload tool; browsing reads a static
+# pre-exported JSON, not the live API)
+cd frontend/webserver && npm install && npm run dev
 ```
 
-The dashboard expects API at `http://127.0.0.1:8000`.
+The portal's Vite dev server defaults to `http://127.0.0.1:5173`; the live upload tool at
+`http://127.0.0.1:8000/upload` expects the API at `http://127.0.0.1:8000`. See `Makefile` for the
+one-command `make dev` / `make api` / `make web` equivalents.
 
 Quick API checks:
 
