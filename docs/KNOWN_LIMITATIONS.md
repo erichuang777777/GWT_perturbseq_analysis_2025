@@ -38,6 +38,11 @@ and the in-app research-use-only banner.
   `01_raw/DE_stats.suppl_table.csv` needs the S3 data + SLURM/pertpy (see
   `docs/REPRODUCIBILITY.md` §8). Everything after it is in-repo reproducible and
   checked by `make freeze`.
+- **`n_donors` is a permanent placeholder — always `NaN`.** Verified live on the
+  canonical 39-col dataset: **0 / 33,983 rows** populated. This is `unknown`, not
+  a broken join — no per-target donor-count source is wired in. Already flagged
+  as OF-4 in `docs/human_validation_protocol.md` §9; listed here so it surfaces
+  in the consolidated release register, not only the adjudication log.
 
 ## Product / deployment limitations
 
