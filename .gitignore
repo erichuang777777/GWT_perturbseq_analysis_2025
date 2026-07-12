@@ -220,3 +220,7 @@ src/10_ml_perturbation_prediction/.venv_ml/
 
 # Keep the committed researcher-guide site (overrides **/*.html above)
 !docs/researcher_guide/index.html
+
+# Keep the committed slide deck (overrides **/*.html above)
+!docs/slides/index.html
+!docs/slides/index.en.html

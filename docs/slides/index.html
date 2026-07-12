@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="4 頁專案簡報:CD4 Perturb-seq 標靶平台的總覽、方法與護欄、成果與交付,加一頁視覺化資訊圖表。">
+<title>CD4 Perturb-seq 標靶平台 · 專案簡報</title>
+</head>
+<body>
+<title>CD4 Perturb-seq 標靶平台 · 專案簡報</title>
+<style>
+  :root{
+    --bg:#eef2f1; --slide:#ffffff; --surface-2:#eaf0ee; --ink:#0e1f1d; --ink-soft:#41605c;
+    --muted:#6f8a85; --line:#d6e0dd; --accent:#0e8f86; --accent-ink:#0a6e67; --accent-2:#b5316f;
+    --adv:#0e8f86; --val:#2d6cb5; --watch:#b0761a; --deprio:#7a908e; --flag:#c23a63;
+    --glow:rgba(14,143,134,.14);
+    --font-display:"Noto Serif TC","Source Han Serif TC","Songti TC","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --font-body:"PingFang TC","Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei",sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#060f0d; --slide:#0e1b18; --surface-2:#13241f; --ink:#e9f2ef; --ink-soft:#a9c2bc; --muted:#6e8983; --line:#20362f; --accent:#34d6c0; --accent-ink:#57e3cf; --accent-2:#e85aa0; --adv:#34d6c0; --val:#5fa0e6; --watch:#e0a83c; --deprio:#8aa39d; --flag:#f0648f; --glow:rgba(52,214,192,.20);}
+  }
+  :root[data-theme="light"]{--bg:#eef2f1;--slide:#fff;--surface-2:#eaf0ee;--ink:#0e1f1d;--ink-soft:#41605c;--muted:#6f8a85;--line:#d6e0dd;--accent:#0e8f86;--accent-ink:#0a6e67;--accent-2:#b5316f;--adv:#0e8f86;--val:#2d6cb5;--watch:#b0761a;--deprio:#7a908e;--flag:#c23a63;--glow:rgba(14,143,134,.14);}
+  :root[data-theme="dark"]{--bg:#060f0d;--slide:#0e1b18;--surface-2:#13241f;--ink:#e9f2ef;--ink-soft:#a9c2bc;--muted:#6e8983;--line:#20362f;--accent:#34d6c0;--accent-ink:#57e3cf;--accent-2:#e85aa0;--adv:#34d6c0;--val:#5fa0e6;--watch:#e0a83c;--deprio:#8aa39d;--flag:#f0648f;--glow:rgba(52,214,192,.20);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding:26px 18px}
+  .deck{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+  .bar{display:flex;align-items:center;gap:12px;max-width:1040px;margin:0 auto 4px;padding:0 4px}
+  .bar .t{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .bar .sp{flex:1}
+  .toggle{appearance:none;border:1px solid var(--line);background:var(--slide);color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;padding:6px 11px;border-radius:20px;cursor:pointer}
+
+  .slide{background:var(--slide);border:1px solid var(--line);border-radius:16px;padding:40px 44px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.04);min-height:0}
+  @media(min-width:800px){.slide{aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:center;padding:46px 54px}}
+  .sn{position:absolute;top:18px;right:22px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 14px}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.7rem,3.6vw,2.55rem);line-height:1.15;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+  h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,2.8vw,1.85rem);line-height:1.2;margin:0 0 18px;text-wrap:balance}
+  .sub{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--ink-soft);max-width:64ch;margin:0 0 22px;line-height:1.55}
+  p{margin:0 0 12px}
+  strong{font-weight:650;color:var(--ink)}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0}
+  @media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  .tile{background:var(--surface-2);border-radius:12px;padding:15px 16px}
+  .tile .n{font-family:var(--font-display);font-weight:600;font-size:clamp(1.4rem,3vw,2rem);color:var(--accent-ink);line-height:1;font-variant-numeric:tabular-nums}
+  .tile .l{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 2px}
+  .chip{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);border:1px solid var(--line);background:var(--surface-2);padding:6px 11px;border-radius:20px}
+  .chip b{color:var(--accent-ink);font-weight:600}
+
+  .flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
+  .step{flex:1;min-width:120px;background:var(--surface-2);border-radius:11px;padding:12px 13px;font-size:13px;color:var(--ink-soft);line-height:1.4}
+  .step b{display:block;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+  .arrow{align-self:center;color:var(--accent);font-weight:700}
+
+  .pills{display:flex;flex-wrap:wrap;gap:9px;margin:6px 0}
+  .pill{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:#fff;padding:5px 12px;border-radius:20px}
+  .p-adv{background:var(--adv)}.p-val{background:var(--val)}.p-watch{background:var(--watch)}.p-dep{background:var(--deprio)}
+  .flag{display:inline-block;font-family:var(--font-mono);font-size:11.5px;color:var(--flag);border:1px solid var(--flag);border-radius:20px;padding:4px 11px}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:700px){.cols{grid-template-columns:1fr;gap:16px}}
+  .colh{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  ul.tight{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+  ul.tight li{font-size:14px;color:var(--ink-soft);line-height:1.45}
+  ul.tight b{color:var(--ink)}
+
+  /* funnel infographic */
+  .funnel{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+  .frow{display:flex;align-items:center;gap:14px}
+  .fbar{height:44px;border-radius:9px;display:flex;align-items:center;padding:0 15px;color:#fff;font-family:var(--font-mono);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+  .flab{font-size:13.5px;color:var(--ink-soft)}
+  .flab b{color:var(--ink)}
+  .info-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;align-items:start}
+  @media(max-width:760px){.info-grid{grid-template-columns:1fr;gap:18px}}
+  .mini{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .mini .tile .n{font-size:clamp(1.2rem,2.6vw,1.6rem)}
+  .foot{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.5}
+  .disc{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:18px;padding-top:12px;line-height:1.5}
+</style>
+
+<div class="bar">
+  <span class="t">專案簡報 · CD4 Perturb-seq 標靶平台</span>
+  <span class="sp"></span>
+  <button class="toggle" id="tg" type="button" aria-label="切換主題">☾ / ☀</button>
+</div>
+
+<div class="deck">
+
+  <!-- SLIDE 1 -->
+  <section class="slide">
+    <span class="sn">1 / 4</span>
+    <p class="eyebrow">我們建了什麼</p>
+    <h1>全基因體 CD4⁺ T 細胞 Perturb-seq<br>→ 可辯護的藥物標靶優先排序平台</h1>
+    <p class="sub">把 <strong>33,983 列</strong>擾動差異表現(DE)結果,轉成研究者能直接判讀、<strong>不被強訊號誤導</strong>、可追溯的「推進 / 驗證 / 觀察 / 降級」決策。</p>
+    <div class="tiles">
+      <div class="tile"><div class="n">33,983</div><div class="l">擾動 × 條件 DE 列</div></div>
+      <div class="tile"><div class="n">11,526</div><div class="l">唯一標的基因</div></div>
+      <div class="tile"><div class="n">4 × 3</div><div class="l">捐贈者 × 培養條件</div></div>
+      <div class="tile"><div class="n">M01–20</div><div class="l">免疫概念模組</div></div>
+    </div>
+    <div class="chips">
+      <span class="chip"><b>標靶卡片</b></span><span class="chip"><b>就緒度引擎</b></span><span class="chip"><b>校準</b></span>
+      <span class="chip"><b>外部證據</b></span><span class="chip"><b>疾病轉譯</b></span><span class="chip"><b>概念層 M01–M20</b></span>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide">
+    <span class="sn">2 / 4</span>
+    <p class="eyebrow">怎麼運作 · 為什麼可信</p>
+    <h2>從統計到決策,每一步都有護欄</h2>
+    <div class="flow">
+      <div class="step"><b>資料</b>上游 DESeq2 DE(消費不重算)</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>標靶卡片</b>1–4 級證據 + 敲低因果閘</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>就緒度引擎</b>12 領域 → R0–R5 → 紅旗覆蓋</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>決策</b>+ 封頂原因 + provenance</div>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="colh">四級決策</div>
+        <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
+        <p style="font-size:13.5px;color:var(--ink-soft);margin-top:12px">紅旗覆蓋:<span class="flag">essential</span> <span class="flag">broad-effect</span> <span class="flag">off-target</span> <span class="flag">kd 未確認</span> — 不論統計多強,命中即封頂。</p>
+      </div>
+      <div>
+        <div class="colh">護欄原則 + 校準</div>
+        <ul class="tight">
+          <li><b>unknown ≠ 0</b> · <b>CRISPRi ≠ 藥理學</b> · 四層版本化</li>
+          <li>負對照 <b>99.96%</b> 落 grade 1、<b>0%</b> 達 advance</li>
+          <li>排序基準 <b>AUROC 0.85</b>(canonical CD4 正對照)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide">
+    <span class="sn">3 / 4</span>
+    <p class="eyebrow">初步結果 · 交付</p>
+    <h2>從 34k 雜訊濃縮到可行動短名單,並全部產品化</h2>
+    <div class="cols">
+      <div>
+        <div class="colh">初步結果(工具探索性分析)</div>
+        <ul class="tight">
+          <li>篩選漏斗 <b>33,983 → 2,131(6.3%)= 1,235 標的</b></li>
+          <li>頂端命中重現 <b>TCR 近端 / SAGA / Mediator</b> 三模組</li>
+          <li>96 情境專一 → <b>39 個</b>今天有可行藥物模式</li>
+          <li><b>237</b> 必需基因存活者偏差 · <b>387</b> 基因帶 ≥2 風險旗</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colh">已交付(build)</div>
+        <ul class="tight">
+          <li>後端 FastAPI <b>13 routers</b> + React portal(含 Provenance 揭露頁)</li>
+          <li><b>34</b> 個測試檔 · 凍結 <b>7 階段</b> pipeline + 逐階段 EDA</li>
+          <li>完整文件:方法/圖表/模組/概念/provenance + <b>2 導覽站</b> + 9 頁 wiki</li>
+          <li>公開資料:SRA <b>SRP643211</b> / GEO <b>GSE314342</b> · CZI VCP</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — INFOGRAPHIC -->
+  <section class="slide">
+    <span class="sn">4 / 4</span>
+    <p class="eyebrow">一頁看懂 · 視覺化資訊圖表</p>
+    <h2>資料 → 決策:一張圖的故事</h2>
+    <div class="info-grid">
+      <div>
+        <div class="colh">篩選漏斗(基因體 → 可遞送)</div>
+        <div class="funnel" role="img" aria-label="漏斗:33,983 擾動列 → 2,131 通過門檻 → 1,235 標的 → 39 可遞送">
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 擾動×條件</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">2,131 通過門檻 (6.3%)</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--watch)">1,235 唯一標的</div></div>
+          <div class="frow"><div class="fbar" style="width:20%;background:var(--accent-2)">39 可遞送</div></div>
+        </div>
+        <div class="colh" style="margin-top:20px">決策系統</div>
+        <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:10px">🚩 紅旗覆蓋:essential / broad-effect / off-target / kd 未確認 → 封頂</p>
+      </div>
+      <div>
+        <div class="colh">關鍵數字</div>
+        <div class="mini">
+          <div class="tile"><div class="n">0.85</div><div class="l">排序 AUROC(正對照)</div></div>
+          <div class="tile"><div class="n">99.96%</div><div class="l">負對照落 grade 1</div></div>
+          <div class="tile"><div class="n">3</div><div class="l">回復的調控模組</div></div>
+          <div class="tile"><div class="n">M01–20</div><div class="l">概念層(不餵決策)</div></div>
+        </div>
+        <div class="colh" style="margin-top:18px">出處與誠實</div>
+        <div class="chips">
+          <span class="chip"><b>unknown ≠ 0</b></span>
+          <span class="chip">四層版本化</span>
+          <span class="chip">79 列 provenance</span>
+          <span class="chip">CRISPRi ≠ 藥理學</span>
+        </div>
+      </div>
+    </div>
+    <div class="disc">研究用標靶優先排序,非臨床或用藥建議。漏斗/AUROC/模組為工具對公開資料的探索性分析(來源 <span style="font-family:var(--font-mono)">figure_registry.md</span> / <span style="font-family:var(--font-mono)">de_and_baseline_spec.md</span>);所有數字對應 repo 內真實檔案。</div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var r=document.documentElement;
+  try{var s=localStorage.getItem('gwt-theme');if(s)r.setAttribute('data-theme',s);}catch(e){}
+  var b=document.getElementById('tg');
+  b&&b.addEventListener('click',function(){
+    var c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+    var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);
+    try{localStorage.setItem('gwt-theme',n);}catch(e){}
+  });
+})();
+</script>
+
+</body>
+</html>

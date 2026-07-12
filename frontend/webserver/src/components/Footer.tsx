@@ -31,6 +31,9 @@ export default function Footer() {
           >
             Data dictionary
           </a>
+          <span className="navlink" onClick={() => setState({ view: "deck" })} style={{ color: "#1a5fb4", cursor: "pointer" }}>
+            Overview
+          </span>
           <span className="navlink" onClick={() => setState({ view: "provenance" })} style={{ color: "#1a5fb4", cursor: "pointer" }}>
             Provenance
           </span>

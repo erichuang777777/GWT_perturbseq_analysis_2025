@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="4-page project deck (English): overview, method and guardrails, results and deliverables, plus a one-page infographic — CD4 Perturb-seq target platform.">
+<title>CD4 Perturb-seq Target Platform · Project Deck</title>
+</head>
+<body>
+<title>CD4 Perturb-seq Target Platform · Project Deck</title>
+<style>
+  :root{
+    --bg:#eef2f1; --slide:#ffffff; --surface-2:#eaf0ee; --ink:#0e1f1d; --ink-soft:#41605c;
+    --muted:#6f8a85; --line:#d6e0dd; --accent:#0e8f86; --accent-ink:#0a6e67; --accent-2:#b5316f;
+    --adv:#0e8f86; --val:#2d6cb5; --watch:#b0761a; --deprio:#7a908e; --flag:#c23a63;
+    --glow:rgba(14,143,134,.14);
+    --font-display:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --font-mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#060f0d; --slide:#0e1b18; --surface-2:#13241f; --ink:#e9f2ef; --ink-soft:#a9c2bc; --muted:#6e8983; --line:#20362f; --accent:#34d6c0; --accent-ink:#57e3cf; --accent-2:#e85aa0; --adv:#34d6c0; --val:#5fa0e6; --watch:#e0a83c; --deprio:#8aa39d; --flag:#f0648f; --glow:rgba(52,214,192,.20);}
+  }
+  :root[data-theme="light"]{--bg:#eef2f1;--slide:#fff;--surface-2:#eaf0ee;--ink:#0e1f1d;--ink-soft:#41605c;--muted:#6f8a85;--line:#d6e0dd;--accent:#0e8f86;--accent-ink:#0a6e67;--accent-2:#b5316f;--adv:#0e8f86;--val:#2d6cb5;--watch:#b0761a;--deprio:#7a908e;--flag:#c23a63;--glow:rgba(14,143,134,.14);}
+  :root[data-theme="dark"]{--bg:#060f0d;--slide:#0e1b18;--surface-2:#13241f;--ink:#e9f2ef;--ink-soft:#a9c2bc;--muted:#6e8983;--line:#20362f;--accent:#34d6c0;--accent-ink:#57e3cf;--accent-2:#e85aa0;--adv:#34d6c0;--val:#5fa0e6;--watch:#e0a83c;--deprio:#8aa39d;--flag:#f0648f;--glow:rgba(52,214,192,.20);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding:26px 18px}
+  .deck{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+  .bar{display:flex;align-items:center;gap:12px;max-width:1040px;margin:0 auto 4px;padding:0 4px}
+  .bar .t{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .bar .sp{flex:1}
+  .toggle{appearance:none;border:1px solid var(--line);background:var(--slide);color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;padding:6px 11px;border-radius:20px;cursor:pointer}
+
+  .slide{background:var(--slide);border:1px solid var(--line);border-radius:16px;padding:40px 44px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.04);min-height:0}
+  @media(min-width:800px){.slide{aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:center;padding:46px 54px}}
+  .sn{position:absolute;top:18px;right:22px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 14px}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1.14;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+  h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,2.8vw,1.85rem);line-height:1.2;margin:0 0 18px;text-wrap:balance}
+  .sub{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--ink-soft);max-width:66ch;margin:0 0 22px;line-height:1.55}
+  p{margin:0 0 12px}
+  strong{font-weight:650;color:var(--ink)}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0}
+  @media(max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  .tile{background:var(--surface-2);border-radius:12px;padding:15px 16px}
+  .tile .n{font-family:var(--font-display);font-weight:600;font-size:clamp(1.4rem,3vw,2rem);color:var(--accent-ink);line-height:1;font-variant-numeric:tabular-nums}
+  .tile .l{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 2px}
+  .chip{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);border:1px solid var(--line);background:var(--surface-2);padding:6px 11px;border-radius:20px}
+  .chip b{color:var(--accent-ink);font-weight:600}
+
+  .flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
+  .step{flex:1;min-width:130px;background:var(--surface-2);border-radius:11px;padding:12px 13px;font-size:12.5px;color:var(--ink-soft);line-height:1.4}
+  .step b{display:block;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+  .arrow{align-self:center;color:var(--accent);font-weight:700}
+
+  .pills{display:flex;flex-wrap:wrap;gap:9px;margin:6px 0}
+  .pill{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:#fff;padding:5px 12px;border-radius:20px}
+  .p-adv{background:var(--adv)}.p-val{background:var(--val)}.p-watch{background:var(--watch)}.p-dep{background:var(--deprio)}
+  .flag{display:inline-block;font-family:var(--font-mono);font-size:11.5px;color:var(--flag);border:1px solid var(--flag);border-radius:20px;padding:4px 11px}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:700px){.cols{grid-template-columns:1fr;gap:16px}}
+  .colh{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  ul.tight{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+  ul.tight li{font-size:14px;color:var(--ink-soft);line-height:1.45}
+  ul.tight b{color:var(--ink)}
+
+  .funnel{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+  .frow{display:flex;align-items:center;gap:14px}
+  .fbar{height:44px;border-radius:9px;display:flex;align-items:center;padding:0 15px;color:#fff;font-family:var(--font-mono);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 1px 0 rgba(0,0,0,.06);font-size:13px}
+  .info-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;align-items:start}
+  @media(max-width:760px){.info-grid{grid-template-columns:1fr;gap:18px}}
+  .mini{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .mini .tile .n{font-size:clamp(1.2rem,2.6vw,1.6rem)}
+  .disc{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:18px;padding-top:12px;line-height:1.5}
+</style>
+
+<div class="bar">
+  <span class="t">Project deck · CD4 Perturb-seq target platform</span>
+  <span class="sp"></span>
+  <button class="toggle" id="tg" type="button" aria-label="Toggle theme">☾ / ☀</button>
+</div>
+
+<div class="deck">
+
+  <!-- SLIDE 1 -->
+  <section class="slide">
+    <span class="sn">1 / 4</span>
+    <p class="eyebrow">What we built</p>
+    <h1>Genome-scale CD4⁺ T-cell Perturb-seq<br>→ a defensible drug-target prioritization platform</h1>
+    <p class="sub">Turns <strong>33,983 rows</strong> of perturbation differential-expression (DE) into decisions a researcher can read directly — <strong>not fooled by strong-but-bad signals</strong>, and fully traceable: advance / validate / watchlist / deprioritize.</p>
+    <div class="tiles">
+      <div class="tile"><div class="n">33,983</div><div class="l">perturbation × condition DE rows</div></div>
+      <div class="tile"><div class="n">11,526</div><div class="l">unique target genes</div></div>
+      <div class="tile"><div class="n">4 × 3</div><div class="l">donors × culture conditions</div></div>
+      <div class="tile"><div class="n">M01–20</div><div class="l">immune concept modules</div></div>
+    </div>
+    <div class="chips">
+      <span class="chip"><b>Target cards</b></span><span class="chip"><b>Readiness engine</b></span><span class="chip"><b>Calibration</b></span>
+      <span class="chip"><b>External evidence</b></span><span class="chip"><b>Disease translation</b></span><span class="chip"><b>Concept layer M01–M20</b></span>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide">
+    <span class="sn">2 / 4</span>
+    <p class="eyebrow">How it works · Why it's trustworthy</p>
+    <h2>From statistics to decisions — a guardrail at every step</h2>
+    <div class="flow">
+      <div class="step"><b>Data</b>Upstream DESeq2 DE (consumed, not recomputed)</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>Target card</b>1–4 evidence grade + knockdown causal gate</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>Readiness engine</b>12 domains → R0–R5 → red-flag override</div>
+      <div class="arrow">→</div>
+      <div class="step"><b>Decision</b>+ cap reason + provenance</div>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="colh">Four-way decision</div>
+        <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
+        <p style="font-size:13.5px;color:var(--ink-soft);margin-top:12px">Red-flag override: <span class="flag">essential</span> <span class="flag">broad-effect</span> <span class="flag">off-target</span> <span class="flag">kd not confirmed</span> — however strong the stats, a hit caps the call.</p>
+      </div>
+      <div>
+        <div class="colh">Guardrails + calibration</div>
+        <ul class="tight">
+          <li><b>unknown ≠ 0</b> · <b>CRISPRi ≠ pharmacology</b> · four-layer versioning</li>
+          <li>Negative controls <b>99.96%</b> at grade 1, <b>0%</b> reach advance</li>
+          <li>Ranking benchmark <b>AUROC 0.85</b> (canonical CD4 positives)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide">
+    <span class="sn">3 / 4</span>
+    <p class="eyebrow">Preliminary results · Deliverables</p>
+    <h2>From 34k of noise to an actionable shortlist — all productized</h2>
+    <div class="cols">
+      <div>
+        <div class="colh">Preliminary results (tool's exploratory analysis)</div>
+        <ul class="tight">
+          <li>Curation funnel <b>33,983 → 2,131 (6.3%) = 1,235 targets</b></li>
+          <li>Top hits recapitulate <b>TCR-proximal / SAGA / Mediator</b> modules</li>
+          <li>96 context-specific → <b>39</b> with an actionable drug modality today</li>
+          <li><b>237</b> essential-gene dropout · <b>387</b> genes carry ≥2 risk flags</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colh">Delivered (build)</div>
+        <ul class="tight">
+          <li>Backend FastAPI <b>13 routers</b> + React portal (with a Provenance disclosure page)</li>
+          <li><b>34</b> test files · frozen <b>7-stage</b> pipeline + per-stage EDA</li>
+          <li>Full docs: methods / figures / modules / concept / provenance + <b>2 guide sites</b> + 9-page wiki</li>
+          <li>Public data: SRA <b>SRP643211</b> / GEO <b>GSE314342</b> · CZI VCP</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — INFOGRAPHIC -->
+  <section class="slide">
+    <span class="sn">4 / 4</span>
+    <p class="eyebrow">At a glance · Infographic</p>
+    <h2>Data → decision: the story in one figure</h2>
+    <div class="info-grid">
+      <div>
+        <div class="colh">Curation funnel (genome-wide → deliverable)</div>
+        <div class="funnel" role="img" aria-label="Funnel: 33,983 perturbation rows to 2,131 gate-passing to 1,235 targets to 39 deliverable">
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 perturbation × condition</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">2,131 pass gate (6.3%)</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--watch)">1,235 unique targets</div></div>
+          <div class="frow"><div class="fbar" style="width:20%;background:var(--accent-2)">39 deliverable</div></div>
+        </div>
+        <div class="colh" style="margin-top:20px">Decision system</div>
+        <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:10px">🚩 Red-flag override: essential / broad-effect / off-target / kd not confirmed → capped</p>
+      </div>
+      <div>
+        <div class="colh">Key numbers</div>
+        <div class="mini">
+          <div class="tile"><div class="n">0.85</div><div class="l">ranking AUROC (positives)</div></div>
+          <div class="tile"><div class="n">99.96%</div><div class="l">neg. controls at grade 1</div></div>
+          <div class="tile"><div class="n">3</div><div class="l">regulatory modules recovered</div></div>
+          <div class="tile"><div class="n">M01–20</div><div class="l">concept layer (never feeds decisions)</div></div>
+        </div>
+        <div class="colh" style="margin-top:18px">Provenance & honesty</div>
+        <div class="chips">
+          <span class="chip"><b>unknown ≠ 0</b></span>
+          <span class="chip">four-layer versioning</span>
+          <span class="chip">79-row provenance</span>
+          <span class="chip">CRISPRi ≠ pharmacology</span>
+        </div>
+      </div>
+    </div>
+    <div class="disc">Research-use target prioritization — not clinical or prescribing advice. Funnel / AUROC / modules are the tool's exploratory analysis of public data (source <span style="font-family:var(--font-mono)">figure_registry.md</span> / <span style="font-family:var(--font-mono)">de_and_baseline_spec.md</span>); all numbers map to real repo files.</div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var r=document.documentElement;
+  try{var s=localStorage.getItem('gwt-theme');if(s)r.setAttribute('data-theme',s);}catch(e){}
+  var b=document.getElementById('tg');
+  b&&b.addEventListener('click',function(){
+    var c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+    var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);
+    try{localStorage.setItem('gwt-theme',n);}catch(e){}
+  });
+})();
+</script>
+
+</body>
+</html>
