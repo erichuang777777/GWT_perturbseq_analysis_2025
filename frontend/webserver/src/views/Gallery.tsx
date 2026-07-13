@@ -11,6 +11,7 @@ import { useStore } from "../store/store";
 const ACCENT = "#5b3fb4";
 const CORE5_ORDER = ["CD3E", "CD247", "LAT", "PLCG1", "VAV1"];
 const CORE5_INDEX = new Map(CORE5_ORDER.map((gene, index) => [gene, index]));
+const PUBLICATION_HIGHLIGHT_IDS = ["A16", "A15", "A3"];
 type Tab = "figures" | "structures";
 
 export default function Gallery() {
@@ -51,6 +52,14 @@ export default function Gallery() {
     () => shownCharts.filter((c) => c.group === "Analysis & publication"),
     [shownCharts],
   );
+  const publicationHighlights = useMemo(
+    () => PUBLICATION_HIGHLIGHT_IDS.map((id) => publicationCharts.find((c) => c.id === id)).filter((c): c is GalleryChart => Boolean(c)),
+    [publicationCharts],
+  );
+  const publicationRemainder = useMemo(
+    () => publicationCharts.filter((c) => !PUBLICATION_HIGHLIGHT_IDS.includes(c.id)),
+    [publicationCharts],
+  );
   const coreCharts = useMemo(
     () => shownCharts.filter((c) => c.group !== "Analysis & publication"),
     [shownCharts],
@@ -60,7 +69,7 @@ export default function Gallery() {
     [data],
   );
 
-  const chartCard = (c: GalleryChart, large: boolean) => {
+  const chartCard = (c: GalleryChart, large: boolean, showDescription = false) => {
     const cl = c[lang];
     return (
       <button
@@ -78,6 +87,7 @@ export default function Gallery() {
             <span style={{ fontSize: large ? "11px" : "10.5px", color: "#9aa1ad" }}>{cl.family}</span>
           </div>
           <div style={{ fontSize: large ? "14px" : "13px", fontWeight: 600, color: "#1a1d24", lineHeight: 1.35 }}>{cl.title}</div>
+          {showDescription && <div style={{ fontSize: "12px", lineHeight: 1.5, color: "#5f6672", marginTop: "8px" }}>{cl.description}</div>}
         </div>
       </button>
     );
@@ -123,17 +133,28 @@ export default function Gallery() {
               <Chip key={f.key} label={f.label} active={family === f.key} onClick={() => setFamily(f.key)} accent={ACCENT} />
             ))}
           </div>
-          {publicationCharts.length > 0 && (
+          {publicationHighlights.length > 0 && (
             <section style={{ marginBottom: "30px" }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
-                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>Publication figures</h2>
-                <span style={{ fontSize: "12px", color: "#7a6a3f" }}>{publicationCharts.length} audited analysis figures</span>
+                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>Publication highlights</h2>
+                <span style={{ fontSize: "12px", color: "#7a6a3f" }}>3 key figures</span>
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.5, color: "#5f6672", marginBottom: "14px", maxWidth: "850px" }}>
-                Publication-facing figures and validation panels are shown first, with larger previews and the full provenance available on click.
+                The three figures that best summarize the platform's contribution: reproducible curation, validation, and translation into a delivery decision. Click any figure for the full publication view and provenance.
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(330px, 1fr))", gap: "18px" }}>
-                {publicationCharts.map((c) => chartCard(c, true))}
+                {publicationHighlights.map((c) => chartCard(c, true, true))}
+              </div>
+            </section>
+          )}
+          {publicationRemainder.length > 0 && (
+            <section style={{ marginBottom: "30px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
+                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>All publication figures</h2>
+                <span style={{ fontSize: "12px", color: "#7a8491" }}>{publicationRemainder.length} additional figures</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
+                {publicationRemainder.map((c) => chartCard(c, false))}
               </div>
             </section>
           )}
