@@ -19,13 +19,17 @@ Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analys
 
 ## At a glance
 
-**One screen, two parallel funnels, one Core-5 intersection.** The portal readiness branch reaches 302 advance-ready targets, while the separate publication delivery-decision branch reaches 39 context-specific targets with a known modality. The two endpoints are not sequential; Core-5 is the intersection of the 39 with an independent 15-gene primary-outcome shortlist.
+**One dataset, two opposing first impressions.** Plotting every target by researcher lens (context-specific effect breadth on T-cell activation) against clinician lens (risk-flag count — pleiotropy, genetic constraint, dosage sensitivity) exposes a conflict zone: the most mechanistically exciting targets (CD3E, PLCG1, VAV1, STAT3, BCL10) are often the ones clinicians would flag hardest.
 
-![Researcher druggability funnel](docs/readme_assets/druggability_funnel.png)
+![One dataset, two opposing first impressions](docs/mvp-research/perturbase_frontend/figures_en/A12_cover_dual_perspective.png)
+
+**From 33,983 raw profiles to a 1,235-target shortlist.** The curation pipeline — five sequential filters (≥200 cells, significant knockdown, no off-targets, ≥50 DE genes) down to three regulatory modules (TCR, SAGA, Mediator) — alongside the DE-count-vs-cell-coverage relationship (Spearman ρ = −0.18) and stimulus-response expression across Rest/Stim8hr/Stim48hr.
+
+![Integrated perturbation analysis: curation pipeline and context-specific target effects](docs/mvp-research/perturbase_frontend/figures_en/A16_Figure1_integrated_story.png)
 
 **External validation — the calls reproduce against independent public data.** Open Targets disease associations (55/55, 26 exact GA matches), STRING known-partner recovery for the flagship targets (@confidence 700), and an independent CRISPRa HIV screen (GEO GSE318876).
 
-![External-validation reproduction](docs/readme_assets/external_validation.png)
+![CD4+ T-cell Perturb-seq external validation results](docs/mvp-research/perturbase_frontend/figures_en/A7_level4_external_validation_figure.png)
 
 **Development timeline — from data processing to a reproducible target-discovery portal.** This dot-flow figure summarizes 462 non-merge commits across five work categories. See [`docs/dev_timeline/`](docs/dev_timeline/README.md) for the animated replay, source data, and regeneration pipeline.
 
