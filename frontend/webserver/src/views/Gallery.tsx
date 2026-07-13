@@ -9,6 +9,8 @@ import { T, plddtColor, type Lang } from "./gallery/i18n";
 import { useStore } from "../store/store";
 
 const ACCENT = "#5b3fb4";
+const CORE5_ORDER = ["CD3E", "CD247", "LAT", "PLCG1", "VAV1"];
+const CORE5_INDEX = new Map(CORE5_ORDER.map((gene, index) => [gene, index]));
 type Tab = "figures" | "structures";
 
 export default function Gallery() {
@@ -44,6 +46,42 @@ export default function Gallery() {
   const shownCharts = useMemo(() => {
     return family === "__all__" ? primaryCharts : primaryCharts.filter((c) => c.en.family === family);
   }, [primaryCharts, family]);
+
+  const publicationCharts = useMemo(
+    () => shownCharts.filter((c) => c.group === "Analysis & publication"),
+    [shownCharts],
+  );
+  const coreCharts = useMemo(
+    () => shownCharts.filter((c) => c.group !== "Analysis & publication"),
+    [shownCharts],
+  );
+  const orderedStructures = useMemo(
+    () => [...data?.structures ?? []].sort((a, b) => (CORE5_INDEX.get(a.gene) ?? 999) - (CORE5_INDEX.get(b.gene) ?? 999)),
+    [data],
+  );
+
+  const chartCard = (c: GalleryChart, large: boolean) => {
+    const cl = c[lang];
+    return (
+      <button
+        key={c.id}
+        onClick={() => setOpenChart(c)}
+        className="lift"
+        style={{ textAlign: "left", border: "1px solid #e6e2f2", borderRadius: "13px", overflow: "hidden", background: "#fff", cursor: "pointer", padding: 0, display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ aspectRatio: large ? "16 / 10" : "4 / 3", background: "#fafafb", borderBottom: "1px solid #eceef2", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          <img src={galleryAsset(c.img)} alt={cl.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        </div>
+        <div style={{ padding: large ? "14px 16px 16px" : "11px 13px 13px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "5px" }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: large ? "11px" : "10.5px", fontWeight: 600, color: ACCENT }}>{c.id}</span>
+            <span style={{ fontSize: large ? "11px" : "10.5px", color: "#9aa1ad" }}>{cl.family}</span>
+          </div>
+          <div style={{ fontSize: large ? "14px" : "13px", fontWeight: 600, color: "#1a1d24", lineHeight: 1.35 }}>{cl.title}</div>
+        </div>
+      </button>
+    );
+  };
 
   if (status === "loading") return <InlineScreen>Loading gallery…</InlineScreen>;
   if (status === "error" || !data) return <InlineScreen>Couldn't load the gallery catalog.</InlineScreen>;
@@ -85,36 +123,37 @@ export default function Gallery() {
               <Chip key={f.key} label={f.label} active={family === f.key} onClick={() => setFamily(f.key)} accent={ACCENT} />
             ))}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "16px" }}>
-            {shownCharts.map((c) => {
-              const cl = c[lang];
-              return (
-                <button
-                  key={c.id}
-                  onClick={() => setOpenChart(c)}
-                  className="lift"
-                  style={{ textAlign: "left", border: "1px solid #e6e2f2", borderRadius: "13px", overflow: "hidden", background: "#fff", cursor: "pointer", padding: 0, display: "flex", flexDirection: "column" }}
-                >
-                  <div style={{ aspectRatio: "4 / 3", background: "#fafafb", borderBottom: "1px solid #eceef2", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                    <img src={galleryAsset(c.img)} alt={cl.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  </div>
-                  <div style={{ padding: "11px 13px 13px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "5px" }}>
-                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10.5px", fontWeight: 600, color: ACCENT }}>{c.id}</span>
-                      <span style={{ fontSize: "10.5px", color: "#9aa1ad" }}>{cl.family}</span>
-                    </div>
-                    <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1d24", lineHeight: 1.35 }}>{cl.title}</div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+          {publicationCharts.length > 0 && (
+            <section style={{ marginBottom: "30px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
+                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>Publication figures</h2>
+                <span style={{ fontSize: "12px", color: "#7a6a3f" }}>{publicationCharts.length} audited analysis figures</span>
+              </div>
+              <div style={{ fontSize: "13px", lineHeight: 1.5, color: "#5f6672", marginBottom: "14px", maxWidth: "850px" }}>
+                Publication-facing figures and validation panels are shown first, with larger previews and the full provenance available on click.
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(330px, 1fr))", gap: "18px" }}>
+                {publicationCharts.map((c) => chartCard(c, true))}
+              </div>
+            </section>
+          )}
+          {coreCharts.length > 0 && (
+            <section>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
+                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>Core EDA gallery</h2>
+                <span style={{ fontSize: "12px", color: "#7a8491" }}>{coreCharts.length} exploratory figures</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "16px" }}>
+                {coreCharts.map((c) => chartCard(c, false))}
+              </div>
+            </section>
+          )}
         </>
       )}
 
       {tab === "structures" && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "16px" }}>
-          {data.structures.map((s) => (
+          {orderedStructures.map((s) => (
             <button
               key={s.uniprot}
               onClick={() => setOpenStruct(s)}
@@ -131,6 +170,7 @@ export default function Gallery() {
               <div style={{ padding: "11px 13px 13px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", marginBottom: "3px" }}>
                   <span style={{ fontSize: "14px", fontWeight: 700, color: "#1a1d24" }}>{s.gene}</span>
+                  {CORE5_INDEX.has(s.gene) && <span style={{ fontSize: "9.5px", fontWeight: 700, color: "#fff", background: ACCENT, padding: "2px 6px", borderRadius: "5px" }}>CORE-5</span>}
                   {s.plddt != null && (
                     <span style={{ fontSize: "10.5px", fontWeight: 600, color: "#fff", background: plddtColor(s.plddt), padding: "1px 6px", borderRadius: "5px" }}>{s.plddt.toFixed(0)}</span>
                   )}

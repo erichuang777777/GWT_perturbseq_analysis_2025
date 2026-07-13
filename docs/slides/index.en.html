@@ -147,7 +147,7 @@
         <ul class="tight">
           <li>Curation funnel <b>33,983 → 2,131 (6.3%) = 1,235 targets</b></li>
           <li>Top hits recapitulate <b>TCR-proximal / SAGA / Mediator</b> modules</li>
-          <li>96 context-specific → <b>39</b> with an actionable drug modality today</li>
+          <li>96 context-specific → <b>39</b> with a known delivery modality</li>
           <li><b>237</b> essential-gene dropout · <b>387</b> genes carry ≥2 risk flags</li>
         </ul>
       </div>
@@ -170,12 +170,18 @@
     <h2>Data → decision: the story in one figure</h2>
     <div class="info-grid">
       <div>
-        <div class="colh">Curation funnel (genome-wide → deliverable)</div>
-        <div class="funnel" role="img" aria-label="Funnel: 33,983 perturbation rows to 2,131 gate-passing to 1,235 targets to 39 deliverable">
-          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 perturbation × condition</div></div>
-          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">2,131 pass gate (6.3%)</div></div>
-          <div class="frow"><div class="fbar" style="width:42%;background:var(--watch)">1,235 unique targets</div></div>
-          <div class="frow"><div class="fbar" style="width:20%;background:var(--accent-2)">39 deliverable</div></div>
+        <div class="colh">Two parallel funnels (not one 33,983 → 39 chain)</div>
+        <div class="funnel" role="img" aria-label="Two parallel funnels. Portal readiness: 11,526 measured targets to 7,249 portal-included, 621 validate or advance, and 302 advance-ready. Publication delivery-decision: 11,526 measured targets to 1,235 quality-control pass, 96 context-specific, and 39 with known delivery modality.">
+          <div style="font-size:12px;font-weight:700;color:var(--val);margin-bottom:6px">Portal readiness</div>
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--val)">11,526 measured</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">7,249 portal-included</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--val)">621 validate / advance</div></div>
+          <div class="frow"><div class="fbar" style="width:24%;background:var(--val)">302 advance-ready</div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--accent-2);margin:14px 0 6px">Publication delivery-decision</div>
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent-2)">11,526 measured</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--accent-2)">1,235 QC-pass</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--accent-2)">96 context-specific</div></div>
+          <div class="frow"><div class="fbar" style="width:24%;background:var(--accent-2)">39 known modality</div></div>
         </div>
         <div class="colh" style="margin-top:20px">Decision system</div>
         <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
@@ -198,7 +204,7 @@
         </div>
       </div>
     </div>
-    <div class="disc">Research-use target prioritization — not clinical or prescribing advice. Funnel / AUROC / modules are the tool's exploratory analysis of public data (source <span style="font-family:var(--font-mono)">figure_registry.md</span> / <span style="font-family:var(--font-mono)">de_and_baseline_spec.md</span>); all numbers map to real repo files.</div>
+    <div class="disc">Research-use target prioritization — not clinical or prescribing advice. Portal and publication funnel counts are separate endpoints; the 39 endpoint comes from <span style="font-family:var(--font-mono)">delivery_decision_shortlist.csv</span>. AUROC, dropout, and module claims trace to <span style="font-family:var(--font-mono)">figure_registry.md</span> / <span style="font-family:var(--font-mono)">de_and_baseline_spec.md</span>; all numbers map to real repo files.</div>
   </section>
 
 </div>

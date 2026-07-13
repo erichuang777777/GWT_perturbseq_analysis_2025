@@ -151,7 +151,7 @@
         <ul class="tight">
           <li>篩選漏斗 <b>33,983 → 2,131(6.3%)= 1,235 標的</b></li>
           <li>頂端命中重現 <b>TCR 近端 / SAGA / Mediator</b> 三模組</li>
-          <li>96 情境專一 → <b>39 個</b>今天有可行藥物模式</li>
+          <li>96 情境專一 → <b>39 個</b>具已知遞送模式</li>
           <li><b>237</b> 必需基因存活者偏差 · <b>387</b> 基因帶 ≥2 風險旗</li>
         </ul>
       </div>
@@ -174,12 +174,18 @@
     <h2>資料 → 決策:一張圖的故事</h2>
     <div class="info-grid">
       <div>
-        <div class="colh">篩選漏斗(基因體 → 可遞送)</div>
-        <div class="funnel" role="img" aria-label="漏斗:33,983 擾動列 → 2,131 通過門檻 → 1,235 標的 → 39 可遞送">
-          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent)">33,983 擾動×條件</div></div>
-          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">2,131 通過門檻 (6.3%)</div></div>
-          <div class="frow"><div class="fbar" style="width:42%;background:var(--watch)">1,235 唯一標的</div></div>
-          <div class="frow"><div class="fbar" style="width:20%;background:var(--accent-2)">39 可遞送</div></div>
+        <div class="colh">兩條平行漏斗(不是 33,983 → 39 單一路徑)</div>
+        <div class="funnel" role="img" aria-label="兩條平行漏斗。Portal readiness: 11,526 measured → 7,249 portal-included → 621 validate 或 advance → 302 advance-ready。Publication delivery-decision: 11,526 measured → 1,235 QC-pass → 96 context-specific → 39 具已知遞送模式。">
+          <div style="font-size:12px;font-weight:700;color:var(--val);margin-bottom:6px">Portal readiness</div>
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--val)">11,526 measured</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--val)">7,249 portal-included</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--val)">621 validate / advance</div></div>
+          <div class="frow"><div class="fbar" style="width:24%;background:var(--val)">302 advance-ready</div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--accent-2);margin:14px 0 6px">Publication delivery-decision</div>
+          <div class="frow"><div class="fbar" style="width:100%;background:var(--accent-2)">11,526 measured</div></div>
+          <div class="frow"><div class="fbar" style="width:64%;background:var(--accent-2)">1,235 QC-pass</div></div>
+          <div class="frow"><div class="fbar" style="width:42%;background:var(--accent-2)">96 context-specific</div></div>
+          <div class="frow"><div class="fbar" style="width:24%;background:var(--accent-2)">39 known modality</div></div>
         </div>
         <div class="colh" style="margin-top:20px">決策系統</div>
         <div class="pills"><span class="pill p-adv">ADVANCE</span><span class="pill p-val">VALIDATE</span><span class="pill p-watch">WATCHLIST</span><span class="pill p-dep">DEPRIORITIZE</span></div>
