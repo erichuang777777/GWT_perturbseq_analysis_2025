@@ -4,7 +4,7 @@
 
 ## 1. 環境與相依
 
-- Python 3(pandas / numpy / scikit-learn / FastAPI / Streamlit)。
+- 後端 Python 3(pandas / numpy / scikit-learn / FastAPI);前端 React + Vite(`frontend/webserver/`,舊版 Streamlit 儀表板已汰換為選用)。
 - 測試需要 `pytest`(`pip install -q pytest`)。
 - 細胞層級延伸另需 `anndata` / `scanpy`;`pertpy` 在部分環境無法安裝(`blitzgsea` 建置失敗),因此 Mixscape 式分類是用 scikit-learn 直接重寫,這是刻意的替代,不是缺功能。
 - **對外連線走 egress proxy**:ClinicalTrials.gov / PubMed E-utilities / Open Targets 在受限沙盒可能被政策封鎖,此時外部證據 fetcher 會回 `source_status: "unavailable"` 而非崩潰。

@@ -1,0 +1,34 @@
+key,value,how_derived,source_file
+de_rows_total,33983,nrow(DE_stats.suppl_table.csv),metadata/suppl_tables/DE_stats.suppl_table.csv
+genome_total_targets,11526,n_distinct(target_contrast) in DE_stats,metadata/suppl_tables/DE_stats.suppl_table.csv
+genome_total_target_names,11526,n_distinct(target_contrast_gene_name) in DE_stats,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Rest.n_rows,11287,rows in DE_stats with culture_condition==cond,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Rest.mean_n_total_de_genes,53.1006,mean(n_total_de_genes) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Rest.frac_ontarget_significant,0.6086,mean(ontarget_significant) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim48hr.n_rows,11281,rows in DE_stats with culture_condition==cond,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim48hr.mean_n_total_de_genes,59.4204,mean(n_total_de_genes) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim48hr.frac_ontarget_significant,0.6376,mean(ontarget_significant) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim8hr.n_rows,11415,rows in DE_stats with culture_condition==cond,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim8hr.mean_n_total_de_genes,68.9229,mean(n_total_de_genes) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_per_condition.Stim8hr.frac_ontarget_significant,0.6267,mean(ontarget_significant) per condition,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_ontarget_significant_true,21216,sum(ontarget_significant) over DE_stats,metadata/suppl_tables/DE_stats.suppl_table.csv
+de_offtarget_flag_true,2837,sum(offtarget_flag) over DE_stats,metadata/suppl_tables/DE_stats.suppl_table.csv
+crossdonor_correlation_mean.mean,0.3706,mean of crossdonor_correlation_mean over non-NA rows,metadata/suppl_tables/DE_stats.suppl_table.csv
+crossdonor_correlation_mean.n_nonNA,4775,count of rows with non-NA crossdonor_correlation_mean,metadata/suppl_tables/DE_stats.suppl_table.csv
+crossguide_correlation.mean,0.4356,mean of crossguide_correlation over non-NA rows,metadata/suppl_tables/DE_stats.suppl_table.csv
+crossguide_correlation.n_nonNA,2994,count of rows with non-NA crossguide_correlation,metadata/suppl_tables/DE_stats.suppl_table.csv
+gnomad_constraint_genes,11267,|DE target_contrast ensembl <e2><88><a9> gnomad_constraint_seed ensembl_id|,DE_stats.suppl_table.csv + gnomad_constraint_seed.csv
+neg_control_not_measurable_rows,4774,rows with kd_status=='not_measurable' in target_cards,sources/.../target_cards.csv
+neg_control_grade1_pct,99.96,pct of not_measurable rows with statistical_evidence_grade==1,sources/.../target_cards.csv
+targets_in_portal,7249,length(real-dataset.json targets[]),frontend/webserver/public/real-dataset.json
+modules,20,length(real-dataset.json modules[]),frontend/webserver/public/real-dataset.json
+readiness.watchlist,6628,count of targets with readiness.call=='watchlist',frontend/webserver/public/real-dataset.json
+readiness.validate,319,count of targets with readiness.call=='validate',frontend/webserver/public/real-dataset.json
+readiness.advance,302,count of targets with readiness.call=='advance',frontend/webserver/public/real-dataset.json
+risk_tier.clear,3309,deriveRiskTier count for tier 'clear' (exprCompare.ts rule),frontend/webserver/public/real-dataset.json
+risk_tier.caution,3197,deriveRiskTier count for tier 'caution' (exprCompare.ts rule),frontend/webserver/public/real-dataset.json
+risk_tier.high,696,deriveRiskTier count for tier 'high' (exprCompare.ts rule),frontend/webserver/public/real-dataset.json
+risk_tier.avoid,47,deriveRiskTier count for tier 'avoid' (exprCompare.ts rule),frontend/webserver/public/real-dataset.json
+targets_with_redflags,3048,count of targets with >=1 readiness.redFlags,frontend/webserver/public/real-dataset.json
+targets_with_safety_liabilities,1,count of targets with >=1 safetyLiabilities,frontend/webserver/public/real-dataset.json
+targets_gnomad_constraint_high,1354,count of targets with gnomad.constraintTier=='high',frontend/webserver/public/real-dataset.json

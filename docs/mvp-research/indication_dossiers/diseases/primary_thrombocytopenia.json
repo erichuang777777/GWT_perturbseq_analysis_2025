@@ -1,0 +1,75 @@
+{
+  "disease_name": "Primary Thrombocytopenia (Primary Immune Thrombocytopenia, ITP)",
+  "slug": "primary_thrombocytopenia",
+  "platform_targets": [
+    {
+      "gene": "TMEM131",
+      "primary_rank": 34,
+      "ot_genetic_assoc_score": 0.39
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Primary ITP is an acquired autoimmune disorder with antibody-mediated platelet destruction and impaired production, no identifiable secondary cause; affects children (often self-limited) and adults (often chronic).",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "ITP incidence: 1.6-3.9 per 100,000 patient-years, increasing with age, slight female preponderance. Standard duration classification: acute <3mo, persistent 3-12mo, chronic >12mo.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/30868551/",
+          "source_type": "pubmed",
+          "quote": "Immune thrombocytopenia (ITP) occurs with an incidence rate of 1.6 to 3.9 per 100,000 patient-years, which increases with age and has a slight female preponderance"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/30868551/",
+          "source_type": "pubmed",
+          "quote": "ITP is termed acute, persistent or chronic when its duration is <3 months, 3 to 12 months and >12 months, respectively"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "TMEM131 has no direct PubMed literature link to thrombocytopenia \u2014 not established in this pass. ITP pathophysiology involves autoantibody-mediated platelet clearance and platelet apoptosis; general CD4+ T-cell help for autoreactive B cells is the field-standard autoimmune mechanism, but no direct TMEM131 tie was found.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42328267/",
+          "source_type": "pubmed",
+          "quote": "Given the low platelet counts in patients with immune thrombocytopenia (< 100 \u00d710/L) and its pathophysiological complexity, it remains both a diagnostic and therapeutic challenge"
+        }
+      ],
+      "coverage": "not_established"
+    },
+    "treatment": {
+      "content": "Thrombopoietin receptor agonists (TPO-RAs) including eltrombopag (FDA-approved, 11 Drugs@FDA records) are established second-line ITP therapy; newer oral agents like hetrombopag are being studied in pediatric refractory ITP.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42433933/",
+          "source_type": "pubmed",
+          "quote": "thrombopoietin receptor agonists (TPO-RAs) are effective second-line treatments for pediatric immune thrombocytopenia (ITP), real-world data on newer agents like hetrombopag remain scarce"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov: 493 total interventional trials under 'immune thrombocytopenia'; 171 total trials under the literal label 'primary thrombocytopenia'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"immune thrombocytopenia\", total=493)",
+          "source_type": "ctgov",
+          "quote": "total=493 (search_trials API, condition='immune thrombocytopenia', study_type=INTERVENTIONAL, count_total=True)"
+        },
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"primary thrombocytopenia\", total=171)",
+          "source_type": "ctgov",
+          "quote": "total=171 (search_trials API, condition='primary thrombocytopenia', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "Disease label ambiguity: 'primary thrombocytopenia' could denote ITP (interpreted here, matching current 'primary immune thrombocytopenia' nomenclature) or be confused with essential thrombocythemia (elevated platelets, a distinct MPN) \u2014 flagged explicitly.",
+    "TMEM131-ITP mechanistic link not established in this pass despite OT genetic-association score of 0.39."
+  ]
+}

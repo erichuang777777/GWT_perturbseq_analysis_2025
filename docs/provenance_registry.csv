@@ -8,7 +8,7 @@ data_source,cell-level h5ad (D*_*.assigned_guide),primary_dataset_deep,GWCD4i_ce
 data_source,Open Targets Platform,external_db,open_targets,external_evidence_cache/v1,https://platform.opentargets.org | PMID 39657122,evidence/external_cache.py + evidence/disease.py,tractability/genetics/drugs; 30-day TTL
 data_source,ClinicalTrials.gov v2,external_db,clinicaltrials,external_evidence_cache/v1,https://clinicaltrials.gov,evidence/external_cache.py,trials by target/indication/phase
 data_source,PubMed / PMC,external_db,pubmed,external_evidence_cache/v1,https://pubmed.ncbi.nlm.nih.gov,evidence/external_cache.py,literature evidence per gene
-data_source,gnomAD v4,external_db,gnomad,-,https://gnomad.broadinstitute.org | PMID 32461654,evidence/safety_overlay.py,LOEUF/pLI; threshold 0.6
+data_source,gnomAD v2.1.1,external_db,gnomad,-,https://gnomad.broadinstitute.org | PMID 32461654,evidence/safety_overlay.py,LOEUF/pLI full-genome (19155 genes); threshold 0.6
 data_source,GTEx,external_db,gtex,-,https://gtexportal.org | PMID 32913098,evidence/safety_overlay.py,tissue expression safety window
 data_source,LINCS/CMap L1000,external_db,lincs,-,https://clue.io | PMID 29195078,evidence/lincs_reference_cache.py,compound-reversal signatures
 data_source,Reactome,external_db,reactome,pathway_network_cache/v1,https://reactome.org | PMID 34788843,evidence/pathway_cache.py + evidence/mechanism_graph.py,mechanism graph
@@ -24,7 +24,7 @@ data_source,GWAS catalog + ClinVar,in_repo_overlay,human_genetics,-,metadata/gen
 data_source,IUIS-IEI list,in_repo_overlay,iuis_iei,-,metadata/IUIS-IEI-list-July-2024V2.csv,IUIS 2024,inborn errors of immunity
 data_source,Open Targets disease associations,in_repo_overlay,ot_disease_assoc,-,metadata (Open Targets export),evidence/disease.py,13 indications / 7528 rows
 data_source,Lambert 2018 Human TFs,in_repo_overlay,lambert_tf,-,metadata/Lambert_2018_HumanTF.csv | PMID 30290144,Lambert et al. 2018,transcription factor list
-data_source,Freimer 2022 screen,in_repo_reference,freimer2022,-,metadata/Freimer2022_Screen.csv | PMID 36356142,external screen,T-cell effector screen cross-check
+data_source,Freimer 2022 screen,in_repo_reference,freimer2022,-,metadata/Freimer2022_Screen.csv | PMID 36356142,external screen,T-cell effector screen cross-check (served by freimer2022_crosscheck.py + GET /api/freimer2022_crosscheck/{gene})
 data_source,Schmidt 2022 screen,in_repo_reference,schmidt2022,-,metadata/Schmidt2022_hits_Supplementary_table_2.xlsx | PMID 35113687,external screen,CRISPRa/i primary T-cell
 data_source,Arce 2024/2025 screen,in_repo_reference,arce,-,metadata/Arce2024_*.csv | Arce2025_Screen.csv,external screen,rest/activation
 data_source,Weinstock et al. DE,in_repo_reference,weinstock,-,metadata/TableS4_weinstock_et_al_DE.csv | PMID 39395408,external,CD4 GRN

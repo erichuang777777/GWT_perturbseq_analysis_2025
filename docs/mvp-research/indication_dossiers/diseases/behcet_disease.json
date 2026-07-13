@@ -1,0 +1,82 @@
+{
+  "disease_name": "Behçet Disease",
+  "slug": "behcet_disease",
+  "platform_targets": [
+    {
+      "gene": "NPHP4",
+      "primary_rank": 39,
+      "ot_genetic_assoc_score": 0.45
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Behçet disease (BD) is an inflammatory multisystem disorder of unknown etiology, triggered by infection and environmental factors in genetically predisposed individuals; presents with recurrent oral/genital ulcers, skin lesions, and uveitis (ICD-10 M35.2).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/39101633/",
+          "source_type": "pubmed",
+          "quote": "Behçet disease (BD) is an inflammatory multisystem disorder of unknown etiology, believed to be triggered by infection and environmental factors in genetically predisposed individuals."
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "Global prevalence ~10.3 per 100,000, higher along the historic Silk Route (Turkey, Middle East, East Asia).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/39101633/",
+          "source_type": "pubmed",
+          "quote": "prevalence estimated at 10.3 (95% CI, 6.1, 17.7) per 100,000 population, with higher rates observed in regions historically linked to the Silk Route."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "GWAS identified NPHP4 as a novel genome-wide-significant susceptibility locus for overall Behçet disease (replicated across Korean, Turkish, Japanese cohorts). Broader immunopathogenesis involves disrupted Th1/Th2 and Th17/Treg balance and B-cell activation.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/37977914/",
+          "source_type": "pubmed",
+          "quote": "We identified three novel genome-wide significant susceptibility loci including NPHP4",
+          "note": "P-value exponents after '10' were rendered blank/truncated in the source abstract as returned by PubMed; omitted rather than guessed."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/39774671/",
+          "source_type": "pubmed",
+          "quote": "increased IL-17, IL-10, T-bet/GATA-3, and retinoic acid related orphan receptor (ROR)-γt/Foxp3 ratios, marking the disrupted scale of the Th1/Th2 and Th17/Treg axis"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "TNF-alpha inhibitors are pivotal biologics; IL-1 inhibitors and ustekinumab broaden options. Apremilast (Otezla, FDA NDA205437, approved 2014-03-21) is effective for BD oral ulcers.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/39101633/",
+          "source_type": "pubmed",
+          "quote": "treatment strategies, highlighting TNF-alpha inhibitors as pivotal biologics and newer agents like IL-1 inhibitors and Ustekinumab that broaden the therapeutic options for BD."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/31747804/",
+          "source_type": "pubmed",
+          "quote": "current evidence shows that apremilast is effective for oral ulcer, the most common symptom of Behçet's disease."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "70 interventional trials registered on ClinicalTrials.gov. Notable ongoing Phase 2 trial NCT06849908 (baricitinib vs adalimumab, intestinal BD, recruiting).",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT06849908",
+          "source_type": "ctgov",
+          "quote": "A Multi-center, Prospective, Open-label, Randomized Study to Explore Efficacy and Safety of Baricitinib in Refractory Intestinal Behçet's Syndrome Patients"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No direct mechanistic study found linking NPHP4 function to CD4+ T-cell biology specifically; the GWAS association is genetic, not functional.",
+    "A fuller deep-dive dossier for a related autoimmune indication (rheumatoid arthritis) already exists in this project and was not re-researched here."
+  ]
+}

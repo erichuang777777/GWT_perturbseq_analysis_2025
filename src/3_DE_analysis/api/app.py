@@ -138,6 +138,10 @@ _ROUTER_MODULES: Dict[str, str] = {
     "mechanism": "api.routers.mechanism",
     "individual_concept": "api.routers.individual_concept",
     "signed_module_effect": "api.routers.signed_module_effect",
+    "paper_regulators": "api.routers.paper_regulators",
+    "autoimmune_clusters": "api.routers.autoimmune_clusters",
+    "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",
+    "hpa_singlecell_breadth": "api.routers.hpa_singlecell_breadth",
     "disease_drug": "api.routers.disease_drug",
     "meta": "api.routers.meta",
 }

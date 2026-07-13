@@ -1,0 +1,622 @@
+gene_symbol,primary_rank,directionality_index,n_ot_disease,n_ct_trial,n_ncbi_disease,n_immune_assoc,top_immune_diseases
+FOXN2,1.0,0.9446640316205532,25,0,0,1,lupus erythematosus
+MGA,2.0,0.9290322580645162,25,20,1,5,B-cell chronic lymphocytic leukemia; acute myeloid leukemia; leukemia
+ZNF274,4.0,0.9140271493212668,25,0,0,5,acute myeloid leukemia; metastatic malignant neoplasm in the lymph nodes; B-cell chronic lymphocytic leukemia
+TMEM131L,5.0,0.912568306010929,25,0,0,1,vitiligo
+THAP5,7.0,0.8881987577639752,25,0,0,3,polycythemia; type 1 diabetes mellitus; Crohn disease
+ZNF200,13.0,0.8677685950413223,24,0,0,2,tuberculosis; diffuse large B-cell lymphoma
+RFX1,20.0,0.8470948012232415,25,1,0,6,systemic lupus erythematosus; type 1 diabetes mellitus; colitis
+ERN1,21.0,-0.841726618705036,25,2,0,5,autoimmune disorder of central nervous system; ulcerative colitis; Crohn disease
+TMEM205,22.0,0.8360655737704918,25,0,0,0,
+TRIM39,24.0,-0.8320610687022901,25,0,0,1,nasopharyngeal carcinoma
+WASL,26.0,0.8319327731092437,25,3,0,3,asthma; viral infectious disease; nasopharyngeal carcinoma
+PDIA6,32.0,0.8168316831683168,25,0,0,3,immune system disorder; X-linked lymphoproliferative disease; Familial hemophagocytic lymphohistiocytosis
+IFNGR2,33.0,-0.8157894736842105,25,1,1,13,immunodeficiency 28; Mendelian susceptibility to mycobacterial diseases due to complete IFNgammaR2 deficiency; chronic granulomatous disease
+TMEM131,34.0,0.8088235294117647,25,0,0,9,primary thrombocytopenia; rheumatoid arthritis; autoimmune disease
+PCGF6,35.0,0.808,25,0,0,0,
+ZNF589,38.0,0.8,25,0,0,1,metastatic malignant neoplasm in the lymph nodes
+LIN37,41.0,0.7939110070257611,19,0,0,1,acute myeloid leukemia
+ELOC,42.0,0.7897897897897898,25,4,0,1,HIV infectious disease
+BAHD1,50.0,0.7769230769230769,25,0,0,4,bacterial infectious disease; ulcerative colitis; colitis
+GNPAT,52.0,0.7748917748917749,25,0,1,1,multiple sclerosis
+EGLN1,55.0,0.7704918032786885,25,2,2,4,"erythrocytosis, familial, 3; autosomal dominant secondary polycythemia; primary familial polycythemia due to EPO receptor mutation"
+UBE2G2,56.0,0.7639198218262806,25,0,0,4,primary thrombocytopenia; viral infectious disease; Zika virus infectious disease
+R3HCC1L,58.0,0.7613636363636364,25,0,0,0,
+NABP1,60.0,0.7579365079365079,25,0,0,5,multiple sclerosis; hepatitis C virus infection; bacterial infectious disease with sepsis
+P4HB,63.0,0.7566909975669099,25,13,1,3,dengue disease; type 1 diabetes mellitus
+ZNF507,69.0,0.744,25,0,0,4,ankylosing spondylitis; respiratory tract infectious disorder; acute tonsillitis
+NCR3,74.0,-0.7303370786516854,25,0,1,8,viral infectious disease; acute myeloid leukemia; acute lymphoblastic leukemia
+TET2,78.0,-0.7238493723849372,25,20,2,23,acute myeloid leukemia; immunodeficiency 75; chronic myelomonocytic leukemia
+CDIPT,85.0,0.7007481296758105,25,2,0,2,COVID-19
+ZC3H4,91.0,0.6888888888888889,25,0,0,0,
+GPAA1,96.0,0.6788990825688074,25,0,1,1,acute lymphoblastic leukemia
+VPS13A,97.0,0.6744186046511628,25,0,1,2,acute tonsillitis; mixed connective tissue disease
+PHF20,98.0,-0.673469387755102,25,0,0,5,acute panmyelosis with myelofibrosis; autoimmune disease with susceptibility to mycobacterium tuberculosis; Felty syndrome
+FBXO11,102.0,-0.6554307116104869,25,0,1,1,Burkitt lymphoma
+ZNF35,103.0,-0.6545454545454545,23,0,0,3,drug allergy; systemic lupus erythematosus; myeloid sarcoma
+SRR,106.0,0.6518946692357097,25,20,0,4,multiple sclerosis; Eczematoid dermatitis
+TENT5C,111.0,0.6470588235294118,25,0,0,1,plasma cell myeloma
+CCNA2,118.0,0.6345116836428999,25,7,0,1,
+CYTH3,120.0,-0.6323529411764706,25,0,0,2,inflammatory bowel disease; MPI-congenital disorder of glycosylation
+TXNL1,126.0,0.623342175066313,25,0,0,3,ulcerative colitis; myalgic encephalomeyelitis/chronic fatigue syndrome; lymphatic system disorder
+UBE2E1,130.0,0.6131687242798354,25,0,0,4,ankylosing spondylitis; herpes zoster; thyroiditis
+PPP6C,133.0,0.6096866096866097,25,0,0,2,acute myeloid leukemia; plasma cell myeloma
+VHL,141.0,0.6005056890012642,25,20,4,5,Chuvash polycythemia; Chuvash erythrocytosis; primary familial polycythemia due to EPO receptor mutation
+IRF8,147.0,0.5918367346938775,25,2,2,18,immunodeficiency 32B; B-cell chronic lymphocytic leukemia; lymphoid leukemia
+TGIF2,151.0,0.5892857142857143,25,0,0,1,22q11.2 deletion syndrome
+XBP1,153.0,-0.589010989010989,25,12,1,4,acute lymphoblastic leukemia
+ATP1B3,167.0,0.57001414427157,25,0,0,1,Hashimoto thyroiditis
+SAMD1,172.0,0.565816678152998,25,0,0,2,autoimmune polyendocrinopathy; Fanconi anemia
+UBE2H,175.0,0.5596330275229358,25,0,0,3,autoimmune disorder of musculoskeletal system; systemic lupus erythematosus; lymphatic system disorder
+HYKK,183.0,0.5522388059701493,25,0,0,4,bacterial pneumonia; Chronic Obstructive Asthma; asthma
+ZNF304,184.0,0.5490196078431373,25,0,0,5,bacterial infectious disease with sepsis; psoriasis; HIV infectious disease
+EDF1,186.0,0.5476190476190477,25,1,0,5,systemic-onset juvenile idiopathic arthritis; inflammatory bowel disease; AIDS dementia complex
+KPNA4,196.0,0.5405405405405406,25,0,0,5,influenza; dengue disease; rheumatoid arthritis
+TRMT61A,199.0,0.5353075170842825,25,0,0,0,
+SOD2,201.0,0.5348837209302325,25,20,1,1,
+DEGS1,202.0,0.5344827586206896,25,4,1,0,
+SSR2,213.0,0.5294117647058824,25,1,0,2,Noonan syndrome; Fanconi anemia
+ZEB1,217.0,0.5276836158192091,25,13,2,4,sialadenitis; plasma cell myeloma
+ITM2B,221.0,0.5231788079470199,25,0,3,0,
+SMG7,223.0,0.5228215767634855,25,0,0,6,systemic lupus erythematosus; COVID-19; acute tonsillitis
+MAP3K13,224.0,0.5227272727272727,25,4,0,2,acute myeloid leukemia
+DAXX,226.0,0.5202492211838006,25,5,0,3,viral infectious disease; dengue disease; acute myeloid leukemia
+CALCOCO2,227.0,0.5198873636043646,25,0,0,0,
+EML2,228.0,0.5161744022503516,25,0,0,0,
+RBM33,230.0,0.5155482815057283,25,0,0,5,autoimmune disorder of musculoskeletal system; cutaneous lupus erythematosus; cellulitis
+GNLY,232.0,0.5145631067961165,25,10,0,9,tuberculosis; vitiligo; Sepsis
+RBPJ,234.0,0.5126050420168067,25,1,1,8,rheumatoid arthritis; type 1 diabetes mellitus; viral eye infection
+CBX3,237.0,0.511864406779661,25,1,0,1,acute myeloid leukemia
+L3MBTL2,238.0,0.5106035889070146,25,0,0,0,
+ALDH18A1,240.0,0.5096774193548387,25,0,4,0,
+INPP5F,243.0,0.5048543689320388,25,0,0,2,B-cell chronic lymphocytic leukemia; dermatomycosis
+COP1,245.0,0.5,25,20,0,22,COVID-19; pyelonephritis; mixed connective tissue disease
+SSR3,248.0,0.5,25,2,0,1,type 1 diabetes mellitus
+RPTOR,251.0,0.4949720670391061,25,1,0,4,dengue disease; cellulitis; abscess
+FNBP4,252.0,0.4921722113502935,25,0,0,2,fungal lung infectious disease; pneumonia
+THAP11,256.0,0.4888956495284454,25,0,3,4,Spondyloenchondrodysplasia with immune dysregulation; Fanconi anemia; autoimmune pulmonary alveolar proteinosis
+JOSD2,258.0,0.4854368932038835,25,0,0,4,colitis; inflammatory bowel disease; infectious otitis media
+TMED2,259.0,0.4841849148418491,25,0,0,3,acute lymphoblastic leukemia; plasma cell myeloma; acute myeloid leukemia
+PCNX3,263.0,0.4805194805194805,25,0,0,3,systemic lupus erythematosus; diffuse large B-cell lymphoma; acute myeloid leukemia
+COMMD8,266.0,0.4755043227665706,25,0,0,2,parasitic infectious disease; bacterial infectious disease with sepsis
+PSIP1,267.0,0.4753722794959908,25,0,0,2,HIV infectious disease; B-cell chronic lymphocytic leukemia
+SP3,272.0,-0.4685314685314685,25,20,0,6,plasma cell myeloma; vitiligo; myasthenia gravis
+ZC3H10,273.0,0.4680451127819549,19,0,0,0,
+COMMD10,274.0,0.4679334916864608,25,1,0,2,colitis; inflammatory bowel disease
+ARL6IP1,275.0,-0.4666666666666667,25,0,1,0,
+AVEN,278.0,0.4658385093167702,25,11,0,9,respiratory tract infectious disorder; Sjogren syndrome; Abnormality of the immune system
+STK11,279.0,0.4658151765589782,25,20,4,0,
+NDUFA10,280.0,0.465648854961832,25,0,2,1,type 1 diabetes mellitus
+ARPC3,283.0,0.4644870349492672,25,0,0,4,cutaneous leishmaniasis; autoimmune disorder of central nervous system; multiple sclerosis
+LAMTOR3,285.0,0.4626168224299065,25,0,0,2,autoimmune disorder of central nervous system; multiple sclerosis
+MAP3K1,286.0,0.4623655913978494,25,8,1,0,
+FBXO42,292.0,0.4548802946593002,25,0,0,1,leukemia
+NKAPD1,293.0,0.4541730670762929,25,0,0,4,dermatitis; lymphoma; acute myeloid leukemia
+CASC3,294.0,0.4532179556517036,25,1,0,7,mantle cell lymphoma; asthma; acute lymphoblastic leukemia
+INTS14,296.0,0.4501300954032957,25,0,0,0,
+ZC3H14,299.0,-0.4468085106382978,25,0,1,0,
+DDX6,300.0,0.4462633451957295,25,1,1,2,B-cell acute lymphoblastic leukemia; acute myeloid leukemia
+DCAF5,301.0,0.4460431654676259,25,0,0,1,fungal infectious disease
+SS18L2,302.0,0.4459459459459459,17,0,0,2,plasma cell myeloma; lymphoma
+GMEB1,303.0,-0.4456671251719394,25,0,0,2,rheumatoid arthritis; acute myeloid leukemia
+SHMT2,304.0,0.4454545454545454,25,1,1,1,asthma
+TMX2,305.0,0.4430379746835443,25,0,1,0,
+RCOR1,306.0,0.4428341384863124,25,0,0,7,immune system disorder; asthma; pemphigus
+PRDX3,307.0,0.4426229508196721,25,2,2,1,nasopharyngeal carcinoma
+CNOT10,308.0,0.4418604651162791,25,0,0,5,acute myeloid leukemia; leukemia; lymphoma
+SMG9,313.0,0.4403708386009271,25,0,2,2,Noonan syndrome; Fanconi anemia
+STOM,314.0,0.4375,25,3,0,5,lymphatic system disorder; diffuse large B-cell lymphoma; Sepsis
+CUL3,315.0,0.4373716632443531,25,2,3,0,
+SNAP23,317.0,0.4358974358974359,25,0,0,2,vitiligo; chlamydia infectious disease
+CAP1,318.0,0.4354838709677419,25,20,2,2,respiratory tract infectious disorder; rheumatoid arthritis
+KDM5C,322.0,0.4316939890710382,25,1,1,2,plasma cell myeloma; acute myeloid leukemia
+ORAI1,325.0,0.4285714285714285,25,2,2,7,combined immunodeficiency due to ORAI1 deficiency; severe combined immunodeficiency; combined immunodeficiency
+NDFIP2,330.0,0.4279792746113989,25,0,0,1,central nervous system infectious disorder
+PPP1R12A,332.0,0.4269662921348314,25,0,1,3,multiple sclerosis; eosinophilic granulomatosis with polyangiitis; AIDS dementia complex
+NAB2,334.0,0.4258064516129032,25,1,0,2,T-cell prolymphocytic leukemia; acute myeloid leukemia
+ZBTB9,335.0,0.425,25,0,0,9,multiple sclerosis; rheumatoid arthritis; celiac disease
+ZFAT,336.0,-0.4235294117647059,25,2,1,3,acquired polycythemia vera
+CHIC2,338.0,-0.4216867469879518,25,0,1,3,acute myeloid leukemia; plasma cell myeloma
+IMPA2,342.0,0.4196891191709844,25,0,0,0,
+TXNIP,345.0,0.4173228346456692,25,10,0,5,acute myeloid leukemia; asthma
+ARPC2,346.0,0.4163903363334912,25,0,0,4,cutaneous leishmaniasis; multiple sclerosis; Crohn disease
+ARIH1,349.0,0.4144805876180483,25,1,0,0,
+SMG8,350.0,0.4132524026302479,25,0,1,3,"multiple sclerosis; type 1 diabetes mellitus; chronic myelogenous leukemia, BCR-ABL1 positive"
+TRUB1,354.0,0.4107142857142857,25,0,0,3,Fanconi anemia complementation group V; monosomy 7 myelodysplasia and leukemia syndrome 1; atypical hemolytic-uremic syndrome with B factor anomaly
+PRKRA,355.0,0.4065934065934066,25,0,2,2,psoriasis; atopic eczema
+PRRC2A,356.0,-0.405857740585774,25,0,0,7,type 1 diabetes mellitus; influenza; rheumatoid arthritis
+VPS8,361.0,0.4033149171270718,25,0,0,3,thyroiditis; malaria; acute myeloid leukemia
+PDCD10,362.0,0.4021505376344086,25,1,2,1,drug allergy
+WNK1,363.0,0.400990099009901,25,0,4,1,atopic eczema
+CMTR1,365.0,0.3994638069705093,25,15,0,15,ankylosing spondylitis; asthma; viral infectious disease
+PAK2,367.0,0.3967213114754098,25,0,1,1,HIV infectious disease
+TRAF3,368.0,0.3961420184512161,25,5,2,17,Herpetic encephalitis; Eczematoid dermatitis; asthma
+CTU1,369.0,0.3957553058676654,25,0,0,3,congenital herpes simplex virus infection; gluthathione peroxidase deficiency; Zika virus infectious disease
+UBE2L3,370.0,0.3952136752136752,25,0,0,12,systemic lupus erythematosus; psoriasis; rheumatoid arthritis
+HCCS,372.0,0.3937321937321937,25,20,1,2,lymphatic system disorder; lymphoma
+PDS5B,375.0,0.392,25,0,0,1,acute myeloid leukemia
+FBXW7,377.0,0.3915094339622642,25,11,1,4,B-cell chronic lymphocytic leukemia; T-cell acute lymphoblastic leukemia
+LPCAT3,379.0,0.3883495145631068,25,0,0,2,rheumatoid arthritis; acute myeloid leukemia
+MMAB,380.0,0.3876377575467177,25,2,1,1,hyperimmunoglobulinemia D with periodic fever
+SEC63,383.0,0.3868378812199037,25,0,1,3,abscess; cellulitis; bacterial arthritis
+CDK5RAP3,384.0,0.3867924528301887,25,0,0,2,type 1 diabetes mellitus; rheumatoid arthritis
+PRDM15,389.0,-0.3846153846153846,25,0,0,3,fungal infectious disease; lymphoma; B-cell non-Hodgkin lymphoma
+C1D,391.0,0.3839767538397675,25,1,0,3,seasonal allergic rhinitis; drug allergy
+ABHD14A,393.0,-0.3818181818181818,25,0,0,3,immune system disorder; bacterial infectious disease with sepsis; ataxia telangiectasia
+CBFA2T2,394.0,0.3815789473684211,25,0,0,0,
+FANCD2,396.0,0.3809523809523809,25,14,1,6,Fanconi anemia complementation group D2; Fanconi anemia; acute myeloid leukemia
+C6orf120,397.0,0.3805309734513274,25,0,0,5,bacterial arthritis; autoimmune hepatitis; systemic lupus erythematosus
+CD247,402.0,0.3759442184776292,25,17,1,26,immunodeficiency 25; cutaneous leishmaniasis; asthma
+SH3D21,403.0,0.375886524822695,25,0,0,1,Sepsis
+GID8,404.0,0.3758439609902476,25,0,0,0,
+PCGF1,407.0,0.3736628550350424,25,0,0,0,
+BLZF1,409.0,0.3732394366197183,25,0,0,1,polycythemia
+TBPL1,412.0,-0.3703703703703703,25,0,0,0,
+CCDC22,414.0,0.3695652173913043,25,0,1,6,immune dysregulation-polyendocrinopathy-enteropathy-X-linked syndrome; aggressive NK-cell leukemia; systemic-onset juvenile idiopathic arthritis
+DIS3L,416.0,0.3690851735015772,25,0,0,3,"COVID-19; immunodeficiency, common variable, 6; common variable immunodeficiency"
+RICTOR,417.0,0.3688212927756654,25,12,0,3,dengue disease; B-cell chronic lymphocytic leukemia
+SEC62,419.0,-0.3684210526315789,25,2,0,2,
+RMND5A,423.0,0.3663663663663664,25,0,0,2,ulcerative colitis; systemic-onset juvenile idiopathic arthritis
+PCYT2,424.0,0.3661153330353151,25,0,1,1,multiple sclerosis
+CCND2,426.0,-0.3642282650325545,25,10,2,3,B-cell chronic lymphocytic leukemia
+ABHD13,427.0,0.3640167364016736,25,0,0,1,ulcerative colitis
+ZNF221,428.0,0.363499245852187,6,0,0,1,Lyme disease
+RPE,431.0,0.3628318584070796,25,20,0,5,pneumococcal pneumonia; myelofibrosis; primary myelofibrosis
+KIF14,434.0,-0.3608247422680412,25,0,2,0,
+MOGS,436.0,0.36,25,2,1,3,COVID-19; severe acute respiratory syndrome; Hailey-Hailey disease
+SNPH,438.0,0.3596059113300492,25,0,0,1,gram-positive bacterial infections
+KRBA2,440.0,0.3591397849462365,25,0,0,1,acute myeloid leukemia
+ZNF330,441.0,0.3587786259541984,25,0,0,3,dermatitis; congenital rubella syndrome; plasma cell myeloma
+ALG6,442.0,0.3578231292517007,25,1,1,0,
+MTHFD1L,443.0,0.3571428571428571,25,0,0,3,COVID-19; severe acute respiratory syndrome; parasitic infectious disease
+NCOA6,446.0,-0.3557046979865771,25,0,0,1,phototoxic dermatitis
+TRIM25,447.0,-0.3553719008264462,25,1,0,6,dengue disease; COVID-19; severe acute respiratory syndrome
+CKAP4,452.0,0.3535791757049891,25,0,0,1,asthma
+COX16,454.0,0.3529411764705882,25,0,1,0,
+RASA2,455.0,0.3515825491873396,25,0,0,5,Noonan syndrome; Crohn disease; inflammatory bowel disease
+LAMTOR4,457.0,0.3511961722488038,25,0,0,0,
+PHF12,462.0,0.3469387755102041,25,0,0,2,systemic lupus erythematosus; pemphigus foliaceus
+UQCC1,464.0,0.3461538461538461,25,0,0,1,mixed connective tissue disease
+SP1,470.0,0.3430079155672823,25,20,0,4,severe acute respiratory syndrome; autoimmune disorder of central nervous system; acute myeloid leukemia
+HDAC7,471.0,0.3429602888086642,25,1,0,12,"plasma cell myeloma; peripheral T-cell lymphoma, not otherwise specified; mature T-cell and NK-cell non-Hodgkin lymphoma"
+PTDSS2,472.0,-0.3428571428571428,25,0,0,0,
+ZBTB33,473.0,-0.3409090909090909,25,0,0,6,"chronic myelogenous leukemia, BCR-ABL1 positive; infectious otitis media; acute lymphoblastic leukemia"
+OTUB1,475.0,0.3398328690807799,25,0,0,0,
+SREBF2,476.0,-0.3392857142857143,25,2,0,3,infectious disease; COVID-19; acute myeloid leukemia
+CSNK2A2,479.0,-0.3379310344827586,25,1,0,3,autoimmune disorder of central nervous system; multiple sclerosis; systemic lupus erythematosus
+TMED10,480.0,0.337508698677801,25,0,0,2,subcutaneous tissue infection; skin infection
+COPS9,487.0,0.3333333333333333,25,0,0,4,plasma cell myeloma; HIV infectious disease; plasmacytoma
+METTL17,488.0,-0.3333333333333333,25,0,0,3,type 1 diabetes mellitus; infectious otitis media; leukemia
+CDC25B,489.0,0.3322645290581162,25,1,0,2,multiple sclerosis; acute myeloid leukemia
+ATM,492.0,0.3311897106109325,25,20,2,3,ataxia telangiectasia; Ataxia-telangiectasia; B-cell chronic lymphocytic leukemia
+NIPBL,495.0,0.3280381254964257,25,2,2,0,
+PPP1R3B,497.0,0.3276353276353276,25,0,0,2,allergic rhinitis; asthma
+PRR12,498.0,-0.3274336283185841,25,1,1,2,Hodgkins lymphoma; mixed connective tissue disease
+LARS2,500.0,0.3268229166666667,25,2,2,1,autoimmune disorder of central nervous system
+GNE,502.0,-0.3260869565217391,25,20,3,2,
+ETNK1,504.0,0.3220338983050847,25,0,0,4,"chronic myelogenous leukemia, BCR-ABL1 positive; systemic mastocytosis with an associated clonal hematologic non-mast cell lineage disease; chronic myelomonocytic leukemia"
+DUSP4,505.0,0.3220338983050847,25,1,0,4,parasitic infectious disease; viral pneumonia; diffuse large B-cell lymphoma
+TFAP4,510.0,0.3188775510204081,25,0,0,4,Burkitt lymphoma; non-Hodgkin lymphoma; acute lymphoblastic leukemia
+TMEM30A,511.0,0.3179091688089117,25,0,0,0,
+UQCRB,514.0,0.3168963016678752,25,0,1,1,multiple sclerosis
+FBRS,515.0,0.3157894736842105,25,19,0,1,
+NAA40,518.0,0.3145336225596529,25,0,0,1,Chronic Obstructive Asthma
+SETDB1,519.0,0.31438127090301,25,1,0,5,acute myeloid leukemia; B-cell chronic lymphocytic leukemia; plasma cell myeloma
+PLCG1,520.0,0.3134822167080232,25,1,1,7,"cutaneous leishmaniasis; immune dysregulation, autoimmunity, and autoinflammation; adult T-cell leukemia/lymphoma"
+ATRX,521.0,0.3132183908045977,25,20,3,2,leiomyosarcoma
+BRK1,524.0,0.3126881720430107,25,1,0,0,
+ABHD12,525.0,0.3126385809312638,25,0,2,0,
+RREB1,527.0,0.3125,25,0,0,2,22q11.2 deletion syndrome; seasonal allergic rhinitis
+IFNAR1,528.0,-0.3098591549295774,25,6,1,20,"immunodeficiency 106, susceptibility to viral infections; multiple sclerosis; chronic hepatitis B virus infection"
+CARM1,532.0,0.3072463768115942,25,1,0,0,
+ACTR2,533.0,0.3071971913399648,25,0,0,6,autoimmune disorder of central nervous system; cutaneous leishmaniasis; multiple sclerosis
+NCKAP1L,534.0,0.3071895424836601,25,0,1,19,immunodeficiency 72 with autoinflammation; immunodeficiency disease; immune system disorder
+PARL,535.0,-0.3063583815028902,25,1,0,1,leprosy
+DOLPP1,536.0,0.3059950041631973,21,0,0,2,thymoma; acute myeloid leukemia
+PTPN11,538.0,0.3055555555555556,25,20,4,12,Noonan syndrome; juvenile myelomonocytic leukemia; acute myeloid leukemia
+PCNX4,541.0,-0.3047034764826176,25,0,0,0,
+INTS10,543.0,0.3041224970553592,25,0,0,1,acute lymphoblastic leukemia
+TRAPPC13,545.0,0.3037037037037037,25,0,0,3,food allergy; type 1 diabetes mellitus; meningococcal infection
+MSL2,546.0,-0.3036750483558994,25,0,1,1,lymphatic system disorder
+KDM6A,547.0,-0.3036437246963562,25,5,2,0,
+MIEN1,551.0,-0.3009708737864077,25,1,0,3,systemic lupus erythematosus; inflammatory bowel disease; ulcerative colitis
+KDM2A,553.0,-0.3001310615989515,25,0,0,0,
+COX6C,555.0,0.2992700729927007,25,1,0,3,acute myeloid leukemia; extranodal nasal NK/T cell lymphoma
+SP140L,556.0,0.2987234042553191,25,0,0,12,B-cell chronic lymphocytic leukemia; lymphoid leukemia; Crohn disease
+RC3H1,559.0,0.2980769230769231,25,0,1,18,"hemophagocytic lymphohistiocytosis, familial, 6; hemophagocytic syndrome; BENTA disease"
+EPB41L3,560.0,0.2979387882573391,25,1,0,1,protozoa infectious disease
+ANP32B,563.0,0.2964824120603015,25,0,0,3,acute myeloid leukemia; acute lymphoblastic leukemia; precursor B-cell acute lymphoblastic leukemia
+CD5,566.0,0.2954690491384811,25,20,0,30,multiple sclerosis; allergic rhinitis; allergic disease
+ERCC1,567.0,0.2953249714937286,25,20,3,1,Fanconi anemia
+RP9,568.0,0.2952380952380952,25,1,1,4,leprosy; ankylosing spondylitis; severe acute respiratory syndrome
+RNF111,569.0,-0.2951807228915662,25,0,0,2,rheumatoid arthritis; lymphangioma
+MYO9A,573.0,0.2942028985507246,25,0,2,0,
+TEP1,574.0,0.2931366260423348,25,20,5,5,myeloid sarcoma; viral infectious disease; asthma
+EMC4,575.0,0.293103448275862,25,0,0,6,multiple sclerosis; dengue disease; viral infectious disease
+CUL4B,576.0,-0.2929292929292929,25,1,1,1,rheumatoid arthritis
+INPP5D,577.0,0.2921960072595281,25,8,0,10,allergic rhinitis; atopic eczema; Eczematoid dermatitis
+MAP4K1,578.0,0.2920353982300885,25,6,0,3,acute myeloid leukemia; systemic lupus erythematosus; non-Hodgkin lymphoma
+COMMD7,581.0,0.288135593220339,25,1,0,5,acute myeloid leukemia; psoriasis; ankylosing spondylitis
+LRP5,583.0,0.2861736334405145,25,6,7,0,
+MMGT1,585.0,0.2857142857142857,23,0,0,5,atopic eczema; candidiasis; asthma
+NEK3,590.0,0.28125,25,0,0,1,metastatic malignant neoplasm in the lymph nodes
+CCDC134,591.0,0.2810457516339869,25,0,1,1,primary familial polycythemia due to EPO receptor mutation
+ARID2,593.0,0.2806122448979591,25,4,1,0,
+SLC25A51,596.0,0.2802197802197802,25,0,0,2,acute myeloid leukemia; phototoxic dermatitis
+EIF4G2,597.0,0.2795732663947285,25,0,0,2,dengue disease; acute promyelocytic leukemia
+CAPZA1,598.0,0.2792792792792792,25,0,0,1,tinea unguium
+AMD1,600.0,0.2789968652037617,25,11,0,4,ankylosing spondylitis; malaria
+ERCC6L2,604.0,0.2781954887218045,25,1,1,5,pancytopenia-developmental delay syndrome; bone marrow failure syndrome; inherited acute myeloid leukemia
+CCDC90B,605.0,-0.2777777777777778,25,0,0,0,
+YTHDF2,607.0,0.276978417266187,25,0,0,3,acute myeloid leukemia; systemic lupus erythematosus; rheumatoid arthritis
+KDM8,608.0,0.2768079800498753,25,0,0,2,asthma; atopic eczema
+HUWE1,610.0,-0.2761087267525036,25,0,1,0,
+RNF181,612.0,0.2753623188405797,25,0,0,3,systemic-onset juvenile idiopathic arthritis; lymphoma; viral infectious disease
+UBE2J1,614.0,0.2753623188405797,25,0,0,1,rheumatoid factor-positive polyarticular juvenile idiopathic arthritis
+MAEA,615.0,0.2750263435194942,25,0,0,2,systemic lupus erythematosus; systemic sclerosis
+TARS2,616.0,0.2745098039215686,25,1,1,3,multiple sclerosis; autoimmune disorder of central nervous system; atopic eczema
+ARPC1B,617.0,0.2743362831858407,25,0,1,10,platelet abnormalities with eosinophilia and immune-mediated inflammatory disease; combined immunodeficiency; Combined T and B cell immunodeficiency
+SFXN1,619.0,0.2740740740740741,25,0,0,3,myeloid leukemia; anaphylaxis; clostridium difficile infection
+DNAAF5,620.0,-0.2738853503184713,25,0,2,0,
+GTPBP10,621.0,-0.2730883813306852,25,0,0,3,"primary familial polycythemia due to EPO receptor mutation; autosomal dominant secondary polycythemia; erythrocytosis, familial, 3"
+METTL1,622.0,0.2724077328646748,25,0,0,4,systemic lupus erythematosus; acute myeloid leukemia; multiple sclerosis
+CDK2,624.0,0.270935960591133,25,20,0,7,B-cell chronic lymphocytic leukemia; autoimmune disorder of central nervous system; multiple sclerosis
+CLPB,625.0,0.2702702702702703,25,6,3,6,"neutropenia, severe congenital, 9, autosomal dominant; neutropenia; autosomal dominant severe congenital neutropenia"
+FBXO28,626.0,-0.2690355329949238,25,0,1,0,
+UBL3,627.0,0.2688172043010752,25,0,0,3,dermatophytosis; ulcerative colitis; rheumatoid arthritis
+KIFAP3,628.0,0.2680830747195035,25,0,0,1,multiple sclerosis
+GLIPR2,629.0,0.2677547419497132,25,0,0,1,asthma
+SRM,631.0,0.2666666666666666,25,20,0,6,tuberculosis; B-cell non-Hodgkin lymphoma; malaria
+KAT6A,632.0,0.2664835164835165,25,6,1,0,
+ELP5,633.0,0.2663829787234043,25,0,0,1,systemic-onset juvenile idiopathic arthritis
+COMMD4,636.0,0.2645161290322581,25,0,0,2,AIDS dementia complex; leukemia
+NFKB1,637.0,0.2625698324022346,25,20,1,25,common variable immunodeficiency; immunodeficiency disease; allergic rhinitis
+MAX,642.0,0.260149130074565,25,20,3,4,plasma cell myeloma; diffuse large B-cell lymphoma
+SMS,645.0,0.2578616352201258,25,20,2,6,autoimmune disorder of central nervous system
+STRAP,646.0,0.2575677110993096,25,20,0,2,systemic lupus erythematosus
+SAP30,647.0,0.2574257425742574,25,3,0,2,acute myeloid leukemia; monosomy 7 myelodysplasia and leukemia syndrome 1
+EARS2,648.0,0.2571428571428571,25,1,1,0,
+RELA,650.0,-0.2567567567567567,25,20,1,8,multiple sclerosis; inborn error of immunity; severe acute respiratory syndrome
+HMBS,652.0,0.2558542931483087,25,7,3,0,
+FOXO1,653.0,0.2554426705370101,25,20,1,5,Burkitt lymphoma; allergic rhinitis; diffuse large B-cell lymphoma
+PPM1D,656.0,-0.2507817385866166,25,6,2,4,essential thrombocythemia; acute myeloid leukemia
+NEIL1,657.0,0.25,25,0,0,0,
+IFT172,658.0,0.25,25,1,4,0,
+PKM,660.0,0.2495238095238095,25,6,0,3,autoimmune disorder of central nervous system; rheumatoid arthritis; Sepsis
+SNTB1,661.0,-0.2488262910798122,25,0,0,2,drug allergy; asthma
+ATP2A3,663.0,0.2473118279569892,25,0,0,0,
+PPIL1,665.0,0.2466442953020134,25,0,1,1,dengue disease
+BBS10,666.0,0.2465753424657534,25,1,1,0,
+DDX60L,671.0,0.2444444444444444,25,0,0,4,COVID-19; type 1 diabetes mellitus; dermatomycosis
+WDR59,672.0,0.2435530085959885,25,0,0,4,myeloid leukemia; ankylosing spondylitis; acute lymphoblastic leukemia
+NR2C2,674.0,-0.2431011826544021,25,0,0,0,
+SPOP,675.0,0.2422907488986784,25,9,2,2,diffuse large B-cell lymphoma; acute myeloid leukemia
+C16orf87,678.0,0.2404371584699453,13,0,0,4,thymoma; tuberculosis; acute myeloid leukemia
+PAPSS1,679.0,-0.2403100775193798,25,1,0,4,multiple sclerosis; skin infection; vitiligo
+ELAVL1,682.0,-0.239041311888994,25,1,0,4,dengue disease; nasopharyngeal carcinoma; acute myeloid leukemia
+TTC39C,683.0,0.2389380530973451,25,0,0,2,kidney transplant; primary familial polycythemia due to EPO receptor mutation
+RALGAPB,684.0,0.2389380530973451,25,1,0,0,
+EIF1,686.0,0.2379746835443038,25,0,0,3,cyclic hematopoiesis; nasopharyngeal carcinoma; myalgic encephalomeyelitis/chronic fatigue syndrome
+SRSF10,691.0,0.2350936967632027,25,0,0,1,acute myeloid leukemia
+RABGEF1,692.0,0.2349726775956284,25,0,0,5,"IgA pemphigus; pemphigus erythematosus; neutropenia, severe congenital, 11, autosomal dominant"
+CYB5R4,693.0,0.2347180006754474,25,0,0,1,multiple sclerosis
+IL23R,696.0,0.2337164750957854,25,20,2,32,inflammatory bowel disease; psoriasis; Crohn disease
+NFKB2,697.0,0.2335045436586329,25,4,1,15,"immunodeficiency, common variable, 10; common variable immunodeficiency; immunodeficiency disease"
+CTSF,699.0,0.2323943661971831,25,1,1,2,asthma; ulcerative colitis
+DHX36,702.0,0.2313908313908314,25,0,0,3,myeloid leukemia; celiac disease; tuberculosis
+WDR82,703.0,0.2313368055555555,25,0,0,5,bacterial infectious disease with sepsis; metastatic malignant neoplasm in the lymph nodes; leukemia
+EIF3L,705.0,0.2307692307692307,25,0,0,4,COVID-19; severe acute respiratory syndrome; viral infectious disease
+CABIN1,706.0,0.23,25,0,0,3,macrophage activation syndrome; diffuse large B-cell lymphoma; MALT lymphoma
+ALS2,708.0,0.2293577981651376,25,6,3,1,parasitic infectious disease
+SIK3,710.0,0.2279679533867443,25,2,1,3,multiple sclerosis; atopic eczema; Hashimoto thyroiditis
+SLC25A1,712.0,0.2278481012658227,25,0,3,1,acute myeloid leukemia
+COX17,714.0,0.2275132275132275,25,0,0,0,
+MPI,715.0,0.2271034996276991,25,20,0,4,MPI-congenital disorder of glycosylation; systemic sclerosis; acute myeloid leukemia
+PPP1R13L,718.0,-0.2263242375601926,25,0,1,0,
+BRD1,720.0,-0.2251521298174442,25,0,0,4,ankylosing spondylitis; respiratory tract infectious disorder; gram-positive bacterial infections
+MIDN,724.0,0.2235294117647059,25,1,0,1,lymphatic system disorder
+PDSS1,725.0,0.2226415094339622,25,1,1,2,myasthenia gravis; systemic lupus erythematosus
+LMNA,727.0,-0.2222222222222222,25,20,13,3,
+PNPT1,728.0,0.2214930270713699,25,0,3,2,autoimmune thyroid disease; cutaneous lupus erythematosus
+NDUFC1,729.0,-0.2210526315789473,25,0,0,3,multiple sclerosis; type 1 diabetes mellitus; Sepsis
+KMT2C,731.0,-0.2193126022913257,25,4,1,0,
+CTPS1,732.0,0.218954248366013,25,3,1,2,combined immunodeficiency due to CTPS1 deficiency
+YPEL2,734.0,0.217877094972067,25,0,0,0,
+TM9SF3,735.0,0.2169811320754717,25,0,0,1,T-cell leukemia
+NDUFS5,736.0,-0.2168284789644013,25,0,0,4,multiple sclerosis; type 1 diabetes mellitus; autoimmune disorder of central nervous system
+PRPF39,738.0,0.2150170648464164,25,0,0,0,
+KMT2E,741.0,-0.2140533506831489,25,1,1,1,COVID-19
+ADNP,742.0,0.2136752136752136,25,4,1,1,myeloid sarcoma
+TRMT10C,743.0,0.2132963988919667,25,0,1,6,multiple sclerosis; asthma; ulcerative colitis
+SLC9A6,745.0,0.2127659574468085,25,2,2,1,prion disease
+ZNF622,746.0,0.2127659574468085,25,0,0,1,systemic-onset juvenile idiopathic arthritis
+ZBTB7A,747.0,0.2123456790123457,25,6,1,5,seborrheic dermatitis; tonsillitis; COVID-19
+UQCRQ,756.0,0.2075471698113207,25,0,1,5,multiple sclerosis; autoimmune disorder of central nervous system; bacterial infectious disease with sepsis
+HSD17B10,757.0,0.2069868995633187,25,1,1,0,
+PAN3,760.0,0.2064,25,0,0,1,Hashimoto thyroiditis
+PTPN2,761.0,0.2063134160090191,25,4,0,18,rheumatoid arthritis; type 1 diabetes mellitus; inflammatory bowel disease
+MAF,762.0,-0.2049689440993788,25,20,2,3,multiple sclerosis; Graves disease
+COA7,763.0,0.204574332909784,25,0,1,1,malaria
+AKAP17A,765.0,-0.2043010752688172,15,0,0,0,
+SHLD1,766.0,0.2041522491349481,25,0,0,3,hereditary neutrophilia; primary myelofibrosis; myelofibrosis
+MYB,767.0,0.2038073908174692,25,20,0,9,B-cell acute lymphoblastic leukemia; acute myeloid leukemia; COVID-19
+NSD2,768.0,0.2036199095022624,25,2,2,2,acute lymphoblastic leukemia
+COA3,769.0,0.203559510567297,25,2,1,1,
+ACLY,770.0,0.2033988316516197,25,10,0,5,acute lymphoblastic leukemia; acute myeloid leukemia; autoimmune polyendocrinopathy
+PPP1R12C,771.0,0.2026143790849673,25,0,0,6,scarlet fever; leukemia; acute lymphoblastic leukemia
+TMED4,772.0,0.2017543859649122,25,0,0,1,multiple sclerosis
+CDKN2AIP,774.0,-0.2,25,0,0,0,
+EIF2AK1,775.0,-0.2,25,2,1,3,autoimmune disorder of central nervous system; severe acute respiratory syndrome; COVID-19
+EMB,776.0,0.2,25,20,0,9,type 1 diabetes mellitus; systemic lupus erythematosus
+NDUFA3,778.0,0.2,25,0,0,3,type 1 diabetes mellitus; Sepsis; COVID-19
+TFG,780.0,0.1993299832495812,25,20,2,2,anaplastic large cell lymphoma
+CHMP1A,781.0,0.1987951807228915,25,6,1,2,viral infectious disease; asthma
+PKNOX1,782.0,-0.1977869986168741,25,0,0,2,Familial hemophagocytic lymphohistiocytosis; immunodeficiency 109 with lymphoproliferation
+CTDSPL2,785.0,-0.1970443349753694,25,0,0,4,acute myeloid leukemia; leukemia; B-cell non-Hodgkin lymphoma
+ZNF470,787.0,0.1968503937007874,13,0,0,1,acute myeloid leukemia
+SSBP1,788.0,0.196567225173682,25,2,1,3,cytomegalovirus infection; scrapie
+RBM27,789.0,0.1957989497374343,25,1,0,1,Burkitt lymphoma
+TESK2,790.0,-0.1954022988505747,25,0,0,6,autoimmune disorder of central nervous system; allergic disease; cutaneous lupus erythematosus
+MCTS1,791.0,0.1952259164535379,25,1,1,2,immunodeficiency 118; Mendelian susceptibility to mycobacterial diseases
+CCR4,792.0,0.1951219512195122,25,20,0,19,adult T-cell leukemia/lymphoma; primary cutaneous T-cell non-Hodgkin lymphoma; childhood onset asthma
+VBP1,793.0,0.1948051948051948,25,0,0,1,myalgic encephalomeyelitis/chronic fatigue syndrome
+HEXIM1,794.0,0.1944943147815679,25,2,0,1,allergic disease
+TMX1,798.0,0.1926648096564531,25,0,0,3,cutaneous lupus erythematosus; rheumatoid arthritis; viral infectious disease
+PDCD2L,799.0,0.1921780175320296,25,0,0,1,acute myeloid leukemia
+NFU1,804.0,0.1881188118811881,25,0,2,0,
+BRD7,805.0,0.18796992481203,25,0,0,5,inflammatory bowel disease; Hashimoto thyroiditis; autoimmune thrombocytopenic purpura
+DPH5,808.0,-0.1866226259289843,25,0,1,5,multiple sclerosis; methicillin-resistant staphylococcus aureus infectious disease; B-cell chronic lymphocytic leukemia
+MALT1,809.0,0.1849427168576104,25,12,1,20,combined immunodeficiency due to MALT1 deficiency; severe combined immunodeficiency; combined immunodeficiency
+CFAP20,812.0,0.1834546150900038,25,0,1,2,systemic-onset juvenile idiopathic arthritis; viral infectious disease
+ITK,813.0,0.182687468545546,25,20,1,12,lymphoproliferative syndrome 1; Hodgkins lymphoma; combined immunodeficiency
+PHIP,814.0,0.1824817518248175,25,5,1,1,type 1 diabetes mellitus
+MCM8,818.0,0.1810766721044045,25,0,1,1,respiratory tract infectious disorder
+SH3GL1,819.0,-0.1809145129224652,25,0,1,5,listeriosis; acute myeloid leukemia; B-cell chronic lymphocytic leukemia
+DNAJC3,821.0,0.1796875,25,0,1,3,influenza; dengue disease; Autosomal recessive early-onset inflammatory bowel disease
+RAB2B,822.0,0.1794871794871795,25,0,0,3,ataxia telangiectasia; systemic-onset juvenile idiopathic arthritis; Hodgkins lymphoma
+MTCH2,824.0,0.1783166904422254,25,2,0,0,
+RPRD2,826.0,0.177785080512652,25,1,0,1,atopic eczema
+COX7C,829.0,0.1764705882352941,25,0,0,2,multiple sclerosis; autoimmune disorder of central nervous system
+UFC1,831.0,0.1757575757575757,25,0,1,3,systemic-onset juvenile idiopathic arthritis; myasthenia gravis; pneumonia
+RPUSD3,832.0,-0.1757188498402556,25,0,0,4,Sepsis; acute myeloid leukemia; diffuse large B-cell lymphoma
+ZNF644,833.0,0.1756521739130434,25,0,1,1,inflammatory bowel disease
+IFNGR1,834.0,-0.175438596491228,25,3,5,10,disseminated atypical mycobacterial infection; chronic granulomatous disease; mycobacterial infectious disease
+SMAD4,835.0,0.1737089201877934,25,20,4,0,
+CCL5,836.0,-0.1735537190082644,25,20,1,9,rheumatoid arthritis; asthma; malaria
+ABCC1,837.0,0.1731843575418994,25,10,1,5,acute myeloid leukemia; diffuse large B-cell lymphoma
+CCDC93,839.0,0.1725293132328308,25,0,0,2,ulcerative colitis; Abnormality of the immune system
+DPH2,840.0,0.1721311475409836,25,0,1,0,
+SLF1,841.0,0.1714285714285714,25,1,0,0,
+AIP,842.0,0.1707317073170731,25,20,2,3,diffuse large B-cell lymphoma
+N6AMT1,843.0,0.1706454465075154,25,0,0,0,
+BZW2,845.0,0.1702127659574468,25,0,0,1,nasopharyngeal carcinoma
+AASDH,848.0,-0.1699604743083003,25,0,0,0,
+TFB1M,849.0,-0.1693363844393592,25,1,0,0,
+STIP1,850.0,0.1691070915877117,25,0,0,0,
+ATP5ME,851.0,0.1676396997497914,25,0,0,3,systemic-onset juvenile idiopathic arthritis; type 1 diabetes mellitus; inflammatory bowel disease
+CAND1,852.0,0.1674641148325359,25,0,0,1,acute tonsillitis
+RBM5,853.0,-0.1666666666666666,25,13,0,1,dengue disease
+NDUFAF3,855.0,-0.165631469979296,25,0,1,2,type 1 diabetes mellitus; Sepsis
+SARS2,856.0,-0.1655405405405405,25,20,1,4,COVID-19; viral infectious disease; coinfection
+TIAL1,857.0,0.1653543307086614,25,0,0,1,22q11.2 deletion syndrome
+CBX5,858.0,-0.1635071090047393,25,0,0,1,diffuse large B-cell lymphoma
+FBXW2,859.0,0.1631205673758865,25,1,0,2,atopic eczema; Crohn disease
+GRSF1,863.0,-0.1596369460758142,25,0,0,2,influenza; Sepsis
+DOCK2,868.0,0.156537753222836,25,0,1,7,DOCK2 deficiency; severe combined immunodeficiency; HIV infectious disease
+ZNF655,870.0,0.1544715447154471,25,0,0,1,plasma cell myeloma
+VARS2,871.0,0.1536523929471032,25,1,1,1,multiple sclerosis
+CLCC1,872.0,0.1535269709543568,25,0,1,0,
+KLF2,875.0,0.1524771524771525,25,2,0,6,plasma cell myeloma; systemic lupus erythematosus; lymphatic system disorder
+ZNF384,878.0,-0.1508379888268156,25,0,0,3,B-cell acute lymphoblastic leukemia; plasma cell myeloma; acute myeloid leukemia
+SND1,879.0,-0.1497975708502024,25,0,0,1,T-cell prolymphocytic leukemia
+PDSS2,881.0,0.1495002172968274,25,20,1,1,lymphoid leukemia
+MBTPS1,882.0,0.1476426799007444,25,0,2,4,diffuse large B-cell lymphoma; vitiligo; Sepsis
+BCLAF1,883.0,0.1471698113207547,25,1,0,3,acute myeloid leukemia; B-cell chronic lymphocytic leukemia; plasma cell myeloma
+ARHGAP30,884.0,0.1471156500138007,25,0,0,0,
+FAM20B,885.0,-0.1466666666666666,25,0,0,1,systemic lupus erythematosus
+AHR,886.0,0.1463452809516356,25,20,2,14,psoriasis; psoriasis vulgaris; atopic eczema
+SRSF6,887.0,0.1463414634146341,25,0,0,4,dengue disease; type 1 diabetes nephropathy; systemic sclerosis
+PTEN,888.0,0.1460942158616577,25,20,5,1,
+DPH1,891.0,0.1440107671601615,25,0,1,0,
+GPS2,892.0,-0.1438356164383561,25,4,0,3,viral infectious disease; acute lymphoblastic leukemia; COVID-19
+PHF3,894.0,-0.1434108527131783,25,1,0,1,Sjogren syndrome
+TASP1,895.0,-0.1428571428571428,25,0,1,0,
+PRXL2B,896.0,0.1428571428571428,25,0,0,6,Graves disease; allergic rhinitis; Eczematoid dermatitis
+MARK2,897.0,0.1428571428571428,25,13,1,3,autoimmune lymphoproliferative syndrome
+ATF4,898.0,0.1421155094094743,25,7,0,2,Sepsis
+TCEAL3,901.0,-0.1405622489959839,25,0,0,0,
+FIGNL1,902.0,0.1403508771929824,25,0,0,8,B-cell acute lymphoblastic leukemia; adult onset asthma; acute lymphoblastic leukemia
+BTAF1,903.0,0.140031233732431,25,0,0,0,
+MTG2,905.0,-0.1392405063291139,25,0,0,0,
+LRPPRC,908.0,0.1380801383684058,25,5,1,0,
+FANCF,910.0,0.1358024691358024,25,6,1,5,Fanconi anemia; Fanconi anemia complementation group F; acute myeloid leukemia
+ITGB2,911.0,0.1349693251533742,25,3,1,10,leukocyte adhesion deficiency 1; Leukocyte adhesion deficiency type I; psoriasis vulgaris
+SLC16A1,912.0,-0.1348600508905852,25,4,3,2,acute myeloid leukemia
+FLCN,913.0,0.1347517730496454,25,5,6,1,
+DLG4,915.0,0.1342182890855457,25,2,1,1,autoimmune disorder of central nervous system
+BHLHE40,917.0,-0.1337671728127259,25,0,0,5,atopic eczema; autoimmune thyroid disease; osteomyelitis
+NDUFS8,919.0,0.1319311663479923,25,0,2,2,multiple sclerosis; type 1 diabetes mellitus
+CREB1,920.0,-0.1306666666666666,25,2,1,3,infectious disease; multiple sclerosis; plasma cell myeloma
+UBIAD1,923.0,0.1290322580645161,25,0,1,0,
+NSD1,924.0,-0.1287061994609164,25,4,1,4,acute myeloid leukemia; Non-immune hydrops fetalis
+STAT3,925.0,0.1286008230452675,25,20,2,25,"Autosomal dominant hyper-IgE syndrome; autoimmune disease; hyper-IgE recurrent infection syndrome 1, autosomal dominant"
+WAC,926.0,-0.1284369114877589,25,15,1,2,COVID-19; plasma cell myeloma
+PARS2,927.0,0.1272166538164996,25,0,1,3,dermatophytosis; plasma cell myeloma; viral infectious disease
+SUCLG1,928.0,0.1270718232044199,25,3,1,1,leukemia
+L2HGDH,929.0,0.126099706744868,25,0,1,0,
+GALNT6,930.0,-0.1257995735607676,25,0,0,1,psoriatic arthritis
+TMEM167A,931.0,0.1248285322359396,25,0,0,1,rheumatoid arthritis
+TEFM,934.0,0.1229946524064171,25,0,1,0,
+PEX5,936.0,0.122077922077922,25,0,3,0,
+URM1,939.0,0.1214750542299349,25,0,0,3,toxoplasmosis; chronic hepatitis B virus infection; acute myeloid leukemia
+SRRD,940.0,0.1212938005390835,18,2,0,4,viral infectious disease; acute myeloid leukemia; diffuse large B-cell lymphoma
+USP24,941.0,-0.1210191082802547,25,1,0,3,herpes zoster; ankylosing spondylitis
+ACACA,942.0,-0.1205211726384364,25,1,1,2,multiple sclerosis; autoimmune disorder of central nervous system
+DPH6,943.0,-0.1201764057331863,25,0,0,1,tuberculosis
+ZHX3,944.0,-0.12,25,0,0,0,
+CDK13,949.0,-0.1179245283018868,25,3,1,4,autoimmune disorder of central nervous system; asthma; B-cell chronic lymphocytic leukemia
+CIT,950.0,-0.1165644171779141,25,20,1,4,cardiac transplant; inflammatory bowel disease; rheumatoid arthritis
+CYB561D2,953.0,-0.1147540983606557,25,0,0,0,
+INSR,954.0,0.1146461876028524,25,20,4,1,type 1 diabetes mellitus
+CDCA3,955.0,0.1143911439114391,25,0,0,0,
+DNAJC24,956.0,-0.1136974037600716,25,0,0,2,systemic lupus erythematosus; parasitic infectious disease
+KDM3B,959.0,0.11284046692607,25,1,1,2,mixed connective tissue disease; acute myeloid leukemia
+HTT,960.0,-0.1125827814569536,25,20,2,3,asthma; drug allergy
+PUM1,961.0,0.1123188405797101,25,1,1,0,
+PGP,963.0,-0.1115618661257606,25,20,3,6,acute lymphoblastic leukemia; acute myeloid leukemia; systemic lupus erythematosus
+GATA3,964.0,-0.1112426035502958,25,20,1,18,asthma; B-cell acute lymphoblastic leukemia; rheumatoid arthritis
+ATAD3A,965.0,-0.1111111111111111,25,0,2,1,systemic sclerosis
+DR1,969.0,0.1103265666372462,25,20,0,5,inflammatory bowel disease; type 1 diabetes mellitus; rheumatoid arthritis
+CEP89,970.0,-0.109375,25,0,0,3,vitiligo; extranodal nasal NK/T cell lymphoma; plasma cell myeloma
+TIMMDC1,971.0,0.109375,25,0,1,6,multiple sclerosis; systemic lupus erythematosus; autoimmune thyroid disease
+ALG8,972.0,0.1091035441278665,25,0,2,0,
+C2CD5,974.0,-0.1076923076923077,25,0,0,0,
+NFAT5,975.0,0.107559926244622,25,1,0,0,
+MBIP,976.0,-0.1061728395061728,25,1,0,2,Hashimoto thyroiditis; autoimmune disease
+AHSA1,979.0,-0.1058823529411764,25,0,0,0,
+SKA2,981.0,-0.1055555555555555,25,3,0,1,gluthathione peroxidase deficiency
+COX15,982.0,-0.1055555555555555,25,0,2,0,
+MIPEP,984.0,0.1047970479704797,25,0,1,1,asthma
+AMBRA1,985.0,-0.1047619047619047,25,0,0,1,mantle cell lymphoma
+TNPO1,989.0,0.1034482758620689,25,2,0,2,multiple sclerosis; Hashimoto thyroiditis
+IRF2BP1,990.0,-0.1032608695652173,25,0,0,3,acute myeloid leukemia; acute promyelocytic leukemia; COVID-19
+BEX3,992.0,-0.1,25,0,0,1,nasopharyngeal carcinoma
+METAP2,993.0,0.0990453460620525,25,20,0,5,autoimmune disorder of central nervous system; acute myeloid leukemia; acute myeloid leukemia by FAB classification
+RCC1L,994.0,-0.0986145069274653,25,0,0,8,immunodeficiency 128; immunodeficiency 105; isolated agammaglobulinemia
+DDX17,995.0,-0.0986072423398328,25,1,0,2,viral infectious disease
+LSM12,996.0,0.0985714285714285,25,1,0,0,
+WARS2,998.0,0.0975609756097561,25,0,2,0,
+RRAGC,1000.0,0.0961538461538461,25,0,1,14,non-Hodgkin lymphoma; common variable immunodeficiency; isolated agammaglobulinemia
+GLS,1004.0,0.0938967136150234,25,20,3,5,systemic lupus erythematosus; B-cell acute lymphoblastic leukemia
+BRAT1,1005.0,-0.09375,25,0,2,1,Noonan syndrome
+UBR5,1007.0,0.0912981455064194,25,1,1,1,mantle cell lymphoma
+SIN3B,1009.0,0.0897234090398021,25,0,0,2,acute erythroid leukemia; Majeed syndrome
+GPATCH8,1010.0,0.0897155361050328,25,0,0,3,psoriatic arthritis; rheumatoid arthritis; acute myeloid leukemia
+PHF8,1012.0,-0.0890052356020942,25,0,1,0,
+FAM3C,1013.0,0.0888888888888888,25,1,0,1,psoriasis
+UGDH,1015.0,0.0887372013651877,25,1,1,2,autoimmune disorder of central nervous system; atopic eczema
+GABPB1,1017.0,0.0881834215167548,25,0,0,0,
+TNRC6A,1018.0,0.0879320800485142,25,0,1,2,osteomyelitis; ankylosing spondylitis
+OXA1L,1020.0,0.0878835153406136,25,0,0,0,
+KTN1,1021.0,-0.087719298245614,25,4,0,0,
+NSUN4,1023.0,0.0870307167235494,25,0,0,3,systemic lupus erythematosus; acute lymphoblastic leukemia; parasitic infectious disease
+STAT5A,1024.0,0.0865051903114186,25,9,0,10,acute myeloid leukemia; dermatitis; acute lymphoblastic leukemia
+GRAP,1025.0,0.0864197530864197,25,4,1,5,myeloid sarcoma; inflammatory bowel disease; systemic-onset juvenile idiopathic arthritis
+BRPF1,1026.0,0.085952712100139,25,0,0,1,ulcerative colitis
+PARD6A,1027.0,-0.0849673202614379,25,0,0,0,
+ZNF837,1028.0,0.0844327176781002,7,0,0,2,multiple sclerosis; COVID-19
+CBLB,1030.0,0.0840197693574958,25,4,1,3,multiple sclerosis
+TIPRL,1031.0,-0.0835600466381655,25,0,0,0,
+CD28,1033.0,0.0831066787549108,25,20,1,16,HIV infectious disease; asthma; immunodeficiency 123 with HPV-related verrucosis
+XPR1,1035.0,0.0829103214890017,25,20,2,5,ankylosing spondylitis; gram-positive bacterial infections
+REL,1037.0,-0.0823529411764705,25,20,1,16,immunodeficiency 92; rheumatoid arthritis; psoriasis
+MTG1,1040.0,-0.0794979079497908,25,0,0,0,
+ZRSR2,1041.0,-0.079407806191117,25,6,1,11,chronic myelomonocytic leukemia; myelofibrosis; acute myeloid leukemia
+CSK,1043.0,0.0790899241603467,25,20,0,8,Noonan syndrome; autoimmune disorder of central nervous system; systemic lupus erythematosus
+NLRX1,1045.0,0.0775047258979206,25,0,0,0,
+CYB5RL,1046.0,0.0773067331670823,22,0,0,0,
+GPI,1047.0,0.0769230769230769,25,20,1,4,rheumatoid arthritis; Arthritis; malaria
+SCAF8,1048.0,-0.0769230769230769,25,0,0,5,asthma; allergic rhinitis; ankylosing spondylitis
+CD2,1049.0,0.075812274368231,25,20,0,20,rheumatoid arthritis; Graves disease; psoriasis vulgaris
+DNTTIP1,1050.0,0.075626798191533,25,0,0,2,nasopharyngeal carcinoma; autoimmune thrombocytopenic purpura
+IBA57,1053.0,0.0727611940298507,25,0,2,1,rheumatoid arthritis
+TWNK,1054.0,0.0726256983240223,25,17,4,2,
+CASP9,1055.0,-0.072463768115942,25,20,0,10,acute myeloid leukemia; B-cell chronic lymphocytic leukemia; plasma cell myeloma
+TIPARP,1056.0,-0.0720338983050847,25,0,0,0,
+KMT5B,1057.0,0.071917808219178,25,2,1,0,
+PDCL,1059.0,-0.0700311879784519,25,0,0,4,malaria; inflammatory bowel disease; acute leukemia
+SZRD1,1060.0,-0.0699774266365688,25,0,0,1,lymphoma
+TRIP12,1061.0,0.0696765791187323,25,1,1,1,methicillin-resistant staphylococcus aureus infectious disease
+USP10,1063.0,-0.0688524590163934,25,18,0,2,"chronic myelogenous leukemia, BCR-ABL1 positive; cyclic hematopoiesis"
+BLOC1S4,1064.0,-0.0681818181818181,25,0,0,2,Chédiak-Higashi syndrome; Chediak-Higashi syndrome
+CARNMT1,1066.0,0.0677966101694915,25,0,0,4,acute tonsillitis; acute myeloid leukemia; Crohn disease
+ACSL3,1068.0,-0.0666666666666666,25,0,0,2,acute myeloid leukemia; plasma cell myeloma
+CNBP,1069.0,0.0652557319223985,25,7,1,3,plasma cell myeloma; acute myeloid leukemia; extranodal nasal NK/T cell lymphoma
+PTPA,1070.0,0.0637564618035611,25,9,1,5,atopic eczema; acute myeloid leukemia; rheumatoid arthritis
+GADD45GIP1,1071.0,0.0632090761750405,25,0,0,5,colitis; leukemia; acute myeloid leukemia
+POLG,1072.0,0.0624016780283167,25,10,6,2,Fanconi anemia; Fanconi anemia complementation group I
+ATXN2L,1073.0,0.0617283950617283,25,0,0,2,Crohn disease; erysipelas
+FAM98B,1074.0,0.0613763174209547,25,0,0,7,systemic lupus erythematosus; kidney transplant; Graves disease
+RNF8,1082.0,0.0572916666666666,25,0,0,5,autoimmune lymphoproliferative syndrome; Immunodeficiency with natural-killer cell deficiency and adrenal insufficiency; primary immunodeficiency with natural-killer cell deficiency and adrenal insufficiency
+RIPK1,1083.0,0.0565045992115637,25,13,2,16,immunodeficiency 57; severe acute respiratory syndrome; inborn error of immunity
+EXT2,1084.0,-0.0562347188264058,25,5,2,1,
+DLAT,1088.0,0.0553571428571428,25,0,1,0,
+ELP3,1090.0,0.0551351351351351,25,2,0,4,COVID-19; type 1 diabetes mellitus; drug allergy
+CYP4V2,1091.0,-0.055,25,8,1,0,
+CCNF,1092.0,-0.0544290288153681,25,0,1,2,HIV-1 infection; rheumatoid arthritis
+ATP5PO,1093.0,0.053763440860215,25,0,1,4,COVID-19; central nervous system infectious disorder; type 1 diabetes mellitus
+IL4R,1099.0,0.051440329218107,25,20,0,25,asthma; atopic eczema; childhood onset asthma
+RAC2,1101.0,-0.0503597122302158,25,3,3,12,neutrophil immunodeficiency syndrome; immunodeficiency 73b with defective neutrophil chemotaxis and lymphopenia; immunodeficiency 73c with defective neutrophil chemotaxis and hypogammaglobulinemia
+TSC1,1102.0,0.0502793296089385,25,20,4,6,
+COX18,1106.0,-0.0492610837438423,25,0,2,2,sialadenitis; lymphatic system disorder
+ATP5MF,1107.0,0.0489335006273525,25,0,0,4,systemic-onset juvenile idiopathic arthritis; type 1 diabetes mellitus; plasma cell myeloma
+NDUFA8,1108.0,0.0478589420654911,25,0,1,3,multiple sclerosis; autoimmune disorder of central nervous system; type 1 diabetes mellitus
+PPIH,1110.0,-0.0470175438596491,25,1,0,4,severe acute respiratory syndrome; COVID-19; systemic-onset juvenile idiopathic arthritis
+ERGIC1,1111.0,0.0465116279069767,25,0,1,8,inflammatory bowel disease; asthma; ulcerative colitis
+EGR2,1113.0,-0.0459873760144274,25,3,4,7,inflammatory bowel disease; B-cell chronic lymphocytic leukemia; Crohn disease
+SUGP1,1114.0,0.0458715596330275,25,0,0,1,dengue disease
+HNRNPA2B1,1116.0,0.0453514739229024,25,1,3,4,adult T-cell leukemia/lymphoma; dengue disease; acute myeloid leukemia
+ADNP2,1118.0,0.0445344129554655,25,0,0,1,ankylosing spondylitis
+TMEM126B,1119.0,0.0443159922928709,25,0,1,0,
+EHMT2,1120.0,0.0442722744881018,25,0,0,3,acute myeloid leukemia; acute lymphoblastic leukemia; diffuse large B-cell lymphoma
+COX6B1,1121.0,0.0439560439560439,25,0,2,0,
+ELF4,1122.0,-0.0424242424242424,25,0,1,2,short stature due to isolated growth hormone deficiency with X-linked hypogammaglobulinemia; acute myeloid leukemia
+WIZ,1124.0,0.0417362270450751,25,2,0,0,
+RASAL3,1125.0,0.0409463148316651,25,0,0,2,acute megakaryoblastic leukemia; colitis
+FUBP1,1126.0,0.0396798932977659,25,1,0,2,COVID-19; psoriasis
+PRKD2,1127.0,0.0393700787401574,25,0,0,5,plasma cell myeloma; multiple sclerosis; type 1 diabetes mellitus
+MITD1,1128.0,-0.0381679389312977,25,0,0,1,inflammatory bowel disease
+CRLS1,1129.0,-0.038152610441767,25,0,1,0,
+MIA2,1131.0,0.0378510378510378,25,3,0,1,
+TSFM,1134.0,-0.0376344086021505,25,0,1,2,multiple sclerosis; spondyloarthropathy
+SNRPB2,1135.0,-0.0373831775700934,25,0,0,1,dengue disease
+TBL1XR1,1137.0,0.0363901018922852,25,4,2,10,diffuse large B-cell lymphoma; asthma; adult onset asthma
+RNASEH1,1139.0,0.0362116991643454,25,1,1,2,viral infectious disease; type 1 diabetes mellitus
+KTI12,1140.0,0.036144578313253,22,0,0,4,"rheumatoid factor-positive polyarticular juvenile idiopathic arthritis; joint contractures, osteochondromas, and B-cell lymphoma; protozoa infectious disease"
+STK35,1141.0,-0.036144578313253,25,0,0,0,
+CNOT4,1142.0,0.0361145703611457,25,0,0,3,psoriatic arthritis; immunodeficiency 128; systemic lupus erythematosus
+VPS4A,1143.0,0.0357142857142857,25,0,1,2,viral infectious disease; HIV infectious disease
+COLGALT1,1144.0,0.0352941176470588,25,0,1,0,
+MTMR10,1146.0,0.035230352303523,25,0,0,1,multiple sclerosis
+PAGR1,1147.0,0.0341296928327645,25,0,0,3,acute myeloid leukemia; vitiligo; coinfection
+COQ6,1148.0,0.0333651096282173,25,0,1,0,
+UBR4,1150.0,-0.0329861111111111,25,0,0,2,dengue disease; acute myeloid leukemia
+CTNNB1,1151.0,0.0329670329670329,25,20,7,1,listeriosis
+UBC,1154.0,0.0318772136953955,25,20,0,10,HIV infectious disease; listeriosis; tuberculosis
+ECSIT,1155.0,-0.0314637482900136,25,0,0,0,
+OTUD1,1157.0,0.0305131761442441,25,0,0,2,plasma cell myeloma; nasopharyngeal carcinoma
+NDUFB6,1160.0,-0.029585798816568,25,0,0,3,multiple sclerosis; type 1 diabetes mellitus; Sepsis
+TATDN2,1163.0,-0.028169014084507,25,0,0,0,
+NFE2L1,1165.0,-0.0281124497991967,25,0,0,0,
+SRD5A3,1166.0,-0.0277777777777777,25,2,2,1,
+ACAD9,1167.0,-0.0277324632952691,25,2,1,3,combined immunodeficiency; lymphoma
+NXT1,1170.0,-0.0265486725663716,25,0,0,5,asthma; viral infectious disease; influenza
+TMEM185A,1174.0,0.0236220472440944,19,0,0,0,
+QRSL1,1175.0,-0.0234986945169712,25,0,1,1,dermatophytosis
+CHTF18,1177.0,0.0222222222222222,25,0,0,0,
+PAXIP1,1178.0,0.0217917675544794,25,0,0,1,acute tonsillitis
+YEATS2,1179.0,0.0215743440233236,25,0,1,1,B-cell chronic lymphocytic leukemia
+SIMC1,1180.0,-0.0212765957446808,18,0,0,3,myasthenia gravis; acute myeloid leukemia; viral infectious disease
+FOSL2,1182.0,0.0211267605633802,25,3,1,11,allergic rhinitis; Crohn disease; inflammatory bowel disease
+UFM1,1183.0,-0.0209973753280839,25,0,1,1,multiple sclerosis
+JUNB,1185.0,-0.0204081632653061,25,4,0,8,anaplastic large cell lymphoma; acute lymphoblastic leukemia; systemic sclerosis
+STARD7,1188.0,0.0193548387096774,25,0,1,11,colitis; common variable immunodeficiency; isolated agammaglobulinemia
+SP2,1189.0,-0.0188679245283018,25,20,0,4,nasopharyngeal carcinoma; type 1 diabetes mellitus; plasma cell myeloma
+TMEM263,1192.0,-0.018450184501845,25,0,0,1,influenza A (H1N1)
+ZC3H12A,1194.0,-0.0177705977382875,25,8,0,6,parasitic infectious disease; inflammatory bowel disease; psoriasis
+RNFT2,1200.0,-0.0154109589041095,25,0,0,0,
+HACD2,1201.0,-0.015299026425591,25,0,0,0,
+MLST8,1202.0,0.0151057401812688,25,20,0,4,dengue disease; acute myeloid leukemia; acute myeloid leukemia by FAB classification
+HK2,1208.0,0.0121457489878542,25,20,0,1,
+NDUFA9,1210.0,-0.011070110701107,25,1,1,2,multiple sclerosis; type 1 diabetes mellitus
+LIG3,1211.0,-0.0110076206604572,25,1,1,2,systemic lupus erythematosus; Sjogren syndrome
+CSNK2A1,1212.0,-0.0109890109890109,25,1,1,2,autoimmune disorder of central nervous system; COVID-19
+PSMF1,1213.0,-0.0105042016806722,25,0,0,6,methicillin-resistant staphylococcus aureus infectious disease; malaria; bacterial infectious disease with sepsis
+TADA2A,1215.0,-0.0087463556851311,25,0,0,3,lymphoma; acute myeloid leukemia; leukemia
+CSDE1,1220.0,-0.0070283947146471,25,1,0,1,viral infectious disease
+FAM118B,1223.0,-0.005524861878453,25,0,0,4,lymphatic system disorder; sialadenitis; Sepsis
+STAT6,1226.0,0.0043988269794721,25,20,1,20,"hyper-IgE syndrome 6, autosomal dominant, with recurrent infections; asthma; diffuse large B-cell lymphoma"
+WASF2,1227.0,0.0042826552462526,25,0,0,1,MALT lymphoma
+THRAP3,1228.0,-0.0034843205574912,25,0,0,4,acute myeloid leukemia; B-cell chronic lymphocytic leukemia; plasma cell myeloma
+HNRNPD,1233.0,0.0011454753722794,25,2,0,2,dengue disease; acute tonsillitis
+SLC25A28,1235.0,0.0,25,0,0,0,

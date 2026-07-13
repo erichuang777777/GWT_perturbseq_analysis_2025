@@ -36,12 +36,13 @@ MODALITY_ANTIBODY_SURFACE = "antibody (surface)"
 MODALITY_ANTIBODY_BIOLOGIC = "antibody / biologic"
 MODALITY_SMALL_MOLECULE = "small molecule"
 
-# gnomAD v4's "constrained" cutoff: a gene with LOEUF below this bar is flagged
-# loss-of-function intolerant. Set to 0.6 to match gnomAD v4's current
-# constrained threshold, consistent with the v4 LOEUF/pLI values now in the
-# seed overlay -- broader than the gnomAD v2.1.1-era 0.35 this originally used
-# (per ENHANCEMENT_連結器加強建議.md §2), so more genes in the constrained band
-# are flagged. This is the ONLY threshold used by gnomad_flag_from_constraint;
+# Loss-of-function "constrained-ish" cutoff applied to the real, full-genome
+# gnomAD v2.1.1 LOEUF distribution now in the seed overlay: a gene with LOEUF
+# below this bar is flagged loss-of-function intolerant. 0.6 is a deliberately
+# inclusive soft cutoff -- broader than gnomAD's own strict bottom-decile
+# ~0.35 line (per ENHANCEMENT_連結器加強建議.md §2) -- so more genes in the
+# constrained band are flagged; it is NOT gnomAD's own published threshold for
+# any version. This is the ONLY threshold used by gnomad_flag_from_constraint;
 # it does not vary by gene.
 LOEUF_LOSS_INTOLERANT_THRESHOLD = 0.6
 
@@ -152,6 +153,37 @@ def safety_window_from_gtex(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
     if row.empty:
         return UNKNOWN
     return int(row.iloc[0]["n_tissues_expressed"])
+
+
+def singlecell_breadth_from_hpa(gene_ensembl: str, overlay: Dict[str, Any]) -> Any:
+    """Count of off-context HPA single-cell types (T-cells excluded) where this
+    gene clears the expression threshold, else ``unknown``. Keyed by Ensembl
+    gene ID, same convention as ``safety_window_from_gtex``.
+
+    This is a standalone, ADDITIONAL descriptive signal alongside
+    ``safety_window_from_gtex`` -- single-CELL-TYPE resolution (51 HPA
+    consensus categories) rather than bulk-TISSUE resolution, a materially
+    finer-grained off-target signal for an immunology platform (a tissue can
+    look narrow in bulk while containing several off-target immune cell
+    populations only single-cell resolution resolves). It is deliberately
+    NOT folded into ``composite_safety_liability`` -- that composite is
+    already calibrated/tested on the two-way gnomAD+GTEx signal, and adding a
+    third correlated breadth axis without re-deriving the tier thresholds
+    would silently shift every gene's tier. Surface this column alongside the
+    composite, not inside it.
+
+    Coverage is ~20,162 genes (built from
+    ``data_acquisition/build_hpa_singlecell_breadth_overlay.py``); a gene
+    absent from the overlay is unchecked, not "safe" -- returns ``unknown``,
+    never `0`.
+    """
+    if not overlay.get("available") or not gene_ensembl:
+        return UNKNOWN
+    table = overlay["table"]
+    row = table[table["ensembl_id"] == gene_ensembl]
+    if row.empty:
+        return UNKNOWN
+    return int(row.iloc[0]["n_celltypes_expressed"])
 
 
 def gnomad_flag_from_constraint(gene_ensembl: str, overlay: Dict[str, Any]) -> str:

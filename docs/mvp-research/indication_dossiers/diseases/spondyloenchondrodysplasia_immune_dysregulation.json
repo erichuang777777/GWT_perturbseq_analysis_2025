@@ -1,0 +1,70 @@
+{
+  "disease_name": "Spondyloenchondrodysplasia with Immune Dysregulation",
+  "slug": "spondyloenchondrodysplasia_immune_dysregulation",
+  "platform_targets": [
+    {
+      "gene": "ZNF627",
+      "primary_rank": 15,
+      "ot_genetic_assoc_score": 0.94
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "SPENCDI (OMIM 607944) is a rare immune-skeletal dysplasia with spondylar/metaphyseal lesions, immune dysfunction, and neurological involvement, caused by biallelic ACP5 mutation; autosomal recessive, presents in childhood.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/37382551/",
+          "source_type": "pubmed",
+          "quote": "an uncommon immune-skeletal dysplasia with heterogeneous manifestations and variable severity"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/38883133/",
+          "source_type": "pubmed",
+          "quote": "a rare autosomal recessive genetic disorder caused by a homozygous mutation of the ACP5 gene"
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "Not established in this pass — only case-report/case-series literature (n=3-4 patients) found; no population-based prevalence/incidence estimate identified.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "Disease is caused by biallelic ACP5 loss-of-function, producing a type I interferonopathy with autoimmune cytopenias and lupus-like features. No PubMed literature found linking the platform's ZNF627 target to this disease.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/27718324/",
+          "source_type": "pubmed",
+          "quote": "a potential diagnosis of spondyloenchondrodysplasia (SPENCD), which was confirmed with the identification of biallelic ACP5 mutations"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32691099/",
+          "source_type": "pubmed",
+          "quote": "Large spectrum of immunologic abnormalities may be seen in SPENCD, including immune deficiencies and autoimmune disorders"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Not established in this pass — no FDA-approved disease-specific therapy identified; case reports describe supportive/immunosuppressive management of specific manifestations only.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "Zero interventional trials found on ClinicalTrials.gov for spondyloenchondrodysplasia in this pass.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/",
+          "source_type": "ctgov",
+          "quote": "count_total query for condition=spondyloenchondrodysplasia, study_type=INTERVENTIONAL returned total=0"
+        }
+      ],
+      "coverage": "not_established"
+    }
+  },
+  "gaps": [
+    "No PubMed hit for 'ZNF627 spondyloenchondrodysplasia' — the platform's high genetic-association score (0.94) for this gene-disease pair could not be corroborated with an independent published mechanism or GWAS finding in this pass.",
+    "No epidemiology, treatment, or trial data found — this is an ultra-rare monogenic disease with a very thin evidence base overall.",
+    "Established disease-causing gene is ACP5, not ZNF627; the relationship between the platform's Perturb-seq CD4+ T-cell signal for ZNF627 and this ultra-rare monogenic disease is unclear from literature alone."
+  ]
+}

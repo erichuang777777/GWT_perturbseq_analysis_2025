@@ -13,7 +13,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "src" / "3_DE_analysis"
-DATASET_ID = "a6bba17b-f194-4a50-8cf8-96e03eededd6"
+DATASET_ID = "a792d68c-7adc-46a6-964a-35770e5adbde"
 DATASET_DIR = REPO / "sources" / "target_tool_cache" / DATASET_ID
 
 if str(SRC) not in sys.path:
@@ -39,7 +39,9 @@ def test_per_target_axes_known_answer_plcg1():
     # every descriptive axis is present on the composite
     for key in ("stimulation_gated", "switch_type", "robustness_tier", "double_support", "composite_safety_liability"):
         assert key in axes
-    # unknown != 0: PLCG1 is not in the ~15-gene gnomAD seed -> safety is 'unknown', never a number/'safe'
+    # unknown != 0: PLCG1 now has gnomAD constraint (LOEUF 0.411) but is absent
+    # from the ~5k-gene GTEx breadth overlay, so the COMPOSITE (needs both axes)
+    # is 'unknown' -- never coerced to a number/'safe'.
     assert axes["composite_safety_liability"] == "unknown"
     assert body["provenance"].get("concept_set_version")
 

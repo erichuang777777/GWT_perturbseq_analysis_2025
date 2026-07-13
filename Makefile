@@ -68,3 +68,10 @@ eda:
 # check behind "結果可以重現". Does NOT re-run the S3-gated heavy pipeline.
 freeze:
 	python scripts/freeze_pipeline.py --eda
+
+# Whole-repo freeze + isolation guard (unified v2). Verifies every module in
+# docs/structure/FREEZE_MANIFEST_UNIFIED.csv still matches its pinned
+# module_blob_sha256, and that file ownership is a disjoint total partition.
+# Non-zero exit on drift/contamination. See docs/structure/PHASE_MODULE_MAP.md.
+validate-freeze:
+	python scripts/validate_freeze_unified.py

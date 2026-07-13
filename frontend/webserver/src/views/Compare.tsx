@@ -54,7 +54,7 @@ export default function Compare() {
     fmt?: (v: number) => string;
   };
   const cSpecs: Spec[] = [
-    { label: "Composite priority", kind: "num", get: (c) => c.comp, dir: "hi" },
+    { label: "Perturbation score", kind: "num", get: (c) => c.comp, dir: "hi" },
     { label: "Readiness call", kind: "badge", get: (c) => ({ label: c.Rr.label, color: c.Rr.color, bg: c.Rr.bg }) },
     { label: "Evidence grade", kind: "badge", get: (c) => ({ label: c.x.grade ?? "—", color: c.Gg.color, bg: c.Gg.bg }) },
     { label: "|log2 fold-change|", kind: "num", get: (c) => c.effNum, dir: "hi", fmt: (v) => v.toFixed(2) },

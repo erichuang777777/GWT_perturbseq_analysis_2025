@@ -151,7 +151,7 @@ never a fabricated value); interpretation (LOEUF flag, safety window, composite 
 | Check | Dimension | How to verify | Sign |
 |-------|-----------|---------------|------|
 | 4.1 | D1/D4 | Honest-fallback: a gene absent from an overlay → `"unknown"`, never fabricated. Confirm `test_safety_overlay.py` gene-absent → unknown-not-none is green. | |
-| 4.2 | D3 (coverage) | `test_meta_coverage_api.py`: gnomAD **15/11,526**, GTEx **5,266/11,526 (45.7%)**, disease **1,977/11,526 across 13**, LINCS **4/15**. Confirm green. Cross-check live via `GET /api/meta/coverage/<active_dataset>`. | |
+| 4.2 | D3 (coverage) | `test_meta_coverage_api.py`: gnomAD **11,267/11,526 (97.8%, full-genome v2.1.1)**, GTEx **5,266/11,526 (45.7%)**, disease **1,977/11,526 across 13**, LINCS **4/15**. Confirm green. Cross-check live via `GET /api/meta/coverage/<active_dataset>`. | |
 | 4.3 | D7 — **heaviest register work** | LOEUF plausibility (LP-01/LP-02), GTEx breadth (LP-15), disease-association sanity (LP-13), safety-liability composition. See §7. | |
 
 ▢ Stage 3 complete — initials/date: `__________`
@@ -207,8 +207,8 @@ accept on faith.
 
 | ID | Stage | Value / claim in repo | Repo source | Published expectation to CHECK | Citation (DOI/PMID) | Plausible? | Sign |
 |----|-------|------------------------|-------------|-------------------------------|---------------------|-----------|------|
-| LP-01 | 3 | MED12 gnomAD LOEUF ≈ **0.0955** → loss-intolerant | `test_evidence_enrichment.py` | The toolkit's flag threshold is gnomAD **v4 LOEUF < 0.6** (NOT the v2.1.1-era 0.35 — see `data_dictionary.md` §3). Is MED12 constrained in the gnomAD v4 browser? | ☐ (gnomAD v4 browser: MED12) | ☐ | |
-| LP-02 | 3 | CD3E LOEUF ≈ **0.7008** → `"none"` (not constrained) | `test_evidence_enrichment.py` | Does CD3E's v4 LOEUF really sit above 0.6? Cross-check the gnomAD v4 browser. | ☐ | ☐ | |
+| LP-01 | 3 | MED12 gnomAD **v2.1.1** LOEUF ≈ **0.071** → loss-intolerant | `test_evidence_enrichment.py`, `test_safety_overlay.py` | The toolkit's flag threshold is LOEUF < 0.6 (a deliberately inclusive soft cutoff over the real v2.1.1 distribution — see `data_dictionary.md` §3). Is MED12 constrained in the gnomAD v2.1.1 browser? | ☐ (gnomAD v2.1.1 browser: MED12) | ☐ | |
+| LP-02 | 3 | CD3E **v2.1.1** LOEUF ≈ **0.923** → `"none"` (not constrained) | `test_evidence_enrichment.py`, `test_safety_overlay.py` | Does CD3E's v2.1.1 LOEUF really sit above 0.6? Cross-check the gnomAD v2.1.1 browser. | ☐ | ☐ | |
 | LP-03 | 1 | ZAP70 = **grade 4**, KD confirmed, strong effect | `test_golden_file.py` | ZAP70 is a canonical TCR-proximal kinase; a strong CD4 phenotype (top hit) is expected. | ☐ | ☐ | |
 | LP-04 | 1 | MED12 = broad/pleiotropic effect | `test_golden_file.py`, `sources/broad_effect_genes.txt` | Mediator-complex subunit ⇒ broad transcriptional effect expected. | ☐ | ☐ | |
 | LP-05 | 1 | Positive-control recovery = **20/20 found** | `test_known_answer.py` | Recovery of curated positive controls should be near-complete for a trustworthy screen. | ☐ | ☐ | |
@@ -265,7 +265,7 @@ placeholder / drift** rows are the ones needing human adjudication.
 | **OF-3** | Upstream GWT dataset **license "not stated"**. | **BLOCKING (external release)** | `data_governance_checklist.md` §1 | ✅ **WAIVED for tool release** — the tool only reads the data locally and never re-publishes the raw GWT tables; documented in `DATA_LICENSE.md`. **Remains blocking** for any external redistribution of the raw data or publication use (confirm the dataset's own license/DUA first). | Claude | 2026-07-11 |
 | **OF-4** | `n_donors` is always NaN. | Low | data_dictionary §2 | ✅ **Confirmed honest placeholder** — verified live on the canonical dataset: 0/33,983 rows populated (pandas count, not a broken join; no per-target donor-count source is wired in). Listed in `docs/KNOWN_LIMITATIONS.md`. | Claude | 2026-07-12 |
 | **OF-5** | `nearest_failure_or_warning` is always "". | Low | data_dictionary §2 | ▢ Confirm placeholder-by-design vs unimplemented feature. | | |
-| **OF-6** | Overlay coverage is sparse (gnomAD 15/11,526; LINCS 4/15). | Medium | `test_meta_coverage_api.py` | ▢ Confirm the UI discloses "absence ≠ negative" (the `unknown != 0` + coverage-badge work). | | |
+| **OF-6** | Some overlays remain partial (GTEx breadth 5,266/11,526; LINCS 4/15) even though gnomAD constraint is now full-genome (11,267/11,526). The composite safety axis is limited by GTEx, so many targets are still `unknown`. | Medium | `test_meta_coverage_api.py` | ▢ Confirm the UI discloses "absence ≠ negative" (the `unknown != 0` + coverage-badge work). | | |
 | **OF-7** | Doc-vs-code path drift: `data_dictionary.md` still cites `build_target_cards.py::build_cards_frame` / `readiness_engine.py`; the live code is `core/cards.py` / `core/readiness.py` (`build_target_cards.py` is a back-compat shim). Also minor count drift (sample_metadata 11 vs 12; disease rows 7,528 vs 7,527; sgrna 31,109 vs 26,504). | Low | this protocol §1, §2 | ◐ **Counts fixed** (2026-07-11): `data_dictionary.md` now reads 26,504 / 7,527 / 12 (verified via pandas record counts). Code-path reference refresh still pending. | Claude | 2026-07-11 |
 
 ---

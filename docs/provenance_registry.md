@@ -40,7 +40,7 @@
 | Open Targets | `external_evidence_cache/v1` | platform.opentargets.org · PMID 39657122 | `evidence/external_cache.py` + `evidence/disease.py` | tractability/genetics/drugs;30 天 TTL |
 | ClinicalTrials.gov v2 | `external_evidence_cache/v1` | clinicaltrials.gov | `evidence/external_cache.py` | 試驗 |
 | PubMed/PMC | `external_evidence_cache/v1` | pubmed.ncbi.nlm.nih.gov | `evidence/external_cache.py` | 文獻 |
-| gnomAD v4 | — | gnomad.broadinstitute.org · PMID 32461654 | `evidence/safety_overlay.py` | LOEUF/pLI;門檻 0.6 |
+| gnomAD v2.1.1 | — | gnomad.broadinstitute.org · PMID 32461654 | `evidence/safety_overlay.py` | LOEUF/pLI 全基因組(19,155 基因);門檻 0.6 |
 | GTEx | — | gtexportal.org · PMID 32913098 | `evidence/safety_overlay.py` | 組織表現安全窗口 |
 | LINCS/CMap L1000 | — | clue.io · PMID 29195078 | `evidence/lincs_reference_cache.py` | 訊號反轉 |
 | Reactome | `pathway_network_cache/v1` | reactome.org · PMID 34788843 | `evidence/pathway_cache.py` · `mechanism_graph.py` | 機制圖 |

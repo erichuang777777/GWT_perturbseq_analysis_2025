@@ -1,0 +1,42 @@
+{
+  "disease_name": "Immunodeficiency 18",
+  "slug": "immunodeficiency_18",
+  "platform_targets": [{"gene": "CD3E", "primary_rank": 401, "ot_genetic_assoc_score": 0.92}],
+  "sections": {
+    "definition_population": {
+      "content": "Immunodeficiency 18 is caused by biallelic CD3E mutations disrupting the CD3-epsilon subunit of the TCR complex, blocking T-cell development and producing a SCID-like phenotype in infancy.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/16264327/", "source_type": "pubmed", "quote": "Homozygous mutations in CD3D and CD3E genes lead to a complete block in"}
+      ]
+    },
+    "epidemiology": {
+      "content": "No disease-specific prevalence/incidence figure found; reported via individual case reports and small national SCID cohort series.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/32016651/", "source_type": "pubmed", "quote": "Biallelic Form of a Known CD3E Mutation in a Patient with Severe Combined Immunodeficiency."},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/32445296/", "source_type": "pubmed", "quote": "Mutational landscape of severe combined immunodeficiency patients from Turkey."}
+      ],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "CD3-epsilon is required for TCR/CD3 complex assembly and surface expression; homozygous CD3D/CD3E mutations block T-cell development; related CD3-delta deficiency produces profound T-cell depletion.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/16264327/", "source_type": "pubmed", "quote": "Homozygous mutations in CD3D and CD3E genes lead to a complete block in"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/15640687/", "source_type": "pubmed", "quote": "patients with profound T-cell deple"}
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "No FDA-approved disease-specific pharmacologic therapy identified in this pass; standard-of-care for CD3-subunit SCID-type disease is hematopoietic stem cell transplantation, per general SCID management literature (no CD3E-specific drug application found).",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov: CD3-deficiency-specific search returned 1 total trial; broader SCID condition returned 115 total trials.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=1 (condition=CD3 deficiency severe combined immunodeficiency); total=115 (condition=severe combined immunodeficiency)"}
+      ],
+      "coverage": "partial"
+    }
+  },
+  "gaps": ["No CD3E-deficiency-specific prevalence figure found", "No FDA drug application specific to CD3E deficiency found"]
+}

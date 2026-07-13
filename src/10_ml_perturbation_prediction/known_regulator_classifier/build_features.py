@@ -45,7 +45,7 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[3]
 LABELS_PATH = REPO_ROOT / "docs/mvp-research/pipeline/methodological_validation/benchmark_results.csv"
 MASTER_TABLE_PATH = REPO_ROOT / "docs/mvp-research/pipeline/kinetics_avoid/target_master_table.csv"
-CARDS_PATH = REPO_ROOT / "sources/target_tool_cache/a6bba17b-f194-4a50-8cf8-96e03eededd6/target_cards.csv"
+CARDS_PATH = REPO_ROOT / "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv"
 OUT_DIR = REPO_ROOT / "src/10_ml_perturbation_prediction/data"
 
 # --- 字面上是 ctx_specific_de 公式輸入，或跟它幾乎單調對應的欄位（來自

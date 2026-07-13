@@ -1,6 +1,6 @@
 # Data Governance Checklist (C5)
 
-**Status:** living checklist · **Last updated:** 2026-07-07
+**Status:** living checklist · **Last updated:** 2026-07-12
 
 Scope: every data source this toolkit reads, writes, or fetches, and the handling rules that apply to
 each. This is a checklist to run through before any of the following: adding a new data source, changing
@@ -18,8 +18,11 @@ what's exposed via the API/dashboard, or considering external redistribution/pub
 | `src/6_functional_interaction/results/disease_gene_associations_detailed.csv` (Open Targets export) | Prior-research join table used by `disease_translator.py` | Open Targets platform data is published under their own open-data terms | Re-verify Open Targets' current terms before external redistribution of this specific derived export |
 | Live connectors: ClinicalTrials.gov, PubMed/E-utilities, Open Targets GraphQL (`external_evidence_cache.py`) | Public government/nonprofit registries | NLM/NCBI usage policies (rate limits, no bulk scraping), Open Targets API terms | Already respected by design: fetches happen only in an offline batch job (`build_evidence_for_gene(s)`), never in the request path, and are TTL-cached (30 days, see §3) rather than re-fetched per view |
 | `docs/mvp-research/adc_overlay_gwt_overlap_full.csv` (§1.12 membrane/tractability overlay) | GWT-target join of the project owner's ADC target-discovery database (`candidate_genes.parquet`) | Per `docs/mvp-research/ADC_LOCAL_DATA_INGESTION_SPEC.md`, the underlying fields (surface-protein/transmembrane-domain calls) derive from public databases (HPA, UniProt, CSPA) — no patient-level or proprietary-cohort data. The join itself (which GWT genes overlap) is derived, not raw redistribution. | Low risk — public-database-derived gene annotations, not patient data. Re-confirm before external redistribution if the source parquet's own terms are ever formalized. |
-| `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` (§C of `docs/next_phases_plan.md`, gnomAD LOEUF/pLI safety overlay) | 15-gene seed of gnomAD loss-of-function constraint metrics (LOEUF, pLI), derived from the real values already checked in at `docs/mvp-research/connector_enrichment_demo.csv`, joined to Ensembl gene IDs via `gene_identifier_resolver.load_resolver()` (row count verified live via `pandas`; matches `human_validation_protocol.md` OF-6's "gnomAD 15/11,526") | gnomAD is a public, population-level aggregate constraint database (gnomAD terms of use: freely usable, no patient-level or individual-participant data — LOEUF/pLI are gene x population summary statistics, not genotypes) | Low risk — public aggregate gene-level annotations, no identifiers. This is explicitly a placeholder 15-gene seed for testing/demo (0.13% of the 11,526-gene screen); a full-genome gnomAD snapshot (owner-supplied, per the same file path) should carry the same public-aggregate-data characterization when it lands. |
+| `sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv` (§C of `docs/next_phases_plan.md`, gnomAD LOEUF/pLI safety overlay) | Full-genome gnomAD **v2.1.1** by-gene loss-of-function constraint metrics (LOEUF = `oe_lof_upper`, pLI), 19,155 genes (one row per gene, chrX included), built reproducibly from gnomAD's public GCS release bucket by `src/3_DE_analysis/data_acquisition/build_gnomad_constraint_overlay.py` (`gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz`). Ensembl gene IDs come straight from the source's `gene_id` column (no invented IDs). Covers 11,267 / 11,526 targets (~97.8%); replaced the earlier 15-gene demo seed derived from `connector_enrichment_demo.csv`. | gnomAD is a public, population-level aggregate constraint database (gnomAD terms of use: freely usable, no patient-level or individual-participant data — LOEUF/pLI are gene x population summary statistics, not genotypes) | Low risk — public aggregate gene-level annotations, no identifiers. Whole-genome public snapshot; v2.1.1 chosen over v4.1 because it is complete across chrX (the v4.1 flat distribution reachable in the build env was autosomes-only and would have dropped FOXP3/MED12/CD40LG). Rebuild is deterministic and byte-stable. |
 | UK Biobank LoF-burden estimates (`src/8_lymphocyte_counts_LoF/input/Backman_*.tsv`, `population_hypothesis.py`) | Backman et al. 2021 exome-wide rare-variant burden effect estimates | Published, de-identified, **population-level** (gene x trait posterior estimates) — not individual UK Biobank participant data | Already gene-level aggregate only; the population-vs-patient distinction is enforced in code (§2 below extends the same principle from donor demographics to this source) |
+| `sources/target_tool_cache/_overlays/hpa_singlecell_breadth_seed.parquet` (§6.1) | Human Protein Atlas single-cell consensus expression (51 cell-type categories), gene-level off-context breadth derived from `metadata/rna_single_cell_type_group.tsv.zip` | HPA (proteinatlas.org) is published under **CC BY-SA 4.0** — attribution + share-alike required for redistribution | Public, gene x cell-type aggregate summary statistics, no patient-level data — low risk for internal use. Cite HPA (proteinatlas.org) if this derived overlay is ever redistributed externally, per CC BY-SA terms. |
+| `metadata/Freimer2022_Screen.csv` (§6.3, Freimer et al. 2022, PMID 36356142) | Independent CRISPR-screen (IL2RA/IL2/CTLA4 FACS-sort readouts) MAGeCK statistics, ~1,350-gene subpool | Published academic supplementary data (Science, DOI 10.1126/science.abn5647) | Gene-level screen statistics only, no patient/participant data — low risk. This toolkit only reads it locally for the cross-check; it does not re-publish the table. |
+| `sources/topic13_clinicaltrials_flat.csv` (§6.2, offline ClinicalTrials.gov fallback) | Static snapshot of public ClinicalTrials.gov study metadata (same public registry as the live connector above) | Same NLM/NCBI usage policies as the live connector — this is just a cached instance of the same public data | Low risk — public registry data, no patient-level content. Always labelled `source_status: "offline_snapshot"`, never presented as a live/current count. |
 
 **Open action:** none of the above are blocking today (nothing in this toolkit re-publishes raw source
 data outside this repo), but the GWT dataset's own license status is the single item to close out before
@@ -121,3 +124,87 @@ tightly-scoped way**, by the exploratory concept-profile demo (see
 4. Does it carry any human-subject or otherwise sensitive fields? If yes, apply the same rule as §2:
    don't expose per-individual breakdowns without a review, especially at small n.
 5. Does every domain it can't answer land on an explicit `"unknown"`, never a silent `0`?
+
+---
+
+## 6. Prepared-but-unintegrated data inventory
+
+Audited 2026-07-12 in response to an explicit release-prep question: is there any data this repo
+already has, sitting completely independent — not generated by any pipeline stage, and not read/imported
+by any code? Scope: `metadata/` (raw-input tier) and `sources/` (research/overlay tier).
+
+**Method:** `git log --all --oneline -S"<basename>" -- '*.py' '*.ipynb' '*.R' '*.sh'` against the full
+531-commit, non-shallow history — not just the current working tree — for every candidate file. This
+answers "was this file EVER read by executable code, at any point in this repo's history," which is a
+stronger check than grepping the current tree (it also catches code that read a file and was later
+deleted).
+
+**Finding: every file below is "never integrated," not "integrated then abandoned."** The pickaxe search
+returned **zero** commits for all seven candidates, across every commit and every code file type. None
+was ever referenced inside a `.py`/`.ipynb`/`.R`/`.sh` file at any point in this repo's history. Where a
+file is mentioned in a doc (provenance registry, wiki, README), that is documentation-level intent, not
+code execution — called out explicitly where it applies, since a few of these are cases of "we said we'd
+use it" rather than silent omission.
+
+| File | What it is | Status (2026-07-12) | Why it was never wired in (assessment) | Action taken / recommended |
+|---|---|---|---|---|
+| `metadata/rna_single_cell_datasets.tsv.zip` | Human Protein Atlas single-cell RNA expression, per dataset | Metadata source for the integration below — not itself joined (see §6.1) | Its sibling `rna_tissue_consensus.tsv.zip` (bulk-tissue version) WAS read, in full, by `src/6_functional_interaction/tissue_specificity.ipynb` (16/17 cells executed) — that notebook simply never got to the single-cell-resolution siblings. | Provenance/citation metadata for `rna_single_cell_type_group.tsv.zip` below (dataset/technique/pubmed_id per tissue) — referenced from the new overlay's docstring, not directly joined. |
+| `metadata/rna_single_cell_type_group.tsv.zip` | HPA single-cell type-group summary (1,067,080 rows: Gene × Cell type group × nCPM) | **✅ Integrated 2026-07-12** — see §6.1 | Same root cause as above — downloaded alongside, never opened by any notebook/script. | Built into `hpa_singlecell_breadth_seed.parquet` (20,162 genes), served by `GET /api/hpa_singlecell_breadth/{gene}`. Standalone signal, NOT folded into `composite_safety_liability`. |
+| `sources/topic13_clinicaltrials_flat.csv` | 327-row ClinicalTrials.gov snapshot (`search_term, nctId, status, phases, conditions, interventions`), captured during the pre-development literature scan | **✅ Integrated 2026-07-12** — see §6.2 | The live `external_evidence_cache.py` ClinicalTrials fetcher was built independently, later, with its own TTL-cache pattern — this static snapshot was never wired in as a seed or offline fallback, even though the fetcher's target host is sometimes policy-blocked in sandboxed environments (confirmed this session for Open Targets/GWAS Catalog — see `docs/tier2-gene-for-Claude science.md` §2). | Wired as an offline fallback in `evidence/external_cache.py::_clinicaltrials_count_for_drug` — engaged ONLY when the live call fails; labelled `source_status: "offline_snapshot"` (never `"ok"`), never presented as current. |
+| `metadata/Freimer2022_Screen.csv` | Freimer et al. 2022 T-cell effector screen results | **✅ Integrated 2026-07-12** — see §6.3 | `docs/provenance_registry.csv` registered it as a data source with the stated purpose "external screen cross-check" (PMID 36356142) — the intent was documented, but no code was ever written to do the join. This was a **stated-intent-not-executed** gap. | Built `freimer2022_crosscheck.py`, served by `GET /api/freimer2022_crosscheck/{gene}`. Makes good on the stated intent — the provenance registry entry is now accurate. |
+| `metadata/donor_info.csv` | 4-donor demographic table (age/sex/ethnicity/weight/height/blood type) | **Deliberately NOT integrated** — user decision 2026-07-12 | Genuinely orphaned — mentioned only in `metadata/README.md`'s own file listing. Consistent with §2 above ("no module under `src/3_DE_analysis/` reads or exposes age/sex/ethnicity/weight_kg/height_cm"). | Explicitly asked and declined: integrating this (even for internal QC) was offered and the project owner chose to keep the existing exception rather than build anything against it, given the §2 small-*n* re-identification risk. Revisit only with a fresh governance review. |
+| `sources/topic01_local_druggable_targets_summary.csv` | 1,015-row early-stage druggability summary built directly from DE stats (`target_contrast_gene_name, max_de, mean_de, conditions_with_gt10, max_cells, any_offtarget, ontarget_sig_conditions, target_class`) | Correctly not integrated | A pre-development research artifact, **not** a superseded former dependency — git history confirms no commit ever had code read it, so this is not a case of code being removed later. Its intended function (gene-level druggability classification) was subsequently implemented more completely by `build_target_cards.py` + the `metadata/gene_lists/*.tsv` druggable-class overlays. | None — its role is already fulfilled by the current pipeline. Keep as a historical research artifact only, no action needed. |
+| `metadata/suppl_tables/stabl_constructs.csv` | Plasmid/construct DNA sequence list (construct name, sequence, usage annotation e.g. "perturb-seq and IL10/IL21 validation") | Correctly not integrated | Wet-lab construct metadata for the source paper's validation experiments, not gene-expression or association data — there is nothing in it for a bioinformatics analysis pipeline to read. | None — out of scope for this toolkit by design, not an oversight. |
+
+### 6.1 HPA single-cell breadth — integration record
+
+`src/3_DE_analysis/data_acquisition/build_hpa_singlecell_breadth_overlay.py` builds
+`sources/target_tool_cache/_overlays/hpa_singlecell_breadth_seed.parquet` (20,162 genes,
+deterministic/byte-stable rebuild) from `metadata/rna_single_cell_type_group.tsv.zip`: for each
+gene, the count of off-context (non-"T-cells") HPA single-cell types clearing nCPM > 1.0, and the
+max expression among them. Excludes "T-cells" the same way the existing GTEx overlay excludes
+Blood/Spleen — on-context expression here is normal biology, not an off-target signal.
+`hpa_singlecell_breadth.py` + `GET /api/hpa_singlecell_breadth/{gene}` serve it per gene.
+**Deliberately kept standalone**, not folded into `composite_safety_liability` — that composite
+is already calibrated/tested on the two-way gnomAD+GTEx signal; adding a third correlated
+breadth axis without re-deriving the tier thresholds would silently shift every gene's tier.
+Guarded by `tests/test_hpa_singlecell_breadth.py` (known-answer: CD3E's off-context max is its
+NK-cells value 137.0, not its T-cells peak 424.7; FOXP3 is narrowly expressed off-context).
+
+### 6.2 ClinicalTrials offline fallback — integration record
+
+`evidence/external_cache.py::_clinicaltrials_count_for_drug` now falls back to
+`sources/topic13_clinicaltrials_flat.csv` (matched by `search_term` substring, then a
+`conditions`-text substring match for the disease) ONLY when the live API call raises — the
+happy path is completely unchanged. The fallback result is always `source_status:
+"offline_snapshot"` (never `"ok"`) with an explicit `snapshot_note` caveat (static, ~36-drug
+coverage, substring approximation — not the live API's structured filter). Verified end-to-end
+in this exact session: `clinicaltrials.gov` was policy-blocked (confirmed via the same proxy
+denial pattern documented for Open Targets/GWAS Catalog in
+`docs/tier2-gene-for-Claude science.md` §2), and the fallback engaged for real, returning 4
+matched trials for `abatacept` + `Rheumatoid Arthritis` — not a mocked demonstration. Guarded by
+`tests/test_clinicaltrials_offline_fallback.py` (deterministic, monkeypatched — runs regardless
+of this environment's live network state).
+
+### 6.3 Freimer2022 cross-check — integration record
+
+`freimer2022_crosscheck.py` + `GET /api/freimer2022_crosscheck/{gene}` surface Freimer et al.
+2022's own FACS-sort CRISPR screen statistics (IL2RA/IL2/CTLA4 Treg/IL-2-axis readouts, a
+~1,350-gene subpool, not genome-scale) per gene: `fdr`/`rank`/`lfc`/direction (depleted/enriched)
+per screen, `significant = fdr < 0.05`. A genuinely independent dataset (different lab, assay —
+FACS-sort pooled screen vs this repo's own Perturb-seq — and readout). Construct-validity anchor:
+the CTLA4 screen's #1 enriched-direction hit (by rank) is CTLA4 itself (FDR 0.000413). A gene
+outside the subpool is `in_screen_scope: False` (out of scope), never conflated with a
+tested-and-negative result. Guarded by `tests/test_freimer2022_crosscheck.py`.
+
+**Related documentation bug found during this audit:** `metadata/README.md`'s "External Screen/Study
+Data" and "Reference Gene Lists" sections each listed one file that does not exist anywhere in this
+checkout — `rest_functional_group.csv` and `Replogle2022_TableS3_perturb_clusters.xlsx` (both were
+already marked `??` in the README itself, suggesting even the original author was unsure). Corrected to
+say so explicitly rather than silently dropped, so the gap stays visible instead of just disappearing
+from the doc.
+
+**Re-running this audit later:** `git log --all --oneline -S"<basename>" -- '*.py' '*.ipynb' '*.R' '*.sh'`
+returning empty is the check — it means no commit in the entire history ever added or removed a reference
+to that filename inside executable code. That is the bar for "integrated," not merely appearing in a
+directory listing or being mentioned in prose.

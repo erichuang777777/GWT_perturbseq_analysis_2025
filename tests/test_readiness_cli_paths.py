@@ -27,7 +27,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "src" / "3_DE_analysis"
-REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
+REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
 
 
 def test_repo_root_is_cwd_independent_and_anchors_real_files(tmp_path, monkeypatch):

@@ -39,7 +39,9 @@ def test_coverage_matches_reproducibility_md_known_values():
 
     gnomad = body["domains"]["gnomad_constraint"]
     assert gnomad["available"] is True
-    assert gnomad["covered"] == 15
+    # full-genome gnomAD v2.1.1 overlay now covers nearly all targets (was 15
+    # under the demo shortlist); 11,267 of the 11,526 targets have a constraint row
+    assert gnomad["covered"] == 11267
     assert gnomad["total"] == 11526
 
     gtex = body["domains"]["gtex_tissue_breadth"]

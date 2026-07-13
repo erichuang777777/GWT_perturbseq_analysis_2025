@@ -38,9 +38,11 @@ MANIFEST = PIPE / "FREEZE_MANIFEST.csv"
 # alone is ambiguous -- e.g. target_cards.csv exists in every cache UUID dir).
 EXPLICIT_PATHS: Dict[str, Path] = {
     "target_cards.csv": REPO
-    / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv",
+    / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv",
     "real-dataset.json": REPO / "frontend" / "webserver" / "public" / "real-dataset.json",
     "signed_module_effect.parquet": REPO / "sources" / "target_tool_cache" / "_overlays" / "signed_module_effect.parquet",
+    "gnomad_constraint_seed.csv": REPO / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv",
+    "hpa_singlecell_breadth_seed.parquet": REPO / "sources" / "target_tool_cache" / "_overlays" / "hpa_singlecell_breadth_seed.parquet",
 }
 
 

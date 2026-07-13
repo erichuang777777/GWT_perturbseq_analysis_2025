@@ -1,0 +1,75 @@
+{
+  "disease_name": "Crohn Disease",
+  "slug": "crohn_disease",
+  "platform_targets": [
+    {
+      "gene": "CYLD",
+      "primary_rank": 36,
+      "ot_genetic_assoc_score": 0.59
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Crohn's disease is a chronic inflammatory intestinal disease characterized by alternating flares and remissions, one of the two major forms of inflammatory bowel disease (ICD-10 K50).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/33160400/",
+          "source_type": "pubmed",
+          "quote": "the alternation of periods of flares and remissions influenced by a complex pathogenesis in which inflammation plays a key role"
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "IBD prevalence exceeds 0.3% in North America, Oceania, and much of Europe; Crohn's-specific prevalence peaks around 320 per 100,000 in Germany and Canada. Overall IBD affects an estimated 2.2 million in Europe and 1.4 million in North America.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/29050646/",
+          "source_type": "pubmed",
+          "quote": "the prevalence of inflammatory bowel disease exceeded 0·3% in North America, Oceania, and many countries in Europe"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/21931648/",
+          "source_type": "pubmed",
+          "quote": "affects 2.2 million people in Europe and 1.4 million people in North America"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "CYLD was the most significant gene in a genetic association study of Crohn's disease across five European referral centers (2,320 CD patients), and functionally, loss of CYLD (a deubiquitinase) permits NF-κB activation exploited by the IBD-associated pathogen adherent-invasive E. coli.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/24092863/",
+          "source_type": "pubmed",
+          "quote": "Ten single nucleotide polymorphisms (SNPs) in four genes were significantly associated with CD: CYLD, USP40, APEH and USP3. CYLD was the most significant gene with the intronically located rs12324931 the strongest associated SNP (p(FDR)=1.74e-17, OR=2.24 (1.83 to 2.74))."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "Biologics (TNF antagonists, anti-integrin, anti-IL-12/23) are standard for moderate-to-severe CD. Ustekinumab (Stelara, BLA125261, original FDA approval 2009-09-25) is an approved anti-IL-12/23 biologic used in CD.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/34688373/",
+          "source_type": "pubmed",
+          "quote": "Data are needed to inform the positioning of biologic therapy in the treatment of moderate-to-severe Crohn's disease, both first line and after previous biologic exposure."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "1,368 interventional trials registered on ClinicalTrials.gov for Crohn disease — a mature, heavily studied indication.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/",
+          "source_type": "ctgov",
+          "quote": "count_total query for condition=Crohn disease, study_type=INTERVENTIONAL returned total=1368"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No CD4+ T-cell-restricted mechanistic paper for CYLD found in this pass; the strongest evidence is a genetic association study plus a general epithelial/NF-κB-microbial mechanism, not CD4+ T-cell-specific biology."
+  ]
+}

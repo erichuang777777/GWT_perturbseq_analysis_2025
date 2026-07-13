@@ -32,17 +32,68 @@ underused.
   regulators with the correct sign (GATA3→Th2, TBX21→Th1, FOXP3→Treg as activators).
   Descriptive only, sparse (`unknown != 0`), guarded by `tests/test_signed_module_effect.py`,
   freeze-pinned. Does NOT reproduce the paper's network inference (see KNOWN_LIMITATIONS).
-- **Surface the paper's own regulator/signature tables** (Tier-1 ②, not yet built):
-  `Th2_Th1_polarization_signature_DE`, `CD4T_aging_signature_DE`,
-  `cluster_autoimmune_enrichment`, and the paper's `*_regulator_coefficients` tables are
-  in `metadata/suppl_tables/` but not referenced by `core/`/`api/`. Surfacing them as
-  dossier overlays would present the paper's *own* nominated Th1/Th2/aging/autoimmune
-  regulators directly.
-- **Full gnomAD constraint** (Tier-2, biggest external win): replace the 15-gene seed
-  (0.13% coverage) with the full-genome public gnomAD LOEUF/pLI snapshot.
+- ✅ **Surface the paper's own regulator nominations** (Tier-1 ②) — **shipped** for the
+  regulator-coefficient tables: `paper_regulators.py` + `GET /api/paper_regulators/{gene}`
+  serve the paper's `*_regulator_coefficients` tables verbatim (per gene: signed `coef_mean`,
+  `coef_rank` 0-1 percentile, and the paper's own known/novel flag), keyed by gene, across
+  polarization + aging signatures × context. Recovers the paper's own top calls (GATA3
+  polarization rank 1.0 known; BCL6 a novel nomination). Descriptive only, `unknown != 0`,
+  guarded by `tests/test_paper_regulators.py`.
+- ✅ **Surface the paper's autoimmune-cluster enrichment** (Tier-1, autoimmune axis) —
+  **shipped**: `autoimmune_clusters.py` + `GET /api/autoimmune_clusters/{gene}` explode the
+  paper's cluster-level `cluster_autoimmune_enrichment_results` (negative controls excluded)
+  so it's gene-queryable — "does this target sit in a perturbation cluster enriched for an
+  autoimmune disease, in which context, at what odds ratio?" Recovers textbook autoimmune
+  genes against textbook diseases (CTLA4 → Hashimoto's/RA/celiac/T1DM/SLE). Framed honestly
+  as **guilt-by-cluster-membership**, not a direct gene→disease association; descriptive
+  only, `unknown != 0`; guarded by `tests/test_autoimmune_clusters.py`. **Still not surfaced**
+  (lower priority): the raw signature DE tables (`Th2_Th1_polarization_signature_DE`,
+  `CD4T_aging_signature_DE`).
+- ✅ **Full gnomAD constraint** (Tier-2, biggest external win) — **shipped**: replaced the
+  15-gene demo seed (0.13% coverage) with an authentic full-genome gnomAD **v2.1.1** by-gene
+  LOEUF/pLI snapshot (19,155 genes, one row per gene, chrX included), covering 11,267 / 11,526
+  targets (~97.8%). Built reproducibly by
+  `src/3_DE_analysis/data_acquisition/build_gnomad_constraint_overlay.py` from gnomAD's public
+  GCS bucket; v2.1.1 chosen over v4.1 because the v4.1 flat distribution reachable in-env was
+  autosomes-only (would have dropped FOXP3/MED12/CD40LG). Still descriptive-only, `unknown != 0`,
+  never caps `readiness_call`; guarded by `tests/test_safety_overlay.py`. The composite safety
+  axis is now limited by the GTEx breadth overlay (~5k genes), not gnomAD.
 - **Full Open Targets Genetics / GWAS Catalog** (Tier-2, aligns with the paper's
   autoimmune-GWAS emphasis): expand disease association beyond the current 13 curated
-  indications / 17% coverage.
+  indications / 17% coverage. Plan drafted in `docs/tier2-gene-for-Claude science.md`
+  (scope decided: EFO immune-disease branch, coexists with the curated 13 via a
+  `curation_tier` column) — blocked on this sandbox's network policy (see that doc §2),
+  ready to execute once network access allows it.
+
+## Data already in the repo, now wired in
+
+Found during a release-prep sweep for prepared-but-unused data (full git-history check, not
+just the current tree — see `docs/data_governance_checklist.md` §6 for the complete audit,
+including files confirmed correctly unused, one deliberately declined by the project owner, and
+a documentation bug fixed along the way). All three actionable items below were local-only
+integrations (no external network needed) and are now shipped:
+
+- ✅ **HPA single-cell breadth overlay** (§6.1) — **shipped**: the bulk-tissue sibling file
+  (`rna_tissue_consensus.tsv.zip`) had been fully used by
+  `src/6_functional_interaction/tissue_specificity.ipynb`, but the single-cell-resolution files
+  (`rna_single_cell_datasets.tsv.zip`, `rna_single_cell_type_group.tsv.zip`) sat unused.
+  `hpa_singlecell_breadth.py` + `GET /api/hpa_singlecell_breadth/{gene}` now surface
+  single-cell-type-resolution off-context breadth (20,162 genes), excluding "T-cells" the same
+  way the existing GTEx overlay excludes Blood/Spleen. **Standalone** signal — deliberately not
+  folded into `composite_safety_liability`, to avoid silently shifting its calibrated tiers.
+- ✅ **ClinicalTrials.gov offline fallback** (§6.2) — **shipped**: `sources/topic13_clinicaltrials_flat.csv`
+  (a pre-development literature-scan capture, 327 rows) is now an offline fallback in
+  `evidence/external_cache.py::_clinicaltrials_count_for_drug`, engaged only when the live API
+  fails, always labelled `source_status: "offline_snapshot"` (never `"ok"`). Verified end-to-end
+  this session — `clinicaltrials.gov` was policy-blocked, and the fallback engaged for real.
+- ✅ **Freimer2022 independent-screen cross-check** (§6.3) — **shipped**: `docs/provenance_registry.csv`
+  had registered `metadata/Freimer2022_Screen.csv` as a cross-check source since the initial
+  commit, but no code ever did the join. `freimer2022_crosscheck.py` +
+  `GET /api/freimer2022_crosscheck/{gene}` now make good on that stated intent.
+- **Not integrated, by design**: `metadata/donor_info.csv` (declined — small-*n* re-identification
+  risk per §2), `sources/topic01_local_druggable_targets_summary.csv` (role already fulfilled by
+  `build_target_cards.py`), `metadata/suppl_tables/stabl_constructs.csv` (wet-lab construct data,
+  not analysis data). See `docs/data_governance_checklist.md` §6 for the full reasoning per file.
 
 ## Medium-term (evidence & modeling)
 

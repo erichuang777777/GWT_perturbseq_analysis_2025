@@ -1,0 +1,925 @@
+[
+  {
+    "id": "C1",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/C1.png",
+    "en": {
+      "title": "Knockdown effect and breadth across stimulation states",
+      "family": "Dimensionality reduction & composite",
+      "description": "A 2D dot plot displaying 15 genes on the y-axis against three stimulation conditions (Rest, Stim 8hr, Stim 48hr) on the x-axis. Dot size encodes the number of differentially expressed genes (10, 100, or 1,000), and dot color represents signed on-target effect size using a diverging red-blue colorbar, with all plotted values shown in blue (negative effect).",
+      "data_explanation": "This visualization maps the breadth and magnitude of CD4+ T-cell transcriptional response to perturbation of candidate target genes across resting and activated states. The prevalence of negative (blue) effect sizes indicates suppressive knockdown effects on T-cell activation markers, critical for identifying genes whose inhibition could dampen excessive immune responses in CD4+ T-cell-mediated disorders."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "C2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/C2.png",
+    "en": {
+      "title": "Pseudo-volcano: CD4+ T-cell targets by on-target effect size and DE-gene count",
+      "family": "Dimensionality reduction & composite",
+      "description": "Scatter plot with points colored by three experimental conditions (Rest, Stim 8hr, Stim 48hr); open circles indicate off-target-flagged observations (excluded). X-axis represents on-target effect size (signed; negative values indicate knockdown); y-axis shows DE-gene count on log10 scale. A dashed horizontal gate line marks the ≥50 DE-gene threshold. Selected targets are labeled (SENP5, CCNC, ELAVL1, ARHGAP30, TRIP12, CD2, SFXN1, HNRNPA2B1).",
+      "data_explanation": "The plot ranks CD4+ T-cell target candidates by the breadth of transcriptional perturbation (y-axis: number of differentially expressed genes) relative to on-target knockdown potency (x-axis: effect size). Targets crossing the ≥50 DE-gene threshold represent candidates with substantial downstream impact, informing selection of high-priority targets for functional validation in CD4+ T-cell biology."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "C3",
+    "group": "Core gallery",
+    "placement": "archive",
+    "img": "figures/C3.png",
+    "en": {
+      "title": "QC funnel",
+      "family": "Dimensionality reduction & composite",
+      "description": "Target count decreases with stepwise threshold application.",
+      "data_explanation": "Applying all thresholds: 33,983 → n_cells≥200 → significant → no off-target → ≥50 DE → 2,131."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target in one condition. Key columns: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (target cell count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/down-regulated gene counts)."
+  },
+  {
+    "id": "D1",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D1.png",
+    "en": {
+      "title": "Distribution of Downstream DE Genes Across Three Conditions",
+      "family": "Distributions",
+      "description": "Violin plot comparing the distribution of downstream differentially expressed (DE) genes across three conditions: Rest, Stim 8hr, and Stim 48hr. The y-axis shows the count of downstream DE genes plus 1 on a logarithmic scale, with median markers displayed as crosses for each condition.",
+      "data_explanation": "The analysis identifies downstream DE genes for each of three CD4+ T-cell activation conditions (Rest: n=10,344; Stim 8hr: n=10,423; Stim 48hr: n=10,379). The near-complete overlap in distributions indicates that most perturbations trigger weak downstream effects, which is critical for understanding the functional hierarchy of gene regulatory networks and identifying robust transcriptional targets for CD4+ T-cell engineering."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, maximum 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "D10",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D10.png",
+    "en": {
+      "title": "Q-Q Plot: On-Target Effect Size Distribution Across CD4+ T-Cell Conditions",
+      "family": "Distributions",
+      "description": "Three-panel Q-Q plot comparing on-target effect size distributions across three experimental conditions: Rest (n=6,063, R²=0.901), Stim 8hr (n=6,290, R²=0.902), and Stim 48hr (n=6,410, R²=0.897). Each panel plots observed on-target effect sizes (y-axis) against normal theoretical quantiles (x-axis) with a black reference line; all three conditions exhibit heavy left tails extending to approximately −60, indicating substantial deviation from normality.",
+      "data_explanation": "The Q-Q plots reveal that on-target effect sizes in CD4+ T cells deviate significantly from a normal distribution under all three conditions, with pronounced left-tail skewing suggesting a subset of genes with strong negative effects. This non-normality is consistent across resting and stimulated states (8 and 48 hours), indicating that standard parametric assumptions may be violated and that robust or non-parametric methods are warranted for target discovery. The comparable R² values (0.90+) and similar tail behavior across conditions suggest the deviation is a intrinsic feature of the genomic response landscape rather than condition-dependent noise."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key columns: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5 to 7.1, median -6.3), n_cells_target (target cells count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)"
+  },
+  {
+    "id": "D2",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D2.png",
+    "en": {
+      "title": "Box",
+      "family": "Distributions",
+      "description": "Median and interquartile range of the same data, more concise than violin plot.",
+      "data_explanation": "Same as D1: n_total_de_genes × condition. Box = IQR, line = median. Low raw median (2 DE genes) reflects that most perturbations have no widespread effect."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of up/downregulated genes)."
+  },
+  {
+    "id": "D3",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D3.png",
+    "en": {
+      "title": "Ridgeline",
+      "family": "Distributions",
+      "description": "Three-condition density curves vertically offset to avoid overlap and obscuration.",
+      "data_explanation": "Same data as D1, independent kernel density estimation for each condition. Clearer than overlapping plots when conditions are numerous."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "D4",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D4.png",
+    "en": {
+      "title": "Histogram",
+      "family": "Distributions",
+      "description": "Overlaid histogram of three-condition effects showing absolute counts.",
+      "data_explanation": "Same as D1, but y-axis shows counts rather than density. 76% of rows have log10(DE+1)<1."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (target cells count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "D5",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D5.png",
+    "en": {
+      "title": "ECDF",
+      "family": "Distributions",
+      "description": "Cumulative proportion of targets below x value.",
+      "data_explanation": "Cumulative proportion calculated after sorting by n_total_de_genes. Can directly read that 76% of targets have log DE<1 (<10 DE genes)."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "D6",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D6.png",
+    "en": {
+      "title": "On-target effect size across conditions for 15 prioritized targets",
+      "family": "Distributions",
+      "description": "Strip/jitter plot showing on-target effect size (y-axis, negative values indicate knockdown) across three conditions: Rest (n=14), Stim 8hr (n=13), and Stim 48hr (n=15). Black horizontal lines mark the median effect size per condition.",
+      "data_explanation": "Each point represents the on-target knockdown effect for one of 15 prioritized CD4+ T-cell targets that maintained strong knockdown across all three conditions. The distribution and median effect sizes across resting, 8-hour stimulated, and 48-hour stimulated states reveal target robustness and condition-specific efficacy, critical for selecting targets that sustain functional perturbation during T-cell activation."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range -58.5~7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "D7",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/D7.png",
+    "en": {
+      "title": "On-Target Effect Size Distribution Across Conditions",
+      "family": "Distributions",
+      "description": "Beeswarm plot displaying on-target effect size (y-axis, negative values indicate knockdown) across three conditions: Rest (n=14), Stim 8hr (n=13), and Stim 48hr (n=15). A black horizontal line marks the median effect size for each condition.",
+      "data_explanation": "Each point represents the on-target knockdown effect magnitude for a prioritized target under different T-cell activation states. This distribution reveals how knockdown intensity varies across resting and stimulated CD4+ T cells, critical for identifying targets whose effects are robust and consistent across physiological conditions relevant to CD4+ T-cell engineering."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range -58.5~7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "D8",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/D8.png",
+    "en": {
+      "title": "Raincloud",
+      "family": "Distributions",
+      "description": "Combined violin + box + strip plot visualization.",
+      "data_explanation": "Same as D1, three representation types overlaid: distribution shape + summary statistics + individual points."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "D9",
+    "group": "Core gallery",
+    "placement": "supplement",
+    "img": "figures/D9.png",
+    "en": {
+      "title": "1D KDE",
+      "family": "Distributions",
+      "description": "Kernel density smoothing curves for three conditions, univariate.",
+      "data_explanation": "Kernel density estimation applied to logDE. The three condition curves nearly overlap, indicating that the distribution does not inherently change with activation."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row represents differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5–7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "H1",
+    "group": "Core gallery",
+    "placement": "archive",
+    "img": "figures/H1.png",
+    "en": {
+      "title": "Marimekko Mosaic Treemap of DE-Stat Rows by Culture Condition and On-Target Effect",
+      "family": "Hierarchical & interactive",
+      "description": "A Marimekko/mosaic treemap with three columns representing culture conditions (Rest: 11,287; Stim8hr: 11,415; Stim48hr: 11,281 rows), each subdivided into two on-target effect categories: no on-target knockdown (no knockdown: 4,281/4,133/3,969) and on-target (has knockdown: 6,869/7,154/7,193). Rectangle area is proportional to the count of DE-stat rows (n=33,983 total), with color encoding culture condition; a red diagonal marks approximately 384 suspected off-target rows (~1%).",
+      "data_explanation": "This visualization stratifies differential-expression statistics by stimulation state (rest versus 8-hour and 48-hour stimulation) and on-target knockdown efficacy, revealing how transcript-level perturbation outcomes distribute across experimental conditions. The large prevalence of on-target-effect rows across all conditions highlights which stimulation states yield interpretable, on-target gene-silencing results—critical for prioritizing CD4+ T-cell targets with robust, reproducible knockdown phenotypes in functional screening."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cells for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "H2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/H2.png",
+    "en": {
+      "title": "Sunburst",
+      "family": "Hierarchical & interactive",
+      "description": "Radial version of the Treemap.",
+      "data_explanation": "Same data as H1, with radial concentric layers representing hierarchy."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "H3",
+    "group": "Core gallery",
+    "placement": "archive",
+    "img": "figures/H3.png",
+    "en": {
+      "title": "Icicle",
+      "family": "Hierarchical & interactive",
+      "description": "Icicle chart version of the Treemap.",
+      "data_explanation": "Same data as H1, with rectangular icicles presenting hierarchy."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "H4",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/H4.png",
+    "en": {
+      "title": "Sequential QC-Filtering Funnel for CD4+ T-Cell Target Discovery",
+      "family": "Hierarchical & interactive",
+      "description": "A 5-stage sequential filtering funnel (Sankey diagram) showing differential-expression quality control from left to right: All DE rows (33,983) → cells ≥200 (30,515) → significant on-target (19,297) → no off-target (16,998) → DE genes ≥50 (2,131). Blue bands represent rows passing each gate; gray bands show rows dropped at each stage (−3,468; −11,218; −2,299; −14,867). Band width encodes the count of rows passing or removed, with 6.3% of input rows retained through all filters.",
+      "data_explanation": "This QC pipeline identifies high-confidence CD4+ T-cell target genes by progressively filtering a differential-expression dataset: removing genes expressed in fewer than 200 cells, retaining only statistically significant on-target calls, excluding off-target hits, and finally selecting genes with ≥50 differential-expression support. The steep attrition (93.7% filtered) illustrates the stringency required to isolate robust, cell-type-specific therapeutic targets from genome-wide DE analysis."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target in one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "H5",
+    "group": "Core gallery",
+    "placement": "archive",
+    "img": "figures/H5.png",
+    "en": {
+      "title": "Funnel",
+      "family": "Hierarchical & interactive",
+      "description": "Interactive Plotly version of the QC filtering funnel.",
+      "data_explanation": "Same five stages as C3: 33,983 → 30,515 → 19,297 → 16,998 → 2,131."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "H6",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/H6.png",
+    "en": {
+      "title": "Parallel-coordinates plot of CD4+ T-cell activation metrics across stimulation conditions",
+      "family": "Hierarchical & interactive",
+      "description": "Parallel-coordinates plot with three axes — cell count, |on-target effect|, and DE gene count — each scaled to percentiles (0–100) with 5th, 50th, and 95th percentile marks. Thin gray lines represent ~500 sampled rows per condition; thick colored lines overlay the per-condition median trajectories: blue for Rest, orange for Stim8hr, and green for Stim48hr.",
+      "data_explanation": "Each trajectory traces how cell abundance, on-target effect magnitude, and differential-expression burden co-vary within a condition. The median profiles reveal whether stimulation shifts the population toward higher on-target activity and broader transcriptional change, helping identify which CD4+ T-cell states achieve strong on-target effects while minimizing off-target DE — a key trade-off for CD4+ target discovery."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cells for target, median 539), ontarget_significant, offtarget_flag, n_up_genes / n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "H7",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/H7.png",
+    "en": {
+      "title": "CD4+ T-Cell Target Perturbations: Four-Dimensional Classification by Culture, On-Target Effect, DE-Gene Grade, and Filter Status",
+      "family": "Hierarchical & interactive",
+      "description": "Parallel-categories diagram displaying 33,983 CD4+ T-cell target perturbations across four dimensions: culture condition (Rest, Stim8hr, Stim48hr), on-target effect presence (has/no on-target), differential-expression gene-count grade (no effect, 1 DE, 2–10 DE, >10 DE), and filter threshold outcome (passed, not passed). Bands are colored by culture condition with width proportional to row counts.",
+      "data_explanation": "The visualization stratifies genome-wide perturbation outcomes by transcriptional response magnitude and experimental validation status. Prioritizing targets with on-target effect and >10 DE genes passing the filter threshold (n=2,131) identifies high-confidence candidate genes for CD4+ T-cell functional studies, while the full distribution reveals how culture condition and response intensity trade off against filtering stringency across all 33,983 perturbations."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "M1",
+    "group": "Core gallery",
+    "placement": "archive",
+    "img": "figures/M1.png",
+    "en": {
+      "title": "Pearson Correlation Heatmap of CD4+ T-Cell Target Discovery Metrics",
+      "family": "Matrices",
+      "description": "A single-panel Pearson correlation heatmap displaying pairwise correlations among six features: Cells assayed, Genes up, Genes down, Total DE genes, On-target effect, and Downstream genes. Color intensity and numerical values indicate correlation strength between each pair of metrics.",
+      "data_explanation": "The heatmap reveals relationships between experimental and computational outputs in CD4+ T-cell target discovery workflows. The perfect correlation (1.00) between Total DE genes and Downstream genes indicates redundancy, while patterns among other metrics (cell counts, directional gene changes, on-target effects) inform feature selection and workflow optimization for robust target prioritization."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key columns: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "M10",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M10.png",
+    "en": {
+      "title": "Top DE Gene Targets across TCR Stimulation Conditions",
+      "family": "Matrices",
+      "description": "Clustered heatmap of ~15 top differentially expressed genes (rows: VAV1, CD247, LAT, CD3E, PLCG1, PMVK, UBXN1, TADA2B, SGF29, DENR, CCNC, MED12, SENP5, SUPT20H, TADA1) across 3 conditions (Rest, Stim8hr, Stim48hr), with cells annotated by raw DE-gene counts. A log-scale magma colormap encodes the count intensity, row dendrogram shows hierarchical clustering, and a green box highlights the TCR-signaling cluster.",
+      "data_explanation": "Each cell value represents the total number of differentially expressed genes for that target in each condition, revealing how stimulation duration reshapes the transcriptional landscape of CD4+ T-cells. The log-scale visualization emphasizes dynamic targets with large fold-changes in DE burden, critical for prioritizing which genes drive TCR-dependent activation and which sustain the prolonged response."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target in one condition. Key fields: n_total_de_genes (count of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (counts of upregulated/downregulated genes)."
+  },
+  {
+    "id": "M2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M2.png",
+    "en": {
+      "title": "Pearson Correlation Matrix of CD4+ T-Cell Target Features",
+      "family": "Matrices",
+      "description": "A 6×6 symmetric heatmap displaying Pearson correlations between six target-discovery features: Genes down, Genes up, Total DE genes, Downstream genes, Cells assayed, and On-target effect. A column dendrogram clusters features hierarchically, grouping the four differential-expression metrics together. Cell values range from −0.22 to 1.00, with a color scale indicating correlation strength.",
+      "data_explanation": "The correlation matrix reveals how target-selection metrics co-vary across the screening dataset. The dendrogram's tight clustering of DE-count metrics (Genes down, Genes up, Total DE genes, Downstream genes) indicates these measures are highly interdependent, while weaker or negative correlations with On-target effect and Cells assayed highlight trade-offs between potency and assay scale—critical relationships for prioritizing CD4+ T-cell targets with robust and specific activity."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key columns: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5~7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "M3",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M3.png",
+    "en": {
+      "title": "QC: is DE breadth driven by cell count?",
+      "family": "Matrices",
+      "description": "Hexbin density plot mapping cells assayed per target (X-axis, log scale) against total differentially expressed genes per target (Y-axis, log scale). Hexagon bins are colored by target density (log scale). A dashed horizontal line indicates the median of 2 DE genes, revealing the distribution of transcriptomic perturbation breadth relative to experimental depth.",
+      "data_explanation": "The plot reveals how experimental sample size (cells assayed) correlates with the transcriptomic scope (DE gene count) of CD4+ T-cell target perturbations. Targets clustered near the median DE threshold inform which candidate targets achieve focused, reproducible transcriptomic effects—a key criterion for selecting targets with interpretable and targetable mechanisms in CD4+ biology."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target in one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (target cell count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "M4",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M4.png",
+    "en": {
+      "title": "Biology: does knockdown strength predict response breadth?",
+      "family": "Matrices",
+      "description": "Scatter of on-target effect size (x) vs total downstream DE genes (y, log), with each point colored by local point density ('Targets at this density', viridis). Not a continuous KDE/contour surface — the shading is a per-point density count. Stronger knockdown (more negative x) coincides with broader response.",
+      "data_explanation": "Same as M3 two-column layout, suitable for medium point counts."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (numbers of upregulated/downregulated genes)."
+  },
+  {
+    "id": "M5",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M5.png",
+    "en": {
+      "title": "Pairwise structure of DE metrics: effect size decouples from response breadth",
+      "family": "Matrices",
+      "description": "A 4×4 matrix visualization of four differential expression (DE) metrics: Cells log10, On-target effect, DE genes log10, and Genes up log10. The diagonal contains histograms showing the marginal distribution of each metric, while off-diagonal panels display hexbin density plots (viridis colormap) revealing pairwise relationships between metrics.",
+      "data_explanation": "This correlation matrix quantifies how on-target effect size decouples from the breadth of transcriptional response across candidate CD4+ T-cell targets. The hexbin density encoding highlights which metric combinations are prevalent in the screen, clarifying whether strong on-target effects correlate with widespread DE gene induction—a key distinction for prioritizing targets with focused versus pleiotropic activity profiles."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (target cell count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "M6",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M6.png",
+    "en": {
+      "title": "×",
+      "family": "Matrices",
+      "description": "Mean of each metric across three conditions (row-wise z-score normalization).",
+      "data_explanation": "Matrix of mean values for 7 metrics × 3 conditions. Identifies which metrics change with activation."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "M7",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M7.png",
+    "en": {
+      "title": "Target Cell Assay Coverage vs. Differential Expression: Joint Distribution",
+      "family": "Matrices",
+      "description": "Joint plot with central hexbin scatter plot and marginal histograms on top and right axes. X-axis shows cells assayed per target (log10 scale); Y-axis shows total DE genes (log10, +1 offset). Red points indicate targets passing the gate (n=2,131); dashed reference lines mark thresholds at ≥200 cells assayed and ≥50 DE genes.",
+      "data_explanation": "The plot maps experimental coverage (cells per target) against transcriptional impact (DE gene count) to identify robust CD4+ T-cell targets. Targets in the gated region combine sufficient assay depth with meaningful differential expression, ensuring discoveries are supported by both statistical power and biological effect size—critical for reliable target validation."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes / n_down_genes (number of upregulated / downregulated genes)."
+  },
+  {
+    "id": "M8",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M8.png",
+    "en": {
+      "title": "Shortlist genes group by their three-condition knockdown profile",
+      "family": "Matrices",
+      "description": "Dendrogram displaying hierarchical clustering of 15 genes (SENP5, CCNC, DENR, TADA2B, SUPT20H, MED12, UBXN1, TADA1, VAV1, SGF29, CD247, PMVK, CD3E, LAT, PLCG1) based on their knockdown effects across three experimental conditions. The y-axis represents cluster distance computed using Ward linkage on effect-size profiles.",
+      "data_explanation": "Genes are grouped by similarity in how their knockdown impacts CD4+ T-cell phenotype or function across three distinct conditions, revealing functionally related targets that may act in parallel or coordinated pathways. This clustering identifies candidate genes with correlated roles in CD4+ T-cell biology, enabling prioritization of therapeutic targets with shared mechanistic features."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "M9",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/M9.png",
+    "en": {
+      "title": "Contour",
+      "family": "Matrices",
+      "description": "Knockdown effect vs. breadth density contour plot, sampled 3000.",
+      "data_explanation": "Same kernel density contour as M3 two-column plot; fill color represents density."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "N1",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N1.png",
+    "en": {
+      "title": "STRING",
+      "family": "Networks",
+      "description": "Candidate target protein interaction network.",
+      "data_explanation": "STRING API edges with combined_score≥400. Immune targets form TCR module; broad-effect targets form transcriptional machinery module."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "N2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N2.png",
+    "en": {
+      "title": "Chord",
+      "family": "Networks",
+      "description": "Genes arranged in circle; connecting lines drawn within circle.",
+      "data_explanation": "Same as N1 edge data; line thickness = interaction confidence score."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "N3",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N3.png",
+    "en": {
+      "title": "Three-Set Euler Diagram: Significant Genes, Gating Filter, and Off-Target Genes",
+      "family": "Networks",
+      "description": "Three-set Euler diagram showing overlap among 7,913 significant genes, 1,235 genes passing a quality gate, and 1,152 off-target genes. The passes-gate set is entirely nested within significant; the off-target set partially overlaps significant (1,059 genes shared) and independently contains 93 genes outside the significant set.",
+      "data_explanation": "This diagram stratifies candidate CD4+ T-cell targets by statistical significance, technical quality (gating), and predicted off-target binding. The 5,681 significant-only genes represent high-confidence targets free of gating or off-target concerns; the 1,173 genes passing both significance and gating thresholds form a refined high-priority list; and the 1,059 off-target-significant overlap identifies genes requiring binding-specificity validation before advancement, while 93 off-target genes flagged outside significance may indicate systematic assay artifacts or sequence homology issues."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (target cell count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/down-regulated gene counts)."
+  },
+  {
+    "id": "N4",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N4.png",
+    "en": {
+      "title": "Downstream DE Gene Count by Target Gene and Stimulation Condition",
+      "family": "Networks",
+      "description": "Manhattan-style scatter plot with target genes on the X-axis (alphabetical order) and log-scaled downstream DE gene count on the Y-axis. Points are colored by three stimulation conditions: Rest (blue), Stim8hr (orange), and Stim48hr (purple). Fifteen shortlist genes with DE count >1000 are circled and labeled.",
+      "data_explanation": "The plot quantifies the transcriptional impact of perturbing each target gene under different T-cell stimulation states. Genes with high downstream DE counts (circled shortlist) are strong candidates for CD4+ T-cell therapeutic intervention, as they regulate large numbers of differentially expressed genes and show condition-dependent effects critical for understanding immune response mechanisms."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5–7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "N5",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N5.png",
+    "en": {
+      "title": "CD4+ T-cell knockdown effect trajectories across stimulation time course",
+      "family": "Networks",
+      "description": "Parallel-coordinates plot tracking on-target effect size (negative values indicate stronger knockdown) for 15 genes across three conditions: Rest, Stim8hr, and Stim48hr. Two trajectory classes are shown: 12 genes where knockdown effect weakens toward zero with stimulation (purple), and 3 genes where effect strengthens (blue).",
+      "data_explanation": "Each gene's on-target effect size represents the magnitude of phenotypic change upon targeted knockdown in CD4+ T cells. The convergence of most effects toward zero by 48hr stimulation indicates that target activity diminishes or becomes redundant as cells transition from resting to activated state, a critical observation for identifying targets whose perturbation impacts early versus sustained T-cell function in CD4+ target discovery."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (target cells, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "N6",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N6.png",
+    "en": {
+      "title": "CD4+ T-cell targets by differentially expressed gene count",
+      "family": "Networks",
+      "description": "Stacked area chart displaying the number of affected targets across three conditions (Rest, Stim8hr, Stim48hr), stratified into five bands representing total DE-gene count thresholds: 1–9, 10–49, 50–199, 200–999, and ≥1000 genes per target. Y-axis shows number of affected targets; x-axis shows the three stimulation conditions.",
+      "data_explanation": "Each band represents targets grouped by the magnitude of transcriptional changes (number of DE genes), revealing how target selection pressure varies with the scale of differential expression. Targets with higher DE-gene counts (200–999 and ≥1000) indicate genes with broad or strong response signatures, critical for prioritizing CD4+ T-cell targets with robust and reproducible regulatory programs across resting and stimulated states (n=9,399 Rest; n=9,672 Stim8hr; n=9,686 Stim48hr)."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/down-regulated gene counts)."
+  },
+  {
+    "id": "N7",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/N7.png",
+    "en": {
+      "title": "UpSet plot",
+      "family": "Networks",
+      "description": "4 evidence set intersections (>3 sets used).",
+      "data_explanation": "Eating gene layer significant(7,913), passes_gate(1,235), has_offtarget(1,152), broad_effect(10). Replaces Venn handling for multiple sets."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "R1",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R1.png",
+    "en": {
+      "title": "14 of 15 Shortlisted CD4+ T-Cell Targets: Downstream Gene Dysregulation Breadth",
+      "family": "Ranking",
+      "description": "Lollipop/dumbbell plot displaying 15 target genes, each with three connected dots representing the count of significantly dysregulated downstream genes across three experimental conditions: Rest (blue), Stimulation 8 hours (orange), and Stimulation 48 hours (purple). The x-axis shows the breadth of downstream gene dysregulation, ranging from 0 to 6,000 genes.",
+      "data_explanation": "Each target's downstream dysregulation footprint—measured as the number of significantly altered genes in each condition—reveals how broadly each candidate modulates the transcriptional landscape during T-cell activation. Targets with large condition-dependent differences in breadth identify those that reshape gene regulation in response to stimulation, a key indicator of functional relevance for CD4+ T-cell target discovery and therapeutic intervention design."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "R10",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R10.png",
+    "en": {
+      "title": "Dot-plot matrix (scanpy)",
+      "family": "Ranking",
+      "description": "Gene × Condition dot matrix: size = breadth, color = knockdown.",
+      "data_explanation": "Encoding n_total_de_genes (size) + ontarget_effect_size (color). Standard presentation in single-cell field."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of up/downregulated genes)."
+  },
+  {
+    "id": "R2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R2.png",
+    "en": {
+      "title": "Diverging bar",
+      "family": "Ranking",
+      "description": "Number of upregulated (right) / downregulated (left) genes per target.",
+      "data_explanation": "Shows n_up_genes/n_down_genes. Total upregulated across three conditions: Rest 371,945 / Stim8hr 506,326 / Stim48hr 392,533."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (number of cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "R3",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R3.png",
+    "en": {
+      "title": "Distribution of knockdown response magnitudes across REST, 8-hour, and 48-hour stimulation conditions",
+      "family": "Ranking",
+      "description": "100%-stacked bar chart showing three experimental conditions (Rest, Stim 8 hr, Stim 48 hr) on the x-axis and the share of tested knockdowns (%) on the y-axis. Each bar is segmented into four response-size categories based on downstream differentially expressed gene count: no effect (grey), 1 DE gene (light blue), 2–10 DE genes (mid blue), and >10 DE genes (dark blue).",
+      "data_explanation": "The chart quantifies how knockdown magnitude varies across resting and stimulated CD4+ T-cell states, with each segment reflecting the fraction of tested perturbations that trigger increasingly large transcriptional cascades. Response-size stratification is essential for target discovery because it identifies which CD4+ regulators produce focal versus broad downstream effects, helping prioritize candidates that drive coordinated immune programs over those with isolated side effects."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "R4",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R4.png",
+    "en": {
+      "title": "Waterfall",
+      "family": "Ranking",
+      "description": "All target knockdown effects displayed in continuous order after sorting.",
+      "data_explanation": "Sorted by ontarget_effect_size (min -58.5~max 7.1). Deep negative on left = strong knockdown."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "R5",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R5.png",
+    "en": {
+      "title": "CD4+ T-Cell Target Discovery: Downstream Gene Breadth vs. On-Target Effect Size",
+      "family": "Ranking",
+      "description": "Bubble scatter plot with x-axis representing downstream genes differentially expressed (breadth, log scale) and y-axis representing on-target effect size (signed). Bubble size encodes cells per target (200, 1,000, or 3,000 cells), and color distinguishes condition (Rest, Stim 8 hr, Stim 48 hr).",
+      "data_explanation": "The plot identifies CD4+ T-cell targets by comparing the breadth of their downstream transcriptional effects (x-axis) against the magnitude and direction of their on-target perturbation response (y-axis). Larger bubbles indicate targets evaluated in more cells, helping prioritize high-confidence candidates for therapeutic intervention based on both effect strength and transcriptional scope."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "R6",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R6.png",
+    "en": {
+      "title": "Grouped bar",
+      "family": "Ranking",
+      "description": "Three-condition effect comparison of selected genes side-by-side.",
+      "data_explanation": "Count n_total_de_genes grouped by gene × condition. Observe condition-specific patterns."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "R7",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R7.png",
+    "en": {
+      "title": "Mean On-Target Effect Size by Stimulation Condition",
+      "family": "Ranking",
+      "description": "Bar chart with error bars displaying three bars representing distinct experimental conditions: Rest (n=6,063), Stim 8 hr (n=6,290), and Stim 48 hr (n=6,410). The y-axis shows mean on-target effect size (signed), with values ranging approximately −11.4 to −12.3, and error bars represent 95% confidence intervals.",
+      "data_explanation": "The on-target effect sizes quantify the strength and direction of CRISPR perturbations targeting CD4+ T cells across resting and stimulated states. Comparison across Rest, 8-hour stimulation, and 48-hour stimulation conditions reveals how T-cell activation state influences the magnitude of genetic target effects, which is critical for identifying robust and condition-specific targets for functional genomic studies in CD4+ T-cell biology."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5 to 7.1, median -6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "R8",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R8.png",
+    "en": {
+      "title": "Point plot",
+      "family": "Ranking",
+      "description": "Trend lines for selected genes across three conditions.",
+      "data_explanation": "n_total_de_genes by gene × condition. Lines show condition dynamics for each gene."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "R9",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/R9.png",
+    "en": {
+      "title": "MA plot",
+      "family": "Ranking",
+      "description": "Mean expression vs knockdown effect.",
+      "data_explanation": "Plot target_baseMean (log10) × ontarget_effect_size. Diagnose whether effect size is dependent on expression level."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target in one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5–7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "V1",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V1.png",
+    "en": {
+      "title": "PCA of CD4+ T-cell targets by mean effect magnitude",
+      "family": "Dimensionality reduction & composite",
+      "description": "PCA scatter plot with PC1 (55% variance) and PC2 (33% variance) axes. Grey points are the 9,861 other targets; the 1,225 gate-passing targets are colored by mean |effect| (viridis scale, 0–25+). Red open circles mark the 15 curated shortlist genes.",
+      "data_explanation": "Each point represents a potential CD4+ T-cell target gene, positioned by principal components of its functional signature. Color intensity reflects the magnitude of effect across assays, highlighting candidates with strong, consistent phenotypic impact for target discovery and prioritization."
+    },
+    "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5 to 7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "V2",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V2.png",
+    "en": {
+      "title": "t-SNE",
+      "family": "Dimensionality reduction & composite",
+      "description": "Nonlinear dimensionality reduction emphasizing local neighborhood structure.",
+      "data_explanation": "Same as V1 input. Axes are meaningless, distances between clusters are unreliable; only cluster assignments should be interpreted."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row represents differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, maximum 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "V3",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V3.png",
+    "en": {
+      "title": "UMAP",
+      "family": "Dimensionality reduction & composite",
+      "description": "Nonlinear dimensionality reduction preserving global structure.",
+      "data_explanation": "Same as V1 input. Perturb-seq standard dimensionality reduction, three methods consistent conclusions."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range -58.5~7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
+  },
+  {
+    "id": "V4",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V4.png",
+    "en": {
+      "title": "Curated targets differ in how knockdown magnitude shifts with stimulation",
+      "family": "Dimensionality reduction & composite",
+      "description": "Radar/spider plot comparing knockdown effect sizes across 15 curated genes (CD3E, LAT, TADA2B, SENP5, PLCG1, VAV1, SGF29, UBXN1, CD247, MED12, CCNC, SUPT20H, TADA1, DENR, PMVK) under three conditions: Rest (blue), Stim 8hr (orange), and Stim 48hr (red). Each spoke represents one gene, and radial distance encodes absolute effect size (scale: 0–45).",
+      "data_explanation": "The three overlaid polygons reveal how knockdown magnitude for each target responds to T-cell stimulation over time, distinguishing genes whose effects are stable across conditions from those whose impact scales with activation state. This differential response profile is critical for identifying CD4+ T-cell targets that maintain consistent on-target potency during immune activation versus those requiring condition-specific dosing or validation."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE gene count, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
+  },
+  {
+    "id": "V5",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V5.png",
+    "en": {
+      "title": "Curated targets ranked by knockdown magnitude, split by condition",
+      "family": "Dimensionality reduction & composite",
+      "description": "Polar bar chart displaying ~15 genes (CCNC, SENP5, DENR, TADA2B, SUPT20H, LAT, PLCG1, CD3E, VAV1, SGF29, PMVK, CD247, MED12, TADA1, UBXN1) with three bars per gene representing Rest, Stim 8hr, and Stim 48hr conditions. Bar height encodes on-target absolute effect size (knockdown magnitude) with radial ticks at 30 and 45.",
+      "data_explanation": "On-target effect sizes reflect the magnitude of knockdown for each candidate target across resting and stimulated T-cell states, revealing condition-dependent gene dependencies. Ranking and multi-condition comparison identify genes with robust or state-specific knockdown effects, prioritizing targets for CD4+ T-cell functional studies and therapeutic intervention."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (target cell count, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
+  },
+  {
+    "id": "V6",
+    "group": "Core gallery",
+    "placement": "primary",
+    "img": "figures/V6.png",
+    "en": {
+      "title": "Effect size and DE-gene count load on separate principal axes",
+      "family": "Dimensionality reduction & composite",
+      "description": "PCA biplot displaying 1,225 gate-passing samples (blue points) and 15 curated shortlist samples (red rings) on a two-dimensional projection. PC1 captures 55% of variance (effect size features: Rest, Stim 8 hr, Stim 48 hr) while PC2 captures 33% of variance (DE-gene count across all conditions), with four loading arrows indicating feature contributions.",
+      "data_explanation": "The biplot separates transcriptional effect magnitude (PC1) from the breadth of differential expression (PC2), revealing how CD4+ T-cell stimulation responses vary across samples. The curated shortlist (red rings) highlights 15 samples of particular interest, likely identified by concordance between effect size and DE-gene patterns, critical for selecting robust targets for downstream functional validation in T-cell immunotherapy."
+    },
+    "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for 'one target under one condition.' Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range −58.5~7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of up/downregulated genes)."
+  },
+  {
+    "id": "A1",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A1.png",
+    "en": {
+      "title": "CD4+ Perturb-seq Context-Specific DE Benchmark: PR Curve, ROC Curve, and Regulator Ranking",
+      "family": "Analysis / publication figure",
+      "description": "Three-panel figure evaluating context-specific differential expression in CD4+ T cells. Panel (a) shows a Precision-Recall curve with AP=0.47 (45× random baseline of 0.011). Panel (b) displays an ROC curve with AUROC=0.85 for positive versus rest classification. Panel (c) is a strip plot showing the distribution of context-specific rank (1=top) across three regulator categories: canonical regulators (n=13), housekeeping (n=1), and other (n=1211), with median ranks of 36 vs 964 and Mann-Whitney p=8.8e-06.",
+      "data_explanation": "This benchmark evaluates the ability of Perturb-seq to identify regulators whose knockdown produces context-specific transcriptional effects in CD4+ T cells. The PR and ROC curves quantify detection sensitivity and specificity, while the rank-distribution panel demonstrates that canonical regulators are significantly enriched at high ranks (low values, top-ranked), validating that the method recovers known functional regulators. The stark separation between canonical regulators and the large 'other' category (p=8.8e-06) indicates strong discriminatory power for target discovery in this immune context."
+    },
+    "raw_source": "Computed from target_master_table.csv (ctx_specific_de column, ranked descending); positive/negative labels from curated controls: 13 canonical CD4+ T-cell regulators (positives), 1 housekeeping negative, 1,211 other targets as background."
+  },
+  {
+    "id": "A2",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A2.png",
+    "en": {
+      "title": "Loss-intolerant genes drop out below the cell-count gate",
+      "family": "Analysis / publication figure",
+      "description": "A scatter plot with max cells recovered (log scale) on the x-axis and LOEUF (gnomAD) on the y-axis. A vertical dashed line marks the 200-cell gate threshold, a horizontal dotted line marks LOEUF 0.35, and a shaded region indicates the essential-suspect dropout zone (cells <200, LOEUF <0.35). Red points (n=237) represent likely essential dropouts; grey points represent other targets. Six genes are labeled: HCFC1, PRKDC, KMT2A, USP7, MED13L, ARID1A.",
+      "data_explanation": "LOEUF (loss-of-function observed/expected upper bound fraction) quantifies intolerance to loss-of-function mutations in the general population; lower values indicate genes under strong constraint and likely essential. Genes falling into the shaded dropout zone—those recovered in fewer than 200 cells across conditions and with LOEUF <0.35—are flagged as likely essential targets missed by the screen, making this plot critical for identifying high-confidence CD4+ T-cell essential genes obscured by insufficient sampling depth."
+    },
+    "raw_source": "Computed from DE_stats.suppl_table.csv (per-target, per-condition differential expression statistics and n_cells_target counts) and target_master_table.csv (LOEUF and pLI constraint annotations). Aggregated per target across all conditions; cell count gate = 200; constraint thresholds: LOEUF < 0.35 OR pLI ≥ 0.9."
+  },
+  {
+    "id": "A3",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A3.png",
+    "en": {
+      "title": "Immune drug-delivery decision layer: turning 'important' into 'which drug can we make today'",
+      "family": "Analysis / publication figure",
+      "description": "A two-panel figure showing the filtering funnel from genome-wide CD4+ T-cell targets to deliverable candidates (left), and the final 39 deliverable targets stratified by drug modality and polarity (right). The left panel is a horizontal bar chart with logarithmic scaling; the right is a horizontal bar chart ordered by modality group, with colour encoding polarity (repressor/activator/mixed) and y-axis labels showing gene names.",
+      "data_explanation": "The left panel traces the selection pipeline: 11,526 genome-wide genes are filtered to 1,235 passing quality gates, then 96 identified as context-specific (stimulation vs. rest in CD4+ T cells), and finally 39 with known drug-delivery modalities. The right panel shows these 39 deliverable targets ranked by context-specific differential expression (log scale) within three drug modality classes (CAR-T/ADC/antibody, antibody, small molecule), with colour indicating whether knockdown activates or represses immune function. This visualization bridges target discovery and drug developability: it shows which high-confidence, immune-relevant genes can be acted on with existing therapeutic technologies."
+    },
+    "raw_source": "vdaeb84c7_target_master_table.csv — a master table of CD4+ T-cell perturbation targets annotated with context-specificity, delivery modality, polarity, and differential expression metrics."
+  },
+  {
+    "id": "A4",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A4.png",
+    "en": {
+      "title": "Kinetic archetypes and clinical avoid-list for CD4+ T-cell targets",
+      "family": "Analysis / publication figure",
+      "description": "Two-panel figure showing kinetic response patterns and safety flags for gene targets. Left: line plot of normalized differential-expression breadth across Rest, Stim 8hr, and Stim 48hr timepoints, stratified by kinetic archetype (early transient, late sustained, stim switch, other). Right: horizontal stacked bar chart ranking 15 high-risk genes by number of clinical avoid flags (pleiotropy, constraint, dosage sensitivity).",
+      "data_explanation": "The left panel identifies when putative targets exert their function during T-cell activation, enabling kinetic stratification for mechanism-of-action studies. The right panel flags genes with high pleiotropy (broad expression effects), genetic constraint (haploinsufficient), or dosage sensitivity (loss-of-function intolerance), which predict on-target toxicity and clinical safety liabilities in perturbation-based target discovery."
+    },
+    "raw_source": "vdaeb84c7_target_master_table.csv (columns: kinetic_archetype, de_Rest, de_Stim8hr, de_Stim48hr, n_avoid_flags, avoid_flags, gene)"
+  },
+  {
+    "id": "A5",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A5.png",
+    "en": {
+      "title": "Threshold Sensitivity Analysis for CD4+ T-cell Perturbation Target Discovery",
+      "family": "Analysis / publication figure",
+      "description": "Three-panel figure quantifying robustness of target selection across parameter thresholds. Panel (a) is a heatmap showing absolute count of targets (n=600–1700) across minimum DE genes D ∈ {30,40,50,75,100} (rows) and minimum cells per target C ∈ {100,150,200,250,300,400} (columns), with a red box highlighting the selected threshold pair C=200, D=50 (n=1235 targets). Panel (b) is a histogram plotting target stability across the full universe (11,526 targets) on log-scaled y-axis versus pass_fraction, with regions annotated FRAGILE, BOUNDARY, and CORE. Panel (c) is a bar chart showing Spearman rank correlation (rho) between rank scores and baseline ordering, demonstrating threshold invariance at rho=1.00.",
+      "data_explanation": "The heatmap quantifies how stringency thresholds for differential expression (minimum genes) and target detection (minimum cells) affect the size of the target shortlist, revealing trade-offs between statistical power and discovery scope. The stability histogram identifies which targets persist robustly across the full parameter landscape versus those at risk of inclusion/exclusion at boundary conditions, critical for prioritizing high-confidence CD4+ T-cell modulators. The rank-score invariance (rho=1.00) confirms that target prioritization order remains stable despite threshold variation, justifying the selection of the C=200/D=50 operating point for downstream functional validation."
+    },
+    "raw_source": "Computed from DE_stats supplementary table (v11c6348b_DE_stats.suppl_table.csv), which contains per-target-contrast statistics: ontarget_significant flag, offtarget_flag, n_cells_target cell count, n_total_de_genes DE count, and target_contrast_gene_name identifier. Per-target rank score is the maximum n_total_de_genes across all experimental conditions for each target; passing set is defined by boolean AND of thresholds applied row-wise, then aggregated by target identity."
+  },
+  {
+    "id": "A6",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A6.png",
+    "en": {
+      "title": "How we know a CD4+ T-cell Perturb-seq target is real",
+      "family": "Analysis / publication figure",
+      "description": "Four-panel figure showing target validation workflow. Panel (a) displays a single ROC curve comparing performance against all other genes (AUROC 0.846) and versus one curated negative control (AUROC 0.923) with n=13 positives. Panels (b)–(d) are scatter and funnel plots: (b) LOEUF vs cells-recovered percentile identifying 237 constraint artifacts (94% with LOEUF<0.35); (c) peak stimulated DE signal vs resting baseMean flagging 11 expression artifacts (baseMean<10) among 84 true regulators; (d) discovery funnel narrowing 1,235 candidates through 96 context-specific, 84 baseline-confirmed, to 34 deliverable targets.",
+      "data_explanation": "Perturb-seq screening identifies candidate CD4+ T-cell regulators but requires multi-stage filtering to distinguish true regulatory hits from technical artifacts. Constraint analysis (LOEUF) and baseline expression correction remove false positives arising from measurement noise and dropout bias, while the discovery funnel tracks survival through biological validation. These integrated filters ensure only high-confidence, experimentally robust targets advance to functional testing and therapeutic development."
+    },
+    "raw_source": "Computed from four CSV artifacts: vb5899e1f_benchmark_results.csv (baseline performance metrics), va76505a5_dropout_diagnosis.csv (cross-validation robustness), v26f49368_context_specific_corrected.csv (corrected phenotype predictions), and v6d81fd84_delivery_modality_all_1235.csv (target modality classification with n=1235 targets)."
+  },
+  {
+    "id": "A7",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A7.png",
+    "en": {
+      "title": "CD4+ T-cell Perturb-seq external validation results",
+      "family": "Analysis / publication figure",
+      "description": "Multi-panel figure displaying external validation of Perturbase target-discovery findings in CD4+ T cells. The figure uses a grid-based composition layout with customizable panel arrangement, open-frame plotting style (sans-serif font, left/bottom spines only), and figure-level panels labeled with letters (lowercase by default). Chart types and specific encodings depend on individual panel data but follow consistent styling (8pt base font, 0.6pt axes, 1.2pt lines).",
+      "data_explanation": "This figure validates computational target predictions from the Perturb-seq platform by comparing results against external datasets or independent experimental evidence in CD4+ T cells. The multi-panel design allows systematic presentation of validation metrics (e.g., replication of knockdown phenotypes, pathway enrichment, or cross-dataset correlation), demonstrating the reliability and generalizability of Perturbase predictions for target discovery in T-cell biology."
+    },
+    "raw_source": "Computed panels assembled from level-4 processed Perturb-seq data (knockdown effect sizes, phenotype correlations, or pathway annotations) combined via the grid composition system; individual panel images stored as files referenced in panel_paths and composited into level4_external_validation_figure.png at 300 dpi."
+  },
+  {
+    "id": "A8",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A8.png",
+    "en": {
+      "title": "Phenotype-signed ranking and pathway validation of CD4+ T-cell perturbation targets",
+      "family": "Analysis / publication figure",
+      "description": "Three-panel figure showing target prioritization and validation. Panel a: S-curve ranking of 1,235 shortlist targets by phenotype signature score (n_up−n_down)/(n_up+n_down), with points colored blue (negative) or red (positive) and five flagship genes (CD3E, PLCG1, VAV1, STAT3, BCL10) labeled. Panel b: Reactome pathway-enrichment bubble plot with immune and signaling pathways as rows, five flagship genes as columns, bubble color indicating direction (red=upregulated, blue=downregulated) and size representing gene overlap. Panel c: Bar chart of sign-agreement fraction for four target genes (SENP5, PLCG1, CCNC, PMVK) tested against non-T-cell LINCS perturbation lines, with 0.5 dashed line marking chance agreement.",
+      "data_explanation": "The ranking prioritizes targets whose perturbation produces CD4+ T-cell phenotype signatures consistent with T-cell activation and function, using a balanced up/down scoring metric. Pathway enrichment and cross-cell-type validation confirm that top candidates (CD3E, PLCG1, VAV1, STAT3, BCL10) converge on immune signaling networks and exhibit robust, lineage-specific effects—critical for selecting targets likely to enhance T-cell responses in therapeutic contexts."
+    },
+    "raw_source": "Computed from signed_phase1.json (per-flagship downstream gene counts), signed_ranking_v2.csv (1,235 shortlisted targets with directionality_index and in_gate_shortlist status), and lincs_concordance.csv (sign-agreement fractions for four reference datasets)"
+  },
+  {
+    "id": "A9",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A9.png",
+    "en": {
+      "title": "GB10 Signed Matrix vs LINCS - Directional Agreement and Rank Correlation (4 Targets, Non-T-Cell Lines)",
+      "family": "Analysis / publication figure",
+      "description": "A two-panel bar chart comparing GB10 perturbation data against LINCS signatures for four targets (SENP5, PLCG1, CCNC, PMVK). Panel (a) shows directional agreement as the fraction of sign-concordant gene responses (with n values: SENP5 n=573, PLCG1 n=499, CCNC n=526, PMVK n=360) against a 0.5 chance baseline. Panel (b) displays Spearman rank correlation coefficients within the overlapping subspace for each target, with PMVK highlighted in red (rho=+0.22*) showing the strongest correlation.",
+      "data_explanation": "These metrics assess whether genome-scale perturbations measured in non-T-cell lines (GB10 matrix) show reproducible directional and rank-order concordance with published LINCS signatures. PMVK exhibits notably higher correlation (rho=+0.22) relative to other targets, suggesting more consistent functional patterns; the directional agreement fractions near or below 0.5 across most targets indicate limited sign-level reproducibility, a key signal for evaluating target reliability in cross-platform CD4+ T-cell discovery workflows."
+    },
+    "raw_source": "Two parquet files (full Perturb-seq knockdown profiles: vca1ccabf_part-000.parquet and v3df56bd0_part-001.parquet) merged with LINCS reference signatures (vdb18632b_lincs_demo_signatures_4genes.csv containing landmark gene responses for 4 overlapping targets); Spearman correlations computed between log fold-change vectors per target."
+  },
+  {
+    "id": "A10",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A10.png",
+    "en": {
+      "title": "Evidence Coverage Improvement: gnomAD Integration for CD4+ T-cell Targets",
+      "family": "Analysis / publication figure",
+      "description": "Side-by-side bar charts comparing target coverage before and after bulk gnomAD data integration. Left panel shows percentage coverage across five evidence types (gnomAD LOEUF, gnomAD pLI, delivery modality, polarity, kinetics); right panel shows absolute target counts stratified by safety tier (clear, caution, high_risk, avoid) based on cumulative risk flags.",
+      "data_explanation": "The dataset comprises 1,235 CD4+ T-cell target candidates. Integration of bulk-downloaded gnomAD variants increased coverage from 6% to 97% for essential gene constraint scores, avoiding the computational bottleneck of per-gene API crawls. This expanded evidence base revealed previously undetected safety liabilities: high-risk and avoid-tier targets increased from 27 to 387, enabling more rigorous target prioritization for the Perturbase platform."
+    },
+    "raw_source": "vdaeb84c7_target_master_table.csv (artifact ID: 46a1c017-4a49-46dc-8098-512c17286263); contains columns: loeuf, pli, delivery_modality, avoid_tier; n=1,235 targets"
+  },
+  {
+    "id": "A11",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A11.png",
+    "en": {
+      "title": "The Developer–User Gap: Six Blindspots in Perturbase",
+      "family": "Analysis / publication figure",
+      "description": "Dumbbell plot with six horizontal rows, each representing a blindspot in Perturbase. Blue dots mark developer perspective ('is it built?'), red dots mark user perspective ('can I get my job done?'), and gray lines connect them to show the gap. Remedy annotations appear on the right side of each row.",
+      "data_explanation": "The gaps (ranging 4–7 points) quantify misalignment between developer implementation and user capability across six critical areas: Gene absence (7-point gap), Known vs novel targets (5-point gap), Clinical positioning (4-point gap), Single-dataset limitation (6-point gap), Action loop closure (4-point gap), and Jargon accessibility (6-point gap). These disparities highlight where Perturbase fails to bridge developer features with end-user requirements for effective CD4+ T-cell target discovery workflows."
+    },
+    "raw_source": "Hardcoded matrix within the producing code: six (label, developer_score, user_score, remedy) tuples representing Perturbase platform assessment at a specific development checkpoint."
+  },
+  {
+    "id": "A12",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A12.png",
+    "en": {
+      "title": "One Dataset, Two Opposing First Impressions",
+      "family": "Analysis / publication figure",
+      "description": "A scatter plot showing CD4+ T-cell perturbation targets plotted along two dimensions: researcher's lens (context-specific effect breadth on T-cell activation, log scale, x-axis) versus clinician's lens (number of risk flags including pleiotropy, genetic constraint, and dosage sensitivity, y-axis). Points are colored by clinical risk tier (clear, caution, high risk, avoid), with five selected genes (CD3E, PLCG1, VAV1, STAT3, BCL10) highlighted and labeled with arrows. A shaded conflict zone in the upper right emphasizes the trade-off between scientific appeal and clinical safety.",
+      "data_explanation": "The figure illustrates the fundamental tension in target discovery: genes with the broadest context-specific effects on T-cell activation—the most scientifically interesting—often accumulate multiple risk flags (pleiotropy, genetic constraint, dosage sensitivity) that concern clinicians. This dual-perspective view reveals why the most mechanistically novel targets are often the most dangerous for therapeutic development, making explicit the competing priorities between hypothesis-driven research and clinical safety assessment."
+    },
+    "raw_source": "vdaeb84c7_target_master_table.csv (CD4+ T-cell Perturb-seq data filtered to context-specific perturbations; columns: gene, ctx_specific_de, n_avoid_flags, is_ctx_specific)"
+  },
+  {
+    "id": "A13",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A13.png",
+    "en": {
+      "title": "Top CD4+ T-cell Perturbation Targets by DE Gene Count",
+      "family": "Analysis / publication figure",
+      "description": "Horizontal lollipop plot ranking the top 12 perturbation targets by downstream differentially expressed gene count. Blue points indicate immune-candidate targets (CD3E, LAT, PLCG1, VAV1, CD247); red points indicate broad-effect targets (TADA2B, SENP5, SGF29, UBXN1, MED12, CCNC, SUPT20H). The x-axis shows DE gene count ranging from approximately 3900 to 5700.",
+      "data_explanation": "Each target represents a gene whose perturbation in CD4+ T cells produces a characteristic downstream transcriptional signature; the DE gene count quantifies the breadth of that signature. Immune-candidate targets (blue) show more focused, pathway-specific effects, while broad-effect targets (red) alter expression of thousands of genes, making them less suitable for selective CD4+ T-cell modulation in therapeutic contexts."
+    },
+    "raw_source": "DE_stats.suppl_table.csv (differential expression statistics table filtered by QC criteria: n_cells_target ≥ 200, ontarget_significant = true, offtarget_flag = false, n_total_de_genes ≥ 50)"
+  },
+  {
+    "id": "A14",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A14.png",
+    "en": {
+      "title": "Context-Specific Regulators: Baseline Correction Diagnostic",
+      "family": "Analysis / publication figure",
+      "description": "Scatter plot comparing stimulated differential expression (DE) signal on the y-axis against resting baseline expression (baseMean) on the x-axis. Points are color-coded to distinguish 84 true context-specific regulators (higher baseline expression) from 11 expression artifacts with near-zero resting signal (baseMean floor = 8.3 (all-conditions Q25)), enabling visual separation of genuine regulatory effects from technical noise.",
+      "data_explanation": "This diagnostic plot filters genuine CD4+ T-cell regulators from spurious signals by leveraging baseline expression as a quality filter. True context-specific regulators show substantial resting expression and respond robustly to stimulation, while artifacts cluster near zero baseline and produce inflated fold-changes from negligible starting values. This separation is critical for accurate functional annotation in Perturb-seq screens, ensuring downstream regulatory predictions reflect biologically relevant perturbation effects rather than measurement noise."
+    },
+    "raw_source": "Perturbase CD4+ T-cell Perturb-seq platform; baseline-corrected DE analysis, resting-baseMean floor = 8.3 (all-conditions Q25) for artifact classification"
+  },
+  {
+    "id": "A15",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A15.png",
+    "en": {
+      "title": "Perturb-seq Platform Validation: AUROC, Survivorship Bias Filtering, and Context-Specific Regulation",
+      "family": "Analysis / publication figure",
+      "description": "Three-panel figure validating perturb-seq methodology. Panel A shows an ROC curve demonstrating classifier performance (AUROC=0.85 vs random). Panel B is an XY scatter plot with LOEUF (y-axis) versus maximum cell count across conditions (x-axis), identifying essential genes (n=237, red, low LOEUF) that deplete below the n≥200 threshold, illustrating survivorship-bias filtering. Panel C is a scatter plot of context-specific differential expression versus baseline expression across all conditions, separating true regulators (n=84) from expression artifacts (n=11).",
+      "data_explanation": "These validation panels establish the reliability of perturb-seq for discovering CD4+ T-cell regulators by filtering out technical artifacts and survivorship bias. Panel B removes genes lost due to viability dropout rather than true regulatory effects, ensuring only genes with sufficient cell recovery are analyzed. Panel C distinguishes genuine context-dependent regulators from spurious expression changes, enabling confident identification of perturbation targets that specifically control CD4+ T-cell biology."
+    },
+    "raw_source": "Perturbase platform methodology validation dataset; AUROC metrics from benchmark classification tasks, essential-gene depletion rates from control perturbations, and baseline-corrected expression or phenotype measurements from single-cell readouts"
+  },
+  {
+    "id": "A16",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A16.png",
+    "en": {
+      "title": "Integrated Perturbation Analysis: Curation Pipeline and Context-Specific Target Effects",
+      "family": "Analysis / publication figure",
+      "description": "Five-panel figure integrating perturbation discovery and validation. Panel (a) shows a curation flowchart reducing 33,983 raw profiles through five sequential filters (≥200 cells, significant knockdown, no off-targets, ≥50 DE genes) to a 1,235-target shortlist spanning three regulatory modules (TCR, SAGA, Mediator). Panel (b) is a horizontal funnel bar chart tracking filter counts at each curation gate. Panel (c) is a hexbin density plot of DE gene count versus cells per target (Spearman ρ = −0.18). Panel (d) displays three node-link network diagrams (TCR proximal signalling, SAGA complex, Mediator CDK) with node size representing mean on-target effect magnitude. Panel (e) is a heatmap with dendrogram showing DE gene expression across resting and stimulated (8 hr and 48 hr) CD4+ T cells.",
+      "data_explanation": "The curation pipeline identifies high-confidence CD4+ T-cell perturbation targets by enforcing stringent quality thresholds: adequate cell counts, significant knockdown efficacy, minimal off-target activity, and sufficient DE gene detection, yielding 1,235 validated targets from 33,983 initial profiles. The negative correlation between DE gene count and target cell coverage (ρ = −0.18) indicates that broader effects tend to be observed in smaller experimental cohorts, informing target prioritization. The three regulatory module networks and stimulus-response heatmap reveal context-specific target effects across TCR signalling, chromatin remodelling, and transcription regulation, directly enabling rational selection of CD4+ T-cell targets for therapeutic intervention."
+    },
+    "raw_source": "Perturbase platform dataset: CD4+ T-cell Perturb-seq screens with single-cell transcriptomics readout; perturbation effect sizes ranked by statistical significance; cell-state annotations enabling conditional analysis across identified T-cell subpopulations and activation states."
+  },
+  {
+    "id": "A17",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A17.png",
+    "en": {
+      "title": "Signed-DE application & external validation (7-panel)",
+      "family": "Analysis / publication figure",
+      "description": "Seven-panel composite figure. Panels cover: the signed directionality-index volcano/scatter separating net-derepressed vs net-reduced perturbations; a Reactome pathway bubble/dot-plot of downstream enrichment; an immune-genetics lollipop (Open Targets); STRING known-partner-recovery bars for flagship hubs; a GSE318876 HIV-screen null-result bar; and a LINCS sign-agreement lollipop.",
+      "data_explanation": "Ties the platform's signed regulatory calls to downstream mechanism and to three independent external datasets (GWAS genetic association, STRING protein interactions, an orthogonal CD4+ CRISPR screen). It shows the ranking is corroborated by external evidence while honestly flagging that association is not causation and the HIV screen phenotype differs from T-cell activation."
+    },
+    "raw_source": "docs/mvp-research/level4_external_validation/: track_a_gwas_genetic_association.csv (55 targets), track_b_string_partner_recovery.csv, track_c_gse318876_target_evidence.csv (1,235 genes); signed_de_application/signed_ranking_v2.csv, downstream_enrichment_v2.csv, lincs_concordance.csv. Externally re-validated 2026-07-13: Track A GA scores reproduce from Open Targets API v26.6.3 (55/55 symbols, 26/26 named diseases agree to <5e-5 by exact disease-name match); Track B partner counts reproduce exactly at STRING v12 score>=700 (5/5 flagship); Track C = NCBI GEO GSE318876 (confirmed: primary CD4+ HIV CRISPRa/n screen). See EXTERNAL_REVALIDATION.json."
+  },
+  {
+    "id": "A18",
+    "group": "Analysis & publication",
+    "placement": "primary",
+    "img": "figures/A18.png",
+    "en": {
+      "title": "Downstream Reactome pathway enrichment for 5 flagship perturbations",
+      "family": "Analysis / publication figure",
+      "description": "Five small-multiple grouped horizontal bar charts, one per flagship gene (CD3E, PLCG1, VAV1, STAT3, BCL10). Red bars = up-regulated downstream pathways (log2FC>0), blue bars = down-regulated pathways (log2FC<0); the x-axis is -log10 FDR (Reactome hypergeometric enrichment). No network/graph layout.",
+      "data_explanation": "Shows which Reactome pathways are enriched among the up- vs down-regulated downstream genes of each flagship regulator's perturbation, against the detected-gene background. Up-regulated hits are dominated by broad immune categories (interferon signaling, neutrophil degranulation) while down-regulated hits include expression-related pathways (RNA metabolism, cell cycle) that are flagged as potential expression artifacts."
+    },
+    "raw_source": "downstream_enrichment_v2.csv (Reactome hypergeometric, detected background N=10,273)"
+  }
+]

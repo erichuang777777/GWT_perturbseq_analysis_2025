@@ -60,7 +60,14 @@ export function subScores(t: RealTarget): Record<string, number> {
 
   const external = t.diseases.length ? Math.round(Math.max(...t.diseases.map((d) => d.overallScore ?? 0)) * 100) : 0;
 
-  return { stat, robust, safety, popgen, external };
+  // Breadth (Task 3): downstream DE-gene breadth, log-scaled. 3.34 ≈ log10 of
+  // the p99 breadth value (2172 genes); the clip cap keeps a handful of
+  // 5,000-gene outliers from flattening the scale, and makes the 15
+  // primary-outcome targets (all near the ceiling) rankable against the rest.
+  const nde = t.nTotalDeGenes ?? 0;
+  const breadth = Math.round(Math.max(5, Math.min(99, (Math.log10(nde + 1) / 3.34) * 94 + 5)));
+
+  return { stat, robust, safety, popgen, external, breadth };
 }
 
 export function composite(t: RealTarget, w: Weights): number {
@@ -81,8 +88,13 @@ export interface RankedTarget extends RealTarget {
 }
 
 export function rankedTargets(w: Weights): RankedTarget[] {
+  // Primary sort by composite; ties broken by raw downstream DE-gene breadth
+  // (nTotalDeGenes). The breadth sub-score is log-scaled and capped at 99, so
+  // many broad targets share the ceiling — this tiebreak only reorders exact
+  // composite ties, and under the Breadth-led preset it lifts the highest-DE
+  // targets (the 15 primary-outcome shortlist) to the very top of the table.
   return TARGETS.map((t) => ({ t, comp: composite(t, w) }))
-    .sort((a, b) => b.comp - a.comp)
+    .sort((a, b) => b.comp - a.comp || (b.t.nTotalDeGenes ?? 0) - (a.t.nTotalDeGenes ?? 0))
     .map((x, i) => ({ ...x.t, _rank: i + 1, _comp: x.comp }));
 }
 

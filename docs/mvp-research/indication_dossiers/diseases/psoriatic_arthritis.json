@@ -1,0 +1,81 @@
+{
+  "disease_name": "Psoriatic Arthritis",
+  "slug": "psoriatic_arthritis",
+  "platform_targets": [
+    {
+      "gene": "KIF16B",
+      "primary_rank": 46,
+      "ot_genetic_assoc_score": 0.47
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Chronic inflammatory arthritis in a subset of psoriasis patients; spondyloarthritis family; involves peripheral joints, entheses, spine, skin/nails.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/28273019/",
+          "source_type": "pubmed",
+          "quote": "Psoriatic Arthritis. (review title, NEJM)"
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "Not established in this pass \u2014 no quotable numeric prevalence/incidence figure was retrieved; broad literature exists (3,325 PubMed hits on the general query) but a specific verbatim number was not pulled through.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "PsA pathogenesis centers on IL-23/IL-17 axis. KIF16B is a kinesin-3 family motor protein mediating PI(3)P-dependent endosomal cargo transport; no direct literature ties KIF16B to PsA or T-cell immune biology \u2014 link is inferred from platform DE ranking and OT genetic score only.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/30109481/",
+          "source_type": "pubmed",
+          "quote": "This article reviews the immunologic role of interleukin (IL)-17, the major effector cytokine in the pathogenesis of psoriatic disease"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32140737/",
+          "source_type": "pubmed",
+          "quote": "kinesin family member 16B (KIF16B) has a characteristic PhoX homology (PX) domain that binds to membranes containing phosphatidylinositol-3-phosphate (PI(3)P)"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/17641687/",
+          "source_type": "pubmed",
+          "quote": "KIF16B is a newly identified kinesin that regulates the intracellular motility of early endosomes."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "IL-17/IL-23 biologics and JAK inhibitors (incl. TYK2 inhibitor deucravacitinib, FDA NDA214958/SOTYKTU) are used in psoriatic disease; JAK class carries an FDA black-box safety warning. No PsA-specific FDA approval for deucravacitinib confirmed in this pass. No approved therapy targets KIF16B.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/36790724/",
+          "source_type": "pubmed",
+          "quote": "The US Food and Drug Administration (FDA) recently placed a black box warning on this class of medications due to safety concerns based on data from studies investigating tofacitinib"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40476606/",
+          "source_type": "pubmed",
+          "quote": "Successful Management of Multidrug-Resistant Psoriatic Arthritis Coexisting With Rheumatoid Arthritis Using a TYK2 Inhibitor Deucravacitinib-Based Regimen"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "regulatory_trials": {
+      "content": "372 total interventional trials for psoriatic arthritis on ClinicalTrials.gov. Notable Phase 2 trial: NCT05715125 (VTX958), terminated.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT05715125",
+          "source_type": "ctgov",
+          "quote": "A Phase 2, Multicenter, Randomized, Double-Blind, Placebo-Controlled, Parallel-Group Study to Evaluate the Efficacy and Safety of VTX958 in Patients With Active Psoriatic Arthritis"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No direct PubMed evidence linking KIF16B to psoriatic arthritis or T-cell biology (0 hits on direct search).",
+    "No quotable numeric epidemiology figure retrieved.",
+    "PsA-specific FDA approval status for deucravacitinib not confirmed."
+  ]
+}

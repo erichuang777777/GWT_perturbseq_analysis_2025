@@ -1,0 +1,81 @@
+{
+ "disease_name": "Type 1 Diabetes Mellitus",
+ "slug": "type_1_diabetes_mellitus",
+ "platform_targets": [
+  {
+   "gene": "DIPK1A",
+   "primary_rank": 31,
+   "ot_genetic_assoc_score": 0.5
+  }
+ ],
+ "sections": {
+  "definition_population": {
+   "content": "Autoimmune destruction of insulin-producing pancreatic beta cells causing absolute insulin deficiency; classically pediatric-onset but increasingly diagnosed in adults.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/39448829/",
+     "source_type": "pubmed",
+     "quote": "Although type 1 diabetes mellitus (T1DM) is traditionally viewed as a youth-onset disorder, the number of older adults being diagnosed with this disease is growing."
+    }
+   ]
+  },
+  "epidemiology": {
+   "content": "Global incidence rising 2-5%/year; US prevalence ~1 in 300 by age 18. Growing recognition of adult-onset/older-adult T1D with a comparable incidence peak.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/20723815/",
+     "source_type": "pubmed",
+     "quote": "the incidence of T1D has been increasing by 2% to 5% worldwide and that the prevalence of T1D is approximately 1 in 300 in the United States by 18 years of age"
+    },
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/39448829/",
+     "source_type": "pubmed",
+     "quote": "Although type 1 diabetes mellitus (T1DM) is traditionally viewed as a youth-onset disorder, the number of older adults being diagnosed with this disease is growing."
+    }
+   ],
+   "coverage": "covered"
+  },
+  "biology": {
+   "content": "Classic model: autoreactive T cells destroy beta cells. Alternative model: intrinsic beta-cell stress provokes immune attack. DIPK1A/FAM69A is a predicted calcium-regulated atypical kinase; only literature found concerns neurological disorders, not T1D or T-cell biology \u2014 no direct link established.",
+   "sources": [
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/33293704/",
+     "source_type": "pubmed",
+     "quote": "We propose an alternative view in which the \u03b2-cell is the key contributor to the disease. By their nature and function, \u03b2-cells are prone to biosynthetic stress with limited measures for self-defence."
+    },
+    {
+     "source_url": "https://pubmed.ncbi.nlm.nih.gov/23840464/",
+     "source_type": "pubmed",
+     "quote": "Using bioinformatics tools, we predicted protein kinase structure for proteins coded by five related human genes and their Metazoan homologues, the FAM69 family"
+    }
+   ],
+   "coverage": "partial"
+  },
+  "treatment": {
+   "content": "Standard of care is lifelong exogenous insulin. FDA-approved teplizumab (TZIELD, BLA761183) delays T1D onset in at-risk individuals as a CD3-directed monoclonal antibody.",
+   "sources": [
+    {
+     "source_url": null,
+     "source_type": "fda",
+     "quote": "TEPLIZUMAB-MZWV, brand TZIELD, BLA761183, original approval action AP dated 2022-11-17 [application BLA761183; no URL field returned by drug-regulatory MCP tool -- no URL constructed]"
+    }
+   ],
+   "coverage": "partial"
+  },
+  "regulatory_trials": {
+   "content": "3,640 total interventional trials for T1D on ClinicalTrials.gov. Example Phase 2 beta-cell preservation trial: NCT04545151.",
+   "sources": [
+    {
+     "source_url": "https://clinicaltrials.gov/study/NCT04545151",
+     "source_type": "ctgov",
+     "quote": "A Randomised, Double-blind, Placebo Controlled, Parallel Group, Multi-centre Trial in Adult Subjects With Newly Diagnosed Type 1 Diabetes Mellitus Investigating the Effect of Verapamil SR on Preservation of Beta-cell Function"
+    }
+   ],
+   "coverage": "covered"
+  }
+ },
+ "gaps": [
+  "No direct PubMed evidence linking DIPK1A/FAM69A to T1D or CD4+ T-cell biology (0 hits on direct search); only retrieved paper concerns neurological disorders.",
+  "Insulin regimen/standard-of-care literature not independently re-sourced (well established, out of scope for compact pass)."
+ ]
+}

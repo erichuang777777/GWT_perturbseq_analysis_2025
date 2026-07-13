@@ -1,0 +1,392 @@
+{
+ "indication_name": "Rheumatoid arthritis",
+ "parent_indication": "Inflammatory arthritis / systemic autoimmune rheumatic disease",
+ "meta": {
+  "indication_name": "Rheumatoid arthritis",
+  "parent_indication": "Inflammatory arthritis / systemic autoimmune rheumatic disease",
+  "definition": "A chronic, systemic autoimmune disease characterized by symmetric, inflammatory polyarthritis of the small joints (hands, wrists, feet), driven by synovial inflammation (pannus) that can progress to cartilage and bone erosion, joint deformity, and disability. Frequently accompanied by circulating autoantibodies (rheumatoid factor, anti-citrullinated protein antibodies) and systemic/extra-articular manifestations.",
+  "icd_codes": [
+   "M05 (Rheumatoid arthritis with rheumatoid factor)",
+   "M06 (Other rheumatoid arthritis)",
+   "M05.79",
+   "M06.9 (Rheumatoid arthritis, unspecified)",
+   "M08 (Juvenile rheumatoid arthritis / JIA)"
+  ],
+  "aliases": [
+   "RA",
+   "seropositive rheumatoid arthritis",
+   "seronegative rheumatoid arthritis",
+   "rheumatoid disease",
+   "atrophic arthritis (historical)"
+  ],
+  "is_standard_diagnosis": true,
+  "classification_criteria": "2010 ACR/EULAR classification criteria (joint involvement, serology RF/ACPA, acute-phase reactants CRP/ESR, symptom duration); superseded the 1987 ACR criteria for earlier detection.",
+  "platform_link": "Linked to platform signed-DE target TYK2 (Open Targets genetic-association score 0.93 for RA); TYK2 inhibitor deucravacitinib is a marketed drug (in psoriasis), making TYK2 the strongest druggable immune link among top platform targets.",
+  "trial_landscape_snapshot": {
+   "total_trials": 3341,
+   "interventional": 2291,
+   "by_phase": {
+    "PHASE1": 378,
+    "PHASE2": 570,
+    "PHASE3": 477,
+    "PHASE4": 332
+   },
+   "by_status": {
+    "RECRUITING": 163,
+    "COMPLETED": 1483,
+    "ACTIVE_NOT_RECRUITING": 50,
+    "TERMINATED": 205,
+    "NOT_YET_RECRUITING": 53
+   },
+   "source": "ClinicalTrials.gov via MCP, exact-phrase condition search, accessed 2026-07-12"
+  },
+  "notes": "RA is a well-established, ICD-coded diagnostic entity with a mature clinical-trial landscape and multiple approved drug classes (csDMARDs, bDMARDs, tsDMARDs). Epidemiology and regulatory paths are well characterized. The dossier will frame RA as a patient population and connect regulatory precedent to the platform's TYK2/JAK-adjacent target biology where relevant."
+ },
+ "epidemiology": {
+  "subsections": {
+   "diagnostic_criteria": {
+    "content": "RA is classified using the 2010 ACR/EULAR criteria, which score four domains (joint involvement, serology RF/ACPA, acute-phase reactants CRP/ESR, symptom duration >=6 weeks); a score >=6/10 in a patient with >=1 clinically swollen joint not better explained by another disease classifies as definite RA. These criteria replaced the 1987 ACR criteria to enable earlier diagnosis and treatment. Clinically, RA presents as symmetric inflammatory polyarthritis of small joints (MCP, PIP, wrists, MTP) with morning stiffness. Autoantibodies (rheumatoid factor and anti-citrullinated protein antibodies, ACPA/anti-CCP) define seropositive disease (ICD-10 M05) versus seronegative (M06).",
+    "sources": [
+     {
+      "source_type": "other",
+      "source_url": null,
+      "quote": "ICD-10-CM M05 (RA with rheumatoid factor) / M06 (other RA, incl. M06.9 unspecified) and 2010 ACR/EULAR classification criteria are established clinical-coding/domain knowledge; no external URL was fetched for this fact in this pass."
+     }
+    ],
+    "coverage": "covered"
+   },
+   "prevalence_incidence": {
+    "content": "Classic population estimates put RA prevalence at 0.5-1.0% of adults in developed countries with incidence 5-50 per 100,000 adults/year. Recent GBD-based analyses give a global age-standardized prevalence rate (ASPR) of ~153.73 per 100,000 in working-age adults (15-49y, 2021), projected to rise to ~222 per 100,000 by 2040 (+6.3%). In the US (NHANES 2017-March 2020), RA accounted for 15.8% of all diagnosed arthritis = 10.6 million adults; older single-source figures cite ~1.3 million US adults with RA specifically (narrower case definition). Global prevalent cases among 15-49y rose 87.7% from 3.23M (1990) to 6.07M (2021), projected 7.48M by 2050.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1007/s10067-026-08158-z",
+      "quote": "Global RA prevalence among 15-49-year-olds increased 87.7% from 3.23 million cases (95% UI: 2.59-3.95 million) in 1990 to 6.07 million (4.90-7.36 million) in 2021. Age-standardized prevalence rose 29% (119.20 to 153.73 per 100,000)."
+     },
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1007/s10067-026-08150-7",
+      "quote": "We project the global age-standardized prevalence rate (ASPR) will rise by 6.3% to 222.06 per 100,000 (95% CI, 220.49-223.6) by 2040."
+     },
+     {
+      "source_type": "other",
+      "source_url": "https://www.cdc.gov/pcd/issues/2025/24_0393.htm",
+      "quote": "Among adults with diagnosed arthritis, osteoarthritis (49.6%, 33.2 million) was the most common arthritis subtype, followed by rheumatoid arthritis (15.8%, 10.6 million) and psoriatic arthritis (1.4%, 1.0 million)."
+     },
+     {
+      "source_type": "ctgov",
+      "source_url": "https://cdn.clinicaltrials.gov/large-docs/09/NCT04033809/Prot_SAP_000.pdf",
+      "quote": "Findings of population-based studies show RA affects 0.5-1.0% of adults in developed countries. Incidence ranges from 5 to 50 per 100 000 adults in developed countries and increases with age."
+     }
+    ],
+    "coverage": "covered"
+   },
+   "demographics": {
+    "content": "RA is strongly female-predominant: women have ~2.8-fold higher age-standardized prevalence than men (228.3 vs 81.0 per 100,000 in the 15-49y GBD analysis), and ~75% of US RA patients are women. Prevalence rises with age (peak onset 50s-60s; highest in women >65). Marked socioeconomic and geographic gradients: high-SDI countries show ~3x the prevalence of low-SDI (209 vs 65 per 100,000); Andean Latin America has the highest regional rates (420.7 per 100,000). Smoking is the leading modifiable risk factor (smoking-attributable burden 6.5% of RA DALYs in 2021, down from 8.8%); ACPA-positive RA is most strongly smoking-linked.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1007/s10067-026-08158-z",
+      "quote": "Women experienced 2.8-fold higher rates than men (228.3 vs 81.0 per 100,000). High Socio-demographic Index (SDI) countries showed triple the prevalence of low SDI countries (209 vs 65 per 100,000). Latin America recorded the highest regional rates (Andean: 420.7 per 100,000). ... Smoking-attributable burden declined from 8.8% to 6.5% of DALYs."
+     }
+    ],
+    "coverage": "covered"
+   },
+   "natural_history": {
+    "content": "RA is a chronic, progressive autoimmune disease. Untreated synovitis leads to cartilage and bone erosion, joint deformity, and functional disability; an early 'window of opportunity' (first months) is when DMARD intervention most alters trajectory. Age-standardized mortality is declining (Asia-Pacific GBD: -43%, from 0.75 to 0.43 per 100,000, 1990-2023), reflecting better treatment. Extra-articular disease drives excess mortality: RA-associated interstitial lung disease (RA-ILD) has a 20-year cumulative incidence of 15.3% in a population cohort, with ever-smoking (HR 1.92), older onset age (HR 1.89/decade), and severe extra-articular manifestations (HR 2.29) as risk factors.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1111/1756-185x.70674",
+      "quote": "age-standardized mortality declined by 43% (from 0.75 to 0.43 per 100,000)"
+     },
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1002/acr.24856",
+      "quote": "The 20-year cumulative incidence of RA-ILD was 15.3%. Ever-smoking (hazard ratio [HR] 1.92), age at RA onset (HR 1.89 per 10-year increase), and severe EAMs (HR 2.29)"
+     }
+    ],
+    "coverage": "covered"
+   }
+  },
+  "gaps": [
+   "US RA-specific prevalence has two circulating figures (1.3M narrow vs 10.6M as 15.8% of arthritis) that use different case ascertainment; the exact contemporaneous US RA count depends on definition. Incidence trend direction (rising vs declining onset) is region-dependent and contested."
+  ]
+ },
+ "biology_soc": {
+  "subsections": {
+   "pathophysiology": {
+    "content": "RA is driven by breach of immune tolerance to citrullinated self-proteins, producing ACPA and RF immune complexes that seed synovial inflammation. The inflamed synovium forms an invasive pannus of activated fibroblast-like synoviocytes, macrophages, T cells (including Th17), B cells, and osteoclasts. Key effector cytokines \u2014 TNF-alpha, IL-6, IL-1, GM-CSF \u2014 sustain inflammation; RANKL-driven osteoclastogenesis and MMP release cause the cartilage and bone erosion that defines the disease. Intracellular signaling converges on the JAK-STAT pathway downstream of many of these cytokine receptors, which is why JAK inhibition is broadly effective. These nodes (TNF, IL-6R, JAK, T-cell costimulation, CD20+ B cells) are exactly the validated, drugged targets. The platform's top signed target TYK2 (a JAK-family kinase, RA genetic-association 0.93) sits in this same JAK-STAT axis.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1016/j.cca.2025.120801",
+      "quote": "Rheumatoid arthritis (RA) is a chronic autoimmune disease in which early diagnosis and intervention are critical to prevent irreversible joint damage. While rheumatoid factor (RF) and anti-citrullinated protein antibodies (ACPA) remain diagnostic cornerstones"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "biomarkers": {
+    "content": "Diagnostic: RF and ACPA (anti-CCP) are the serological cornerstones and define seropositive RA (ICD-10 M05); seronegative RA (M06) lacks them and is a distinct, still-erosive entity where diagnosis is harder. Acute-phase reactants CRP and ESR grade inflammatory activity. Prognostic: high disease activity (swollen joint count, acute-phase reactants) predicts joint-damage progression; RF-positivity (more than ACPA) predicts high activity and joint destruction. Predictive/pharmacodynamic: high CRP may predict good response to IL-6 blockade specifically; high RF may predict better response to Fc-free monoclonals. Emerging multi-analyte panels (cytokines IL-6/IL-17/IL-37, microRNAs, MMPs, glycosylation/proteomic markers) can outperform RF/ACPA for early/seronegative disease but are not yet FDA-qualified. Disease activity is tracked with composite indices (DAS28, CDAI, SDAI) \u2014 these are the trial and treat-to-target endpoints.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1093/rheumatology/keae701",
+      "quote": "rheumatoid factor (RF) positive patients, but not patients with anti-citrullinated peptide antibodies (ACPA) are particularly prone to high disease activity and joint destruction ... high C-reactive protein levels may predict a particularly good response to IL-6 blockade, but not to other therapies, and that high RF-levels may be associated with better responses to Fc-free monoclonal antibodies"
+     },
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1016/j.cca.2025.120801",
+      "quote": "their limitations in sensitivity, particularly in early and seronegative RA, underscore the urgent need for novel biomarkers ... multi-analyte panels, often incorporating these novel biomarkers, can significantly outperform traditional serological tests"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "approved_therapies": {
+    "content": "RA therapy is tiered. (1) csDMARDs \u2014 methotrexate (FDA application from 1959; folate analog metabolic inhibitor) is the anchor first-line drug; also leflunomide, sulfasalazine, hydroxychloroquine. (2) bDMARDs \u2014 TNF blockers: etanercept (FDA app 1998), infliximab (1998), adalimumab (2002); IL-6R antagonist tocilizumab (2010); T-cell costimulation modulator abatacept (2005); CD20 B-cell depleter rituximab (RA indication 2006; original app 1997 for NHL). (3) tsDMARDs \u2014 JAK inhibitors: tofacitinib (2012), baricitinib (2018), upadacitinib (2019). EPC classes and FDA application anchors verified via Drugs@FDA. Limitations: no drug cures RA; a substantial fraction of patients fail to reach remission on any single agent, and JAK inhibitors carry a boxed warning (MACE, malignancy, thrombosis, mortality) from the ORAL Surveillance safety study.",
+    "sources": [
+     {
+      "source_type": "fda",
+      "source_url": "https://www.accessdata.fda.gov/scripts/cder/daf/",
+      "quote": "adalimumab: Tumor Necrosis Factor Blocker [EPC], earliest FDA submission 2002-12-31; tofacitinib: Janus Kinase Inhibitor [EPC], 2012-11-06; tocilizumab: Interleukin-6 Receptor Antagonist [EPC], 2010; abatacept: Selective T Cell Costimulation Modulator [EPC], 2005; rituximab: CD20-directed Cytolytic Antibody [EPC]; methotrexate: Folate Analog Metabolic Inhibitor [EPC], 1959 (Drugs@FDA via MCP)"
+     },
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1136/ard-2022-223365",
+      "quote": "The compounds investigated were csDMARDs (methotrexate (MTX), leflunomide, sulfasalazine, hydroxychloroquine), bDMARDs (abatacept, adalimumab, certolizumab-pegol, denosumab, etanercept, infliximab, levilimab, olokizumab, opineracept, rituximab, sari..."
+     }
+    ],
+    "coverage": "covered"
+   },
+   "treatment_guidelines": {
+    "content": "EULAR (2022/2023 update) and ACR guidelines share a treat-to-target algorithm: start methotrexate plus short-term glucocorticoids immediately at diagnosis; target sustained remission or low disease activity measured by a composite index (DAS28/CDAI/SDAI). If the target is not met and poor-prognosis factors are present (high activity, RF/ACPA positivity, early erosions), escalate to a bDMARD or tsDMARD (JAK inhibitor), typically added to methotrexate. On sustained remission, tapering (biologic first) is considered. The systematic literature review informing the 2022 EULAR update screened 8,969 records to establish comparative DMARD efficacy.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1136/ard-2022-223365",
+      "quote": "This systematic literature review (SLR) investigated the efficacy of conventional synthetic (cs), biological (b), biosimilar and targeted synthetic (ts)DMARDs in patients with RA ... to inform the taskforce of the 2022 update of the European Alliance of Associations for Rheumatology (EULAR) recommendations for management of rheumatoid arthritis"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "unmet_need": {
+    "content": "Despite the deep armamentarium, major gaps remain: (1) a substantial subset of patients are 'difficult-to-treat' RA, cycling through multiple bDMARD/tsDMARD mechanisms without reaching remission; (2) no biomarker reliably predicts which drug will work for which patient, so therapy is largely trial-and-error; (3) seronegative and early RA are under-served by RF/ACPA-based diagnosis, delaying the window-of-opportunity intervention; (4) JAK inhibitor safety signals (ORAL Surveillance boxed warning) constrain use in older/cardiovascular-risk patients; (5) true disease modification/cure and drug-free remission remain unachieved. This predictive-biomarker and mechanism-selection gap is precisely where a target-discovery/directionality platform (e.g., signed-DE ranking mapping TYK2/JAK-axis biology) is positioned to contribute.",
+    "sources": [
+     {
+      "source_type": "pubmed",
+      "source_url": "https://doi.org/10.1093/rheumatology/keae701",
+      "quote": "Newer studies have looked at molecular markers, but they have either not shown better results than those seen with the long-established ones or have not been sufficiently validated."
+     }
+    ],
+    "coverage": "covered"
+   }
+  },
+  "gaps": [
+   "Exact RA-specific FDA approval years differ from the earliest application submission dates captured (e.g., rituximab application 1997 = NHL, RA indication 2006; adalimumab RA approval 2002 aligns). ORAL Surveillance boxed-warning specifics cited from field knowledge, not a fetched FDA label in this pass."
+  ]
+ },
+ "regulatory_trials": {
+  "subsections": {
+   "accepted_endpoints": {
+    "content": "RA registration endpoints are well-standardized and confirmed from active CT.gov trial records: (1) ACR20/50/70 response (>=20/50/70% improvement in tender and swollen joint counts plus 3 of 5 core ACR components) \u2014 ACR20 at week 24 or 52 is the classic primary efficacy endpoint; (2) modified Total Sharp Score (mTSS) change from baseline (week 52) \u2014 the radiographic structural-damage endpoint required for a disease-modification claim; (3) DAS28 remission/low-disease-activity and CDAI/SDAI as composite disease-activity endpoints; (4) HAQ-DI for physical function. Regulators expect both a symptomatic endpoint (ACR/DAS28) and, for structural claims, radiographic progression (mTSS).",
+    "sources": [
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/study/NCT02706951",
+      "quote": "Percentage of patients with ACR 20 response (week 52); Change from baseline in modified Total Sharp Score (mTSS) (week 52)"
+     },
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/",
+      "quote": "ACR20 is defined as both improvement of 20% in the number of tender and number of swollen joints, and a 20% improvement in three of the five remaining ACR core set measures"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "fda_guidance": {
+    "content": "FDA has a longstanding RA drug-development framework (guidance for industry 'Clinical Development Programs for Drugs, Devices, and Biological Products for the Treatment of Rheumatoid Arthritis'): programs are expected to demonstrate improvement in signs and symptoms (ACR-based), and separately may pursue a structural-damage claim (radiographic, mTSS) and a physical-function claim (HAQ-DI). The mature approval history spans csDMARDs (methotrexate), TNF blockers (1998-2002), IL-6R/costimulation/CD20 biologics (2005-2010), and JAK inhibitors (2012-2019). The JAK class now carries a class-wide boxed warning triggered by the ORAL Surveillance post-marketing safety trial (tofacitinib vs TNF inhibitor).",
+    "sources": [
+     {
+      "source_type": "fda",
+      "source_url": "https://www.accessdata.fda.gov/scripts/cder/daf/",
+      "quote": "tofacitinib: Janus Kinase Inhibitor [EPC], earliest FDA submission 2012-11-06; upadacitinib 2019-08-16; baricitinib 2018-05-31 (Drugs@FDA via MCP)"
+     }
+    ],
+    "coverage": "partial"
+   },
+   "trial_parameters": {
+    "content": "Typical Phase 3 RA registration trials enroll ~500-1,600 patients (e.g., SELECT-MONOTHERAPY n=648, SELECT-COMPARE n=1,629), are randomized double-blind, and are framed by prior therapy failure: MTX-inadequate-responders (MTX-IR) or biologic-inadequate-responders (bDMARD-IR). Comparators are placebo (on background MTX) and/or active comparator (MTX monotherapy or adalimumab). Primary readout at week 12-24 for signs/symptoms; radiographic and long-term safety extensions run to week 52 and beyond. The interventional RA landscape is large and mature: 2,291 interventional trials, 477 in Phase 3, 332 Phase 4.",
+    "sources": [
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/study/NCT02706951",
+      "quote": "A Phase 3, Randomized, Double-Blind Study Comparing Upadacitinib (ABT-494) Monotherapy to Methotrexate (MTX) in Adults With Moderately to Severely Active Rheumatoid Arthritis With Inadequate Response to MTX ... enrollment 648, sponsor AbbVie, start 2016-03-23"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "landmark_trials": {
+    "content": "SELECT program (upadacitinib, AbbVie): SELECT-MONOTHERAPY (NCT02706951, n=648, upadacitinib vs MTX in MTX-IR) and SELECT-COMPARE (NCT02629159, n=1,629, upadacitinib vs placebo vs adalimumab on background MTX) \u2014 pivotal to the 2019 JAK-inhibitor approval. ORAL program (tofacitinib, Pfizer): the Phase 3 ORAL studies (e.g., NCT00853385, n=717) supported the first-in-class 2012 JAK approval. Earlier landmark biologic trials established the TNF (etanercept/infliximab/adalimumab), IL-6R (tocilizumab), costimulation (abatacept) and B-cell (rituximab) mechanisms. These trials collectively made ACR20/50/70 + mTSS the accepted efficacy/structural endpoint pairing.",
+    "sources": [
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/study/NCT02706951",
+      "quote": "SELECT-MONOTHERAPY ... compare the safety and efficacy (signs and symptoms) of upadacitinib 30 mg once daily (QD) alone and upadacitinib 15 mg QD alone versus continuing MTX alone adults with moderately to severely active rheumatoid arthritis (RA) with an inadequate response to MTX"
+     },
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/study/NCT02629159",
+      "quote": "A Phase 3, Randomized, Double-Blind Study Comparing Upadacitinib (ABT-494) to Placebo and to Adalimumab (enrollment 1629, AbbVie)"
+     }
+    ],
+    "coverage": "covered"
+   },
+   "notable_failures": {
+    "content": "The defining safety event is ORAL Surveillance (tofacitinib post-marketing trial mandated by FDA), which found tofacitinib did not meet non-inferiority to TNF inhibitors for major adverse cardiovascular events (MACE) and malignancy in RA patients >=50y with >=1 cardiovascular risk factor \u2014 triggering a class-wide boxed warning for all JAK inhibitors (tofacitinib, baricitinib, upadacitinib) covering serious cardiovascular events, malignancy, thrombosis, and mortality. Mechanistically many narrow single-cytokine approaches (e.g., anti-IL-1 anakinra) proved less effective in RA than TNF/IL-6/JAK blockade, reinforcing that RA is a multi-cytokine convergent disease \u2014 which is why pathway-node (JAK-STAT/TYK2) targeting is attractive.",
+    "sources": [
+     {
+      "source_type": "ctgov",
+      "source_url": "https://clinicaltrials.gov/study/NCT02092467",
+      "quote": "PHASE 3B/4 RANDOMIZED SAFETY ENDPOINT STUDY OF 2 DOSES OF TOFACITINIB IN COMPARISON TO A TUMOR NECROSIS FACTOR (TNF) INHIBITOR IN SUBJECTS WITH RHEUMATOID ARTHRITIS ... designed to compare the safety of tofacitinib versus TNF inhibitor with respect to major cardiovascular adverse events and malignancies (enrollment 4372, COMPLETED, verified via MCP)"
+     }
+    ],
+    "coverage": "covered"
+   }
+  },
+  "trial_landscape": {
+   "total_trials": 3341,
+   "interventional": 2291,
+   "by_phase": {
+    "Phase 1": 378,
+    "Phase 2": 570,
+    "Phase 3": 477,
+    "Phase 4": 332
+   },
+   "by_status": {
+    "Recruiting": 163,
+    "Completed": 1483,
+    "Active_not_recruiting": 50,
+    "Terminated": 205,
+    "Not_yet_recruiting": 53
+   }
+  },
+  "gaps": [
+   "FDA guidance document text was not fetched verbatim in this pass (cited by title/framework). ORAL Surveillance (NCT02092467, enrollment 4372, Phase 3B/4) was verified via the clinical-trials MCP. The JAK class-wide boxed warning is stated from field knowledge (FDA label not fetched verbatim in this pass)."
+  ]
+ },
+ "sources_evaluated": [
+  {
+   "url": "https://doi.org/10.1007/s10067-026-08158-z",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1007/s10067-026-08150-7",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1111/1756-185x.70674",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://www.cdc.gov/pcd/issues/2025/24_0393.htm",
+   "source_type": "other",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1002/acr.24856",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1016/j.cca.2025.120801",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1093/rheumatology/keae701",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://doi.org/10.1136/ard-2022-223365",
+   "source_type": "pubmed",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://www.accessdata.fda.gov/scripts/cder/daf/",
+   "source_type": "fda",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://clinicaltrials.gov/study/NCT02706951",
+   "source_type": "ctgov",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://clinicaltrials.gov/study/NCT02629159",
+   "source_type": "ctgov",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://clinicaltrials.gov/study/NCT02092467",
+   "source_type": "ctgov",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  },
+  {
+   "url": "https://cdn.clinicaltrials.gov/large-docs/09/NCT04033809/Prot_SAP_000.pdf",
+   "source_type": "ctgov",
+   "date_accessed": "2026-07-12",
+   "result": "success"
+  }
+ ],
+ "coverage_summary": {
+  "epidemiology": {
+   "covered": [
+    "diagnostic_criteria",
+    "prevalence_incidence",
+    "demographics",
+    "natural_history"
+   ],
+   "partial": [],
+   "missing": []
+  },
+  "biology_soc": {
+   "covered": [
+    "pathophysiology",
+    "biomarkers",
+    "approved_therapies",
+    "treatment_guidelines",
+    "unmet_need"
+   ],
+   "partial": [],
+   "missing": []
+  },
+  "regulatory_trials": {
+   "covered": [
+    "accepted_endpoints",
+    "trial_parameters",
+    "landmark_trials",
+    "notable_failures"
+   ],
+   "partial": [
+    "fda_guidance"
+   ],
+   "missing": []
+  }
+ }
+}

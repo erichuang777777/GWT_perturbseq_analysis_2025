@@ -1,0 +1,80 @@
+{
+  "disease_name": "Graves Disease",
+  "slug": "graves_disease",
+  "platform_targets": [
+    {
+      "gene": "ITM2A",
+      "primary_rank": 18,
+      "ot_genetic_assoc_score": 0.52
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Graves' disease is the most common cause of hyperthyroidism in developed countries, an autoimmune disorder driven by stimulatory TSH-receptor antibodies; more common ages 30-60 and 5-10x more frequent in women (ICD-10 E05.0).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32107168/",
+          "source_type": "pubmed",
+          "quote": "Graves' disease (GD) is the most common cause of hyperthyroidism in developed Countries. It is more common between 30 and 60 years; 5-10 times more frequent in women."
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "Genetic predisposition accounts for ~79% of GD risk, environment for ~21%. Graves' orbitopathy affects ~30% of GD patients, with <10% severe.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32107168/",
+          "source_type": "pubmed",
+          "quote": "The genetic predisposition accounts for 79% of the risk for GD, while environmental factors for 21%."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/35604323/",
+          "source_type": "pubmed",
+          "quote": "GO affects about 30% of Graves' patients, although fewer than 10% have severe forms requiring immunosuppressive treatments."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "ITM2A is a validated X-chromosome GD susceptibility gene, replicated independently in Korean pediatric autoimmune thyroid disease cohorts, and proposed to contribute to the strong female predominance of the disease. GD is primarily mediated by stimulatory TSH-receptor autoantibodies.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/27809695/",
+          "source_type": "pubmed",
+          "quote": "ITM2A Expands Evidence for Genetic and Environmental Interaction in Graves Disease Pathogenesis."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/36988246/",
+          "source_type": "pubmed",
+          "quote": "much attention has been directed towards the integral membrane protein 2 A (ITM2A) gene located on the X chromosome"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "Antithyroid drugs (thionamides), radioactive iodine, and thyroidectomy are the three treatment pillars. Methimazole is FDA-approved as a generic (e.g., ANDA040350).",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32929476/",
+          "source_type": "pubmed",
+          "quote": "Thyrotropin receptor antibodies (TSH-R-Abs), foremost the stimulatory TSH-R-Abs, are a specific biomarker"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "225 interventional trials registered on ClinicalTrials.gov, spanning antithyroid drug trials, orbitopathy immunosuppressive studies, and biomarker studies.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT06451016",
+          "source_type": "ctgov",
+          "quote": "Effects of Vitamin D Supplementation on Muscle Function Among Grave's Disease Patients"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No direct mechanistic paper found describing ITM2A's role specifically in CD4+ T cells in this pass; the association evidence is genetic/replication-cohort based rather than functional T-cell biology."
+  ]
+}

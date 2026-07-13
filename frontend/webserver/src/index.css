@@ -3,10 +3,11 @@
 @import "@fontsource/ibm-plex-sans/500.css";
 @import "@fontsource/ibm-plex-sans/600.css";
 @import "@fontsource/ibm-plex-sans/700.css";
-/* IBM Plex Mono — weights 400/500/600 */
+/* IBM Plex Mono — weights 400/500/600/700 (primary UI typeface) */
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
 @import "@fontsource/ibm-plex-mono/600.css";
+@import "@fontsource/ibm-plex-mono/700.css";
 
 * {
   box-sizing: border-box;
@@ -17,7 +18,7 @@ body {
   padding: 0;
 }
 body {
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color: #1a1d24;
   background: #ffffff;
   -webkit-font-smoothing: antialiased;

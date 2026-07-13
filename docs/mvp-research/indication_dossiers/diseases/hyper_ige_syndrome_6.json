@@ -1,0 +1,44 @@
+{
+  "disease_name": "Hyper-IgE syndrome 6, autosomal dominant, with recurrent infections",
+  "slug": "hyper_ige_syndrome_6",
+  "platform_targets": [{"gene": "STAT3", "primary_rank": 925, "ot_genetic_assoc_score": 0.95}],
+  "sections": {
+    "definition_population": {
+      "content": "AD-HIES (Job syndrome, STAT3-HIES) is a rare inborn error of immunity from dominant-negative STAT3 mutations causing recurrent infections, eczema, and elevated IgE.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "The hyper-IgE syndromes (HIES) are a heterogeneous group of inborn errors of immunity sharing manifestations including increased infection susceptibility, eczema, and raised serum IgE."}
+      ]
+    },
+    "epidemiology": {
+      "content": "No specific prevalence/incidence figure was found; disease is rare and studied via case series/cohorts accumulated since original description 55 years prior to a 2021 review.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "Since the prototypical HIES description 55 years ago, areas of significant progress have included description of key disease-causing genes"}
+      ],
+      "coverage": "not_established"
+    },
+    "biology": {
+      "content": "Dominant-negative STAT3 mutations produce broad innate/acquired immune defects plus skeletal/connective-tissue/vascular abnormalities; pathophysiology implicates JAK-STAT signaling, IL-6/IL-17, and Th17 cells; phenocopies occur via IL6ST and ZNF341 mutations in the same pathway.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "conferring a broad immune defect across both innate and acquired arms, as well as defects in skeletal, connective tissue, and vascular function"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "driven understanding of the interface of several signaling pathways, including the JAK-STAT pathways, interleukins 6 and 17, and the role of Th17 lymphocytes"},
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "identification of phenocopies such as mutations in IL6ST and ZNF341"}
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "No FDA-approved disease-specific therapy identified in this pass. Historical management relies on antimicrobial prophylaxis; early allogeneic stem cell transplant attempts were not positive.",
+      "sources": [
+        {"source_url": "https://pubmed.ncbi.nlm.nih.gov/33932191/", "source_type": "pubmed", "quote": "treatment has hinged on aggressive antimicrobial prophylaxis and treatment to prevent the development of end-organ disease such as pneumatocele"}
+      ],
+      "coverage": "partial"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov search for 'hyper-IgE syndrome' returned 17 total trial records (registries/infection-management focus); no STAT3-targeted interventional trial identified in this pass.",
+      "sources": [
+        {"source_url": "https://clinicaltrials.gov/", "source_type": "ctgov", "quote": "total=17 (search_trials condition=hyper-IgE syndrome, count_total=True)"}
+      ],
+      "coverage": "partial"
+    }
+  },
+  "gaps": ["No population prevalence/incidence number found", "No STAT3-targeted drug or trial identified", "No FDA drug regulatory record specific to this indication found"]
+}

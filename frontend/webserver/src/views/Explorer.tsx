@@ -1,10 +1,13 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useRef } from "react";
-import { TARGETS } from "../data/dataset";
-import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS } from "../data/reference";
+import { useCallback, useRef, useState } from "react";
+import { SOURCE_VERSION, TARGETS } from "../data/dataset";
+import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS, WPRESET_TIPS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
-import { consensus, fmtEffect, rankedTargets } from "../lib/logic";
+import { consensus, fmtEffect, rankedTargets, type RankedTarget } from "../lib/logic";
+import { downloadFile, toCSV } from "../lib/download";
 import { useStore } from "../store/store";
+import PageReferences from "../components/ui/PageReferences";
+import { FlagshipFigure } from "../components/ui";
 
 const ROW_HEIGHT = 54;
 const TABLE_HEIGHT = 700;
@@ -34,6 +37,9 @@ export default function Explorer() {
   const all = TARGETS;
   const R = READINESS;
   const G = GRADE;
+  // Researcher toggle: isolate the 15 primary-outcome genes (our fixed,
+  // breadth-ranked headline shortlist). Local view state — no store change.
+  const [primaryOnly, setPrimaryOnly] = useState(false);
 
   // ---- facets ----
   const readinessFacets = (["advance", "validate", "watchlist", "deprioritize"] as Call[]).map((k) => {
@@ -76,11 +82,13 @@ export default function Explorer() {
     k: x.k,
     label: x.label,
     color: x.color,
+    tip: x.tip,
     value: w[x.k] || 0,
     pct: Math.round(((w[x.k] || 0) / wsum) * 100) + "%",
   }));
   const weightPresets = Object.keys(WPRESETS).map((name) => ({
     name,
+    tip: WPRESET_TIPS[name] ?? "",
     color: S.weightPreset === name ? "#fff" : "#4a515e",
     bg: S.weightPreset === name ? "#1a5fb4" : "#fff",
     border: S.weightPreset === name ? "#1a5fb4" : "#d6dbe3",
@@ -104,6 +112,7 @@ export default function Explorer() {
   const filtGenes = new Set(filtered.map((t) => t.gene));
   const dfilter = S.decisionFilter;
   const rankedFiltered = rankedTargets(w).filter((t) => {
+    if (primaryOnly && !t.primaryOutcome) return false;
     if (!filtGenes.has(t.gene)) return false;
     if (dfilter !== "all") {
       const c = consensus(votesFor(t.gene));
@@ -126,9 +135,12 @@ export default function Explorer() {
       comp: t._comp,
       gene: t.gene,
       name: t.name,
+      primary: t.primaryOutcome,
+      primaryRank: t.primaryOutcomeRank,
       moduleId: t.module?.id ?? "—",
       moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned concept module",
       effect: fmtEffect(t.effect),
+      breadth: t.nTotalDeGenes != null ? t.nTotalDeGenes.toLocaleString() : "—",
       rLabel: R2.label,
       rColor: R2.color,
       rBg: R2.bg,
@@ -171,10 +183,13 @@ export default function Explorer() {
   const slGenes = S.shortlist.filter((g) => all.find((x) => x.gene === g));
   const shortlistChips = slGenes.map((g) => ({ gene: g }));
 
-  const GRID = "30px 34px 1.4fr 1fr 62px 66px 104px 44px 78px";
+  const GRID = "30px 34px 1.4fr 1fr 62px 68px 66px 104px 44px 78px";
 
-  const label = (t: string) => (
-    <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".8px", color: "#8a92a0", textTransform: "uppercase" as const }}>{t}</div>
+  const label = (t: string, tip?: string) => (
+    <div title={tip} style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".8px", color: "#8a92a0", textTransform: "uppercase" as const, display: "inline-flex", alignItems: "center", gap: "6px", cursor: tip ? "help" : "default" }}>
+      {t}
+      {tip && <span style={{ fontSize: "10px", color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }} aria-hidden>ⓘ</span>}
+    </div>
   );
 
   return (
@@ -205,6 +220,7 @@ export default function Explorer() {
                 key={p.name}
                 className="navlink"
                 onClick={() => applyPreset(p.name)}
+                title={p.tip}
                 style={{ fontSize: "11px", fontWeight: 600, padding: "4px 9px", borderRadius: "20px", border: `1.5px solid ${p.border}`, background: p.bg, color: p.color }}
               >
                 {p.name}
@@ -215,9 +231,10 @@ export default function Explorer() {
             {weightControls.map((wc) => (
               <div key={wc.k}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#3a414d", fontWeight: 500 }}>
+                  <span title={wc.tip} style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#3a414d", fontWeight: 500, cursor: "help" }}>
                     <span style={{ width: "8px", height: "8px", borderRadius: "2px", background: wc.color }} />
                     {wc.label}
+                    <span style={{ fontSize: "10px", color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }} aria-hidden>ⓘ</span>
                   </span>
                   <span style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280", fontWeight: 600 }}>{wc.pct}</span>
                 </div>
@@ -242,7 +259,7 @@ export default function Explorer() {
         <div style={{ borderTop: "1px solid #eef0f3" }} />
 
         <div>
-          <div style={{ marginBottom: "11px" }}>{label("Readiness call")}</div>
+          <div style={{ marginBottom: "11px" }}>{label("Readiness call", "Deterministic pipeline decision from the repo's readiness engine: 12 domain scores → an R-stage → a call. Stage maps to call as R0 → Deprioritize, R1 → Watchlist, R2 → Validate, R3 and above → Advance. Red flags (essentiality, off-target, missing guide support) can only cap the call downward, never raise it. A rule-based call on the real evidence — the weight sliders never change it.")}</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
             {readinessFacets.map((f) => (
               <div
@@ -260,7 +277,7 @@ export default function Explorer() {
         </div>
 
         <div>
-          <div style={{ marginBottom: "11px" }}>{label("Evidence grade")}</div>
+          <div style={{ marginBottom: "11px" }}>{label("Evidence grade", "Statistical evidence grade from the Perturb-seq screen (best culture condition): A = strongest on-target knockdown + significant, well-powered trans-effects; B / C = progressively weaker or less-powered; D = weak or unmeasured. Grade reflects data quality only — it does not incorporate safety, genetics, or external evidence (those enter the readiness call).")}</div>
           <div style={{ display: "flex", gap: "6px" }}>
             {gradeFacets.map((g) => (
               <div
@@ -335,25 +352,62 @@ export default function Explorer() {
               />
             </div>
             <button
-              onClick={() =>
-                alert(
-                  "Exporting " +
-                    rankedFiltered.length +
-                    " targets as CSV (with provenance + current composite columns)…\n\nIn the live portal this streams from /api/exports/{id}.csv",
-                )
-              }
+              onClick={() => {
+                const csv = toCSV<RankedTarget>(rankedFiltered, [
+                  ["row_in_current_view", (t) => t._rank],
+                  ["gene", (t) => t.gene],
+                  ["name", (t) => t.name],
+                  ["primary_outcome", (t) => t.primaryOutcome ? "yes" : ""],
+                  ["primary_outcome_rank_of_15", (t) => t.primaryOutcomeRank ?? ""],
+                  ["module_id", (t) => t.module?.id ?? ""],
+                  ["module_name", (t) => t.module?.name ?? ""],
+                  ["perturbation_score", (t) => t._comp],
+                  ["readiness_call", (t) => t.readiness?.call ?? "unknown"],
+                  ["readiness_stage", (t) => t.readiness?.stage ?? "unknown"],
+                  ["evidence_grade", (t) => t.grade ?? "unknown"],
+                  ["abs_log2fc", (t) => t.effect ?? ""],
+                  ["n_total_de_genes", (t) => t.nTotalDeGenes ?? ""],
+                  ["fdr", (t) => t.fdr ?? ""],
+                  ["cross_donor_corr_mean", (t) => t.crossDonorCorrelationMean ?? ""],
+                  ["gnomad_loeuf", (t) => t.gnomad.loeuf ?? ""],
+                  ["gnomad_pli", (t) => t.gnomad.pli ?? ""],
+                  ["primary_condition", (t) => t.primaryCondition],
+                  ["source_version", () => SOURCE_VERSION],
+                ]);
+                downloadFile(`cd4-targets_${rankedFiltered.length}.csv`, csv, "text/csv;charset=utf-8");
+              }}
               style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "9px 14px", border: "1.5px solid #d6dbe3", borderRadius: "9px", background: "#fff", fontSize: "13px", fontWeight: 500, color: "#3a414d", cursor: "pointer" }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path d="M12 3v12M7 10l5 5 5-5" />
                 <path d="M4 20h16" />
               </svg>{" "}
-              Export
+              Export CSV
             </button>
           </div>
         </div>
-        <div style={{ fontSize: "13px", color: "#6b7280", marginBottom: "16px" }}>
-          Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by composite priority
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", marginBottom: "16px" }}>
+          <div style={{ fontSize: "13px", color: "#6b7280" }}>
+            Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by perturbation score (your weights). ★ marks the 15 primary-outcome genes — our fixed breadth-ranked shortlist.
+          </div>
+          <span
+            className="navlink"
+            onClick={() => setPrimaryOnly((v) => !v)}
+            title="Isolate the 15 primary-outcome genes — the server's headline result, selected by trans-effect (downstream DE) breadth. This shortlist is fixed; the weight sliders never change it."
+            style={{ fontSize: "12px", fontWeight: 600, padding: "6px 12px", borderRadius: "8px", whiteSpace: "nowrap", cursor: "pointer", border: `1.5px solid ${primaryOnly ? "#b7791f" : "#d6dbe3"}`, color: primaryOnly ? "#fff" : "#9a6510", background: primaryOnly ? "#b7791f" : "#fbf7ee" }}
+          >
+            ★ Primary-outcome only (15)
+          </span>
+        </div>
+
+        <div style={{ marginBottom: "20px" }}>
+          <FlagshipFigure
+            src={`${import.meta.env.BASE_URL}flagship/fig_funnel.png`}
+            alt="Researcher druggability funnel: 11,526 measured CD4 targets (of a 12,748-gene library) narrow to 7,249 measured in-portal, 621 gate-passing, and 302 advance-ready deliverables; the deliverables split by tractability modality and direction of effect"
+            title="From genome-wide screen to an advance-ready shortlist"
+            caption="The druggability funnel behind this table: 11,526 measured CD4 targets (of the paper's 12,748-gene library) → 7,249 measured and QC-passed in this portal → 621 gate-passing → 302 advance-ready. The right panel breaks the 302 deliverables down by tractability modality and by direction of effect."
+            source="CD4 Perturb-seq screen · readiness engine · public/flagship/fig_funnel.png"
+          />
         </div>
 
         <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
@@ -377,7 +431,8 @@ export default function Explorer() {
             <div>Target</div>
             <div>Concept module</div>
             <div style={{ textAlign: "right" }}>|log2FC|</div>
-            <div style={{ textAlign: "right" }}>Priority</div>
+            <div style={{ textAlign: "right" }}>DE breadth</div>
+            <div style={{ textAlign: "right", cursor: "help" }} title="Perturbation score — a 0–100 weighted blend of the evidence sub-scores that moves with your weight sliders. Reorders your view; never changes the evidence or the readiness call.">Perturb. score</div>
             <div style={{ textAlign: "center" }}>Readiness</div>
             <div style={{ textAlign: "center" }}>Grade</div>
             <div style={{ textAlign: "center" }}>Review</div>
@@ -421,7 +476,17 @@ export default function Explorer() {
                       </div>
                       <div style={{ fontSize: "13px", fontWeight: 600, color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }}>{r.rank}</div>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: "14.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.gene}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <span style={{ fontSize: "14.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.gene}</span>
+                          {r.primary && (
+                            <span
+                              title={`Primary-outcome target #${r.primaryRank} of 15 — the server's headline breadth-selected shortlist`}
+                              style={{ display: "inline-flex", alignItems: "center", fontSize: "9.5px", fontWeight: 700, color: "#fff", background: "#5b3fb4", padding: "1px 6px", borderRadius: "20px", letterSpacing: ".3px", whiteSpace: "nowrap" }}
+                            >
+                              ★ Primary
+                            </span>
+                          )}
+                        </div>
                         <div style={{ fontSize: "12px", color: "#8a92a0", marginTop: "1px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.name}</div>
                       </div>
                       <div style={{ minWidth: 0 }}>
@@ -430,6 +495,7 @@ export default function Explorer() {
                         </span>
                       </div>
                       <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.effect}</div>
+                      <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#4a515e" }}>{r.breadth}</div>
                       <div style={{ textAlign: "right", fontSize: "14px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{r.comp}</div>
                       <div style={{ textAlign: "center" }}>
                         <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11.5px", fontWeight: 600, color: r.rColor, background: r.rBg }}>{r.rLabel}</span>
@@ -453,6 +519,10 @@ export default function Explorer() {
             <div style={{ padding: "44px", textAlign: "center", color: "#9aa1ad", fontSize: "14px" }}>No targets match the current filters.</div>
           )}
         </div>
+
+        <PageReferences
+          keys={["gwt_primary", "open_targets", "gnomad", "chembl", "deseq2", "benjamini_hochberg"]}
+        />
       </section>
 
       {/* shortlist tray */}

@@ -26,7 +26,7 @@ import triage_view
 from triage_view import DEFAULT_WEIGHTS, build_triage, triage_rank
 
 REPO = Path(__file__).resolve().parent.parent
-REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
+REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
 
 _AXIS_COLUMNS = [
     "concept_modules",
@@ -206,29 +206,37 @@ def test_real_data_multi_axis_winners_surface_and_lat_demoted():
     for winner in ["PIK3R1", "PLCG1", "CD3E", "CD247", "IL4R", "ITK"]:
         assert winner in top40, f"{winner} not in top 40: rank={ranked.index(winner)+1 if winner in ranked else 'absent'}"
 
-    # LAT is a KNOWN-high safety liability (LOEUF-constrained AND broadly
-    # expressed) -> demoted out of the top ~15 once safety overlays are loaded.
+    # LAT is broadly expressed (GTEx breadth 28) -> carries a safety liability
+    # and is demoted out of the top ~15 once safety overlays are loaded. (Under
+    # the authentic gnomAD v2.1.1 overlay LAT's LOEUF is 0.66, i.e. NOT
+    # LoF-constrained -- its liability is expression-breadth, not constraint.)
     top15 = ranked[:15]
     assert "LAT" not in top15, f"LAT should be demoted by safety but is in top15: {top15}"
 
-    # sparse-axis coverage disclosed (unknown != 0): safety covers only a handful
-    # of genes, the rest are unknown, never scored.
+    # sparse-axis coverage disclosed (unknown != 0): the composite safety axis
+    # needs BOTH gnomAD constraint (now whole-genome) AND GTEx breadth (still a
+    # ~5k-gene partial overlay), so GTEx is the limiting axis -- most targets are
+    # 'unknown', never coerced to safe/0, and never scored.
     cov = out["provenance"]["safety_coverage"]
     assert cov["safety_unknown"] > cov["safety_covered"]
 
 
 @pytest.mark.skipif(not REAL_CARDS.exists(), reason="pre-built cards not present in this checkout")
-def test_lat_safety_is_known_high_liability():
-    """Anchor the demotion mechanism: LAT's composite safety liability is 'high'
-    (constrained + broad) with the real overlays -- not unknown, not low."""
+def test_stat3_safety_is_known_high_liability():
+    """Anchor the demotion mechanism: STAT3's composite safety liability is
+    'high' (LoF-constrained AND broadly expressed) under the authentic gnomAD
+    v2.1.1 overlay -- not unknown, not low. (STAT3: LOEUF 0.095, GTEx breadth
+    28; a textbook broadly-essential signaling gene. This replaces the earlier
+    LAT anchor, whose demo-seed LOEUF wrongly read as constrained -- LAT's real
+    v2.1.1 LOEUF is 0.66, i.e. not constrained.)"""
     from api import deps
 
     cards = deps._normalize_cell_values(pd.read_csv(REAL_CARDS, low_memory=False))
     gnomad, gtex = _load_real_overlays()
     triage = build_triage(cards, gnomad_overlay=gnomad, gtex_overlay=gtex)
-    lat = triage[triage["target"] == "LAT"].iloc[0]
-    assert lat["gnomad_constraint_flag"] == "loss_intolerant"
-    assert lat["composite_safety_liability"] == "high"
+    stat3 = triage[triage["target"] == "STAT3"].iloc[0]
+    assert stat3["gnomad_constraint_flag"] == "loss_intolerant"
+    assert stat3["composite_safety_liability"] == "high"
 
 
 @pytest.mark.skipif(not REAL_CARDS.exists(), reason="pre-built cards not present in this checkout")

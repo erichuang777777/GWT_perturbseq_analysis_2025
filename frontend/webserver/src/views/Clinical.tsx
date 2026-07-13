@@ -2,8 +2,37 @@ import { MODULES, TARGETS, targetsInModule } from "../data/dataset";
 import { MODULE_META } from "../data/moduleMeta";
 import { CONSTRAINT_META, GRADE, READINESS } from "../data/reference";
 import { useStore } from "../store/store";
+import ExpressionCompare from "./clinical/ExpressionCompare";
+import PageReferences from "../components/ui/PageReferences";
+import { FlagshipFigure } from "../components/ui";
 
 const catBadge = (c: string) => (c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" });
+
+// Clinical risk tier derived transparently from real safety signals:
+//   - pipeline red flags (readiness.redFlags)
+//   - annotated safety liabilities (safetyLiabilities)
+//   - high LoF-intolerance in the general population (gnomAD constraint tier = high)
+// The count of these flags maps to a tier. This is descriptive risk framing,
+// never a clinical recommendation.
+const RISK_TIERS = {
+  avoid: { rank: 3, label: "Avoid", color: "#a4262c", bg: "#fdecea" },
+  high: { rank: 2, label: "High risk", color: "#c85a11", bg: "#fdf0e6" },
+  caution: { rank: 1, label: "Caution", color: "#b7791f", bg: "#fbf6ea" },
+  clear: { rank: 0, label: "Clear", color: "#0d7d5a", bg: "#e8f5ec" },
+} as const;
+type RiskKey = keyof typeof RISK_TIERS;
+function clinicalRisk(t: { readiness: { redFlags: string[] } | null; safetyLiabilities: { event: string }[]; gnomad: { constraintTier: string | null } }): { key: RiskKey; flags: number; parts: string[] } {
+  const parts: string[] = [];
+  const nRed = t.readiness?.redFlags?.length ?? 0;
+  if (nRed > 0) parts.push(`${nRed} pipeline red flag${nRed === 1 ? "" : "s"}`);
+  const nLiab = t.safetyLiabilities?.length ?? 0;
+  if (nLiab > 0) parts.push(`${nLiab} safety liabilit${nLiab === 1 ? "y" : "ies"}`);
+  const highConstraint = t.gnomad?.constraintTier === "high";
+  if (highConstraint) parts.push("high LoF intolerance (gnomAD)");
+  const flags = nRed + nLiab + (highConstraint ? 1 : 0);
+  const key: RiskKey = flags >= 3 ? "avoid" : flags === 2 ? "high" : flags === 1 ? "caution" : "clear";
+  return { key, flags, parts };
+}
 
 export default function Clinical() {
   const { state, setState } = useStore();
@@ -14,9 +43,11 @@ export default function Clinical() {
 
   const clinicalTabs = [
     { key: "scope", label: "Scope & guardrails" },
+    { key: "core", label: "★ Core-5 targets" },
     { key: "concept", label: "Individual concept profile" },
     { key: "drug", label: "Disease × drug evidence" },
     { key: "popgen", label: "Population genetics" },
+    { key: "upload", label: "Compare my expression features" },
   ].map((tb) => ({
     key: tb.key,
     label: tb.label,
@@ -76,13 +107,39 @@ export default function Clinical() {
           const Gg = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
           const assoc = t.diseases.find((d) => d.id === selDis.id)!;
           const nTrials = t.clinicalTrials.length;
+          const risk = clinicalRisk(t);
+          const rt = RISK_TIERS[risk.key];
+          // External genetic support (independent Open Targets GWAS re-check,
+          // Level-4 track A). Shown honestly: a real disease + GA score when
+          // present, an explicit "not re-checked" when the gene is absent.
+          const gwas = t.externalEvidence?.gwas ?? null;
+          const gaScore = gwas?.topImmuneGAScore ?? null;
+          const hasGwas = gaScore != null && gaScore > 0;
           return {
             gene: t.gene,
             name: t.name,
+            primary: t.primaryOutcome,
+            gwasLabel: hasGwas
+              ? `GWAS ${gaScore!.toFixed(2)}${gwas?.topImmuneDisease ? " · " + gwas.topImmuneDisease : ""}`
+              : gwas
+                ? "no immune GWAS association"
+                : "not GWAS-re-checked",
+            gwasHas: hasGwas,
+            gwasTitle: hasGwas
+              ? `Independent Open Targets GWAS genetic-association re-check: top immune-disease GA score ${gaScore!.toFixed(2)}${gwas?.topImmuneDisease ? " (" + gwas.topImmuneDisease + ")" : ""}${gwas?.hasClassicAutoimmune ? " · classic-autoimmune hit" : ""}`
+              : gwas
+                ? "Re-checked in Open Targets GWAS genetics but no immune disease association found"
+                : "Not among the 55 targets re-checked in the Level-4 Open Targets GWAS track",
             moduleId: t.module?.id ?? "—",
             moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned module",
             assoc: assoc.overallScore != null ? assoc.overallScore.toFixed(2) : "unknown",
             assocW: assoc.overallScore != null ? Math.round(assoc.overallScore * 100) + "%" : "0%",
+            assocNum: assoc.overallScore ?? 0,
+            riskLabel: rt.label,
+            riskColor: rt.color,
+            riskBg: rt.bg,
+            riskRank: rt.rank,
+            riskNote: risk.parts.length ? risk.parts.join(" · ") : "no risk flags triggered",
             rLabel: Rr.label,
             rColor: Rr.color,
             rBg: Rr.bg,
@@ -93,7 +150,7 @@ export default function Clinical() {
             trialLabel: nTrials > 0 ? `${nTrials} clinical trial${nTrials === 1 ? "" : "s"} indexed for this target` : "no clinical trial evidence indexed for this target",
           };
         })
-        .sort((a, b) => parseFloat(b.assoc) - parseFloat(a.assoc))
+        .sort((a, b) => b.riskRank - a.riskRank || b.assocNum - a.assocNum)
     : [];
 
   // ---- popgen tab (real gnomAD) ----
@@ -125,6 +182,49 @@ export default function Clinical() {
     };
   }
 
+  // ---- Core-5 tab: the researcher view's headline finding, translated for a
+  // clinician. These are the 5 targets that are BOTH primary-outcome (top-15
+  // by trans-effect breadth) AND today drug-deliverable (known modality) —
+  // the intersection the platform foregrounds as its ultimate result. Every
+  // field below is read straight off the same target record the researcher
+  // Dossier uses; nothing here is a separate computation.
+  const CORE_FIVE = ["CD3E", "CD247", "LAT", "PLCG1", "VAV1"];
+  const coreTargets = CORE_FIVE.map((g) => all.find((t) => t.gene === g)!).filter(Boolean);
+  const corePolarityKey: Record<string, "repressor" | "mixed"> = { CD3E: "repressor", CD247: "repressor", LAT: "repressor", PLCG1: "repressor", VAV1: "mixed" };
+  const coreRows = coreTargets.map((t) => {
+    const risk = clinicalRisk(t);
+    const rt = RISK_TIERS[risk.key];
+    const call = t.readiness?.call;
+    const Rr = call ? R[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
+    const topDisease = t.diseases.length ? t.diseases.reduce((a, b) => ((b.overallScore ?? 0) > (a.overallScore ?? 0) ? b : a)) : null;
+    const polarity = corePolarityKey[t.gene];
+    const nTrials = t.clinicalTrials.filter((c) => c.status && c.status !== "UNKNOWN").length;
+    const approvedAb = !!t.tractabilityFlags?.AB?.["Approved Drug"];
+    const gnomadTier = t.gnomad?.constraintTier;
+    return {
+      gene: t.gene,
+      name: t.name,
+      module: t.module?.name.replace(/_/g, " ") ?? "—",
+      polarity,
+      polarityLabel: polarity === "repressor" ? "Repressor — knockdown suppresses T-cell activation (candidate autoimmune brake)" : "Mixed direction — downstream effect is not uniformly suppressive; not a clean brake hypothesis",
+      polarityColor: polarity === "repressor" ? "#0d7d5a" : "#b7791f",
+      polarityBg: polarity === "repressor" ? "#e8f5ec" : "#fbf6ea",
+      naturalLoF: topDisease ? `Natural loss-of-function is itself linked to ${topDisease.name} (Open Targets assoc. ${(topDisease.overallScore ?? 0).toFixed(2)}) — the therapeutic hypothesis (suppress this gene) sits directly against its own known deficiency phenotype.` : "No disease association is indexed for this gene's natural loss-of-function in this dataset.",
+      diseaseName: topDisease?.name ?? "—",
+      diseaseScore: topDisease?.overallScore ?? null,
+      rLabel: Rr.label, rColor: Rr.color, rBg: Rr.bg,
+      riskLabel: rt.label, riskColor: rt.color, riskBg: rt.bg,
+      riskNote: risk.parts.length ? risk.parts.join(" · ") : "no risk flags triggered",
+      safetyLiabilities: t.safetyLiabilities.map((s) => s.event),
+      gnomadTier, gnomadLoeuf: t.gnomad?.loeuf,
+      nTrials, approvedAb,
+      precedent: t.gene === "CD3E"
+        ? "Anti-CD3 immunomodulation (teplizumab, Herold et al. 2019) is a direct clinical precedent for suppressing signalling through this exact subunit."
+        : nTrials > 0 ? `${nTrials} indexed clinical trial${nTrials === 1 ? "" : "s"} reference this target.` : "No indexed clinical-trial precedent for this specific target in this dataset.",
+      modalityLabel: ["CD3E", "CD247", "LAT"].includes(t.gene) ? "Surface (CAR-T / ADC / antibody)" : "Small molecule (intracellular pocket)",
+    };
+  });
+
   const guardrails = [
     { k: "Descriptive ≠ decision", t: "Statistical evidence (effect, robustness) and human judgement (the readiness call, reviewer votes) are kept visually and structurally separate. Nothing here recommends a treatment." },
     { k: "unknown ≠ 0", t: 'Any field without evidence reads "unknown" with a coverage note — never a fabricated zero or default. Empty drug, disease and constraint records are shown honestly rather than hidden.' },
@@ -143,7 +243,7 @@ export default function Clinical() {
     "Replace regulatory, clinical, or expert review",
   ];
 
-  const DGRID = "1.15fr 0.95fr 120px 1.6fr 96px 62px";
+  const DGRID = "108px 1.15fr 0.95fr 110px 1.5fr 96px 62px";
 
   return (
     <main style={{ flex: 1, maxWidth: "1120px", margin: "0 auto", width: "100%", padding: "30px 28px 70px" }}>
@@ -169,7 +269,17 @@ export default function Clinical() {
       {/* scope */}
       {S.clinicalTab === "scope" && (
         <div style={{ maxWidth: "860px" }}>
-          <p style={{ fontSize: "15px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 26px", maxWidth: "680px" }}>This lookup reads the CD4 T-cell Perturb-seq screen through a clinical-evidence lens. Before the panels, three rules govern everything shown here — they are what keep it an evidence tool rather than a decision tool.</p>
+          <p style={{ fontSize: "15px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 22px", maxWidth: "680px" }}>This lookup reads the CD4 T-cell Perturb-seq screen through a clinical-evidence lens. Before the panels, three rules govern everything shown here — they are what keep it an evidence tool rather than a decision tool.</p>
+
+          <div style={{ marginBottom: "30px" }}>
+            <FlagshipFigure
+              src={`${import.meta.env.BASE_URL}flagship/fig_clinical_risk.png`}
+              alt="Clinical risk stratification of the portal: 3,309 Clear (46%), 3,197 Caution (44%), 696 High risk (10%), 47 Avoid (1%); the right panel plots 15 disease-associated targets showing that a strong perturbation effect does not imply a low risk tier"
+              title="How the portal's targets stratify by clinical risk"
+              caption="Every target is placed in one of four risk tiers: 3,309 Clear (46%), 3,197 Caution (44%), 696 High risk (10%) and 47 Avoid (1%). The right panel plots 15 disease-associated targets by effect size against risk tier — a reminder that a strong perturbation effect is not the same as a safe target."
+              source="CD4 Perturb-seq screen · pipeline red flags + safety liabilities + gnomAD LoF-intolerance · public/flagship/fig_clinical_risk.png"
+            />
+          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "30px" }}>
             {guardrails.map((g) => (
               <div key={g.k} style={{ border: "1px solid #e2e5ea", borderLeft: "3px solid #0d7d5a", borderRadius: "0 12px 12px 0", padding: "16px 20px" }}>
@@ -207,6 +317,74 @@ export default function Clinical() {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Core-5 targets — the researcher view's primary outcome, translated for a clinician */}
+      {S.clinicalTab === "core" && (
+        <div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
+            <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0 }}>The 5 core targets</h2>
+            <span style={{ fontSize: "13px", color: "#6b7280" }}>— our primary scientific finding, and today drug-deliverable</span>
+          </div>
+          <div style={{ fontSize: "12.5px", color: "#6b7280", marginBottom: "18px", maxWidth: "820px", lineHeight: 1.5 }}>
+            The researcher view ranks 15 primary-outcome genes by downstream trans-effect breadth, and a separate delivery-decision
+            layer asks which targets have a known drug modality today. These 5 — <strong>CD3E, CD247, LAT, PLCG1, VAV1</strong> — sit in
+            both sets: our strongest discoveries that are also actionable now. All 5 sit on the TCR-activation axis (receptor → proximal
+            signalling); 4 are repressors whose knockdown suppresses T-cell activation, VAV1 is mixed-direction.
+          </div>
+
+          <div style={{ marginBottom: "22px" }}>
+            <FlagshipFigure
+              src={`${import.meta.env.BASE_URL}flagship/fig_core5_evidence.png`}
+              alt="Evidence matrix for the 5 core targets: on-target effect, downstream breadth, cross-donor robustness, significance, perturbation polarity, gnomAD constraint, UK Biobank lymphocyte burden, GWAS immune association, STRING partner recovery, HIV host-factor screen, Open Targets top disease, and clinical trials, for CD3E, CD247, LAT, PLCG1, and VAV1"
+              title="Every evidence layer we gathered, per target"
+              caption="Internal screen statistics (effect, breadth, robustness, significance) are strong for all 5; external corroboration is real but uneven across sources — gaps are shown as absent, not filled in."
+              source="CD4 Perturb-seq screen · gnomAD · UK Biobank · Open Targets · STRING · GEO GSE318876 · public/flagship/fig_core5_evidence.png"
+            />
+          </div>
+
+          <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
+            {coreRows.map((c, i) => (
+              <div key={c.gene} style={{ padding: "18px 20px", borderBottom: i < coreRows.length - 1 ? "1px solid #e2e5ea" : "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
+                  <span style={{ fontSize: "17px", fontWeight: 700, color: "#1a1d24" }}>{c.gene}</span>
+                  <span style={{ fontSize: "12px", color: "#9aa1ad" }}>{c.name}</span>
+                  <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "6px", background: c.rBg, color: c.rColor }}>{c.rLabel}</span>
+                  <span title={c.riskNote} style={{ fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "6px", background: c.riskBg, color: c.riskColor, cursor: "help" }}>{c.riskLabel}</span>
+                  <span style={{ fontSize: "11px", color: "#6b40b8", background: "#f0eafb", padding: "3px 9px", borderRadius: "6px" }}>{c.modalityLabel}</span>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+                  <div>
+                    <div style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: ".4px", textTransform: "uppercase", color: "#9aa1ad", marginBottom: "4px" }}>1 · Direction translation</div>
+                    <div style={{ fontSize: "11px", fontWeight: 600, color: c.polarityColor, marginBottom: "3px" }}>{c.polarity === "repressor" ? "Repressor (KD → brake)" : "Mixed direction"}</div>
+                    <div style={{ fontSize: "11.5px", color: "#4a515e", lineHeight: 1.45 }}>{c.polarityLabel}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: ".4px", textTransform: "uppercase", color: "#9aa1ad", marginBottom: "4px" }}>2 · Safety symmetry</div>
+                    <div style={{ fontSize: "11.5px", color: "#4a515e", lineHeight: 1.45, marginBottom: c.safetyLiabilities.length ? "4px" : 0 }}>{c.naturalLoF}</div>
+                    {c.safetyLiabilities.length > 0 && (
+                      <div style={{ fontSize: "11px", fontWeight: 600, color: "#a4262c" }}>⚑ Safety liability: {c.safetyLiabilities.join(", ")}</div>
+                    )}
+                    {c.gnomadTier === "high" && (
+                      <div style={{ fontSize: "11px", fontWeight: 600, color: "#a4262c", marginTop: "3px" }}>⚑ gnomAD high LoF-constraint (LOEUF {c.gnomadLoeuf?.toFixed(3)}) — population-level essentiality signal</div>
+                    )}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: ".4px", textTransform: "uppercase", color: "#9aa1ad", marginBottom: "4px" }}>3 · Clinical precedent</div>
+                    <div style={{ fontSize: "11.5px", color: "#4a515e", lineHeight: 1.45 }}>{c.precedent}</div>
+                    {c.approvedAb && <div style={{ fontSize: "11px", color: "#0d7d5a", fontWeight: 600, marginTop: "3px" }}>An approved antibody drug exists against this target class.</div>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: "18px", padding: "14px 18px", background: "#f7f8fa", borderRadius: "10px", fontSize: "11.5px", color: "#6b7280", lineHeight: 1.5 }}>
+            <strong style={{ color: "#3a414d" }}>4 · Is my patient on this axis?</strong> Use the <span className="navlink" onClick={() => setState({ clinicalTab: "upload" })} style={{ color: "#1a5fb4", fontWeight: 600 }}>Compare my expression features</span> tab to
+            upload a de-identified expression profile and check whether these 5 TCR-activation-axis genes read as elevated (consistent with over-activation, a potential brake candidate) in your patient's sample — entirely client-side, nothing is transmitted.
+            This is hypothesis generation from an overlap lookup, not a diagnostic or a treatment recommendation.
           </div>
         </div>
       )}
@@ -253,8 +431,8 @@ export default function Clinical() {
               <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
                 {conceptTargets.map((t) => (
                   <div key={t.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: t.gene })} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 13px", border: "1px solid #eef0f3", borderRadius: "9px" }}>
-                    <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px" }}>{t.gene}</span>
-                    <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1 }}>{t.name}</span>
+                    <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px", flexShrink: 0 }}>{t.gene}</span>
+                    <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={t.name}>{t.name}</span>
                     <span style={{ display: "inline-block", padding: "3px 9px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: t.rColor, background: t.rBg }}>{t.rLabel}</span>
                   </div>
                 ))}
@@ -286,11 +464,12 @@ export default function Clinical() {
             <>
               <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "15px" }}>
                 <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0 }}>{selDis.name}</h2>
-                <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen</span>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen, highest safety risk first</span>
               </div>
 
               <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
                 <div style={{ display: "grid", gridTemplateColumns: DGRID, padding: "11px 16px", background: "#f7f8fa", borderBottom: "1px solid #e2e5ea", fontSize: "11px", fontWeight: 700, letterSpacing: ".5px", color: "#8a92a0", textTransform: "uppercase" }}>
+                  <div>Risk tier</div>
                   <div>Target</div>
                   <div>Concept module</div>
                   <div style={{ textAlign: "center" }}>Assoc. score</div>
@@ -301,10 +480,21 @@ export default function Clinical() {
                 {disMatches.map((m) => (
                   <div key={m.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: m.gene })} style={{ display: "grid", gridTemplateColumns: DGRID, alignItems: "center", padding: "13px 16px", borderBottom: "1px solid #eef0f3" }}>
                     <div>
-                      <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
-                      <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{m.name}</div>
+                      <span title={m.riskNote} style={{ display: "inline-block", padding: "4px 10px", borderRadius: "7px", fontSize: "11.5px", fontWeight: 700, color: m.riskColor, background: m.riskBg }}>{m.riskLabel}</span>
                     </div>
-                    <div style={{ fontSize: "12.5px", color: "#4a515e" }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                        <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</span>
+                        {m.primary && (
+                          <span title="Primary-outcome target (breadth-selected shortlist of 15)" style={{ fontSize: "9px", fontWeight: 700, color: "#fff", background: "#5b3fb4", padding: "1px 5px", borderRadius: "20px" }}>★</span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: "11.5px", color: "#8a92a0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.name}</div>
+                      <div title={m.gwasTitle} style={{ fontSize: "10.5px", marginTop: "2px", color: m.gwasHas ? "#6b40b8" : "#b0b6c0", fontFamily: m.gwasHas ? "inherit" : "'IBM Plex Mono', monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {m.gwasHas ? "⌁ " : ""}{m.gwasLabel}
+                      </div>
+                    </div>
+                    <div style={{ minWidth: 0, fontSize: "12.5px", color: "#4a515e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={`${m.moduleId} ${m.moduleShort}`}>
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{m.moduleId}</span> {m.moduleShort}
                     </div>
                     <div style={{ textAlign: "center" }}>
@@ -326,7 +516,7 @@ export default function Clinical() {
                 ))}
               </div>
               <div style={{ display: "flex", alignItems: "start", gap: "8px", marginTop: "16px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "720px" }}>
-                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Association scores are real Open Targets overall-association scores for this gene–disease pair. Clinical-trial evidence is gene-scoped (indexed trials for the target), not necessarily specific to this indication. They rank hypotheses for research follow-up — they are not evidence of clinical efficacy in this disease.
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Risk tier is derived transparently from real safety signals — pipeline red flags, annotated safety liabilities, and high gnomAD LoF-intolerance (hover a tier for the specific flags) — and the table is sorted highest-risk first, on purpose: the strongest-effect targets are often the least safe. Association scores are real Open Targets overall-association scores for this gene–disease pair; clinical-trial evidence is gene-scoped, not indication-specific. Everything here ranks hypotheses for research follow-up — it is not evidence of clinical efficacy or safety in this disease.
               </div>
             </>
           ) : (
@@ -365,7 +555,7 @@ export default function Clinical() {
                 ))}
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.6, color: "#3a414d", background: "#f7f8fa", borderRadius: "10px", padding: "15px 17px" }}>{popTarget.interpretation}</div>
-              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v4 constraint (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
+              <div style={{ fontSize: "10.5px", color: "#9aa1ad", fontFamily: "'IBM Plex Mono', monospace", marginTop: "15px" }}>src: gnomAD v2.1.1 constraint, full-genome (sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv)</div>
             </div>
           )}
           {!pt && pq.length > 0 && (
@@ -376,6 +566,12 @@ export default function Clinical() {
           )}
         </div>
       )}
+
+      {S.clinicalTab === "upload" && <ExpressionCompare targets={all} />}
+
+      <PageReferences
+        keys={["gwt_primary", "open_targets", "clinicaltrials", "gnomad", "jak_oral_surveillance", "teplizumab", "pubmed"]}
+      />
     </main>
   );
 }

@@ -32,6 +32,11 @@ export interface Figure {
   cat: string;
   src: string;
   desc: string;
+  // When set, this figure is a static, pipeline-rendered PNG (public/) shown
+  // in place of the interactive chart — used for 3B, whose informative view
+  // (a sorted 112-cluster heatmap + Δ-from-mean panel) is a real computed
+  // figure rather than an interactive trace.
+  img?: string;
 }
 
 // ---------- real dataset shape (public/real-dataset.json) ----------
@@ -104,6 +109,62 @@ export interface Readiness {
   hasExternalEvidence: boolean;
 }
 
+// Real UK Biobank exome-wide rare-LoF-variant lymphocyte-count burden
+// (Backman et al. 2021) -- a population-level statistical association, zero
+// network calls, ~98.5% of targets. Independent of gnomAD's constraint
+// signal: gnomAD says how tolerant the population is to losing the gene;
+// this says what actually happens to lymphocyte count when it's lost.
+export interface PopulationBurden {
+  trait: string;
+  effectEstimate: number | null;
+  ci95Lower: number | null;
+  ci95Upper: number | null;
+  ciExcludesZero: boolean;
+  direction: "higher" | "lower";
+  hypothesis: string;
+  caveat: string;
+}
+
+// ---------- per-target external corroboration (Level-4 revalidation) ----------
+// Three orthogonal, independent external sources, joined per target by the
+// export script from docs/mvp-research/level4_external_validation/. Any track
+// with no row for a gene is `null` (honest "no external hit", never a
+// fabricated 0); a gene absent from all three has externalEvidence: null.
+//   gwas   — Open Targets GWAS genetic-association re-check (55 targets)
+//   string — STRING known-partner recovery in the CD4 downstream set (15)
+//   hiv    — GEO GSE318876 independent CRISPRa/n HIV screen concordance (1,235)
+export interface GwasEvidence {
+  topImmuneDisease: string | null;
+  topImmuneGAScore: number | null;
+  topAnyDisease: string | null;
+  topAnyGAScore: number | null;
+  nImmuneGeneticAssoc: number | null;
+  classicAutoimmuneHit: string | null;
+  hasClassicAutoimmune: boolean | null;
+  footprintClass: string | null;
+}
+export interface StringEvidence {
+  group: string | null;
+  nKnownPartners: number | null;
+  nInDownstream: number | null;
+  nDownstreamTotal: number | null;
+  recoveryFrac: number | null;
+}
+export interface HivEvidence {
+  hivHitClass: string | null;
+  bestLfc: number | null;
+  screen: string | null;
+  bestDir: string | null;
+  inLibrary: boolean | null;
+  inVal55: boolean | null;
+  movesInUninfected: boolean | null;
+}
+export interface ExternalEvidence {
+  gwas: GwasEvidence | null;
+  string: StringEvidence | null;
+  hiv: HivEvidence | null;
+}
+
 export interface RealTarget {
   gene: string;
   name: string;
@@ -135,6 +196,13 @@ export interface RealTarget {
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
+  populationBurden: PopulationBurden | null;
+  // Per-target external corroboration; null when the gene is in none of the
+  // three Level-4 tracks. See ExternalEvidence above.
+  externalEvidence: ExternalEvidence | null;
+  // The 15 breadth-selected primary-outcome targets (server headline result).
+  primaryOutcome: boolean;
+  primaryOutcomeRank: number | null;
 }
 
 export interface RealDataset {

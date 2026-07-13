@@ -22,7 +22,7 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `target_contrast_gene_name` | object | 0.0% | 11526 |
+| `target_contrast_gene_name` | str | 0.0% | 11526 |
 | `Rest` | float64 | 2.1% | 9354 |
 | `Stim8hr` | float64 | 1.0% | 9442 |
 | `Stim48hr` | float64 | 2.1% | 9340 |
@@ -46,7 +46,7 @@ _(no low-cardinality categorical columns)_
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `target_contrast_gene_name` | object | 0.0% | 11526 |
+| `target_contrast_gene_name` | str | 0.0% | 11526 |
 | `Rest` | float64 | 2.1% | 685 |
 | `Stim8hr` | float64 | 1.0% | 733 |
 | `Stim48hr` | float64 | 2.1% | 718 |
@@ -70,10 +70,10 @@ _(no low-cardinality categorical columns)_
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `index` | object | 0.0% | 2131 |
-| `target_contrast_gene_name` | object | 0.0% | 1235 |
-| `culture_condition` | object | 0.0% | 3 |
-| `target_contrast` | object | 0.0% | 1235 |
+| `index` | str | 0.0% | 2131 |
+| `target_contrast_gene_name` | str | 0.0% | 1235 |
+| `culture_condition` | str | 0.0% | 3 |
+| `target_contrast` | str | 0.0% | 1235 |
 | `chunk` | int64 | 0.0% | 654 |
 | `n_cells_target` | float64 | 0.0% | 934 |
 | `n_up_genes` | int64 | 0.0% | 732 |
@@ -83,8 +83,8 @@ _(no low-cardinality categorical columns)_
 | `ontarget_significant` | bool | 0.0% | 1 |
 | `target_baseMean` | float64 | 0.0% | 2131 |
 | `offtarget_flag` | bool | 0.0% | 1 |
-| `n_total_genes_category` | object | 0.0% | 1 |
-| `ontarget_effect_category` | object | 0.0% | 1 |
+| `n_total_genes_category` | str | 0.0% | 1 |
+| `ontarget_effect_category` | str | 0.0% | 1 |
 | `n_downstream` | int64 | 0.0% | 896 |
 | `passes_gate` | bool | 0.0% | 1 |
 | `logDE` | float64 | 0.0% | 896 |

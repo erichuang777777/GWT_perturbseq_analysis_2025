@@ -208,6 +208,11 @@ sources/target_tool_cache/usr_*/
 sources/target_tool_cache/imports/*/
 sources/target_tool_cache/[0-9a-f]*-[0-9a-f]*/
 
+# CI reproducibility guard: the bundle is committed compressed
+# (reproducibility_bundle_v2.tar.gz); the workflow extracts it to this
+# directory at runtime. Never commit the extracted copy.
+docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle/
+
 # Keep the committed explainer site (overrides **/*.html above)
 !docs/explainer/index.html
 
@@ -220,6 +225,15 @@ src/10_ml_perturbation_prediction/.venv_ml/
 
 # Keep the committed researcher-guide site (overrides **/*.html above)
 !docs/researcher_guide/index.html
-# Keep the development timeline visualizations (overrides **/*.html above)
-!docs/dev_timeline/figure1_dot_flow_chart.html
-!docs/dev_timeline/figure1_animated.html
+
+# Keep the committed slide deck (overrides **/*.html above)
+!docs/slides/index.html
+!docs/slides/index.en.html
+
+# Keep committed flagship figures for the portal Home cards
+!frontend/webserver/public/flagship/
+!frontend/webserver/public/flagship/*.png
+
+# Keep the three highlight figures embedded in the top-level README
+!docs/readme_assets/
+!docs/readme_assets/*.png

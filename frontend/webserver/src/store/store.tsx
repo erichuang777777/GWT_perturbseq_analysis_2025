@@ -11,6 +11,7 @@ import {
 import { WPRESETS } from "../data/reference";
 import type { Vote, VoteStatus } from "../data/types";
 import type { Weights } from "../lib/logic";
+import { readHashState, serializeHash } from "../lib/urlState";
 
 export type View =
   | "home"
@@ -19,7 +20,11 @@ export type View =
   | "clinical"
   | "compare"
   | "figures"
-  | "apidocs";
+  | "gallery"
+  | "apidocs"
+  | "provenance"
+  | "deck"
+  | "docs";
 
 export interface AppState {
   view: View;
@@ -71,7 +76,7 @@ function lsSet(key: string, val: unknown) {
 function initialState(): AppState {
   const savedPreset = lsGet<string>("weightPreset", "Balanced");
   const savedWeights = lsGet<Weights>("weights", WPRESETS[savedPreset] || WPRESETS.Balanced);
-  return {
+  const base: AppState = {
     view: "home",
     query: "",
     selectedGene: "PLCG1",
@@ -99,9 +104,11 @@ function initialState(): AppState {
     figThresh: 2,
     figCluster: "all",
     figCytokine: "IFNG",
-    figDisease: "RA",
+    figDisease: "rheumatoid arthritis",
     figTrait: "Lymphocyte count",
   };
+  // Hydrate view/gene/clinicalTab from a shareable URL hash, if present.
+  return { ...base, ...readHashState() } as AppState;
 }
 
 type Updater = Partial<AppState> | ((s: AppState) => Partial<AppState>);
@@ -152,6 +159,37 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     lsSet("reviewer", state.reviewer);
   }, [state.reviewer]);
+
+  // Sync a minimal slice of navigation state to the URL hash (shareable links).
+  useEffect(() => {
+    const target = serializeHash(state.view, state.selectedGene, state.clinicalTab);
+    if (target !== location.hash && !(target === "" && !location.hash)) {
+      if (target === "") {
+        // clear hash without adding a history entry cluttered with "#"
+        history.replaceState(null, "", location.pathname + location.search);
+      } else {
+        location.hash = target; // pushes a history entry + fires hashchange
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.view, state.selectedGene, state.clinicalTab]);
+
+  // Back/forward: re-read the hash and apply it (guarded so it can't loop with
+  // the write effect above — only setState when a synced field actually differs).
+  useEffect(() => {
+    const onHash = () => {
+      const h = readHashState();
+      const nextView = (h.view as AppState["view"]) ?? "home";
+      setStateRaw((s) => {
+        const nextGene = h.selectedGene ?? s.selectedGene;
+        const nextTab = h.clinicalTab ?? s.clinicalTab;
+        if (s.view === nextView && s.selectedGene === nextGene && s.clinicalTab === nextTab) return s;
+        return { ...s, view: nextView, selectedGene: nextGene, clinicalTab: nextTab };
+      });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   const store = useMemo<Store>(() => {
     const votesFor = (g: string): Vote[] => ref.current.decisions[g] || [];

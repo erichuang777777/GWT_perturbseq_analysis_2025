@@ -1,0 +1,70 @@
+{
+  "disease_name": "Asthma",
+  "slug": "asthma",
+  "platform_targets": [
+    {
+      "gene": "SIK2",
+      "primary_rank": 3,
+      "ot_genetic_assoc_score": 0.72
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Asthma is a common chronic inflammatory disease of the airways (ICD-10 J45), affecting all ages, typically driven by chronic type 2 (Th2) airway inflammation, with a severe/therapy-resistant subset.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40016948/",
+          "source_type": "pubmed",
+          "quote": "Asthma is a common chronic inflammatory disease of the airways."
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "GBD 2021 estimated 260 million people with asthma worldwide in 2021 (cases dipped from 287M in 1990 to 238M in 2005, then rose to 260M). Age-standardized prevalence rate fell 40% from 1990-2021 despite rising absolute case counts; modifiable risk factors account for ~30% of global asthma DALY burden.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40147466/",
+          "source_type": "pubmed",
+          "quote": "In 2021, there were an estimated 260 million (95% UI 227-298) individuals with asthma... worldwide."
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "Chronic type 2 immunity, canonically Th2 CD4 T cells producing IL-4/5/9/13, drives airway inflammation in most patients; ILC2s and Tc2 cells also contribute, especially in severe/therapy-resistant disease. No PubMed literature found linking SIK2 to asthma or CD4+ T-cell asthma biology in this pass.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40016948/",
+          "source_type": "pubmed",
+          "quote": "CD4 T helper 2 (Th2) cells are the canonical producers of the cytokines that fuel type 2 inflammation: interleukin (IL)-4, IL-5, IL-9, and IL-13."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Inhaled corticosteroids/bronchodilators are standard-of-care; targeted biologics (anti-IL-4Rα/dupilumab, anti-IgE/omalizumab, anti-IL-5, anti-TSLP) are used for severe type-2-high asthma. Dupilumab (Dupixent, BLA761055, approved 2017-03-28) has an asthma indication.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/41033334/",
+          "source_type": "pubmed",
+          "quote": "the biologics dupilumab and omalizumab, which target drivers and mediators of type 2 inflammation (interleukin [IL]-4/IL-13 signaling and immunoglobulin E [IgE], respectively), are efficacious in treating CRSwNP"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "3,771 interventional trials registered on ClinicalTrials.gov — one of the most heavily studied indications, with an active biologics pipeline beyond classical inhaled therapy.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/",
+          "source_type": "ctgov",
+          "quote": "count_total query for condition=asthma, study_type=INTERVENTIONAL returned total=3771"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No PubMed hit for 'SIK2 asthma T cell' or a broader SIK2 T-cell immune-regulation query — the platform's genetic-association score (0.72) for SIK2 in asthma was not independently corroborated by literature found in this pass, despite asthma itself being extremely well-characterized."
+  ]
+}

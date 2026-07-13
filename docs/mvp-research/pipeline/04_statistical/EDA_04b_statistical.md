@@ -22,7 +22,7 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `metric` | object | 0.0% | 18 |
+| `metric` | str | 0.0% | 18 |
 | `value` | float64 | 0.0% | 18 |
 
 ### Numeric summary
@@ -42,7 +42,7 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `culture_condition` | object | 0.0% | 3 |
+| `culture_condition` | str | 0.0% | 3 |
 | `n_up_genes_sum` | int64 | 0.0% | 3 |
 | `n_down_genes_sum` | int64 | 0.0% | 3 |
 | `n_targets` | int64 | 0.0% | 3 |
@@ -66,10 +66,10 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `gene` | object | 0.0% | 1225 |
+| `gene` | str | 0.0% | 1225 |
 | `ctx_rank` | int64 | 0.0% | 1225 |
 | `ctx_specific_de` | float64 | 0.0% | 630 |
-| `truth_class` | object | 0.0% | 3 |
+| `truth_class` | str | 0.0% | 3 |
 
 ### Numeric summary
 | column | count | missing % | min | median | max | mean |

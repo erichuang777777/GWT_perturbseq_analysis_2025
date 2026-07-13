@@ -1,0 +1,70 @@
+{
+  "disease_name": "Ulcerative Colitis",
+  "slug": "ulcerative_colitis",
+  "platform_targets": [
+    {
+      "gene": "ERN1",
+      "primary_rank": 21,
+      "ot_genetic_assoc_score": 0.45
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Chronic relapsing-remitting inflammatory bowel disease affecting colonic mucosa continuously from the rectum; bimodal age of onset.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Global IBD incidence/prevalence systematically reviewed across population-based studies since 1990; no single quotable UC-only numeric figure retrieved in this pass.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/29050646/",
+          "source_type": "pubmed",
+          "quote": "Inflammatory bowel disease is a global disease in the 21st century. We aimed to assess the changing incidence and prevalence of inflammatory bowel disease around the world."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "biology": {
+      "content": "ERN1 encodes IRE1, a UPR sensor implicated in UC epithelial ER stress and intestinal inflammation. IRE1-XBP1 signaling also directly regulates T-cell mitochondrial activity/effector function in other disease contexts, suggesting a plausible T-cell-relevant mechanism, though not UC-specific in the retrieved literature. Preclinical MSC therapy modulates this axis in UC.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/35185383/",
+          "source_type": "pubmed",
+          "quote": "This state induces a response (unfolded protein response (UPR)), initiated by the activation of IRE1/Xbp-1, PERK/eIF2, and ATF6 pathways, which has previously been linked to intestinal inflammation in experimental models."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/30305738/",
+          "source_type": "pubmed",
+          "quote": "activates the IRE1\u03b1-XBP1 arm of the unfolded protein response in T cells to control their mitochondrial respiration and anti-tumour function"
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/41540833/",
+          "source_type": "pubmed",
+          "quote": "Human umbilical cord mesenchymal stem cells alleviate colon epithelial apoptosis in ulcerative colitis by activating inositol-requiring enzyme 1/X-box binding protein 1 signaling"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "treatment": {
+      "content": "Standard UC therapy: 5-ASAs, corticosteroids, thiopurines, biologics (anti-TNF/integrin/IL-12,23), JAK inhibitors. No ERN1/IRE1-targeted approved therapy identified.",
+      "sources": [],
+      "coverage": "not_established"
+    },
+    "regulatory_trials": {
+      "content": "1,290 total interventional trials for UC on ClinicalTrials.gov. Example: completed Phase 2b JAK inhibitor dose-ranging trial NCT02958865.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT02958865",
+          "source_type": "ctgov",
+          "quote": "A PHASE 2B, DOUBLE-BLIND, RANDOMIZED, PLACEBO-CONTROLLED, PARALLEL GROUP, DOSE RANGING STUDY OF ORAL PF-06651600 AND PF-06700841 AS INDUCTION AND CHRONIC THERAPY IN SUBJECTS WITH MODERATE TO SEVERE ULCERATIVE COLITIS"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No single quotable numeric UC-only prevalence figure retrieved.",
+    "No UC-specific (as opposed to general UPR/other-disease) study directly linking ERN1 to CD4+ T-cell function was found.",
+    "No FDA-approved ERN1/IRE1-targeted drug identified."
+  ]
+}

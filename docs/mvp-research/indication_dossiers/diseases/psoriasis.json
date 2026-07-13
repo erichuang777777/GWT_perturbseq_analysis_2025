@@ -1,0 +1,65 @@
+{
+  "disease_name": "Psoriasis",
+  "slug": "psoriasis",
+  "platform_targets": [
+    {
+      "gene": "KLHDC10",
+      "primary_rank": 37,
+      "ot_genetic_assoc_score": 0.4
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Psoriasis is a chronic immune-mediated inflammatory skin disease with scaly erythematous plaques, driven by the IL-23/Th17/IL-17 axis; affects all ages/both sexes with bimodal onset.",
+      "sources": []
+    },
+    "epidemiology": {
+      "content": "Global systematic modelling study estimated psoriasis incidence and prevalence across countries/regions using multiple international databases.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32467098/",
+          "source_type": "pubmed",
+          "quote": "To systematically review and provide information on the incidence of psoriasis and quantify global, regional, and country specific estimates of its prevalence"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "biology": {
+      "content": "KLHDC10 has no direct PubMed literature link to psoriasis \u2014 not established in this pass. Central pathogenic mechanism is IL-23/Th17/IL-17 axis dysregulation, directly implicating CD4+ Th17 cells; a 2026 study profiled Th17 effector activity during IL-17A-targeted biologic treatment.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42376866/",
+          "source_type": "pubmed",
+          "quote": "Plaque psoriasis (PP) is a chronic immune-mediated inflammatory disease driven by dysregulation of the IL-23/Th17/IL-17 axis"
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Secukinumab (COSENTYX), anti-IL-17A monoclonal antibody, FDA-approved for psoriasis (BLA125504, original approval 2015-01-21); follow-on BLA761349 approved 2023-10-06.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP drug-regulatory record: application_number=BLA125504, sponsor=NOVARTIS PHARMS CORP)",
+          "source_type": "fda",
+          "quote": "BLA125504, sponsor NOVARTIS PHARMS CORP, original approval action 2015-01-21"
+        }
+      ],
+      "coverage": "covered"
+    },
+    "regulatory_trials": {
+      "content": "ClinicalTrials.gov lists 1,894 total interventional trials registered under 'psoriasis'.",
+      "sources": [
+        {
+          "source_url": "(no URL returned by tool; MCP clinical-trials search_trials result, condition=\"psoriasis\", total=1894)",
+          "source_type": "ctgov",
+          "quote": "total=1894 (search_trials API, condition='psoriasis', study_type=INTERVENTIONAL, count_total=True)"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "KLHDC10-psoriasis mechanistic link not established in this pass despite OT genetic-association score of 0.4.",
+    "General IL-23/Th17/IL-17 pathway biology is well supported, but the specific platform target gene itself lacks direct literature validation."
+  ]
+}

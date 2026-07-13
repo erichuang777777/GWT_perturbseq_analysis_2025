@@ -1,0 +1,182 @@
+# .github/workflows/reproducibility.yml
+#
+# CI reproducibility guard for the CD4+ T-cell Perturb-seq pipeline.
+#
+# WHAT THIS DOES
+#   Re-derives all five stage outputs (curated_targets, gate_passing_targets,
+#   effect_matrix, de_matrix, summary_statistics) from the ALREADY-COMMITTED
+#   raw supplementary table, canonicalises each output with the bundle's
+#   DOCUMENTED canonicalisation (round/sort/normalise BEFORE hashing -- NOT a
+#   bitwise md5 on raw float bytes), and compares to the FROZEN, committed
+#   expected_outputs_checksums.csv. It runs BOTH the Python and the R stage
+#   implementations. Any mismatch fails the job.
+#
+# NO NEW RAW DATA IS COMMITTED BY THIS WORKFLOW.
+#   The raw table is published bioRxiv-preprint supplementary data, already
+#   public and already committed in this repo under
+#   docs/mvp-research/pipeline/reproducibility_audit/ (merged in PR #38).
+#   CI only READS it via actions/checkout.
+#
+# FROZEN-CHECKSUM DISCIPLINE (read this before "fixing" a red build)
+#   expected_outputs_checksums.csv is the source of truth and is FROZEN.
+#   CI NEVER regenerates or auto-updates it. A red build means the pipeline
+#   output drifted from the frozen expectation. If that drift is a bug, fix the
+#   pipeline. If (and only if) the change is a LEGITIMATE, intended change to an
+#   output, a human updates expected_outputs_checksums.csv DELIBERATELY in the
+#   same PR, with review -- see CI_REPRODUCIBILITY_README.md. There is no
+#   auto-update path, by design.
+#
+# TOOLCHAIN IS PINNED EXACTLY (frozen checksums require a frozen toolchain).
+#   Python 3.11 (exact 3.11.x via setup-python), pandas/numpy/scipy pinned.
+#   R 4.5.3 (exact patch) via r-lib/actions/setup-r, R libs pinned.
+
+name: reproducibility-guard
+
+on:
+  push:
+    paths:
+      # The bundle is committed as a single compressed archive (extracted at
+      # runtime below), not as uncompressed scripts/raw/checksum files -- watch
+      # the archive itself plus the two scripts that drive the guard.
+      - 'docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle_v2.tar.gz'
+      - 'docs/mvp-research/pipeline/reproducibility_audit/verify_reproducibility.py'
+      - '.github/workflows/reproducibility.yml'
+  pull_request:
+    paths:
+      - 'docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle_v2.tar.gz'
+      - 'docs/mvp-research/pipeline/reproducibility_audit/verify_reproducibility.py'
+      - '.github/workflows/reproducibility.yml'
+  workflow_dispatch: {}   # allow manual runs
+
+permissions:
+  contents: read          # read-only: the guard never writes back to the repo
+
+concurrency:
+  group: reproducibility-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify reproducibility (py + R)
+    runs-on: ubuntu-24.04    # pinned runner image
+
+    env:
+      # ---- EXACT toolchain pins (frozen checksums => frozen toolchain) ----
+      # Python: exact interpreter + exact package versions (from environment.md).
+      PYTHON_VERSION: '3.11.9'      # exact 3.11 patch
+      PANDAS_VERSION: '2.3.3'
+      NUMPY_VERSION:  '2.4.6'
+      SCIPY_VERSION:  '1.17.1'
+      # R: exact patch + exact library versions (from environment.md).
+      R_VERSION:      '4.5.3'       # exact 4.5.x patch
+      R_TIDYVERSE_VERSION: '2.0.0'
+      R_DPLYR_VERSION:     '1.2.1'
+      R_READR_VERSION:     '2.2.0'
+      R_TIBBLE_VERSION:    '3.3.1'
+      R_JSONLITE_VERSION:  '2.0.0'
+      BUNDLE_DIR: docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle
+
+    steps:
+      - name: Checkout (includes the already-committed raw + bundle)
+        uses: actions/checkout@v4
+
+      - name: Extract the committed reproducibility bundle
+        run: |
+          tar -xzf docs/mvp-research/pipeline/reproducibility_audit/reproducibility_bundle_v2.tar.gz \
+            -C docs/mvp-research/pipeline/reproducibility_audit/
+          test -d "${BUNDLE_DIR}" && echo "extracted -> ${BUNDLE_DIR}"
+
+      # -------------------- Python toolchain (pinned) --------------------
+      - name: Set up Python (exact 3.11 patch)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install pinned Python packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "pandas==${PANDAS_VERSION}" \
+            "numpy==${NUMPY_VERSION}" \
+            "scipy==${SCIPY_VERSION}"
+          echo "---- resolved python toolchain ----"
+          python --version
+          python -c "import pandas,numpy,scipy;print('pandas',pandas.__version__);print('numpy',numpy.__version__);print('scipy',scipy.__version__)"
+
+      # -------------------- R toolchain (pinned) --------------------
+      - name: Set up R (exact 4.5.3)
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ env.R_VERSION }}
+          use-public-rspm: true
+
+      - name: Install pinned R packages
+        shell: Rscript {0}
+        run: |
+          # Pin exact library versions to match the frozen environment.md.
+          #
+          # Install from the RSPM/Posit Package Manager binary mirror (already
+          # configured on PATH by use-public-rspm: true above), NOT the plain
+          # https://cloud.r-project.org source mirror. The full `tidyverse`
+          # meta-package's own Imports pull in a much larger dependency tree
+          # (googledrive, googlesheets4, httr, ragg, reprex, rvest, ...) than
+          # the 4 packages this bundle's R scripts actually call, and several
+          # of those transitive deps fail to build from source in this runner
+          # image (missing system libs) even though the packages actually used
+          # -- dplyr/readr/tibble/jsonlite -- install fine on their own.
+          # RSPM serves prebuilt Ubuntu-noble binaries for the whole tree,
+          # sidestepping the source-compile failure entirely; this matches how
+          # environment.md's own "Recreate" recipe installs R (conda-forge
+          # binaries), just via a different binary channel.
+          # NOTE: do NOT set options(pkgType = "binary") -- "binary" is not a
+          # valid pkgType value on Linux (base R only recognises "source" or
+          # a platform-specific type like "mac.binary"/"win.binary" there).
+          # PPM/RSPM instead serves precompiled binaries transparently over
+          # the normal "source" pkgType via server-side content negotiation
+          # (keyed off the HTTPUserAgent that use-public-rspm: true already
+          # configured on the R session above) -- so pointing repos at the
+          # RSPM URL is sufficient on its own; forcing pkgType="binary" only
+          # breaks install.packages() with "type 'binary' is not supported
+          # on this platform", which is exactly what happened here.
+          rspm <- Sys.getenv("RSPM")
+          options(repos = c(RSPM = rspm))
+          install.packages("remotes", repos = rspm)
+          pins <- c(
+            tibble    = Sys.getenv("R_TIBBLE_VERSION"),
+            readr     = Sys.getenv("R_READR_VERSION"),
+            dplyr     = Sys.getenv("R_DPLYR_VERSION"),
+            tidyverse = Sys.getenv("R_TIDYVERSE_VERSION"),
+            jsonlite  = Sys.getenv("R_JSONLITE_VERSION")
+          )
+          for (pkg in names(pins)) {
+            message(sprintf("installing %s == %s", pkg, pins[[pkg]]))
+            remotes::install_version(pkg, version = pins[[pkg]],
+                                     repos = rspm,
+                                     upgrade = "never")
+          }
+          # install.packages()/install_version() report a failed install with
+          # a printed ERROR, not an R condition that halts the script -- so a
+          # broken install here would otherwise surface only later, as a
+          # confusing "no package called X" from inside the stage scripts.
+          # Fail loudly, right here, instead.
+          missing <- names(pins)[!vapply(names(pins), requireNamespace,
+                                          logical(1), quietly = TRUE)]
+          if (length(missing) > 0) {
+            stop(sprintf("R package install failed for: %s (see ERROR lines above)",
+                          paste(missing, collapse = ", ")))
+          }
+          cat("---- resolved R toolchain ----\n")
+          cat("R", as.character(getRversion()), "\n")
+          for (pkg in c("dplyr","readr","tibble","jsonlite","tidyverse"))
+            cat(pkg, as.character(packageVersion(pkg)), "\n")
+
+      # -------------------- The guard --------------------
+      - name: Run reproducibility guard (Python + R, canonicalised, frozen md5)
+        env:
+          # verify_reproducibility.py auto-detects the bundle, but pin it
+          # explicitly for clarity and to fail loudly if the path ever moves.
+          REPRO_BUNDLE: ${{ github.workspace }}/${{ env.BUNDLE_DIR }}
+          RSCRIPT: Rscript
+        run: |
+          python docs/mvp-research/pipeline/reproducibility_audit/verify_reproducibility.py --lang both --verbose
+          # Non-zero exit from the runner (any mismatch / run error) fails the job.

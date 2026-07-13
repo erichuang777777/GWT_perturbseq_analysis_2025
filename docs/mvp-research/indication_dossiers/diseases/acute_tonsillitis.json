@@ -1,0 +1,76 @@
+{
+  "disease_name": "Acute Tonsillitis",
+  "slug": "acute_tonsillitis",
+  "platform_targets": [
+    {
+      "gene": "MAN2A1",
+      "primary_rank": 25,
+      "ot_genetic_assoc_score": 0.31
+    }
+  ],
+  "sections": {
+    "definition_population": {
+      "content": "Acute tonsillitis is an acute inflammatory infection of the palatine tonsils (ICD-10 J03), part of the URTI spectrum, most commonly viral with a substantial GABHS bacterial component, pediatric-predominant.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/11838568/",
+          "source_type": "pubmed",
+          "quote": "Upper respiratory tract infections including nasopharyngitis, pharyngitis, tonsillitis and otitis media constitute 87.5% of the total episodes of respiratory infections."
+        }
+      ]
+    },
+    "epidemiology": {
+      "content": "URTIs (including tonsillitis) constitute 87.5% of respiratory infection episodes; the vast majority of acute URTIs are viral in origin.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/11838568/",
+          "source_type": "pubmed",
+          "quote": "The vast majority of acute upper respiratory tract infections are caused by viruses."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "biology": {
+      "content": "Anaerobic bacteria contribute to tonsillitis pathogenesis alongside GABHS. MAN2A1 has no tonsillitis-specific literature but modulates immune responses in adjacent contexts (colitis, anti-tumor immunity via glycosylation), suggesting a general immunomodulatory role not yet established for tonsillitis or CD4+ T cells specifically.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/15627441/",
+          "source_type": "pubmed",
+          "quote": "Some anaerobic bacteria possess interfering capability with Group A beta-hemolytic streptococci (GABHS) and other pathogens."
+        },
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/32723834/",
+          "source_type": "pubmed",
+          "quote": "Inhibition of MAN2A1 Enhances the Immune Response to Anti-PD-L1 in Human Tumors."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "treatment": {
+      "content": "Management differentiates viral from GABHS disease per national clinical guidelines (e.g., German sore-throat guideline); confirmed GABHS treated with penicillin/amoxicillin. No FDA-approved disease-specific (non-antibiotic) therapy identified.",
+      "sources": [
+        {
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/33602392/",
+          "source_type": "pubmed",
+          "quote": "The updated German clinical practice guideline on sore throat provides evidence-based recommendations for treatment in the German healthcare system."
+        }
+      ],
+      "coverage": "partial"
+    },
+    "regulatory_trials": {
+      "content": "20 interventional trials registered on ClinicalTrials.gov, mostly antibiotic-regimen studies rather than a modern biologics pipeline.",
+      "sources": [
+        {
+          "source_url": "https://clinicaltrials.gov/study/NCT00393835",
+          "source_type": "ctgov",
+          "quote": "A Multicenter, Non-Randomized, Open Label Trial Of Azithromycin Sustained Release (SR) For The Treatment Of Laryngopharyngitis or Tonsillitis or Acute Bacterial Rhinosinusitis In Japan Adults"
+        }
+      ],
+      "coverage": "covered"
+    }
+  },
+  "gaps": [
+    "No PubMed literature found linking MAN2A1 directly to tonsillitis; supporting evidence is from adjacent immune contexts (colitis, tumor immunology) only.",
+    "No FDA-approved disease-specific (non-antibiotic) therapy identified in this pass."
+  ]
+}

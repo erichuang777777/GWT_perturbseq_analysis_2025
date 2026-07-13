@@ -1,0 +1,31 @@
+# De-identified demonstration file — gene-level expression features only.
+# NO patient identifiers of any kind (no name, MRN, DOB, age, sex, specimen id).
+# value = log2 fold-change of the sample vs its own matched control.
+# Illustrative CD4 T-cell activation / autoimmune-flare-like signature for
+# demonstrating the overlap comparison; not derived from any real patient.
+gene,value
+IL2RA,2.6
+CD3E,1.9
+CD28,1.7
+LAT,1.4
+ZAP70,1.1
+LCK,0.8
+STAT3,2.2
+STAT5A,1.5
+JAK1,1.3
+IRF4,1.8
+BATF,1.2
+FOXP3,-1.4
+CTLA4,-1.7
+IKZF1,-0.9
+PTPN2,-1.1
+PTPN22,-2.3
+VAV1,-1.6
+PLCG1,-1.2
+BCL10,-0.8
+NFKB1,1.0
+MYC,2.4
+GATA3,-1.5
+IL7R,0.6
+GAPDH,0.1
+ACTB,-0.2

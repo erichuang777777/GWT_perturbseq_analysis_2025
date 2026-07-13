@@ -42,22 +42,26 @@ NOT the same claim as pharmacological (small-molecule/antibody) LoF
 intolerance, so (exactly like ``safety_window_from_gtex``) this stays a
 descriptive annotation and never caps ``readiness_call``/
 ``overall_readiness_stage``. The loss-intolerant flag fires when LOEUF is
-below ``LOEUF_LOSS_INTOLERANT_THRESHOLD`` -- now 0.6, gnomAD **v4**'s
-"constrained" cutoff (broadened from the v2.1.1-era 0.35 once the seed was
-refreshed to real v4 LOEUF/pLI values; see ``common/overlay_lookup.py``).
+below ``LOEUF_LOSS_INTOLERANT_THRESHOLD`` -- 0.6, a deliberately inclusive
+"constrained-ish" soft cutoff (more permissive than gnomAD's own strict
+bottom-decile ~0.35 line) applied to the real v2.1.1 LOEUF distribution; see
+``common/overlay_lookup.py``.
 
 ``load_gnomad_constraint_overlay`` reads
 ``sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv``
-(columns ``ensembl_id``, ``gene_symbol``, ``loeuf``, ``pli``), with each
-gene symbol resolved to its real Ensembl gene ID via
-``gene_identifier_resolver.load_resolver()`` (no invented IDs). The seed now
-carries **real gnomAD v4 constraint values for the 15 shortlist genes**
-(a networked run supplied them, unblocking the earlier 8-gene demo seed --
-the original sandbox had no egress to gnomAD, policy-blocked like Open
-Targets). A full-genome gnomAD snapshot can widen coverage further by
-dropping a larger file at the same path; the loader's honest-fallback
-contract (below) is what makes that swap safe: a missing/malformed file
-degrades to ``available: False``, never a fabricated LOEUF/pLI value.
+(columns ``ensembl_id``, ``gene_symbol``, ``loeuf``, ``pli``). The overlay is
+now an **authentic full-genome gnomAD v2.1.1 by-gene snapshot** (~19k genes,
+one row per gene, chromosome X included -- so FOXP3/MED12/CD40LG are present),
+built reproducibly from gnomAD's public release bucket by
+``src/3_DE_analysis/data_acquisition/build_gnomad_constraint_overlay.py``. It
+replaced the earlier 15-gene demo shortlist (whose values derived from
+``docs/mvp-research/connector_enrichment_demo.csv`` and were mislabelled real
+"gnomAD v4"). v2.1.1 ``lof_metrics.by_gene`` was chosen over v4.1 because it is
+complete across the whole genome including chrX; the v4.1 constraint
+distribution reachable in the build environment was autosomes-only and would
+have silently dropped FOXP3 (the master Treg regulator) and other chrX genes.
+The loader's honest-fallback contract (below) still holds: a missing/malformed
+file degrades to ``available: False``, never a fabricated LOEUF/pLI value.
 """
 
 from __future__ import annotations
@@ -78,6 +82,7 @@ from common.overlay_lookup import (
     composite_safety_liability,
     gnomad_flag_from_constraint,
     safety_window_from_gtex,
+    singlecell_breadth_from_hpa,
     tractability_from_membrane_overlay,
 )
 from config import settings
@@ -89,9 +94,13 @@ GTEX_PER_TISSUE_PATH_DEFAULT = settings.REPO_ROOT / "sources" / "target_tool_cac
 GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT = (
     settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 )
+HPA_SINGLECELL_PATH_DEFAULT = (
+    settings.REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "hpa_singlecell_breadth_seed.parquet"
+)
 
 GTEX_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_tissues_expressed", "max_expression_outside_cd4_context"]
 GNOMAD_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "loeuf", "pli"]
+HPA_SINGLECELL_REQUIRED_COLUMNS = ["ensembl_id", "gene_symbol", "n_celltypes_expressed", "max_expression_outside_tcell_context"]
 
 MEMBRANE_OVERLAY_REQUIRED_COLUMNS = [
     "gene_symbol",
@@ -163,6 +172,38 @@ def load_gtex_safety_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
     return {"available": True, "reason": None, "table": df}
 
 
+def _empty_hpa_singlecell_summary() -> pd.DataFrame:
+    return pd.DataFrame(columns=HPA_SINGLECELL_REQUIRED_COLUMNS)
+
+
+def load_hpa_singlecell_breadth_overlay(path: Optional[Path] = None) -> Dict[str, Any]:
+    """Load the single-cell-resolution off-context expression-breadth overlay (HPA).
+
+    Returns ``{"available": bool, "reason": str|None, "table": DataFrame}``.
+    Never raises; a missing or malformed file produces an explicit
+    ``available: False`` with an empty table -- never a fabricated breadth
+    count. See ``build_hpa_singlecell_breadth_overlay.py`` for provenance;
+    this is a standalone signal alongside ``load_gtex_safety_overlay``, not a
+    replacement.
+    """
+    resolved = Path(path) if path is not None else HPA_SINGLECELL_PATH_DEFAULT
+    if not resolved.exists():
+        return degrade.unavailable_available(
+            f"HPA single-cell breadth overlay file not found: {resolved}",
+            data_key="table",
+            empty=_empty_hpa_singlecell_summary(),
+        )
+    df = pd.read_parquet(resolved)
+    missing = [c for c in HPA_SINGLECELL_REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        return degrade.unavailable_available(
+            f"HPA single-cell breadth overlay file missing required columns: {missing}",
+            data_key="table",
+            empty=_empty_hpa_singlecell_summary(),
+        )
+    return {"available": True, "reason": None, "table": df}
+
+
 def _empty_gnomad_summary() -> pd.DataFrame:
     return pd.DataFrame(columns=GNOMAD_REQUIRED_COLUMNS)
 
@@ -175,10 +216,11 @@ def load_gnomad_constraint_overlay(path: Optional[Path] = None) -> Dict[str, Any
     ``available: False`` with an empty table -- never a fabricated
     constraint value.
 
-    Defaults to the 8-gene seed file derived from
-    ``docs/mvp-research/connector_enrichment_demo.csv`` (see module
-    docstring); a full-genome gnomAD snapshot can be dropped in at the same
-    path later with no code change required.
+    Defaults to the full-genome gnomAD v2.1.1 by-gene snapshot at
+    ``GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT`` (~19k genes, one row per gene,
+    chrX included), built by
+    ``data_acquisition/build_gnomad_constraint_overlay.py`` (see module
+    docstring). Rebuilding at the same path requires no code change here.
     """
     resolved = Path(path) if path is not None else GNOMAD_CONSTRAINT_SEED_PATH_DEFAULT
     if not resolved.exists():

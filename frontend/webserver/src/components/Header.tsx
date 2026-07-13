@@ -9,13 +9,13 @@ export default function Header() {
   const rActive = v === "explorer" || v === "dossier" || v === "compare";
   const cActive = v === "clinical";
   const fActive = v === "figures";
+  const gActive = v === "gallery";
   const tab = (active: boolean, base: string) => ({
     color: active ? "#fff" : "#4a515e",
     background: active ? base : "transparent",
   });
   const rT = tab(rActive, "#1a5fb4");
   const cT = tab(cActive, "#0d7d5a");
-  const fT = tab(fActive, "#5b3fb4");
 
   const slGenes = state.shortlist.filter((g) => TARGETS.find((x) => x.gene === g));
 
@@ -87,9 +87,9 @@ export default function Header() {
         <span
           className="navlink"
           onClick={() => setState({ view: "figures" })}
-          style={{ padding: "7px 13px", borderRadius: "7px", fontSize: "13px", fontWeight: 500, color: fT.color, background: fT.background }}
+          style={{ padding: "7px 13px", borderRadius: "7px", fontSize: "13px", fontWeight: 500, color: (fActive || gActive) ? "#fff" : "#4a515e", background: (fActive || gActive) ? "#5b3fb4" : "transparent" }}
         >
-          Figure atlas
+          Figures &amp; Gallery
         </span>
       </nav>
 
@@ -147,10 +147,34 @@ export default function Header() {
         <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
         <span
           className="navlink"
+          onClick={() => setState({ view: "docs" })}
+          style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
+        >
+          Docs
+        </span>
+        <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
+        <span
+          className="navlink"
           onClick={() => setState({ view: "apidocs" })}
           style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
         >
           API docs
+        </span>
+        <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
+        <span
+          className="navlink"
+          onClick={() => setState({ view: "deck" })}
+          style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
+        >
+          Overview
+        </span>
+        <span style={{ fontSize: "12px", color: "#c8ced7" }}>|</span>
+        <span
+          className="navlink"
+          onClick={() => setState({ view: "provenance" })}
+          style={{ fontSize: "12.5px", fontWeight: 500, color: "#5b6270" }}
+        >
+          Provenance
         </span>
       </div>
     </header>
