@@ -12,6 +12,14 @@ const ACCENT = "#5b3fb4";
 const CORE5_ORDER = ["CD3E", "CD247", "LAT", "PLCG1", "VAV1"];
 const CORE5_INDEX = new Map(CORE5_ORDER.map((gene, index) => [gene, index]));
 const PUBLICATION_HIGHLIGHT_IDS = ["A16", "A15", "A3"];
+const FAMILY_ORDER = [
+  "Dimensionality reduction & composite",
+  "Distributions",
+  "Matrices",
+  "Networks",
+  "Ranking",
+  "Hierarchical & interactive",
+];
 type Tab = "figures" | "structures";
 
 export default function Gallery() {
@@ -60,10 +68,22 @@ export default function Gallery() {
     () => publicationCharts.filter((c) => !PUBLICATION_HIGHLIGHT_IDS.includes(c.id)),
     [publicationCharts],
   );
-  const coreCharts = useMemo(
-    () => shownCharts.filter((c) => c.group !== "Analysis & publication"),
-    [shownCharts],
+  const secondaryCharts = useMemo(
+    () => [...publicationRemainder, ...shownCharts.filter((c) => c.group !== "Analysis & publication")],
+    [publicationRemainder, shownCharts],
   );
+  const secondaryGroups = useMemo(() => {
+    const groups = new Map<string, GalleryChart[]>();
+    for (const chart of secondaryCharts) {
+      const family = chart.en.family;
+      groups.set(family, [...(groups.get(family) ?? []), chart]);
+    }
+    return [...groups.entries()].sort(([a], [b]) => {
+      const ai = FAMILY_ORDER.indexOf(a);
+      const bi = FAMILY_ORDER.indexOf(b);
+      return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a.localeCompare(b);
+    });
+  }, [secondaryCharts]);
   const orderedStructures = useMemo(
     () => [...data?.structures ?? []].sort((a, b) => (CORE5_INDEX.get(a.gene) ?? 999) - (CORE5_INDEX.get(b.gene) ?? 999)),
     [data],
@@ -97,7 +117,7 @@ export default function Gallery() {
   if (status === "error" || !data) return <InlineScreen>Couldn't load the gallery catalog.</InlineScreen>;
 
   return (
-    <main style={{ flex: 1, maxWidth: "1280px", width: "100%", margin: "0 auto", padding: "34px 28px 70px" }}>
+    <main style={{ flex: 1, maxWidth: "1440px", width: "100%", margin: "0 auto", padding: "34px 28px 70px" }}>
       <div style={{ display: "flex", gap: "4px", marginBottom: "18px", background: "#f2f0f9", borderRadius: "9px", padding: "3px", width: "fit-content" }}>
         <span className="navlink" onClick={() => setState({ view: "figures" })} style={{ padding: "6px 16px", borderRadius: "7px", fontSize: "12px", fontWeight: 600, color: "#5b4a86", background: "transparent" }}>Interactive figures</span>
         <span className="navlink" style={{ padding: "6px 16px", borderRadius: "7px", fontSize: "12px", fontWeight: 600, color: "#fff", background: ACCENT }}>Gallery (EDA)</span>
@@ -142,33 +162,22 @@ export default function Gallery() {
               <div style={{ fontSize: "13px", lineHeight: 1.5, color: "#5f6672", marginBottom: "14px", maxWidth: "850px" }}>
                 The three figures that best summarize the platform's contribution: reproducible curation, validation, and translation into a delivery decision. Click any figure for the full publication view and provenance.
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(330px, 1fr))", gap: "18px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "18px" }}>
                 {publicationHighlights.map((c) => chartCard(c, true, true))}
               </div>
             </section>
           )}
-          {publicationRemainder.length > 0 && (
-            <section style={{ marginBottom: "30px" }}>
+          {secondaryGroups.map(([family, charts]) => (
+            <section key={family} style={{ marginBottom: "30px" }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
-                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>All publication figures</h2>
-                <span style={{ fontSize: "12px", color: "#7a8491" }}>{publicationRemainder.length} additional figures</span>
+                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>{family}</h2>
+                <span style={{ fontSize: "12px", color: "#7a8491" }}>{charts.length} figures</span>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
-                {publicationRemainder.map((c) => chartCard(c, false))}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                {charts.map((c) => chartCard(c, false))}
               </div>
             </section>
-          )}
-          {coreCharts.length > 0 && (
-            <section>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "10px", margin: "0 0 12px" }}>
-                <h2 style={{ fontSize: "20px", margin: 0, color: "#1a1d24" }}>Core EDA gallery</h2>
-                <span style={{ fontSize: "12px", color: "#7a8491" }}>{coreCharts.length} exploratory figures</span>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "16px" }}>
-                {coreCharts.map((c) => chartCard(c, false))}
-              </div>
-            </section>
-          )}
+          ))}
         </>
       )}
 
