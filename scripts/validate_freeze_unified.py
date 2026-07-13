@@ -44,7 +44,7 @@ from typing import Dict, List, Optional, Tuple
 REPO = Path(__file__).resolve().parent.parent
 MANIFEST = REPO / "docs" / "structure" / "FREEZE_MANIFEST_UNIFIED.csv"
 
-_SKIP_PARTS = {".git", "__pycache__", ".pytest_cache", "node_modules", ".ipynb_checkpoints"}
+_SKIP_PARTS = {".git", "__pycache__", ".pytest_cache", "node_modules", ".ipynb_checkpoints", "dist"}
 
 
 def _git_blob_sha(path: Path) -> str:

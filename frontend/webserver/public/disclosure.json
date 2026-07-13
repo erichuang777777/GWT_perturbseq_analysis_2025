@@ -25,90 +25,90 @@
   },
   "disclaimer": {
     "short": "Research use only — not clinical software.",
-    "long": "本工具輸出為研究用標靶優先排序,不診斷、不建議治療、不得用於病人管理。CRISPRi ≠ 藥理學:體外 CD4 T 細胞情境下的強訊號是研究線索,並非療效或安全性的保證;安全與可成藥性須拉回人體證據判讀。"
+    "long": "This tool outputs research-use target prioritisation only. It does not diagnose, does not recommend treatment, and must not be used for patient management. CRISPRi ≠ pharmacology: a strong signal in the in vitro CD4 T-cell context is a research lead, not a guarantee of efficacy or safety; safety and druggability must be interpreted back against human evidence."
   },
   "principles": [
-    { "key": "unknown ≠ 0", "text": "任何無資料的證據領域顯示明確的 'unknown' + 覆蓋說明,絕不補 0 或預設值。" },
-    { "key": "紅旗覆蓋 red-flag override", "text": "不論下游統計多強,命中 essential / broad-effect / off-target / 敲低未確認 / 批次混淆 / 方向不明即封頂決策。" },
-    { "key": "CRISPRi ≠ 藥理學", "text": "體外 CD4 情境注意事項始終顯示;體外強訊號不等於臨床療效。" },
-    { "key": "descriptive vs decision 分離", "text": "概念層(M01–M20)、機制圖、safety overlay 為描述性,永不進就緒度決策。" },
-    { "key": "上傳資料隔離", "text": "使用者上傳資料集以 usr_ 命名空間隔離,絕不混入 GWT 參考集。" },
-    { "key": "可重現與版本化", "text": "每個資料集帶四層版本(engine / dataset / schema / kd_threshold),provenance 是欄位不是註腳。" }
+    { "key": "unknown ≠ 0", "text": "Any evidence domain with no data shows an explicit 'unknown' + a coverage note; it is never filled with 0 or a default value." },
+    { "key": "red-flag override", "text": "No matter how strong the downstream statistics, hitting essential / broad-effect / off-target / knockdown-unconfirmed / batch-confounded / direction-ambiguous caps the decision." },
+    { "key": "CRISPRi ≠ pharmacology", "text": "The in vitro CD4 context caveat is always shown; a strong in vitro signal does not equal clinical efficacy." },
+    { "key": "descriptive vs decision separation", "text": "The concept layer (M01–M20), mechanism figures, and safety overlays are descriptive and never enter the readiness decision." },
+    { "key": "uploaded-data isolation", "text": "User-uploaded datasets are isolated under the usr_ namespace and never mixed into the GWT reference set." },
+    { "key": "reproducibility & versioning", "text": "Every dataset carries four version layers (engine / dataset / schema / kd_threshold); provenance is a field, not a footnote." }
   ],
   "limitations": [
-    "上傳路徑已知技術債:kd_status 對純上傳資料、n_total_de_genes 對應遺失(Tech-Debt A.1 / A.2)。",
-    "情境專一性(condition_specificity_score)為 heuristic,非統計交互作用檢定。",
-    "signed module scoring 放棄(DE 無 per-gene 方向);SCEPTRE 用外部 hook、Mixscape 用 scikit-learn 替代(刻意)。",
-    "細胞層級真實資料未跑(~1.7 TiB);僅對合成 fixture 驗證。",
-    "深層外部證據僅 21 個基因有;其餘留空(非 0)。",
-    "平台無存取控制,usr_ 命名僅防意外混料,非授權隔離。"
+    "Known technical debt on the upload path: kd_status for upload-only data and the n_total_de_genes mapping are missing (Tech-Debt A.1 / A.2).",
+    "Condition specificity (condition_specificity_score) is a heuristic, not a statistical interaction test.",
+    "Signed module scoring was abandoned (DE has no per-gene direction); SCEPTRE uses an external hook and Mixscape is substituted with scikit-learn (intentional).",
+    "Cell-level real data was not run (~1.7 TiB); validation was against synthetic fixtures only.",
+    "Deep external evidence exists for only 21 genes; the rest is left blank (not 0).",
+    "The platform has no access control; the usr_ naming only prevents accidental mixing, not authorised isolation."
   ],
   "validation": {
     "plan_doc": "docs/perturbation_validation_plan.md",
-    "summary": "計算層 L1–L4 實質達成、校準通過;根本缺口為 L5 濕實驗(從未做)。證據支持『排序哪些標靶進濕實驗』,但不足以宣稱因果/治療效果。",
+    "summary": "Computational levels L1–L4 substantially met and calibration passed; the fundamental gap is L5 wet-lab (never done). The evidence supports 'ranking which targets go into wet-lab experiments', but is not sufficient to claim causality / therapeutic effect.",
     "ladder": [
-      {"level":"L1","label":"計算可重現","status":"met","evidence":"golden-file + known-answer 對 33,983 列釘選;34 測試檔;四層版本戳"},
-      {"level":"L2","label":"統計穩健","status":"met","evidence":"排序穩定 Spearman r=0.943(誠實揭露天真 top-50 僅 13/50 重疊)"},
-      {"level":"L3","label":"內部方向一致","status":"met","evidence":"Stim8hr 全部 8 個 TCR 近端正對照落 top decile"},
-      {"level":"L4","label":"正交計算驗證","status":"partial","evidence":"TYK2 rank 11=deucravacitinib 標靶;VAV1 62%/CD3E 58% STRING 網路重建。佐證非確證(關聯≠因果、GSE318876 表型不匹配、n=55)。表型匹配活化篩選(Track D)實跑為 null(見下)"},
-      {"level":"L5","label":"濕實驗前瞻驗證","status":"gap","evidence":"無任何前瞻濕實驗資料 — 唯一根本缺口"}
+      {"level":"L1","label":"Computationally reproducible","status":"met","evidence":"golden-file + known-answer pinned across 33,983 rows; 34 test files; four-layer version stamps"},
+      {"level":"L2","label":"Statistically robust","status":"met","evidence":"Ranking stable, Spearman r=0.943 (honestly disclosing that the naive top-50 overlaps only 13/50)"},
+      {"level":"L3","label":"Internally direction-consistent","status":"met","evidence":"All 8 TCR-proximal positive controls in Stim8hr fall in the top decile"},
+      {"level":"L4","label":"Orthogonal computational validation","status":"partial","evidence":"TYK2 rank 11 = deucravacitinib target; VAV1 62% / CD3E 58% STRING network reconstruction. Corroborative, not confirmatory (association ≠ causation, GSE318876 phenotype mismatch, n=55). The phenotype-matched activation screen (Track D) ran as null (see below)"},
+      {"level":"L5","label":"Prospective wet-lab validation","status":"gap","evidence":"No prospective wet-lab data at all — the only fundamental gap"}
     ],
     "calibration": {"status":"met","ranking_auroc":0.85,"neg_control_grade1_pct":99.96,"neg_control_advance_pct":0},
     "track_d_phenotype_matched": {
       "status": "null_result",
-      "summary": "實跑表型匹配的活化篩選(Schmidt 2022 CD4⁺ IL2 / CD8⁺ IFNG、Freimer 2022)後,方向性排序未達預登記驗收(AUROC 0.41–0.48,全部 <0.5)。誠實記錄為負面證據,不上修 L4。",
+      "summary": "After running the phenotype-matched activation screens (Schmidt 2022 CD4⁺ IL2 / CD8⁺ IFNG, Freimer 2022), the directional ranking did not meet the pre-registered acceptance (AUROC 0.41–0.48, all <0.5). Honestly recorded as negative evidence; L4 is not upgraded.",
       "auroc": [
         {"screen": "Schmidt2022 CD4+ IL2 (CRISPRi)", "auroc": 0.475, "perm_p": 0.42},
         {"screen": "Schmidt2022 CD8+ IFNG (CRISPRi)", "auroc": 0.435, "perm_p": 0.031},
         {"screen": "Freimer2022 (CRISPR-KO)", "auroc": 0.405, "perm_p": 0.084}
       ],
-      "interpretation": "null 可解釋:(1) primary_rank 排的是轉錄方向性、非活化 hit 強度(不同軸);(2) 篩選 top-50 hits 有 31/50 因必需基因 viability dropout 根本不在我們排序裡。改用足跡廣度(magnitude)則有弱但高度顯著正相關(Spearman ρ +0.11~+0.28, p≤7e-34)。",
+      "interpretation": "The null is explainable: (1) primary_rank ranks transcriptional directionality, not activation-hit strength (a different axis); (2) 31/50 of the screen's top-50 hits are essential-gene viability dropouts and simply are not in our ranking. Switching to footprint breadth (magnitude) gives a weak but highly significant positive correlation (Spearman ρ +0.11~+0.28, p≤7e-34).",
       "secondary_magnitude_axis": {
-        "summary": "公平版(次要、探索性):改用足跡廣度 n_hits 當 score(=AUROC 0.85 校準所用的軸)並排除 Hart essential,AUROC 過關。即平台的足跡強度訊號確實與獨立活化篩選對齊;不對齊的是方向性 re-ranking。",
+        "summary": "Fair version (secondary, exploratory): using footprint breadth n_hits as the score (= the axis used for the AUROC 0.85 calibration) and excluding Hart essentials, AUROC passes. That is, the platform's footprint-strength signal does align with independent activation screens; what does not align is the directional re-ranking.",
         "auroc_no_essential": [
           {"screen": "Schmidt2022 CD4+ IL2", "auroc": 0.745, "perm_p": 0.0002},
           {"screen": "Schmidt2022 CD8+ IFNG", "auroc": 0.749, "perm_p": 0.0002},
           {"screen": "Freimer2022", "auroc": 0.789, "perm_p": 0.0002}
         ],
-        "caveat": "探索性(選軸在看到 null 之後),且有未除 confound:『我們足跡大』與『他們篩選顯著』都隨表現量/檢定力上升,0.74–0.79 有一部分可能是共同可偵測性而非共同生物學。corroborative-with-confound,不是乾淨勝利,仍不上修 L4 至 met。"
+        "caveat": "Exploratory (the axis was chosen after seeing the null), and with an un-removed confound: both 'our footprint is large' and 'their screen is significant' rise with expression / statistical power, so part of the 0.74–0.79 may be shared detectability rather than shared biology. Corroborative-with-confound, not a clean win; L4 is still not upgraded to met."
       },
       "report": "docs/mvp-research/level4_external_validation/track_d_activation_crosschecks_combined.md",
-      "shifrut_note": "Shifrut 2018 未快取且 NCBI/Cell 被 sandbox 網路政策封鎖,無法在此跑;harness 對其保持 turn-key。"
+      "shifrut_note": "Shifrut 2018 was not cached and NCBI/Cell are blocked by the sandbox network policy, so it could not be run here; the harness stays turn-key for it."
     },
     "l4_limitations": [
-      "關聯≠因果(Track A GWAS/Open Targets)",
-      "表型不匹配:唯一全基因體 CD4 CRISPR 篩選 GSE318876 量的是 HIV 感染,非 T 細胞活化",
-      "n 小且文獻偏差:55 驗證標靶,STRING 回復受研究投入偏誤",
-      "表型匹配活化篩選(Track D, Schmidt/Freimer)實跑為 null:方向性排序 AUROC <0.5、未達 0.65 驗收;主因軸差異 + 必需基因 dropout,另有弱正向 magnitude 一致性"
+      "Association ≠ causation (Track A GWAS / Open Targets)",
+      "Phenotype mismatch: the only genome-wide CD4 CRISPR screen, GSE318876, measures HIV infection, not T-cell activation",
+      "Small n and literature bias: 55 validation targets; STRING recovery is subject to research-attention bias",
+      "The phenotype-matched activation screen (Track D, Schmidt/Freimer) ran as null: directional ranking AUROC <0.5, below the 0.65 acceptance; mainly due to axis difference + essential-gene dropout, with a weak positive magnitude consistency"
     ]
   },
   "attribution": [
-    { "source": "GWT CD4 Perturb-seq (primary)", "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273", "license": "依論文 / CZI Virtual Cells Platform 條款", "url": "https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" },
-    { "source": "Open Targets Platform", "cite": "Ochoa et al. 2024, Nucleic Acids Res (PMID 39657122)", "license": "依 Open Targets 引用政策", "url": "https://platform.opentargets.org/" },
+    { "source": "GWT CD4 Perturb-seq (primary)", "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273", "license": "Per the paper / CZI Virtual Cells Platform terms", "url": "https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1" },
+    { "source": "Open Targets Platform", "cite": "Ochoa et al. 2024, Nucleic Acids Res (PMID 39657122)", "license": "Per Open Targets citation policy", "url": "https://platform.opentargets.org/" },
     { "source": "ChEMBL", "cite": "PMID 37933841", "license": "CC BY-SA 3.0", "url": "https://www.ebi.ac.uk/chembl/" },
-    { "source": "gnomAD v2.1.1", "cite": "Karczewski et al. 2020 (PMID 32461654)", "license": "免費使用,須引用", "url": "https://gnomad.broadinstitute.org/" },
-    { "source": "GTEx", "cite": "GTEx Consortium 2020 (PMID 32913098)", "license": "依 GTEx 條款", "url": "https://gtexportal.org/" },
+    { "source": "gnomAD v2.1.1", "cite": "Karczewski et al. 2020 (PMID 32461654)", "license": "Free to use, citation required", "url": "https://gnomad.broadinstitute.org/" },
+    { "source": "GTEx", "cite": "GTEx Consortium 2020 (PMID 32913098)", "license": "Per GTEx terms", "url": "https://gtexportal.org/" },
     { "source": "Reactome", "cite": "PMID 34788843", "license": "CC BY 4.0", "url": "https://reactome.org/" },
     { "source": "STRING v12", "cite": "PMID 36370105", "license": "CC BY 4.0", "url": "https://string-db.org/" },
     { "source": "AlphaFold DB", "cite": "Jumper et al. 2021 (PMID 34265844)", "license": "CC BY 4.0", "url": "https://alphafold.ebi.ac.uk/" },
-    { "source": "ClinicalTrials.gov", "cite": "U.S. NLM", "license": "公眾領域(建議標註來源)", "url": "https://clinicaltrials.gov/" },
-    { "source": "PubMed / PMC", "cite": "U.S. NLM", "license": "依 NLM 條款", "url": "https://pubmed.ncbi.nlm.nih.gov/" },
-    { "source": "CELLxGENE Census", "cite": "CZI (PMID 39607691)", "license": "依 CZI 條款", "url": "https://cellxgene.cziscience.com/" },
-    { "source": "LINCS / CMap L1000", "cite": "Subramanian et al. 2017 (PMID 29195078)", "license": "依 LINCS 條款", "url": "https://clue.io/" }
+    { "source": "ClinicalTrials.gov", "cite": "U.S. NLM", "license": "Public domain (source attribution recommended)", "url": "https://clinicaltrials.gov/" },
+    { "source": "PubMed / PMC", "cite": "U.S. NLM", "license": "Per NLM terms", "url": "https://pubmed.ncbi.nlm.nih.gov/" },
+    { "source": "CELLxGENE Census", "cite": "CZI (PMID 39607691)", "license": "Per CZI terms", "url": "https://cellxgene.cziscience.com/" },
+    { "source": "LINCS / CMap L1000", "cite": "Subramanian et al. 2017 (PMID 29195078)", "license": "Per LINCS terms", "url": "https://clue.io/" }
   ],
   "concept_layer": {
     "count": 20,
     "id_range": "M01–M20",
-    "scoring": "seed-gene overlap (可手算稽核,無黑箱權重)",
-    "invariant": "概念活化分數為描述性,永不餵 readiness_call / _stage()。",
+    "scoring": "seed-gene overlap (hand-auditable, no black-box weights)",
+    "invariant": "The concept activation score is descriptive and never feeds readiness_call / _stage().",
     "source_doc": "docs/concept_dictionary.md"
   },
   "doc_links": [
-    { "label": "Provenance registry (資料來源 × 演算法 × 參考)", "path": "provenance_registry.csv", "kind": "csv" },
-    { "label": "技術方法與驗證 Technical methods", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/technical_methods.md", "kind": "external" },
-    { "label": "資料字典 Data dictionary", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/data_dictionary.md", "kind": "external" },
-    { "label": "概念詞典 M01–M20", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/concept_dictionary.md", "kind": "external" },
-    { "label": "圖表導讀 Figure guide", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/figure_guide.md", "kind": "external" },
-    { "label": "Server 模組參考", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/server_modules.md", "kind": "external" }
+    { "label": "Provenance registry (data source × algorithm × reference)", "path": "provenance_registry.csv", "kind": "csv" },
+    { "label": "Technical methods & validation", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/technical_methods.md", "kind": "external" },
+    { "label": "Data dictionary", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/data_dictionary.md", "kind": "external" },
+    { "label": "Concept dictionary M01–M20", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/concept_dictionary.md", "kind": "external" },
+    { "label": "Figure guide", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/figure_guide.md", "kind": "external" },
+    { "label": "Server module reference", "path": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/docs/server_modules.md", "kind": "external" }
   ]
 }

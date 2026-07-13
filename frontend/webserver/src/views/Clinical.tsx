@@ -2,6 +2,7 @@ import { MODULES, TARGETS, targetsInModule } from "../data/dataset";
 import { MODULE_META } from "../data/moduleMeta";
 import { CONSTRAINT_META, GRADE, READINESS } from "../data/reference";
 import { useStore } from "../store/store";
+import ExpressionCompare from "./clinical/ExpressionCompare";
 
 const catBadge = (c: string) => (c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" });
 
@@ -17,6 +18,7 @@ export default function Clinical() {
     { key: "concept", label: "Individual concept profile" },
     { key: "drug", label: "Disease × drug evidence" },
     { key: "popgen", label: "Population genetics" },
+    { key: "upload", label: "Compare my expression features" },
   ].map((tb) => ({
     key: tb.key,
     label: tb.label,
@@ -376,6 +378,8 @@ export default function Clinical() {
           )}
         </div>
       )}
+
+      {S.clinicalTab === "upload" && <ExpressionCompare targets={all} />}
     </main>
   );
 }

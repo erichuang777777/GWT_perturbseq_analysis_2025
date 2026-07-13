@@ -13,7 +13,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent
 SRC = REPO / "src" / "3_DE_analysis"
-DATASET_ID = "a6bba17b-f194-4a50-8cf8-96e03eededd6"
+DATASET_ID = "a792d68c-7adc-46a6-964a-35770e5adbde"
 DATASET_DIR = REPO / "sources" / "target_tool_cache" / DATASET_ID
 
 if str(SRC) not in sys.path:

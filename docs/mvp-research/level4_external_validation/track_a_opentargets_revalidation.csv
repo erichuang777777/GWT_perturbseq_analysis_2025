@@ -1,0 +1,56 @@
+gene,ensembl,csv_top_immune_dis,csv_GA,ot_GA_exact_name,status
+FOXN2,ENSG00000170802,lupus erythematosus,0.0867,0.08672194926878951,OK (exact disease-name GA match)
+MGA,ENSG00000174197,,0.0,,no named immune disease
+SIK2,ENSG00000170145,asthma,0.7222,0.7221716185220275,OK (exact disease-name GA match)
+ZNF274,ENSG00000171606,,0.0,,no named immune disease
+TMEM131L,ENSG00000121210,vitiligo,0.4266,0.4266346663888076,OK (exact disease-name GA match)
+TBC1D10A,ENSG00000099992,rheumatoid arthritis,0.0799,0.07990757375277743,OK (exact disease-name GA match)
+THAP5,ENSG00000177683,polycythemia,0.3415,0.3414645386104558,OK (exact disease-name GA match)
+NFATC2IP,ENSG00000176953,,0.0,,no named immune disease
+UBL7,ENSG00000138629,,0.0,,no named immune disease
+ALG3,ENSG00000214160,,0.0,,no named immune disease
+TYK2,ENSG00000105397,rheumatoid arthritis,0.931,0.9309662068076288,OK (exact disease-name GA match)
+ZNF790,ENSG00000197863,,0.0,,no named immune disease
+ZNF200,ENSG00000010539,,0.0,,no named immune disease
+BCAP29,ENSG00000075790,,0.0,,no named immune disease
+ZNF627,ENSG00000198551,Spondyloenchondrodysplasia with immune dysregulation,0.936,0.935991725005793,OK (exact disease-name GA match)
+EOLA1,ENSG00000197620,,0.0,,no named immune disease
+CALR,ENSG00000179218,primary myelofibrosis,0.7207,0.7207357345017775,OK (exact disease-name GA match)
+ITM2A,ENSG00000078596,Graves disease,0.5199,0.5198641758910368,OK (exact disease-name GA match)
+ANKAR,ENSG00000151687,,0.0,,no named immune disease
+RFX1,ENSG00000132005,,0.0,,no named immune disease
+ERN1,ENSG00000178607,ulcerative colitis,0.4535,0.45350734745093074,OK (exact disease-name GA match)
+TMEM205,ENSG00000105518,,0.0,,no named immune disease
+PLA2G4A,ENSG00000116711,immune system disorder,0.3528,0.35275012108414733,OK (exact disease-name GA match)
+TRIM39,ENSG00000204599,,0.0,,no named immune disease
+MAN2A1,ENSG00000112893,acute tonsillitis,0.3101,0.310116845863233,OK (exact disease-name GA match)
+WASL,ENSG00000106299,,0.0,,no named immune disease
+KRCC1,ENSG00000172086,,0.0,,no named immune disease
+TP53RK,ENSG00000172315,,0.0,,no named immune disease
+C2CD2L,ENSG00000172375,,0.0,,no named immune disease
+MAGEH1,ENSG00000187601,,0.0,,no named immune disease
+DIPK1A,ENSG00000154511,type 1 diabetes mellitus,0.5016,0.501558463929411,OK (exact disease-name GA match)
+PDIA6,ENSG00000143870,immune system disorder,0.3566,0.3566294211617469,OK (exact disease-name GA match)
+IFNGR2,ENSG00000159128,immunodeficiency 28,0.9005,0.9005415304971611,OK (exact disease-name GA match)
+TMEM131,ENSG00000075568,primary thrombocytopenia,0.3936,0.39359437723660107,OK (exact disease-name GA match)
+PCGF6,ENSG00000156374,,0.0,,no named immune disease
+CYLD,ENSG00000083799,Crohn disease,0.5901,0.5900566216083758,OK (exact disease-name GA match)
+KLHDC10,ENSG00000128607,psoriasis,0.4026,0.40257954904106275,OK (exact disease-name GA match)
+ZNF589,ENSG00000164048,,0.0,,no named immune disease
+NPHP4,ENSG00000131697,Behcet disease,0.4508,0.4508476980422389,OK (exact disease-name GA match)
+GPR15,ENSG00000154165,,0.0,,no named immune disease
+LIN37,ENSG00000267796,,0.0,,no named immune disease
+ELOC,ENSG00000154582,,0.0,,no named immune disease
+EXTL2,ENSG00000162694,multiple sclerosis,0.1195,0.11946346314145284,OK (exact disease-name GA match)
+UBAC1,ENSG00000130560,multiple sclerosis,0.3843,0.3842838831199657,OK (exact disease-name GA match)
+AKAP10,ENSG00000108599,,0.0,,no named immune disease
+KIF16B,ENSG00000089177,psoriatic arthritis,0.4719,0.47189287741014213,OK (exact disease-name GA match)
+PPDPF,ENSG00000125534,,0.0,,no named immune disease
+SPSB2,ENSG00000111671,,0.0,,no named immune disease
+WDFY1,ENSG00000085449,,0.0,,no named immune disease
+BAHD1,ENSG00000140320,,0.0,,no named immune disease
+CD3E,ENSG00000198851,immunodeficiency 18,0.9155,0.9154702497470937,OK (exact disease-name GA match)
+PLCG1,ENSG00000124181,"immune dysregulation, autoimmunity, and autoinflammation",0.5547,0.5547030788874036,OK (exact disease-name GA match)
+VAV1,ENSG00000141968,,0.0,,no named immune disease
+BCL10,ENSG00000142867,immunodeficiency 37,0.8605,0.8605162162488925,OK (exact disease-name GA match)
+STAT3,ENSG00000168610,"hyper-IgE syndrome 6, autosomal dominant, with recurrent infections",0.9472,0.9471757543886921,OK (exact disease-name GA match)
