@@ -1,6 +1,6 @@
-# CD4 Target Discovery Portal — 3-minute voice-over
+# CD4 Target Discovery Portal — page-by-page voice-over
 
-This is the recording script. The “why it matters” notes are for preparation and are not spoken.
+This script introduces every captured route. The “why it matters” notes are for preparation and are not spoken. For narration timed to the finished 2:53 video, use `VIDEO_VOICEOVER.md`.
 
 ## 00:00–00:12 — Home
 
@@ -90,13 +90,21 @@ This is the recording script. The “why it matters” notes are for preparation
 
 **為什麼重要：**互動用於檢查穩健性，不只是展示動畫。
 
-## 02:03–02:14 — Figure & structure gallery
+## Figure & structure gallery — three key publication figures
 
 [Screenshot](screenshots/12-figure-gallery.png)
 
-**旁白：**「Gallery 首先呈現 A7 外部驗證、A12 雙視角與 A16 整合分析，再依功能整理其餘圖表與 Core-5 structures。」
+**A7 旁白：**「A7 是外部驗證圖。它檢查 Perturb-seq 排名能否找回已知免疫目標與疾病連結，也標出仍缺乏文獻支持的新候選。」
 
-**為什麼重要：**把大量圖表組成可發表、可引用的科學敘事。
+**A7 為什麼重要：**它用獨立生物學證據回答「篩選結果是否可信」。
+
+**A12 旁白：**「A12 把研究價值與臨床風險放在同一張圖。越有機制吸引力的標的，可能同時帶有更多約束與安全性警示。」
+
+**A12 為什麼重要：**它防止我們把強訊號直接誤讀成好藥物標的。
+
+**A16 旁白：**「A16 是整合總圖：從 33,983 個原始 profiles 經過策展與過濾，連到調控模組、context-specific effects，最後才形成可解釋的候選集合。」
+
+**A16 為什麼重要：**它是全站的方法地圖，把原始資料、分析與最終決策鏈接在一起。
 
 ## 02:14–02:24 — Docs
 

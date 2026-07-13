@@ -1,10 +1,14 @@
 # Website demo recording package
 
-This package turns the portal's existing demo drafts into a page-by-page recording plan.
+This package contains a verified page-by-page screenshot set plus a real-browser interactive demo recording.
 
-- `STORYBOARD.md` defines the 3-minute narrative arc, timing, and browser actions.
-- `SCRIPT.md` provides Traditional Chinese voice-over copy and explains why each screen matters.
-- `screenshots/` contains 16 Playwright captures at 1920 × 1080.
+- [`CD4_portal_demo_3min_silent.mp4`](CD4_portal_demo_3min_silent.mp4) is the 2:53, 1280 × 720 silent walkthrough captured from the live local site.
+- `STORYBOARD.md` documents the interactive cut and its browser actions.
+- `VIDEO_VOICEOVER.md` is the narration timed to the finished video.
+- `SCRIPT.md` provides a page-by-page Traditional Chinese introduction and explains why every screen matters.
+- `screenshots/` contains 16 Playwright **full-page** captures at 1920 px width; image height follows the complete page content.
+
+The walkthrough shows real navigation, weight controls, gene search, the PLCG1 dossier, Core-5 comparison, interactive figures, and the figure gallery. Its final 30 seconds open A7, A12, and A16 full-size for dedicated explanation.
 
 The plan combines two existing repo drafts:
 
@@ -21,17 +25,17 @@ The plan combines two existing repo drafts:
 
 ## Using your own voice
 
-Playwright records the browser video but does not capture microphone audio. Record the narration separately with OBS, Audacity, Voice Memos, or another recorder, then combine it with the silent browser recording. The 3-minute script is intentionally divided into short timed blocks so each paragraph can be recorded as a separate take.
+Playwright records the browser video but does not capture microphone audio. Record `VIDEO_VOICEOVER.md` separately with OBS, Audacity, Voice Memos, or another recorder, then combine it with the supplied silent MP4. The script is divided into short timed blocks so each paragraph can be recorded as a separate take.
 
 Recommended workflow:
 
-1. Record the silent browser walkthrough at 1920 × 1080.
-2. Read `SCRIPT.md` into a microphone as separate timed clips.
+1. Play `CD4_portal_demo_3min_silent.mp4` while recording your voice.
+2. Read `VIDEO_VOICEOVER.md` into a microphone as separate timed clips.
 3. Remove long breaths and background noise, but keep the natural voice.
 4. Merge the tracks with an editor, or with FFmpeg:
 
    ```bash
-   ffmpeg -i site-demo-silent.webm -i narration.wav -c:v libx264 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest site-demo-with-voice.mp4
+   ffmpeg -i CD4_portal_demo_3min_silent.mp4 -i narration.wav -c:v copy -c:a aac -b:a 192k -shortest CD4_portal_demo_with_voice.mp4
    ```
 
 ## Screenshot index
