@@ -19,7 +19,7 @@ Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analys
 
 ## At a glance
 
-**The druggability funnel — genome-wide screen to an advance-ready shortlist.** 11,526 measured CD4⁺ targets narrow through QC and gate-passing to 302 advance-ready candidates; the right panel breaks those down by tractability modality and direction of effect.
+**One screen, two parallel funnels, one Core-5 intersection.** The portal readiness branch reaches 302 advance-ready targets, while the separate publication delivery-decision branch reaches 39 context-specific targets with a known modality. The two endpoints are not sequential; Core-5 is the intersection of the 39 with an independent 15-gene primary-outcome shortlist.
 
 ![Researcher druggability funnel](docs/readme_assets/druggability_funnel.png)
 
@@ -27,9 +27,9 @@ Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analys
 
 ![External-validation reproduction](docs/readme_assets/external_validation.png)
 
-**What we built vs. what a user needs — six developer/user blindspots and how the portal closes each.** The gap between "is it built?" and "can I get my job done?" drove the two-perspective UI, plain-language tooltips, novelty flags, honest-safety lookup, and evidence-strength banners.
+**Development timeline — from data processing to a reproducible target-discovery portal.** This dot-flow figure summarizes 462 non-merge commits across five work categories. See [`docs/dev_timeline/`](docs/dev_timeline/README.md) for the animated replay, source data, and regeneration pipeline.
 
-![The developer–user gap: six blindspots](docs/readme_assets/dev_user_gap.png)
+![Development dot-flow timeline](docs/readme_assets/development_dot_flow.png)
 
 ## Target-discovery toolkit quickstart
 

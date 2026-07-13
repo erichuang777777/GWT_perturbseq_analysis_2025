@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perturbase Figure Audit Dashboard</title>
+  <style>
+    :root {
+      --ink: #17233b;
+      --muted: #63708a;
+      --line: #dce3ec;
+      --paper: #ffffff;
+      --wash: #f4f7fb;
+      --navy: #14294f;
+      --blue: #2368c4;
+      --cyan: #17a6a4;
+      --orange: #ef8b36;
+      --green: #198f68;
+      --red: #c94b57;
+      --shadow: 0 18px 48px rgba(21, 43, 80, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% -5%, rgba(35, 104, 196, .13), transparent 25rem),
+        radial-gradient(circle at 95% 10%, rgba(23, 166, 164, .10), transparent 28rem),
+        var(--wash);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1480px, calc(100% - 32px)); margin: 0 auto; }
+    .hero {
+      margin: 24px auto 0;
+      padding: 34px 38px;
+      color: white;
+      border-radius: 28px;
+      background: linear-gradient(118deg, #102449 0%, #173b71 58%, #147e86 130%);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 310px; height: 310px; right: -90px; top: -130px;
+      border: 1px solid rgba(255,255,255,.22); border-radius: 50%;
+      box-shadow: 0 0 0 45px rgba(255,255,255,.035), 0 0 0 90px rgba(255,255,255,.025);
+    }
+    .eyebrow { text-transform: uppercase; letter-spacing: .16em; font-weight: 750; font-size: 12px; opacity: .72; }
+    h1 { margin: 10px 0 8px; font-size: clamp(30px, 4vw, 53px); line-height: 1.05; letter-spacing: -.035em; }
+    .hero p { max-width: 780px; margin: 0; color: #d9e6f7; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 9px; position: absolute; right: 30px; bottom: 28px; z-index: 2; }
+    .lang-btn {
+      border: 1px solid rgba(255,255,255,.3); color: white; background: rgba(255,255,255,.08);
+      border-radius: 999px; padding: 8px 13px;
+    }
+    .lang-btn.active { background: white; color: var(--navy); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+    .stat {
+      padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.86);
+      box-shadow: 0 8px 25px rgba(21,43,80,.05);
+    }
+    .stat .num { font-size: 30px; line-height: 1; font-weight: 850; color: var(--navy); letter-spacing: -.03em; }
+    .stat .label { color: var(--muted); font-size: 13px; margin-top: 8px; }
+    .tabs {
+      display: flex; gap: 7px; padding: 7px; border: 1px solid var(--line); border-radius: 16px;
+      background: rgba(255,255,255,.82); position: sticky; top: 10px; z-index: 20; backdrop-filter: blur(13px);
+      box-shadow: 0 8px 24px rgba(21,43,80,.07);
+    }
+    .tab {
+      border: 0; background: transparent; color: var(--muted); padding: 11px 18px; border-radius: 11px; font-weight: 720;
+    }
+    .tab.active { color: white; background: var(--navy); box-shadow: 0 7px 18px rgba(20,41,79,.22); }
+    .view { display: none; padding: 22px 0 48px; }
+    .view.active { display: block; }
+    .toolbar {
+      display: grid; grid-template-columns: minmax(260px, 1fr) 230px 230px auto; gap: 10px; margin-bottom: 16px;
+    }
+    .control {
+      width: 100%; border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+      padding: 12px 14px; border-radius: 12px; outline: none;
+    }
+    .control:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(35,104,196,.12); }
+    .result-count { align-self: center; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 18px; background: var(--paper); overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: #a9bdd8; box-shadow: var(--shadow); }
+    .thumb-wrap { height: 235px; background: #edf2f7; position: relative; overflow: hidden; }
+    .thumb-wrap img { width: 100%; height: 100%; object-fit: contain; background: white; display: block; }
+    .id-pill { position: absolute; left: 12px; top: 12px; color: white; background: rgba(20,41,79,.88); padding: 5px 9px; border-radius: 8px; font-weight: 800; font-size: 12px; }
+    .card-body { padding: 16px 17px 18px; }
+    .meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 9px; }
+    .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-weight: 740; font-size: 11px; background: #eaf1fb; color: #285b9f; }
+    .pill.main { background: #e5f5ef; color: #157654; }
+    .pill.archive { background: #fff0df; color: #a85b15; }
+    .card h3 { font-size: 17px; line-height: 1.35; margin: 0 0 8px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 13px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+    .card-btn { width: 100%; text-align: left; padding: 0; border: 0; background: transparent; color: inherit; }
+    .table-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .table-scroll { overflow: auto; max-height: 68vh; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { position: sticky; top: 0; background: #edf3f9; color: #53627a; text-align: left; z-index: 1; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid #e7ebf1; vertical-align: top; }
+    tbody tr:hover { background: #f7faff; }
+    tbody tr.clickable { cursor: pointer; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }
+    .overview-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; }
+    .panel { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+    .panel h2, .panel h3 { margin: 0 0 12px; }
+    .panel p, .panel li { color: var(--muted); line-height: 1.65; }
+    .coverage-bar { height: 12px; background: #e8edf4; border-radius: 999px; overflow: hidden; margin: 14px 0 7px; }
+    .coverage-bar span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .checklist { list-style: none; padding: 0; margin: 16px 0 0; }
+    .checklist li { border-top: 1px solid var(--line); padding: 11px 0 11px 30px; position: relative; }
+    .checklist li::before { content: "✓"; position: absolute; left: 3px; color: var(--green); font-weight: 900; }
+    .notice { border-left: 4px solid var(--orange); background: #fff8ef; border-radius: 8px; padding: 14px 16px; color: #80501e; line-height: 1.55; }
+    .source-links { display: grid; gap: 8px; }
+    .source-links a { color: var(--blue); text-decoration: none; background: #f3f7fc; border: 1px solid #e1e8f1; border-radius: 10px; padding: 10px 12px; }
+    .source-links a:hover { text-decoration: underline; }
+    .empty { grid-column: 1/-1; text-align: center; padding: 52px; color: var(--muted); background: white; border: 1px dashed #bfc9d7; border-radius: 18px; }
+    .loading { padding: 64px; text-align: center; color: var(--muted); }
+    dialog { width: min(1180px, calc(100% - 28px)); max-height: calc(100vh - 28px); border: 0; padding: 0; border-radius: 22px; box-shadow: 0 30px 90px rgba(7,22,48,.34); }
+    dialog::backdrop { background: rgba(9,21,41,.68); backdrop-filter: blur(4px); }
+    .modal { background: white; display: grid; grid-template-columns: 1.15fr .85fr; max-height: calc(100vh - 28px); }
+    .modal-figure { background: #eef2f7; min-height: 540px; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .modal-figure img { max-width: 100%; max-height: calc(100vh - 68px); object-fit: contain; }
+    .modal-info { padding: 28px; overflow-y: auto; position: relative; }
+    .close { position: sticky; top: 0; float: right; border: 0; border-radius: 999px; width: 38px; height: 38px; background: #e9eef5; color: var(--navy); font-size: 20px; z-index: 2; }
+    .modal-info h2 { font-size: 26px; line-height: 1.22; margin: 12px 0 16px; }
+    .detail { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+    .detail h4 { margin: 0 0 6px; font-size: 12px; color: #43536c; letter-spacing: .06em; text-transform: uppercase; }
+    .detail p { margin: 0; color: var(--muted); line-height: 1.62; white-space: pre-wrap; }
+    .load-error { background: #fff0f1; color: #9c2e3c; border: 1px solid #efc2c8; border-radius: 12px; padding: 16px; }
+    @media (max-width: 1050px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .hero-actions { position: static; margin-top: 20px; }
+      .modal { grid-template-columns: 1fr; }
+      .modal-figure { min-height: 320px; }
+    }
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 18px, 1480px); }
+      .hero { padding: 26px 22px; border-radius: 20px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .grid, .overview-grid { grid-template-columns: 1fr; }
+      .toolbar { grid-template-columns: 1fr; }
+      .tabs { overflow-x: auto; }
+      .tab { white-space: nowrap; }
+      .thumb-wrap { height: 215px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell hero">
+    <div class="eyebrow">GWT · CD4+ T-cell Perturb-seq</div>
+    <h1>Figure Audit Dashboard</h1>
+    <p id="heroCopy">把 71 張科研圖表、95 筆視覺稽核決策與前端 coverage 結果放在同一個可搜尋、可追溯的工作台。</p>
+    <div class="hero-actions">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="stats" aria-label="Dashboard summary">
+      <article class="stat"><div class="num" id="chartTotal">—</div><div class="label" data-t="catalogCharts">Catalog 圖表</div></article>
+      <article class="stat"><div class="num" id="auditTotal">—</div><div class="label" data-t="auditDecisions">Audit 決策</div></article>
+      <article class="stat"><div class="num" id="representedTotal">—</div><div class="label" data-t="represented">Production figures represented</div></article>
+      <article class="stat"><div class="num" id="gapTotal">1</div><div class="label" data-t="knownGap">已知低優先缺口</div></article>
+    </section>
+
+    <nav class="tabs" aria-label="Views">
+      <button class="tab active" data-view="gallery" data-t="galleryTab">圖表總覽</button>
+      <button class="tab" data-view="audit" data-t="auditTab">Audit 決策表</button>
+      <button class="tab" data-view="coverage" data-t="coverageTab">Coverage 摘要</button>
+    </nav>
+
+    <section id="gallery" class="view active">
+      <div class="toolbar">
+        <input id="chartSearch" class="control" type="search" placeholder="搜尋標題、ID、說明或原始資料…">
+        <select id="groupFilter" class="control"></select>
+        <select id="familyFilter" class="control"></select>
+        <div id="chartCount" class="result-count"></div>
+      </div>
+      <div id="chartGrid" class="grid"><div class="loading">Loading catalog…</div></div>
+    </section>
+
+    <section id="audit" class="view">
+      <div class="toolbar">
+        <input id="auditSearch" class="control" type="search" placeholder="搜尋檔名、分類、note 或 version ID…">
+        <select id="classFilter" class="control"></select>
+        <select id="destinationFilter" class="control"></select>
+        <div id="auditCount" class="result-count"></div>
+      </div>
+      <div class="table-panel">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th data-t="filename">Filename</th><th data-t="class">Class</th><th data-t="destination">Destination</th><th>Version ID</th><th data-t="note">Audit note</th></tr></thead>
+            <tbody id="auditBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="coverage" class="view">
+      <div class="overview-grid">
+        <article class="panel">
+          <div class="eyebrow" style="color:var(--blue)" data-t="releaseReadiness">Release readiness</div>
+          <h2 data-t="coverageTitle">71 / 71 圖表完整收錄</h2>
+          <div class="coverage-bar"><span></span></div>
+          <p data-t="coverageBody">所有完成並支援分析階段的 production figure 都有 catalog entry；未被收錄的影像已確認為動畫、重複面板、品牌素材或開發用截圖。</p>
+          <ul class="checklist">
+            <li data-t="checkOne">每張圖都有標題、類別、說明、科學意義與原始資料來源。</li>
+            <li data-t="checkTwo">71 張圖皆可對應到 reproduction script。</li>
+            <li data-t="checkThree">圖表與 audit decision 透過 version ID 串接。</li>
+            <li data-t="checkFour">Production figures unrepresented：0。</li>
+          </ul>
+        </article>
+        <div style="display:grid;gap:16px">
+          <article class="panel">
+            <h3 data-t="knownGapTitle">目前唯一結構性缺口</h3>
+            <div class="notice" data-t="knownGapBody">原始資料表目前只在各圖的 Raw source 中描述，尚未提供逐表下載或瀏覽介面。此項被 audit 評為低優先，不阻擋 release。</div>
+          </article>
+          <article class="panel">
+            <h3 data-t="sourceFiles">整合來源</h3>
+            <div class="source-links">
+              <a href="perturbase_frontend/catalog/ALL_CHARTS_CATALOG_bilingual.json" target="_blank">ALL_CHARTS_CATALOG_bilingual.json</a>
+              <a href="figure_consolidation/FIGURE_AUDIT_MASTER.csv" target="_blank">FIGURE_AUDIT_MASTER.csv</a>
+              <a href="perturbase_frontend/catalog/FIGURE_SCRIPTS_INDEX.csv" target="_blank">FIGURE_SCRIPTS_INDEX.csv</a>
+              <a href="closure_audit/FRONTEND_COVERAGE_AUDIT.md" target="_blank">FRONTEND_COVERAGE_AUDIT.md</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detailDialog">
+    <div class="modal">
+      <div class="modal-figure"><img id="modalImage" alt=""></div>
+      <div class="modal-info">
+        <button class="close" id="closeDialog" aria-label="Close">×</button>
+        <div class="meta" id="modalMeta"></div>
+        <h2 id="modalTitle"></h2>
+        <div class="detail"><h4 data-t="description">圖表說明</h4><p id="modalDescription"></p></div>
+        <div class="detail"><h4 data-t="meaning">數據意義</h4><p id="modalMeaning"></p></div>
+        <div class="detail"><h4 data-t="rawSource">原始資料來源</h4><p id="modalSource"></p></div>
+        <div class="detail"><h4 data-t="auditDecision">Audit 決策</h4><p id="modalAudit"></p></div>
+        <div class="detail"><h4 data-t="reproduction">重現資訊</h4><p id="modalRepro" class="mono"></p></div>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const PATHS = {
+      catalog: 'perturbase_frontend/catalog/ALL_CHARTS_CATALOG_bilingual.json',
+      audit: 'figure_consolidation/FIGURE_AUDIT_MASTER.csv',
+      scripts: 'perturbase_frontend/catalog/FIGURE_SCRIPTS_INDEX.csv',
+      figures: 'perturbase_frontend/figures_en/'
+    };
+    const I18N = {
+      zh: {
+        hero: '把 71 張科研圖表、95 筆視覺稽核決策與前端 coverage 結果放在同一個可搜尋、可追溯的工作台。',
+        catalogCharts: 'Catalog 圖表', auditDecisions: 'Audit 決策', represented: 'Production figures represented', knownGap: '已知低優先缺口',
+        galleryTab: '圖表總覽', auditTab: 'Audit 決策表', coverageTab: 'Coverage 摘要',
+        chartSearch: '搜尋標題、ID、說明或原始資料…', auditSearch: '搜尋檔名、分類、note 或 version ID…',
+        allGroups: '所有分組', allFamilies: '所有圖表類別', allClasses: '所有 audit classes', allDestinations: '所有去向',
+        charts: '張圖表', records: '筆決策', filename: '檔名', class: '分類', destination: '去向', note: 'Audit note',
+        releaseReadiness: 'Release readiness', coverageTitle: '71 / 71 圖表完整收錄',
+        coverageBody: '所有完成並支援分析階段的 production figure 都有 catalog entry；未被收錄的影像已確認為動畫、重複面板、品牌素材或開發用截圖。',
+        checkOne: '每張圖都有標題、類別、說明、科學意義與原始資料來源。', checkTwo: '71 張圖皆可對應到 reproduction script。',
+        checkThree: '圖表與 audit decision 透過 version ID 串接。', checkFour: 'Production figures unrepresented：0。',
+        knownGapTitle: '目前唯一結構性缺口', knownGapBody: '原始資料表目前只在各圖的 Raw source 中描述，尚未提供逐表下載或瀏覽介面。此項被 audit 評為低優先，不阻擋 release。',
+        sourceFiles: '整合來源', description: '圖表說明', meaning: '數據意義', rawSource: '原始資料來源', auditDecision: 'Audit 決策', reproduction: '重現資訊',
+        noResults: '沒有符合條件的結果', noAudit: '此圖沒有對應的 consolidation audit row', groupCore: '核心圖庫', groupAnalysis: '分析與發表圖'
+      },
+      en: {
+        hero: 'A single searchable and traceable workspace for 71 scientific figures, 95 visual-audit decisions, and front-end coverage findings.',
+        catalogCharts: 'Catalog charts', auditDecisions: 'Audit decisions', represented: 'Production figures represented', knownGap: 'Known low-priority gap',
+        galleryTab: 'Figure gallery', auditTab: 'Audit decision table', coverageTab: 'Coverage summary',
+        chartSearch: 'Search title, ID, description, or raw source…', auditSearch: 'Search filename, class, note, or version ID…',
+        allGroups: 'All groups', allFamilies: 'All figure families', allClasses: 'All audit classes', allDestinations: 'All destinations',
+        charts: 'charts', records: 'decisions', filename: 'Filename', class: 'Class', destination: 'Destination', note: 'Audit note',
+        releaseReadiness: 'Release readiness', coverageTitle: '71 / 71 catalog figures complete',
+        coverageBody: 'Every finalized production figure supporting an analysis stage has a catalog entry. Images outside the catalog were verified as animations, duplicate panels, brand assets, or development screenshots.',
+        checkOne: 'Every chart has a title, family, description, scientific meaning, and raw source.', checkTwo: 'All 71 charts map to a reproduction script.',
+        checkThree: 'Figures and audit decisions are joined by version ID.', checkFour: 'Production figures unrepresented: 0.',
+        knownGapTitle: 'The one structural gap', knownGapBody: 'Source data tables are described in each chart’s Raw source block, but there is no per-table download or browsing surface yet. The audit rates this low priority and non-blocking for release.',
+        sourceFiles: 'Integrated sources', description: 'Chart description', meaning: 'Scientific meaning', rawSource: 'Raw source', auditDecision: 'Audit decision', reproduction: 'Reproduction',
+        noResults: 'No results match the current filters', noAudit: 'No consolidation audit row is linked to this chart', groupCore: 'Core gallery', groupAnalysis: 'Analysis & publication'
+      }
+    };
+
+    let charts = [], auditRows = [], scriptRows = [], language = 'zh';
+    let auditByVersion = new Map(), scriptByChart = new Map(), chartByVersion = new Map();
+
+    function parseCSV(text) {
+      const rows = []; let row = [], field = '', quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i], n = text[i + 1];
+        if (quoted) {
+          if (c === '"' && n === '"') { field += '"'; i++; }
+          else if (c === '"') quoted = false;
+          else field += c;
+        } else if (c === '"') quoted = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
+        else field += c;
+      }
+      if (field || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+      const headers = rows.shift() || [];
+      return rows.filter(r => r.some(Boolean)).map(r => Object.fromEntries(headers.map((h, i) => [h, r[i] || ''])));
+    }
+    const esc = (value='') => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    const t = key => I18N[language][key] || key;
+    const localized = chart => chart[language] || chart.en;
+    const groupLabel = group => group === 'Core gallery' ? t('groupCore') : group === 'Analysis & publication' ? t('groupAnalysis') : group;
+    const auditFor = chart => auditByVersion.get(chart.version_id);
+    const imageFor = chart => {
+      const audit = auditFor(chart);
+      return audit ? `${PATHS.figures}${chart.id}_${audit.filename}` : '';
+    };
+    const pill = (text, className='') => `<span class="pill ${className}">${esc(text)}</span>`;
+
+    async function loadData() {
+      try {
+        const [catalogRes, auditRes, scriptsRes] = await Promise.all([fetch(PATHS.catalog), fetch(PATHS.audit), fetch(PATHS.scripts)]);
+        if (![catalogRes, auditRes, scriptsRes].every(r => r.ok)) throw new Error('One or more data files could not be loaded.');
+        charts = await catalogRes.json();
+        auditRows = parseCSV(await auditRes.text());
+        scriptRows = parseCSV(await scriptsRes.text());
+        auditByVersion = new Map(auditRows.filter(r => r.version_id).map(r => [r.version_id, r]));
+        scriptByChart = new Map(scriptRows.map(r => [r.chart_id, r]));
+        chartByVersion = new Map(charts.map(c => [c.version_id, c]));
+        document.getElementById('chartTotal').textContent = charts.length;
+        document.getElementById('auditTotal').textContent = auditRows.length;
+        document.getElementById('representedTotal').textContent = 0;
+        initFilters();
+        renderAll();
+        verifyImages();
+      } catch (error) {
+        document.getElementById('chartGrid').innerHTML = `<div class="load-error">Dashboard data load failed: ${esc(error.message)}<br>請透過 HTTP server 開啟本頁，不要直接使用 file://。</div>`;
+      }
+    }
+
+    async function verifyImages() {
+      const checks = await Promise.all(charts.map(c => fetch(imageFor(c), {method:'HEAD'}).then(r => r.ok).catch(() => false)));
+      const represented = checks.filter(Boolean).length;
+      document.getElementById('representedTotal').textContent = represented;
+      document.getElementById('representedTotal').title = `${represented}/${charts.length} catalog image files available`;
+    }
+
+    function initFilters() {
+      fillSelect('groupFilter', [...new Set(charts.map(c => c.group))], t('allGroups'), groupLabel);
+      fillSelect('familyFilter', [...new Set(charts.map(c => localized(c).family))], t('allFamilies'));
+      fillSelect('classFilter', [...new Set(auditRows.map(r => r.class))], t('allClasses'));
+      fillSelect('destinationFilter', [...new Set(auditRows.map(r => r.destination))], t('allDestinations'));
+    }
+    function fillSelect(id, values, first, labelFn=v=>v) {
+      const el = document.getElementById(id), current = el.value;
+      el.innerHTML = `<option value="">${esc(first)}</option>` + values.filter(Boolean).sort().map(v => `<option value="${esc(v)}">${esc(labelFn(v))}</option>`).join('');
+      if ([...el.options].some(o => o.value === current)) el.value = current;
+    }
+
+    function renderGallery() {
+      const query = document.getElementById('chartSearch').value.trim().toLowerCase();
+      const group = document.getElementById('groupFilter').value;
+      const family = document.getElementById('familyFilter').value;
+      const filtered = charts.filter(chart => {
+        const l = localized(chart), audit = auditFor(chart) || {};
+        const haystack = [chart.id, l.title, l.description, l.data_explanation, chart.raw_source, chart.script, audit.class, audit.destination, audit.note].join(' ').toLowerCase();
+        return (!query || haystack.includes(query)) && (!group || chart.group === group) && (!family || l.family === family);
+      });
+      document.getElementById('chartCount').textContent = `${filtered.length} / ${charts.length} ${t('charts')}`;
+      document.getElementById('chartGrid').innerHTML = filtered.length ? filtered.map(chart => {
+        const l = localized(chart), audit = auditFor(chart) || {};
+        return `<article class="card"><button class="card-btn" data-chart="${esc(chart.id)}">
+          <div class="thumb-wrap"><img src="${esc(imageFor(chart))}" loading="lazy" alt="${esc(l.title)}"><span class="id-pill">${esc(chart.id)}</span></div>
+          <div class="card-body"><div class="meta">${pill(groupLabel(chart.group))}${audit.destination ? pill(audit.destination, audit.destination) : ''}</div>
+          <h3>${esc(l.title)}</h3><p>${esc(l.description)}</p></div>
+        </button></article>`;
+      }).join('') : `<div class="empty">${t('noResults')}</div>`;
+      document.querySelectorAll('[data-chart]').forEach(btn => btn.addEventListener('click', () => openChart(btn.dataset.chart)));
+    }
+
+    function renderAudit() {
+      const query = document.getElementById('auditSearch').value.trim().toLowerCase();
+      const classValue = document.getElementById('classFilter').value;
+      const destination = document.getElementById('destinationFilter').value;
+      const filtered = auditRows.filter(row => {
+        const haystack = Object.values(row).join(' ').toLowerCase();
+        return (!query || haystack.includes(query)) && (!classValue || row.class === classValue) && (!destination || row.destination === destination);
+      });
+      document.getElementById('auditCount').textContent = `${filtered.length} / ${auditRows.length} ${t('records')}`;
+      document.getElementById('auditBody').innerHTML = filtered.map(row => {
+        const chart = chartByVersion.get(row.version_id), click = chart ? `class="clickable" data-audit-chart="${esc(chart.id)}"` : '';
+        return `<tr ${click}><td><strong>${esc(row.filename)}</strong>${chart ? `<br><span class="pill">${esc(chart.id)}</span>` : ''}</td><td>${esc(row.class)}</td><td>${pill(row.destination, row.destination)}</td><td class="mono">${esc(row.version_id)}</td><td>${esc(row.note)}</td></tr>`;
+      }).join('');
+      document.querySelectorAll('[data-audit-chart]').forEach(row => row.addEventListener('click', () => openChart(row.dataset.auditChart)));
+    }
+
+    function openChart(id) {
+      const chart = charts.find(c => c.id === id); if (!chart) return;
+      const l = localized(chart), audit = auditFor(chart), script = scriptByChart.get(chart.id);
+      document.getElementById('modalImage').src = imageFor(chart);
+      document.getElementById('modalImage').alt = l.title;
+      document.getElementById('modalMeta').innerHTML = pill(chart.id) + pill(groupLabel(chart.group)) + pill(l.family) + (audit ? pill(audit.destination, audit.destination) : '');
+      document.getElementById('modalTitle').textContent = l.title;
+      document.getElementById('modalDescription').textContent = l.description;
+      document.getElementById('modalMeaning').textContent = l.data_explanation;
+      document.getElementById('modalSource').textContent = chart.raw_source;
+      document.getElementById('modalAudit').textContent = audit ? `${audit.class} → ${audit.destination}\n${audit.note}` : t('noAudit');
+      document.getElementById('modalRepro').textContent = `figure version: ${chart.version_id}\nscript: ${chart.script || script?.script || '—'}\nscript version: ${chart.script_vid || script?.version_id || '—'}\nstub: ${script?.is_stub || '—'}`;
+      document.getElementById('detailDialog').showModal();
+    }
+
+    function setLanguage(lang) {
+      language = lang; document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.getElementById('heroCopy').textContent = t('hero');
+      document.querySelectorAll('[data-t]').forEach(el => el.textContent = t(el.dataset.t));
+      document.getElementById('chartSearch').placeholder = t('chartSearch');
+      document.getElementById('auditSearch').placeholder = t('auditSearch');
+      initFilters(); renderAll();
+    }
+    function renderAll() { renderGallery(); renderAudit(); }
+
+    document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      tab.classList.add('active'); document.getElementById(tab.dataset.view).classList.add('active');
+    }));
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+    ['chartSearch','groupFilter','familyFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderGallery));
+    ['auditSearch','classFilter','destinationFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderAudit));
+    document.getElementById('closeDialog').addEventListener('click', () => document.getElementById('detailDialog').close());
+    document.getElementById('detailDialog').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+    loadData();
+  </script>
+</body>
+</html>

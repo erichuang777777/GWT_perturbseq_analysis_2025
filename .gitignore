@@ -3,6 +3,7 @@
 **/genome/*
 **/*.html
 !frontend/webserver/index.html
+!docs/mvp-research/figure_audit_dashboard.html
 **/*.h5ad
 **/*.h5mu
 **/czi-psomagen/

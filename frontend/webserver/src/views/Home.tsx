@@ -70,18 +70,17 @@ export default function Home() {
                 <div style={{ fontSize: "19px", fontWeight: 700, letterSpacing: "-.3px" }}>Find a novel target</div>
               </div>
             </div>
-            <p style={{ fontSize: "14px", lineHeight: 1.55, color: "#4a515e", margin: "0 0 14px" }}>
-              Rank the whole screen by how ready each target is to advance, then open one page per target that walks
-              the evidence in development order.
+            <p style={{ fontSize: "14px", lineHeight: 1.55, color: "#1a1d24", margin: "0 0 14px" }}>
+              Rank targets by readiness, then review each target's evidence in development order.
             </p>
-            <div style={{ fontSize: "11px", fontWeight: 700, color: "#8a92a0", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>What you see first</div>
+            <div style={{ fontSize: "11px", fontWeight: 700, color: "#1a1d24", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>What you see first</div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "7px" }}>
               {[
                 "15 primary-outcome genes — our breadth-ranked shortlist",
                 "Readiness call — advance / validate / watchlist",
                 "Perturbation score — reweightable 0–100 priority",
               ].map((li) => (
-                <li key={li} style={{ fontSize: "13px", color: "#5b6270", display: "flex", gap: "9px" }}>
+                <li key={li} style={{ fontSize: "13px", color: "#1a1d24", display: "flex", gap: "9px" }}>
                   <span style={{ color: "#1a5fb4" }}>→</span> {li}
                 </li>
               ))}
@@ -108,18 +107,17 @@ export default function Home() {
                 <div style={{ fontSize: "19px", fontWeight: 700, letterSpacing: "-.3px" }}>Check a disease's targets</div>
               </div>
             </div>
-            <p style={{ fontSize: "14px", lineHeight: 1.55, color: "#4a515e", margin: "0 0 14px" }}>
-              Enter by disease, see its candidate targets sorted by safety risk first, and compare a de-identified
-              patient expression profile against the screen — evidence only, never clinical guidance.
+            <p style={{ fontSize: "14px", lineHeight: 1.55, color: "#1a1d24", margin: "0 0 14px" }}>
+              Start with a disease, review targets by safety risk, and compare a de-identified expression profile.
             </p>
-            <div style={{ fontSize: "11px", fontWeight: 700, color: "#8a92a0", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>What you see first</div>
+            <div style={{ fontSize: "11px", fontWeight: 700, color: "#1a1d24", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>What you see first</div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "7px" }}>
               {[
                 "Disease → associated targets",
                 "Risk tier — clear / caution / high / avoid",
                 "Known-drug benchmark for the target",
               ].map((li) => (
-                <li key={li} style={{ fontSize: "13px", color: "#5b6270", display: "flex", gap: "9px" }}>
+                <li key={li} style={{ fontSize: "13px", color: "#1a1d24", display: "flex", gap: "9px" }}>
                   <span style={{ color: "#0d7d5a" }}>→</span> {li}
                 </li>
               ))}
@@ -160,42 +158,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The tension pivot — one dataset, two opposing first impressions */}
+      {/* The tension figure — image-only link to the figure atlas */}
       <section style={{ maxWidth: "1120px", margin: "0 auto", padding: "22px 28px 8px" }}>
-        <div
+        <button
           className="lift"
+          aria-label="Open the researcher value versus clinical risk figure in the figure atlas"
           onClick={() => setState({ view: "figures" })}
-          style={{ border: "1px solid #e6d9d0", borderRadius: "16px", overflow: "hidden", cursor: "pointer", background: "#fff" }}
+          style={{ width: "100%", display: "block", border: 0, borderRadius: "16px", padding: 0, overflow: "hidden", cursor: "pointer", background: "transparent" }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: "1.15fr 1fr", alignItems: "stretch" }}>
-            <div style={{ padding: "26px 28px", minWidth: 0 }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, color: "#b04a2f", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>Why two views?</div>
-              <div style={{ fontSize: "21px", fontWeight: 700, letterSpacing: "-.4px", marginBottom: "10px", lineHeight: 1.2 }}>
-                Researcher value vs. clinical risk, across all {all.length.toLocaleString()} targets
-              </div>
-              <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 14px" }}>
-                Researchers are drawn to the targets with the strongest, broadest effects. Clinicians read the same
-                targets through a risk lens — pipeline flags, safety liabilities and population-genetics constraint. The
-                conflict-zone flagships make the tension concrete: <strong>CD3E</strong> and <strong>BCL10</strong> sit in
-                the Clear tier, while <strong>VAV1</strong>, <strong>STAT3</strong> and <strong>PLCG1</strong> carry a
-                Caution flag despite their high researcher value.
-              </p>
-              <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#b04a2f" }}>See it in the figure atlas →</div>
-              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "8px", lineHeight: 1.45 }}>
-                Source: CD4 Perturb-seq screen · risk tier = pipeline red flags + safety liabilities + gnomAD LoF-intolerance · public/flagship/fig_tension.png
-              </div>
-              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "6px", lineHeight: 1.45 }}>
-                Per the source paper, 7,807 (67%) of perturbed genes show significant trans-effects (FDR&lt;10%, ≥3 DE genes, in ≥1 condition), with a mean of 81.61 downstream DE genes per perturbation — the "breadth" axis read here.
-              </div>
-            </div>
-            <img
-              src={`${import.meta.env.BASE_URL}flagship/fig_tension.png`}
-              alt="Researcher value vs. clinical risk across all 7,249 targets — downstream DE breadth against perturbation effect size, coloured by clinical risk tier, with conflict-zone flagships CD3E, VAV1, STAT3, PLCG1 and BCL10 called out"
-              loading="lazy"
-              style={{ width: "100%", height: "100%", minHeight: "220px", objectFit: "cover", objectPosition: "left center", display: "block", borderLeft: "1px solid #eee" }}
-            />
-          </div>
-        </div>
+          <img
+            src={`${import.meta.env.BASE_URL}flagship/fig_tension.svg`}
+            alt="Researcher value vs. clinical risk across all 7,249 targets — downstream DE breadth against perturbation effect size, coloured by clinical risk tier, with conflict-zone flagships CD3E, VAV1, STAT3, PLCG1 and BCL10 called out"
+            loading="lazy"
+            style={{ width: "100%", height: "auto", display: "block" }}
+          />
+        </button>
       </section>
 
       <section style={{ maxWidth: "1120px", margin: "0 auto", padding: "40px 28px 70px" }}>

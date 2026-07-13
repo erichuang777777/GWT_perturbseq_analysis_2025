@@ -388,7 +388,7 @@ export default function Explorer() {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", marginBottom: "16px" }}>
           <div style={{ fontSize: "13px", color: "#6b7280" }}>
-            Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by perturbation score (your weights). ★ marks the 15 primary-outcome genes — our fixed breadth-ranked shortlist.
+            Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} portal-included targets from 11,526 measured genes · ranked by perturbation score (your weights). ★ marks the 15 primary-outcome genes — our fixed breadth-ranked shortlist.
           </div>
           <span
             className="navlink"
@@ -402,11 +402,11 @@ export default function Explorer() {
 
         <div style={{ marginBottom: "20px" }}>
           <FlagshipFigure
-            src={`${import.meta.env.BASE_URL}flagship/fig_funnel.png`}
-            alt="Researcher druggability funnel: 11,526 measured CD4 targets (of a 12,748-gene library) narrow to 7,249 measured in-portal, 621 gate-passing, and 302 advance-ready deliverables; the deliverables split by tractability modality and direction of effect"
-            title="From genome-wide screen to an advance-ready shortlist"
-            caption="The druggability funnel behind this table: 11,526 measured CD4 targets (of the paper's 12,748-gene library) → 7,249 measured and QC-passed in this portal → 621 gate-passing → 302 advance-ready. The right panel breaks the 302 deliverables down by tractability modality and by direction of effect."
-            source="CD4 Perturb-seq screen · readiness engine · public/flagship/fig_funnel.png"
+            src={`${import.meta.env.BASE_URL}flagship/fig_funnel.svg`}
+            alt="One measured CD4 Perturb-seq screen splitting into two parallel funnels: the current portal readiness path reaches 302 advance-ready targets, while the publication delivery-decision path reaches 39 context-specific targets with a known delivery modality; the 39 intersect with a separate 15-gene primary-outcome shortlist to produce CD3E, CD247, LAT, PLCG1 and VAV1"
+            caption="The denominator is now explicit. Portal path: 11,526 measured → 7,249 included in Target Explorer → 621 called validate or advance → 302 advance-ready. Publication path: 11,526 measured → 1,235 passing four publication QC gates → 96 context-specific → 39 with a known modality. The paths are parallel; Core-5 is 15 primary-outcome genes ∩ the publication set of 39."
+            source="public/real-dataset.json · delivery_decision_shortlist.csv · scripts/generate_integrated_funnel.py"
+            maxHeight={620}
           />
         </div>
 

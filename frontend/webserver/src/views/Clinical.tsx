@@ -342,6 +342,9 @@ export default function Clinical() {
               title="Every evidence layer we gathered, per target"
               caption="Internal screen statistics (effect, breadth, robustness, significance) are strong for all 5; external corroboration is real but uneven across sources — gaps are shown as absent, not filled in."
               source="CD4 Perturb-seq screen · gnomAD · UK Biobank · Open Targets · STRING · GEO GSE318876 · public/flagship/fig_core5_evidence.png"
+              maxHeight={1000}
+              onClick={() => window.open(`${import.meta.env.BASE_URL}flagship/fig_core5_evidence.png`, "_blank", "noopener,noreferrer")}
+              cta="Open full-size figure ↗"
             />
           </div>
 
