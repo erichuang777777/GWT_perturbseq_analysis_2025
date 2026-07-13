@@ -2,84 +2,113 @@
 
 ## Recording specification
 
-- Duration: no more than 3 minutes
+- Duration: exactly 3 minutes
 - Resolution: native 4K UHD, 3840 × 2160
 - Format: 16:9 browser walkthrough
 - Narration: Traditional Chinese, recorded separately with the presenter’s own voice
-- Core story: genome-wide screen → auditable target evidence → Core-5 trade-offs → publication figures → reproducible provenance
-- Scientific boundary: this is research-use target prioritisation, not a clinical recommendation
+- Subtitles: English sidecar subtitles
+- Scientific boundary: research-use target prioritisation, not a clinical recommendation
 
-## Timeline
+## 敘事邏輯（給對稿與剪輯使用，不朗讀）
 
-| Time | Screen | Browser action | Main message |
-|---:|---|---|---|
-| 00:00–00:12 | Home | Point to Researcher and Clinical evidence, then enter Researcher | Two entry points share one evidence base |
-| 00:12–00:32 | Target Explorer | Hold on the integrated funnel | Explain the two parallel funnels and the Core-5 intersection |
-| 00:32–00:47 | Target Explorer | Adjust one weight, reset it, and search PLCG1 | Demonstrate real interaction without changing evidence calls |
-| 00:47–01:03 | PLCG1 dossier | Open PLCG1 and scroll through evidence sections | Every target decision is inspectable |
-| 01:03–01:16 | Core-5 Compare | Open comparison and move across the five columns | The five targets have different trade-offs |
-| 01:16–01:40 | Clinical evidence | Quick cuts: Scope → Core-5 → Concept → Disease/Drug → PopGen → Expression | Effect is not safety or clinical efficacy |
-| 01:40–01:55 | Interactive Figures | Change a condition or threshold | Interactivity checks context sensitivity |
-| 01:55–02:05 | Gallery — A7 | Open A7 full-size and hold | External biological validation |
-| 02:05–02:15 | Gallery — A12 | Open A12 full-size and hold | Research value versus clinical risk |
-| 02:15–02:25 | Gallery — A16 | Open A16 full-size and hold | Integrated analysis and curation pipeline |
-| 02:25–02:43 | Gallery / Docs / API / Overview | Show gallery categories, then quick cuts across the three routes | Publication, operation, and reuse |
-| 02:43–03:00 | Provenance | Scroll through versions and coverage; finish on provenance | Every conclusion remains traceable |
+這支影片走一條單一論證鏈，不是功能羅列：
 
-## Spoken script
+1. **問題（00:00–00:20）** — CD4⁺ T 細胞很重要，但篩選資料多不代表能找到藥。我們解決「證據整合耗時又零散」的問題。
+2. **方法與核心發現（00:20–00:47）** — 兩條獨立漏斗交集出 5 個核心標靶；這是全片唯一要記住的數字。互動不改變證據，只改變檢視角度，是給評審看的誠實性訊號。
+3. **證據深度（00:47–01:16）** — 從單一標靶到五個並排比較，展示每個結論都可以拆解到最底層數據。
+4. **雙視角張力（01:16–01:40）** — 這是整個平台的新穎點：研究員最想要的標靶，常是臨床醫師最該警覺的。效應強 ≠ 安全 ≠ 有效。
+5. **可重現性（01:40–02:43）** — 外部資料庫重現我們的數字，不是自說自話；管線公開、API 可重用。對 AI 產業評審的訊號是：這是工程化的科學工具，不是一次性 demo。
+6. **收尾（02:43–03:00）** — Provenance／出處頁作結，呼應開場的「證據整合」承諾：每個結論都能追溯回源頭。
 
-### 00:00–00:12 — Home
+## 逐場旁白與字幕
 
-> 這是 CD4 Target Discovery Portal。我們把 genome-scale Perturb-seq screen，轉換成一個可以探索、比較與稽核的 target-prioritisation workspace。
+### 00:00–00:10 · Home
 
-### 00:12–00:32 — Integrated funnel
+**中文旁白：** CD4+ T 細胞驅動免疫反應，但一份篩選資料找不出能下藥的標靶。
 
-> 11,526 個量測基因進入兩條平行路徑。Portal readiness 路徑得到 302 個 advance-ready targets；publication 路徑則從 1,235 個通過篩選的標的，得到 39 個已知 delivery modality targets。Core-5 是獨立的 15-gene shortlist 與這 39 個標的的交集，不是從 302 再縮成 39。
+**English subtitle:** CD4+ T cells drive immune regulation — but a screen alone can't tell you what's druggable.
 
-### 00:32–00:47 — Ranking interaction
+### 00:10–00:20 · Home → Researcher
 
-> 使用者可以調整權重，檢查排名對不同證據的敏感性。權重只改變瀏覽順序，不會改寫 readiness call。現在我們搜尋 PLCG1，進入單一標的的證據頁。
+**中文旁白：** 我們整合 GWT 篩選資料與外部公開資料庫，建立一套可驗證的方法。
 
-### 00:47–01:03 — PLCG1 dossier
+**English subtitle:** We joined the GWT screen with external public databases into one verifiable method.
 
-> PLCG1 dossier 展開統計訊號、分數組成、readiness 理由、concept membership 與外部疾病連結。這裡的重點不只是一個排名，而是每一個 call 都可以被追問。
+### 00:20–00:32 · Target Explorer
 
-### 01:03–01:16 — Core-5 comparison
+**中文旁白：** 兩條獨立漏斗——安全評估與藥物可交付性——交集出五個核心標靶。
 
-> 接著並排比較 Core-5。五個基因雖然都位於 T-cell receptor axis，但它們的 perturbation effect、readiness、robustness、風險與 population constraint 並不相同。
+**English subtitle:** Two independent funnels — readiness and drug-deliverability — intersect on five core targets.
 
-### 01:16–01:40 — Clinical evidence layers
+### 00:32–00:47 · Target Explorer interaction
 
-> Clinical evidence 首先說明使用邊界：強烈的細胞擾動效應，不等於安全，也不等於臨床有效。後續頁面依序補上 Core-5 證據矩陣、免疫 concept membership、疾病與藥物關聯、population genetics，以及去識別化的 expression comparison。
+**中文旁白：** 調整權重、重置、搜尋 PLCG1：排序即時反應權重變化，證據本身從不改變。
 
-### 01:40–01:55 — Interactive figures
+**English subtitle:** Adjust a weight, reset it, search PLCG1 — the ranking reacts live; the evidence never does.
 
-> 互動圖可以切換 culture condition 與 statistical threshold，檢查結果對分析設定的敏感性。這些操作是穩健性檢查，不會回寫標的的 readiness 決策。
+### 00:47–01:03 · PLCG1 Dossier
 
-### 01:55–02:05 — A7: external validation
+**中文旁白：** 每個標靶都有專屬檔案：效應大小、下游廣度、跨供者穩健性，每一層證據都可回溯查核。
 
-> A7 是外部驗證圖。它檢查 Perturb-seq 排名能否找回已知的免疫標的與疾病連結，同時保留缺乏文獻支持、值得後續驗證的新候選。
+**English subtitle:** Every target has its own dossier — effect size, downstream breadth, cross-donor robustness, all inspectable.
 
-### 02:05–02:15 — A12: opposing views
+### 01:03–01:16 · Core-5 Compare
 
-> A12 把研究價值與臨床風險放在同一張圖上。越有 context-specific effect 的標的，也可能同時帶有更多 pleiotropy、genetic constraint 或 dosage-sensitivity 警示。
+**中文旁白：** 五個核心標靶並排比較，各自的證據強弱與臨床風險取捨一目了然。
 
-### 02:15–02:25 — A16: integrated pipeline
+**English subtitle:** Side by side, the five core targets show distinct evidence strength and risk trade-offs.
 
-> A16 是整合分析總圖。它從 33,983 個原始 profiles 開始，連接策展過濾、調控模組、context-specific effects 與最終候選集合，是整個專案的方法地圖。
+### 01:16–01:40 · Clinical Evidence
 
-### 02:25–02:43 — Publication and reuse
+**中文旁白：** 切到臨床醫師視角：免疫概念模組、疾病關聯、藥物、族群遺傳學、病人表現比對——效應強不等於安全，也不等於臨床療效。
 
-> Gallery 將發表級圖表、互動分析與 Core-5 protein structures 依功能整理。Docs 說明如何執行與部署；API 提供版本化的資料介面；Overview 則將整個方法壓縮成可分享的科學故事。
+**English subtitle:** Switch to the clinician's view: concept, disease, drug, population genetics, expression — strong effect is neither safety nor clinical efficacy.
 
-### 02:43–03:00 — Provenance and closing
+### 01:40–01:55 · Interactive Figures
 
-> 最後，Provenance 公開資料版本、coverage、missingness 與 figure registry。這個平台不把缺失資料當成零，也不把細胞擾動當成藥效；從原始資料到最後候選，每一個結論都可以被追溯與重現。
+**中文旁白：** 切換條件或閾值，圖表即時反應，確認每個結論都對情境敏感、經得起檢驗。
 
-## Recording notes
+**English subtitle:** Change a condition or threshold — the figure updates live, proving context-sensitivity.
 
-- Read the script once with a timer before recording; target 2:50–2:55 to preserve breathing room.
-- Pronounce PLCG1 as individual letters followed by “one”; pronounce A7, A12, and A16 as figure labels.
-- During A7, A12, and A16, keep the cursor outside the central figure and hold each modal without scrolling.
-- Use short cuts for the six Clinical evidence views; do not attempt to read every card on screen.
-- End on the Provenance page and hold the final frame for at least two seconds.
+### 01:55–02:05 · Gallery — A7
+
+**中文旁白：** Open Targets 55 個標靶核對成功，STRING 召回率吻合，HIV 篩選也對上了。
+
+**English subtitle:** Open Targets re-verifies all 55, STRING recovers known partners, an HIV screen lines up too.
+
+### 02:05–02:15 · Gallery — A12
+
+**中文旁白：** 研究價值最高的標靶，往往正是臨床上最需警覺的。
+
+**English subtitle:** The targets most valuable to researchers are often the ones clinicians must watch most closely.
+
+### 02:15–02:25 · Gallery — A16
+
+**中文旁白：** 從兩千兩百萬顆細胞到 7,249 個標靶，整個策展與分析管線在此呈現。
+
+**English subtitle:** From 22M cells to 7,249 targets — the full curation and analysis pipeline, laid out.
+
+### 02:25–02:43 · Gallery / Docs / API
+
+**中文旁白：** 圖庫可供發表引用，文件說明操作方式，API 讓其他研究團隊直接重用我們累積的證據。
+
+**English subtitle:** The gallery is publication-ready, the docs explain operation, and the API lets other teams reuse our evidence directly.
+
+### 02:43–03:00 · Provenance
+
+**中文旁白：** 最後回到出處頁：版本紀錄、資料涵蓋率、每一個結論背後的來源，全部可以逐一追溯。
+
+**English subtitle:** We close on provenance — versions, coverage, and the source behind every conclusion, all traceable.
+
+## 畫面操作原則
+
+- 影片為單一論證鏈，不在畫面上逐一介紹所有功能。
+- Weights 只改變 ranking，不改變 evidence call。
+- Clinical Evidence 用快切連結雙視角，不在單頁停留過久。
+- A7、A12、A16 使用大圖 modal，各保留 10 秒說明時間。
+- 影片以 Provenance 收尾，最後兩秒停住不再操作。
+
+## 配音前數字複核
+
+- A7 圖上顯示 `52 / 55 targets present in the genome-wide CD4 screen library`；正式配音前應確認「all 55」的表述是否要改成 coverage 更精確的說法。
+- A16 圖上呈現 `33,983 raw profiles → 1,235 unique targets`；`22M cells → 7,249 targets` 是較廣的平台資料脈絡，不是 A16 圖上直接畫出的 funnel。

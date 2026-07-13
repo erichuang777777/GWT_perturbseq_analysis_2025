@@ -3,6 +3,9 @@
 This package contains a verified page-by-page screenshot set plus a real-browser interactive demo recording.
 
 - [`CD4_portal_demo_3min_silent.mp4`](CD4_portal_demo_3min_silent.mp4) is the 2:53, 1280 × 720 silent walkthrough captured from the live local site.
+- [`CD4_portal_demo_4K_final.mp4`](CD4_portal_demo_4K_final.mp4) is the final 3:00 native 4K UHD walkthrough at 3840 × 2160. It is silent for the presenter’s own voice and contains selectable English and Traditional Chinese subtitle tracks.
+- `VIDEO_SCRIPT_4K.md` contains the approved single-argument narrative, Chinese voice-over, and English subtitle copy.
+- `CD4_portal_demo_4K.zh-TW.srt` and `CD4_portal_demo_4K.en.srt` are subtitle sidecars aligned to the 4K cut.
 - `STORYBOARD.md` documents the interactive cut and its browser actions.
 - `VIDEO_VOICEOVER.md` is the narration timed to the finished video.
 - `SCRIPT.md` provides a page-by-page Traditional Chinese introduction and explains why every screen matters.

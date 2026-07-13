@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:10,000
+CD4+ T cells drive immune regulation — but a screen alone can't tell you what's druggable.
+
+2
+00:00:10,000 --> 00:00:20,000
+We joined the GWT screen with external public databases into one verifiable method.
+
+3
+00:00:20,000 --> 00:00:32,000
+Two independent funnels — readiness and drug-deliverability — intersect on five core targets.
+
+4
+00:00:32,000 --> 00:00:47,000
+Adjust a weight, reset it, search PLCG1 — the ranking reacts live; the evidence never does.
+
+5
+00:00:47,000 --> 00:01:03,000
+Every target has its own dossier — effect size, downstream breadth, cross-donor robustness, all inspectable.
+
+6
+00:01:03,000 --> 00:01:16,000
+Side by side, the five core targets show distinct evidence strength and risk trade-offs.
+
+7
+00:01:16,000 --> 00:01:40,000
+Switch to the clinician's view: concept, disease, drug, population genetics, expression — strong effect is neither safety nor clinical efficacy.
+
+8
+00:01:40,000 --> 00:01:55,000
+Change a condition or threshold — the figure updates live, proving context-sensitivity.
+
+9
+00:01:55,000 --> 00:02:05,000
+Open Targets re-verifies all 55, STRING recovers known partners, an HIV screen lines up too.
+
+10
+00:02:05,000 --> 00:02:15,000
+The targets most valuable to researchers are often the ones clinicians must watch most closely.
+
+11
+00:02:15,000 --> 00:02:25,000
+From 22M cells to 7,249 targets — the full curation and analysis pipeline, laid out.
+
+12
+00:02:25,000 --> 00:02:43,000
+The gallery is publication-ready, the docs explain operation, and the API lets other teams reuse our evidence directly.
+
+13
+00:02:43,000 --> 00:03:00,000
+We close on provenance — versions, coverage, and the source behind every conclusion, all traceable.
