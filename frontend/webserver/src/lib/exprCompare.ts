@@ -142,6 +142,25 @@ export interface MatchedGene {
   // directional concordance between the patient's value and the perturbation's
   // downstream effect direction, only when both signs are available
   concordance: "concordant" | "opposing" | "n/a";
+  // clinical risk tier, derived transparently from real safety signals
+  // (pipeline red flags + annotated safety liabilities + high gnomAD LoF
+  // intolerance). Descriptive risk framing, never a clinical recommendation.
+  riskTier: "clear" | "caution" | "high" | "avoid";
+  riskNote: string;
+}
+
+// Same derivation as the clinical disease view — count real safety flags.
+export function deriveRiskTier(t: RealTarget): { tier: MatchedGene["riskTier"]; note: string } {
+  const parts: string[] = [];
+  const nRed = t.readiness?.redFlags?.length ?? 0;
+  if (nRed > 0) parts.push(`${nRed} pipeline red flag${nRed === 1 ? "" : "s"}`);
+  const nLiab = t.safetyLiabilities?.length ?? 0;
+  if (nLiab > 0) parts.push(`${nLiab} safety liabilit${nLiab === 1 ? "y" : "ies"}`);
+  const hi = t.gnomad?.constraintTier === "high";
+  if (hi) parts.push("high LoF intolerance (gnomAD)");
+  const f = nRed + nLiab + (hi ? 1 : 0);
+  const tier = f >= 3 ? "avoid" : f === 2 ? "high" : f === 1 ? "caution" : "clear";
+  return { tier, note: parts.length ? parts.join(" · ") : "no risk flags triggered" };
 }
 
 export interface CompareResult {
@@ -188,6 +207,7 @@ export function compareToReference(rows: ParsedRow[], targets: RealTarget[]): Co
       concordance = Math.sign(r.value) === Math.sign(t.medianLogFC) ? "concordant" : "opposing";
     }
 
+    const risk = deriveRiskTier(t);
     matched.push({
       gene: t.gene,
       patientValue: r.value,
@@ -198,6 +218,8 @@ export function compareToReference(rows: ParsedRow[], targets: RealTarget[]): Co
       module: mod,
       topDisease: topDis ? topDis.name : null,
       concordance,
+      riskTier: risk.tier,
+      riskNote: risk.note,
     });
   }
 

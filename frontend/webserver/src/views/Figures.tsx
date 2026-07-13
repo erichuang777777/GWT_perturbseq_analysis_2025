@@ -3,6 +3,7 @@ import { DATA_VERSION, FIGURES } from "../data/reference";
 import { FIGURES_DATA, loadFigures } from "../data/figuresData";
 import { drawFigure } from "../lib/drawFigure";
 import { useStore } from "../store/store";
+import PageReferences from "../components/ui/PageReferences";
 
 interface SegOption {
   k: string;
@@ -193,6 +194,10 @@ export default function Figures() {
             Values are real data extracted from this repo&apos;s pipeline outputs (see each figure&apos;s source). Drag to zoom, double-click to reset, hover for the gene. Descriptive figures never feed any readiness or evidence-grade call.
           </span>
         </div>
+
+        <PageReferences
+          keys={["gwt_primary", "open_targets", "gnomad", "reactome", "deseq2", "benjamini_hochberg"]}
+        />
       </section>
     </main>
   );

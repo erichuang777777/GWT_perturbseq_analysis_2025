@@ -6,6 +6,7 @@ import type { Call, Grade } from "../data/types";
 import { consensus, fmtEffect, rankedTargets, type RankedTarget } from "../lib/logic";
 import { downloadFile, toCSV } from "../lib/download";
 import { useStore } from "../store/store";
+import PageReferences from "../components/ui/PageReferences";
 
 const ROW_HEIGHT = 54;
 const TABLE_HEIGHT = 700;
@@ -130,6 +131,7 @@ export default function Explorer() {
       moduleId: t.module?.id ?? "—",
       moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned concept module",
       effect: fmtEffect(t.effect),
+      breadth: t.nTotalDeGenes != null ? t.nTotalDeGenes.toLocaleString() : "—",
       rLabel: R2.label,
       rColor: R2.color,
       rBg: R2.bg,
@@ -172,7 +174,7 @@ export default function Explorer() {
   const slGenes = S.shortlist.filter((g) => all.find((x) => x.gene === g));
   const shortlistChips = slGenes.map((g) => ({ gene: g }));
 
-  const GRID = "30px 34px 1.4fr 1fr 62px 66px 104px 44px 78px";
+  const GRID = "30px 34px 1.4fr 1fr 62px 68px 66px 104px 44px 78px";
 
   const label = (t: string) => (
     <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".8px", color: "#8a92a0", textTransform: "uppercase" as const }}>{t}</div>
@@ -348,6 +350,7 @@ export default function Explorer() {
                   ["readiness_stage", (t) => t.readiness?.stage ?? "unknown"],
                   ["evidence_grade", (t) => t.grade ?? "unknown"],
                   ["abs_log2fc", (t) => t.effect ?? ""],
+                  ["n_total_de_genes", (t) => t.nTotalDeGenes ?? ""],
                   ["fdr", (t) => t.fdr ?? ""],
                   ["cross_donor_corr_mean", (t) => t.crossDonorCorrelationMean ?? ""],
                   ["gnomad_loeuf", (t) => t.gnomad.loeuf ?? ""],
@@ -392,6 +395,7 @@ export default function Explorer() {
             <div>Target</div>
             <div>Concept module</div>
             <div style={{ textAlign: "right" }}>|log2FC|</div>
+            <div style={{ textAlign: "right" }}>DE breadth</div>
             <div style={{ textAlign: "right" }}>Priority</div>
             <div style={{ textAlign: "center" }}>Readiness</div>
             <div style={{ textAlign: "center" }}>Grade</div>
@@ -445,6 +449,7 @@ export default function Explorer() {
                         </span>
                       </div>
                       <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{r.effect}</div>
+                      <div style={{ textAlign: "right", fontSize: "13px", fontFamily: "'IBM Plex Mono', monospace", color: "#4a515e" }}>{r.breadth}</div>
                       <div style={{ textAlign: "right", fontSize: "14px", fontWeight: 700, fontFamily: "'IBM Plex Mono', monospace", color: "#1a5fb4" }}>{r.comp}</div>
                       <div style={{ textAlign: "center" }}>
                         <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "20px", fontSize: "11.5px", fontWeight: 600, color: r.rColor, background: r.rBg }}>{r.rLabel}</span>
@@ -468,6 +473,10 @@ export default function Explorer() {
             <div style={{ padding: "44px", textAlign: "center", color: "#9aa1ad", fontSize: "14px" }}>No targets match the current filters.</div>
           )}
         </div>
+
+        <PageReferences
+          keys={["gwt_primary", "open_targets", "gnomad", "chembl", "deseq2", "benjamini_hochberg"]}
+        />
       </section>
 
       {/* shortlist tray */}

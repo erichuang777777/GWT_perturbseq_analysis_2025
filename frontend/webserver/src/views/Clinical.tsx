@@ -3,8 +3,35 @@ import { MODULE_META } from "../data/moduleMeta";
 import { CONSTRAINT_META, GRADE, READINESS } from "../data/reference";
 import { useStore } from "../store/store";
 import ExpressionCompare from "./clinical/ExpressionCompare";
+import PageReferences from "../components/ui/PageReferences";
 
 const catBadge = (c: string) => (c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" });
+
+// Clinical risk tier derived transparently from real safety signals:
+//   - pipeline red flags (readiness.redFlags)
+//   - annotated safety liabilities (safetyLiabilities)
+//   - high LoF-intolerance in the general population (gnomAD constraint tier = high)
+// The count of these flags maps to a tier. This is descriptive risk framing,
+// never a clinical recommendation.
+const RISK_TIERS = {
+  avoid: { rank: 3, label: "Avoid", color: "#a4262c", bg: "#fdecea" },
+  high: { rank: 2, label: "High risk", color: "#c85a11", bg: "#fdf0e6" },
+  caution: { rank: 1, label: "Caution", color: "#b7791f", bg: "#fbf6ea" },
+  clear: { rank: 0, label: "Clear", color: "#0d7d5a", bg: "#e8f5ec" },
+} as const;
+type RiskKey = keyof typeof RISK_TIERS;
+function clinicalRisk(t: { readiness: { redFlags: string[] } | null; safetyLiabilities: { event: string }[]; gnomad: { constraintTier: string | null } }): { key: RiskKey; flags: number; parts: string[] } {
+  const parts: string[] = [];
+  const nRed = t.readiness?.redFlags?.length ?? 0;
+  if (nRed > 0) parts.push(`${nRed} pipeline red flag${nRed === 1 ? "" : "s"}`);
+  const nLiab = t.safetyLiabilities?.length ?? 0;
+  if (nLiab > 0) parts.push(`${nLiab} safety liabilit${nLiab === 1 ? "y" : "ies"}`);
+  const highConstraint = t.gnomad?.constraintTier === "high";
+  if (highConstraint) parts.push("high LoF intolerance (gnomAD)");
+  const flags = nRed + nLiab + (highConstraint ? 1 : 0);
+  const key: RiskKey = flags >= 3 ? "avoid" : flags === 2 ? "high" : flags === 1 ? "caution" : "clear";
+  return { key, flags, parts };
+}
 
 export default function Clinical() {
   const { state, setState } = useStore();
@@ -78,6 +105,8 @@ export default function Clinical() {
           const Gg = t.grade ? G[t.grade] : { color: "#8a92a0", bg: "#f7f8fa" };
           const assoc = t.diseases.find((d) => d.id === selDis.id)!;
           const nTrials = t.clinicalTrials.length;
+          const risk = clinicalRisk(t);
+          const rt = RISK_TIERS[risk.key];
           return {
             gene: t.gene,
             name: t.name,
@@ -85,6 +114,12 @@ export default function Clinical() {
             moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned module",
             assoc: assoc.overallScore != null ? assoc.overallScore.toFixed(2) : "unknown",
             assocW: assoc.overallScore != null ? Math.round(assoc.overallScore * 100) + "%" : "0%",
+            assocNum: assoc.overallScore ?? 0,
+            riskLabel: rt.label,
+            riskColor: rt.color,
+            riskBg: rt.bg,
+            riskRank: rt.rank,
+            riskNote: risk.parts.length ? risk.parts.join(" · ") : "no risk flags triggered",
             rLabel: Rr.label,
             rColor: Rr.color,
             rBg: Rr.bg,
@@ -95,7 +130,7 @@ export default function Clinical() {
             trialLabel: nTrials > 0 ? `${nTrials} clinical trial${nTrials === 1 ? "" : "s"} indexed for this target` : "no clinical trial evidence indexed for this target",
           };
         })
-        .sort((a, b) => parseFloat(b.assoc) - parseFloat(a.assoc))
+        .sort((a, b) => b.riskRank - a.riskRank || b.assocNum - a.assocNum)
     : [];
 
   // ---- popgen tab (real gnomAD) ----
@@ -145,7 +180,7 @@ export default function Clinical() {
     "Replace regulatory, clinical, or expert review",
   ];
 
-  const DGRID = "1.15fr 0.95fr 120px 1.6fr 96px 62px";
+  const DGRID = "108px 1.15fr 0.95fr 110px 1.5fr 96px 62px";
 
   return (
     <main style={{ flex: 1, maxWidth: "1120px", margin: "0 auto", width: "100%", padding: "30px 28px 70px" }}>
@@ -288,11 +323,12 @@ export default function Clinical() {
             <>
               <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "15px" }}>
                 <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0 }}>{selDis.name}</h2>
-                <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen</span>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>— {disMatches.length} candidate targets from the CD4 screen, highest safety risk first</span>
               </div>
 
               <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>
                 <div style={{ display: "grid", gridTemplateColumns: DGRID, padding: "11px 16px", background: "#f7f8fa", borderBottom: "1px solid #e2e5ea", fontSize: "11px", fontWeight: 700, letterSpacing: ".5px", color: "#8a92a0", textTransform: "uppercase" }}>
+                  <div>Risk tier</div>
                   <div>Target</div>
                   <div>Concept module</div>
                   <div style={{ textAlign: "center" }}>Assoc. score</div>
@@ -302,6 +338,9 @@ export default function Clinical() {
                 </div>
                 {disMatches.map((m) => (
                   <div key={m.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: m.gene })} style={{ display: "grid", gridTemplateColumns: DGRID, alignItems: "center", padding: "13px 16px", borderBottom: "1px solid #eef0f3" }}>
+                    <div>
+                      <span title={m.riskNote} style={{ display: "inline-block", padding: "4px 10px", borderRadius: "7px", fontSize: "11.5px", fontWeight: 700, color: m.riskColor, background: m.riskBg }}>{m.riskLabel}</span>
+                    </div>
                     <div>
                       <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
                       <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{m.name}</div>
@@ -328,7 +367,7 @@ export default function Clinical() {
                 ))}
               </div>
               <div style={{ display: "flex", alignItems: "start", gap: "8px", marginTop: "16px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "720px" }}>
-                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Association scores are real Open Targets overall-association scores for this gene–disease pair. Clinical-trial evidence is gene-scoped (indexed trials for the target), not necessarily specific to this indication. They rank hypotheses for research follow-up — they are not evidence of clinical efficacy in this disease.
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span> Risk tier is derived transparently from real safety signals — pipeline red flags, annotated safety liabilities, and high gnomAD LoF-intolerance (hover a tier for the specific flags) — and the table is sorted highest-risk first, on purpose: the strongest-effect targets are often the least safe. Association scores are real Open Targets overall-association scores for this gene–disease pair; clinical-trial evidence is gene-scoped, not indication-specific. Everything here ranks hypotheses for research follow-up — it is not evidence of clinical efficacy or safety in this disease.
               </div>
             </>
           ) : (
@@ -380,6 +419,10 @@ export default function Clinical() {
       )}
 
       {S.clinicalTab === "upload" && <ExpressionCompare targets={all} />}
+
+      <PageReferences
+        keys={["gwt_primary", "open_targets", "clinicaltrials", "gnomad", "jak_oral_surveillance", "teplizumab", "pubmed"]}
+      />
     </main>
   );
 }

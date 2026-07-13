@@ -12,6 +12,13 @@ import { downloadFile, toCSV } from "../../lib/download";
 
 const GREEN = "#0d7d5a";
 
+const RISK_TIER_STYLE: Record<string, { label: string; color: string; bg: string }> = {
+  avoid: { label: "Avoid", color: "#a4262c", bg: "#fdecea" },
+  high: { label: "High risk", color: "#c85a11", bg: "#fdf0e6" },
+  caution: { label: "Caution", color: "#b7791f", bg: "#fbf6ea" },
+  clear: { label: "Clear", color: "#0d7d5a", bg: "#e8f5ec" },
+};
+
 const EXAMPLE = `gene,value
 IL2RA,2.4
 CD3E,1.8
@@ -56,6 +63,7 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
     const csv = toCSV(result.matched, [
       ["gene", (m) => m.gene],
       ["patient_value", (m) => (m.patientValue ?? "")],
+      ["gwt_risk_tier", (m) => m.riskTier],
       ["gwt_readiness_call", (m) => m.call],
       ["gwt_effect", (m) => (m.effect ?? "")],
       ["gwt_median_logFC", (m) => (m.medianLogFC ?? "")],
@@ -231,6 +239,7 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
                   <thead>
                     <tr style={{ textAlign: "left", color: "#8a92a0", fontSize: "11px", textTransform: "uppercase", letterSpacing: ".4px" }}>
                       <th style={{ padding: "6px 8px" }}>Gene</th>
+                      <th style={{ padding: "6px 8px" }}>Risk tier</th>
                       <th style={{ padding: "6px 8px" }}>Your value</th>
                       <th style={{ padding: "6px 8px" }}>Reference call</th>
                       <th style={{ padding: "6px 8px" }}>Effect</th>
@@ -241,9 +250,13 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
                   <tbody>
                     {result.matched.map((m) => {
                       const meta = (READINESS as Record<string, { label: string; color: string; bg: string }>)[m.call] ?? { label: m.call, color: "#6b7280", bg: "#f2f3f6" };
+                      const rt = RISK_TIER_STYLE[m.riskTier];
                       return (
                         <tr key={m.gene} style={{ borderTop: "1px solid #eef0f3" }}>
                           <td style={{ padding: "7px 8px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", color: "#1a1d24" }}>{m.gene}</td>
+                          <td style={{ padding: "7px 8px" }}>
+                            <span title={m.riskNote} style={{ padding: "2px 9px", borderRadius: "6px", background: rt.bg, color: rt.color, fontWeight: 700, fontSize: "11.5px" }}>{rt.label}</span>
+                          </td>
                           <td style={{ padding: "7px 8px", color: "#4a515e", fontFamily: "'IBM Plex Mono', monospace" }}>{m.patientValue != null ? m.patientValue : "—"}</td>
                           <td style={{ padding: "7px 8px" }}>
                             <span style={{ padding: "2px 9px", borderRadius: "6px", background: meta.bg, color: meta.color, fontWeight: 600, fontSize: "11.5px" }}>{meta.label}</span>

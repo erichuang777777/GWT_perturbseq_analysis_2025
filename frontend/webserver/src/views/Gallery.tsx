@@ -4,6 +4,7 @@ import Chip from "../components/ui/Chip";
 import { InlineScreen } from "../components/ui/ScreenState";
 import FigureModal from "./gallery/FigureModal";
 import StructureModal from "./gallery/StructureModal";
+import PageReferences from "../components/ui/PageReferences";
 import { T, plddtColor, type Lang } from "./gallery/i18n";
 
 const ACCENT = "#5b3fb4";
@@ -130,6 +131,10 @@ export default function Gallery() {
           ))}
         </div>
       )}
+
+      <PageReferences
+        keys={["gwt_primary", "alphafold", "string", "reactome", "open_targets", "gnomad", "hpa"]}
+      />
 
       {openChart && <FigureModal chart={openChart} lang={lang} onClose={() => setOpenChart(null)} />}
       {openStruct && <StructureModal s={openStruct} lang={lang} onClose={() => setOpenStruct(null)} />}
