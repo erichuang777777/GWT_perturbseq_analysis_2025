@@ -270,7 +270,7 @@
     "en": {
       "title": "Pearson Correlation Matrix of CD4+ T-Cell Target Features",
       "family": "Matrices",
-      "description": "A 6×6 symmetric heatmap displaying Pearson correlations between six target-discovery features: Genes down, Genes up, Total DE genes, Downstream genes, Cells assayed, and On-target effect. A column dendrogram clusters features hierarchically, grouping the four differential-expression metrics together. Cell values range from −0.02 to 1.00, with a color scale indicating correlation strength.",
+      "description": "A 6×6 symmetric heatmap displaying Pearson correlations between six target-discovery features: Genes down, Genes up, Total DE genes, Downstream genes, Cells assayed, and On-target effect. A column dendrogram clusters features hierarchically, grouping the four differential-expression metrics together. Cell values range from −0.22 to 1.00, with a color scale indicating correlation strength.",
       "data_explanation": "The correlation matrix reveals how target-selection metrics co-vary across the screening dataset. The dendrogram's tight clustering of DE-count metrics (Genes down, Genes up, Total DE genes, Downstream genes) indicates these measures are highly interdependent, while weaker or negative correlations with On-target effect and Cells assayed highlight trade-offs between potency and assay scale—critical relationships for prioritizing CD4+ T-cell targets with robust and specific activity."
     },
     "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key columns: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5~7.1, median −6.3), n_cells_target (cell count for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (number of upregulated/downregulated genes)."
@@ -292,9 +292,9 @@
     "group": "Core gallery",
     "img": "figures/M4.png",
     "en": {
-      "title": "2D density",
+      "title": "Density-colored scatter: knockdown strength vs response breadth",
       "family": "Matrices",
-      "description": "Same as M3 but with continuous kernel density shading.",
+      "description": "Scatter of on-target effect size (x) vs total downstream DE genes (y, log), with each point colored by local point density ('Targets at this density', viridis). Not a continuous KDE/contour surface — the shading is a per-point density count. Stronger knockdown (more negative x) coincides with broader response.",
       "data_explanation": "Same as M3 two-column layout, suitable for medium point counts."
     },
     "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (number of downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect size, range −58.5 to 7.1, median −6.3), n_cells_target (cell count for target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (numbers of upregulated/downregulated genes)."
@@ -414,7 +414,7 @@
     "en": {
       "title": "CD4+ T-cell knockdown effect trajectories across stimulation time course",
       "family": "Networks",
-      "description": "Parallel-coordinates plot tracking on-target effect size (negative values indicate stronger knockdown) for 15 genes across three conditions: Rest, Stim8hr, and Stim48hr. Two trajectory classes are shown: 12 genes where knockdown effect weakens toward zero with stimulation (blue), and 3 genes where effect strengthens (red).",
+      "description": "Parallel-coordinates plot tracking on-target effect size (negative values indicate stronger knockdown) for 15 genes across three conditions: Rest, Stim8hr, and Stim48hr. Two trajectory classes are shown: 12 genes where knockdown effect weakens toward zero with stimulation (purple), and 3 genes where effect strengthens (blue).",
       "data_explanation": "Each gene's on-target effect size represents the magnitude of phenotypic change upon targeted knockdown in CD4+ T cells. The convergence of most effects toward zero by 48hr stimulation indicates that target activity diminishes or becomes redundant as cells transition from resting to activated state, a critical observation for identifying targets whose perturbation impacts early versus sustained T-cell function in CD4+ target discovery."
     },
     "raw_source": "Underlying data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5~7.1, median -6.3), n_cells_target (target cells, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (up/downregulated gene counts)."
@@ -570,7 +570,7 @@
     "en": {
       "title": "PCA of CD4+ T-cell targets by mean effect magnitude",
       "family": "Dimensionality reduction & composite",
-      "description": "PCA scatter plot with PC1 (55% variance) and PC2 (33% variance) axes. Points colored by mean |effect| (viridis scale, 0–25+). Red open circles mark 15 curated shortlist genes; grey points represent 9,861 other targets and 1,225 gate-passing targets (~11,086 total).",
+      "description": "PCA scatter plot with PC1 (55% variance) and PC2 (33% variance) axes. Grey points are the 9,861 other targets; the 1,225 gate-passing targets are colored by mean |effect| (viridis scale, 0–25+). Red open circles mark the 15 curated shortlist genes.",
       "data_explanation": "Each point represents a potential CD4+ T-cell target gene, positioned by principal components of its functional signature. Color intensity reflects the magnitude of effect across assays, highlighting candidates with strong, consistent phenotypic impact for target discovery and prioritization."
     },
     "raw_source": "Source data: DE_stats.suppl_table.csv (public S3, 33,983 rows = 11,526 targets × 3 culture conditions). Each row is differential expression statistics for one target under one condition. Key fields: n_total_de_genes (downstream DE genes, median 2, max 5,920), ontarget_effect_size (knockdown effect, range -58.5 to 7.1, median -6.3), n_cells_target (cells for that target, median 539), ontarget_significant, offtarget_flag, n_up_genes/n_down_genes (upregulated/downregulated gene counts)."
