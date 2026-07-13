@@ -3,6 +3,7 @@ import type { RealTarget } from "../../data/types";
 import { READINESS } from "../../data/reference";
 import { parseExpression, compareToReference, type CompareResult } from "../../lib/exprCompare";
 import { downloadFile, toCSV } from "../../lib/download";
+import FlagshipFigure from "../../components/ui/FlagshipFigure";
 
 // Clinical storyline: a clinician pastes or uploads a DE-IDENTIFIED gene-level
 // expression-feature table (gene symbol + numeric value; no PII) and we compare
@@ -187,6 +188,17 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
         <div style={{ fontSize: "12.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", padding: "11px 14px", lineHeight: 1.5 }}>
           {warnings.map((w, i) => <div key={i}>• {w}</div>)}
         </div>
+      )}
+
+      {/* illustrative preview of the comparison output, shown before the reader has run their own — uses the built-in "Load example" gene set (7 of 8 genes match reference targets; TNFAIP3 does not) */}
+      {!result && (
+        <FlagshipFigure
+          src={`${import.meta.env.BASE_URL}flagship/fig_expression_overlap_demo.png`}
+          alt="Demonstration comparison: an 8-gene example expression profile joined against the CD4 Perturb-seq reference screen, showing per-gene log2FC alongside reference on-target effect size, risk tier, direction concordance, readiness call, and top disease link"
+          title="What the comparison looks like (demonstration data)"
+          caption="Left: the example profile's log2FC per gene. Right: the matched reference target's on-target effect size, colored by clinical risk tier and hatched where the sample's direction opposes the reference's median downstream logFC. Run your own file above to replace this."
+          source="Built-in 'Load example' gene set (8 genes, 7 matched) · CD4 Perturb-seq reference screen · public/flagship/fig_expression_overlap_demo.png"
+        />
       )}
 
       {/* results */}

@@ -78,3 +78,4 @@ reference,ClinicalTrials.gov (NLM),database,ref25,-,https://clinicaltrials.gov,-
 reference,Lambert et al. 2018 Human TFs,paper,ref26,-,PMID 30290144 | DOI 10.1016/j.cell.2018.01.029,-,TF list
 reference,Ytterberg et al. 2022 ORAL Surveillance,paper,ref27,-,PMID 35081280 | DOI 10.1056/NEJMoa2109927,-,JAK safety
 reference,Herold et al. 2019 Teplizumab,paper,ref28,-,PMID 31180194 | DOI 10.1056/NEJMoa1902226,-,anti-CD3 safety
+figure,fig_expression_overlap_demo.png,flagship_figure,fig_expression_overlap_demo,-,public/flagship/fig_expression_overlap_demo.png,agent (matplotlib script over built-in EXAMPLE gene set),demonstration comparison view for patient-expression-upload feature; 8-gene built-in example vs CD4 Perturb-seq reference
