@@ -126,7 +126,7 @@ export default function Deck() {
             <ul style={{ margin: 0, paddingLeft: "18px" }}>
               <li style={li}><b style={{ color: C.ink }}>unknown ≠ 0</b> · <b style={{ color: C.ink }}>CRISPRi ≠ pharmacology</b> · four-layer versioning</li>
               <li style={li}>Negative controls <b style={{ color: C.ink }}>99.96%</b> at grade 1, <b style={{ color: C.ink }}>0%</b> reach advance</li>
-              <li style={li}>Ranking benchmark <b style={{ color: C.ink }}>AUROC 0.85</b> (canonical CD4 positives)</li>
+              <li style={li}>Ranking benchmark <b style={{ color: C.ink }}>AUROC 0.85</b> (canonical CD4 positives) <span style={{ color: C.muted }}>— documented, not recomputed in-repo</span></li>
             </ul>
           </div>
         </div>
@@ -154,7 +154,10 @@ export default function Deck() {
           </div>
         </div>
         <div style={{ marginTop: "16px", padding: "11px 14px", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "9px", fontSize: "12.5px", lineHeight: 1.5, color: "#7a6a3f" }}>
-          <b style={{ color: "#8a6516" }}>Validation, honestly:</b> internal calibration passes (ranking AUROC 0.85, neg-control 99.96%, rank-stability r=0.943). Phenotype-matched external screens (Track D) were <b>actually run</b>: the directionality ranking is a <b>null</b> (AUROC &lt;0.5); a magnitude-axis fair version passes (0.74–0.79) but is exploratory with a detectability confound. <b>Corroborative, not confirmatory — L5 wet-lab is the gap.</b>
+          <b style={{ color: "#8a6516" }}>Validation, honestly:</b> internal calibration passes (ranking AUROC 0.85†, neg-control 99.96%, rank-stability r=0.943). Phenotype-matched external screens (Track D) were <b>actually run</b>: the directionality ranking is a <b>null</b> (AUROC &lt;0.5); a magnitude-axis fair version passes (0.74–0.79) but is exploratory with a detectability confound. <b>Corroborative, not confirmatory — L5 wet-lab is the gap.</b>
+          <div style={{ marginTop: "8px", fontSize: "11.5px", color: "#8a7340", lineHeight: 1.5 }}>
+            † <b>Ranking AUROC 0.85</b> is a <b>documented</b> calibration value carried in <span style={{ fontFamily: C.mono }}>disclosure.json</span>; this repository does not ship the benchmark engine that produced it, so it is <b>not recomputed in-repo</b>. The Track-D AUROC values above <em>are</em> reproduced from the committed disclosure record.
+          </div>
         </div>
       </Slide>
 
@@ -170,7 +173,7 @@ export default function Deck() {
           <div>
             <div style={colh}>Key numbers</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-              <Tile n="0.85" l="ranking AUROC (positives)" />
+              <Tile n="0.85†" l="ranking AUROC (positives) — documented, not recomputed in-repo" />
               <Tile n="99.96%" l="neg. controls at grade 1" />
               <Tile n="3" l="regulatory modules recovered" />
               <Tile n="M01–20" l="concept layer (never feeds decisions)" />

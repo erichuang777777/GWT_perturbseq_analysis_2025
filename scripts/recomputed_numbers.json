@@ -1,0 +1,232 @@
+{
+  "_note": "Recomputed portal display numbers from in-repo raw data. Each entry: value (recomputed), shipped (in json), how_derived, source_file, verdict.",
+  "generated_by": "scripts/recompute_display_numbers.py",
+  "repo_root": "/Users/eric777/.claude-science/orgs/da569c35-fbb9-41f8-ad57-1225ad245b87/workspaces/17ec58c9-a835-4ee9-94b1-18b175389e93/GWT_repo",
+  "summary": {
+    "total": 31,
+    "REPRODUCED": 29,
+    "MISMATCH": 0,
+    "NOT-REPRODUCIBLE-IN-REPO": 2
+  },
+  "numbers": {
+    "coverage.de_rows_total": {
+      "value": 33983,
+      "shipped": 33983,
+      "how_derived": "row count of DE_stats.suppl_table.csv (one row per target\u00d7condition)",
+      "source_file": "metadata/suppl_tables/DE_stats.suppl_table.csv",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.genome_total_targets": {
+      "value": 11526,
+      "shipped": 11526,
+      "how_derived": "unique target_contrast (Ensembl ID) count in DE_stats.suppl_table.csv",
+      "source_file": "metadata/suppl_tables/DE_stats.suppl_table.csv",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.targets_in_portal": {
+      "value": 7249,
+      "shipped": 7249,
+      "how_derived": "unique gene count in real-dataset.json targets[] (grade>=2 UNION advance/watchlist selection over the full screen)",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.donors": {
+      "value": 4,
+      "shipped": 4,
+      "how_derived": "unique donor_id count in sample_metadata.suppl_table.csv",
+      "source_file": "metadata/suppl_tables/sample_metadata.suppl_table.csv",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.runs": {
+      "value": 2,
+      "shipped": 2,
+      "how_derived": "unique 10xrun_id count in sample_metadata.suppl_table.csv",
+      "source_file": "metadata/suppl_tables/sample_metadata.suppl_table.csv",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.gnomad_constraint_genes": {
+      "value": 11267,
+      "shipped": 11267,
+      "how_derived": "count of DE target Ensembl IDs (DE_stats.target_contrast) present in gnomad_constraint_seed.csv ensembl_id",
+      "source_file": "metadata/suppl_tables/DE_stats.suppl_table.csv + sources/target_tool_cache/_overlays/gnomad_constraint_seed.csv",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.deep_external_evidence_genes": {
+      "value": 21,
+      "shipped": 21,
+      "how_derived": "count of *.json files in the per-gene evidence cache directory (mirrors export_real_data.py's evidence_genes enumeration)",
+      "source_file": "sources/target_tool_cache/_evidence/*.json",
+      "verdict": "REPRODUCED"
+    },
+    "coverage.measured_downstream_genes": {
+      "value": null,
+      "shipped": 10282,
+      "how_derived": "h5ad var (measured-gene) axis dimension. In-repo gate-passing signed-DE table contains 10271 unique significant downstream genes; the full-signed table has 10,273. The exact 10,282 is the S3-only GWCD4i.DE_stats.h5ad var dimension.",
+      "source_file": "docs/mvp-research/TASK_A_GB10_HANDOFF.md (h5ad var; S3-only ~1.7TB)",
+      "verdict": "NOT-REPRODUCIBLE-IN-REPO",
+      "reason": "var dimension of the S3-only single-cell h5ad; in-repo CSVs expose 10,271-10,273 unique downstream genes, not 10,282."
+    },
+    "concept_layer.count": {
+      "value": 20,
+      "shipped": 20,
+      "how_derived": "length of real-dataset.json modules[] (M01-M20 concept layer)",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "real_dataset.modules": {
+      "value": 20,
+      "shipped": 20,
+      "how_derived": "length of real-dataset.json modules[]",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "readiness.watchlist": {
+      "value": 6628,
+      "shipped": 6628,
+      "how_derived": "count of targets[] with readiness.call == 'watchlist'",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "readiness.validate": {
+      "value": 319,
+      "shipped": 319,
+      "how_derived": "count of targets[] with readiness.call == 'validate'",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "readiness.advance": {
+      "value": 302,
+      "shipped": 302,
+      "how_derived": "count of targets[] with readiness.call == 'advance'",
+      "source_file": "frontend/webserver/public/real-dataset.json",
+      "verdict": "REPRODUCED"
+    },
+    "risk_tier.clear": {
+      "value": 3309,
+      "shipped": 3309,
+      "how_derived": "client-side deriveRiskTier (exprCompare.ts) applied to real-dataset.json targets[]: f = #redFlags + #safetyLiabilities + (gnomad.constraintTier=='high'); f>=3 avoid / 2 high / 1 caution / 0 clear",
+      "source_file": "frontend/webserver/public/real-dataset.json + src/lib/exprCompare.ts::deriveRiskTier",
+      "verdict": "REPRODUCED"
+    },
+    "risk_tier.caution": {
+      "value": 3197,
+      "shipped": 3197,
+      "how_derived": "client-side deriveRiskTier (exprCompare.ts) applied to real-dataset.json targets[]: f = #redFlags + #safetyLiabilities + (gnomad.constraintTier=='high'); f>=3 avoid / 2 high / 1 caution / 0 clear",
+      "source_file": "frontend/webserver/public/real-dataset.json + src/lib/exprCompare.ts::deriveRiskTier",
+      "verdict": "REPRODUCED"
+    },
+    "risk_tier.high": {
+      "value": 696,
+      "shipped": 696,
+      "how_derived": "client-side deriveRiskTier (exprCompare.ts) applied to real-dataset.json targets[]: f = #redFlags + #safetyLiabilities + (gnomad.constraintTier=='high'); f>=3 avoid / 2 high / 1 caution / 0 clear",
+      "source_file": "frontend/webserver/public/real-dataset.json + src/lib/exprCompare.ts::deriveRiskTier",
+      "verdict": "REPRODUCED"
+    },
+    "risk_tier.avoid": {
+      "value": 47,
+      "shipped": 47,
+      "how_derived": "client-side deriveRiskTier (exprCompare.ts) applied to real-dataset.json targets[]: f = #redFlags + #safetyLiabilities + (gnomad.constraintTier=='high'); f>=3 avoid / 2 high / 1 caution / 0 clear",
+      "source_file": "frontend/webserver/public/real-dataset.json + src/lib/exprCompare.ts::deriveRiskTier",
+      "verdict": "REPRODUCED"
+    },
+    "validation.calibration.neg_control_grade1_pct": {
+      "value": 99.96,
+      "shipped": 99.96,
+      "how_derived": "percent of kd_status=='not_measurable' target-card rows with statistical_evidence_grade==1 (n=4774)",
+      "source_file": "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv",
+      "verdict": "REPRODUCED"
+    },
+    "validation.calibration.neg_control_advance_pct": {
+      "value": 0.0,
+      "shipped": 0.0,
+      "how_derived": "percent of kd_status=='not_measurable' rows with readiness_call=='advance' (n=4774)",
+      "source_file": "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv + sources/target_tool_cache/_cache/readiness_full.parquet",
+      "verdict": "REPRODUCED"
+    },
+    "validation.calibration.ranking_auroc": {
+      "value": null,
+      "shipped": 0.85,
+      "how_derived": "ranking benchmark AUROC (13 canonical positives vs 1,211; Mann-Whitney). run_all_validation.py records it as 'documented (not recomputed here)'; no benchmark engine + labelled positive/negative input set ships in-repo.",
+      "source_file": "docs/technical_methods.md \u00a74 (documented value)",
+      "verdict": "NOT-REPRODUCIBLE-IN-REPO",
+      "reason": "AUROC needs the labelled canonical-positive benchmark engine; only the documented value is in-repo, not a runnable recipe."
+    },
+    "validation.ladder.L2_spearman": {
+      "value": 0.943,
+      "shipped": 0.943,
+      "how_derived": "core.calibration.rank_stability(target_cards).spearman_rank_correlation (naive n_total_de_genes ranking vs strict-filtered ranking)",
+      "source_file": "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv + src/3_DE_analysis/core/calibration.py::rank_stability",
+      "verdict": "REPRODUCED"
+    },
+    "validation.ladder.L2_top50_overlap": {
+      "value": 13,
+      "shipped": 13,
+      "how_derived": "core.calibration.rank_stability(target_cards).top_n_overlap (naive top-50 vs strict top-50 intersection)",
+      "source_file": "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv + src/3_DE_analysis/core/calibration.py::rank_stability",
+      "verdict": "REPRODUCED"
+    },
+    "external.opentargets.symbol_match": {
+      "value": "55/55",
+      "shipped": "55/55",
+      "how_derived": "rows with a resolved Ensembl ID / total rows in track_a_opentargets_revalidation.csv",
+      "source_file": "docs/mvp-research/level4_external_validation/track_a_opentargets_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.opentargets.named_disease_ga": {
+      "value": "26/26",
+      "shipped": "26/26",
+      "how_derived": "rows whose status == 'OK (exact disease-name GA match)' in track_a_opentargets_revalidation.csv",
+      "source_file": "docs/mvp-research/level4_external_validation/track_a_opentargets_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.VAV1": {
+      "value": 86,
+      "shipped": 86,
+      "how_derived": "string_n@700 for VAV1 in track_b_string_revalidation.csv (STRING v12 interaction_partners, required_score>=700)",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.CD3E": {
+      "value": 65,
+      "shipped": 65,
+      "how_derived": "string_n@700 for CD3E in track_b_string_revalidation.csv (STRING v12 interaction_partners, required_score>=700)",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.PLCG1": {
+      "value": 173,
+      "shipped": 173,
+      "how_derived": "string_n@700 for PLCG1 in track_b_string_revalidation.csv (STRING v12 interaction_partners, required_score>=700)",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.BCL10": {
+      "value": 46,
+      "shipped": 46,
+      "how_derived": "string_n@700 for BCL10 in track_b_string_revalidation.csv (STRING v12 interaction_partners, required_score>=700)",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.STAT3": {
+      "value": 324,
+      "shipped": 324,
+      "how_derived": "string_n@700 for STAT3 in track_b_string_revalidation.csv (STRING v12 interaction_partners, required_score>=700)",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.string.exact_match": {
+      "value": "5/5",
+      "shipped": "5/5",
+      "how_derived": "count of exact_match==True rows / total in track_b_string_revalidation.csv",
+      "source_file": "docs/mvp-research/level4_external_validation/track_b_string_revalidation.csv",
+      "verdict": "REPRODUCED"
+    },
+    "external.geo.gse318876": {
+      "value": "present",
+      "shipped": "present",
+      "how_derived": "GSE318876 target-evidence table exists (1235 rows) and EXTERNAL_REVALIDATION.json track_c verdict starts with REAL (accession + description). Live GEO fetch is network-gated; the in-repo cache is the reproducibility surface.",
+      "source_file": "docs/mvp-research/level4_external_validation/track_c_gse318876_target_evidence.csv + docs/mvp-research/level4_external_validation/EXTERNAL_REVALIDATION.json",
+      "verdict": "REPRODUCED"
+    }
+  }
+}

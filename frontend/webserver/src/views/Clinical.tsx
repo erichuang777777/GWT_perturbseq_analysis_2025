@@ -4,6 +4,7 @@ import { CONSTRAINT_META, GRADE, READINESS } from "../data/reference";
 import { useStore } from "../store/store";
 import ExpressionCompare from "./clinical/ExpressionCompare";
 import PageReferences from "../components/ui/PageReferences";
+import { FlagshipFigure } from "../components/ui";
 
 const catBadge = (c: string) => (c === "Upstream" ? { catBg: "#eaf1fb", catColor: "#1a5fb4" } : { catBg: "#f0eafb", catColor: "#6b40b8" });
 
@@ -206,7 +207,17 @@ export default function Clinical() {
       {/* scope */}
       {S.clinicalTab === "scope" && (
         <div style={{ maxWidth: "860px" }}>
-          <p style={{ fontSize: "15px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 26px", maxWidth: "680px" }}>This lookup reads the CD4 T-cell Perturb-seq screen through a clinical-evidence lens. Before the panels, three rules govern everything shown here — they are what keep it an evidence tool rather than a decision tool.</p>
+          <p style={{ fontSize: "15px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 22px", maxWidth: "680px" }}>This lookup reads the CD4 T-cell Perturb-seq screen through a clinical-evidence lens. Before the panels, three rules govern everything shown here — they are what keep it an evidence tool rather than a decision tool.</p>
+
+          <div style={{ marginBottom: "30px" }}>
+            <FlagshipFigure
+              src={`${import.meta.env.BASE_URL}flagship/fig_clinical_risk.png`}
+              alt="Clinical risk stratification of the portal: 3,309 Clear (46%), 3,197 Caution (44%), 696 High risk (10%), 47 Avoid (1%); the right panel plots 15 disease-associated targets showing that a strong perturbation effect does not imply a low risk tier"
+              title="How the portal's targets stratify by clinical risk"
+              caption="Every target is placed in one of four risk tiers: 3,309 Clear (46%), 3,197 Caution (44%), 696 High risk (10%) and 47 Avoid (1%). The right panel plots 15 disease-associated targets by effect size against risk tier — a reminder that a strong perturbation effect is not the same as a safe target."
+              source="CD4 Perturb-seq screen · pipeline red flags + safety liabilities + gnomAD LoF-intolerance · public/flagship/fig_clinical_risk.png"
+            />
+          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "30px" }}>
             {guardrails.map((g) => (
               <div key={g.k} style={{ border: "1px solid #e2e5ea", borderLeft: "3px solid #0d7d5a", borderRadius: "0 12px 12px 0", padding: "16px 20px" }}>
@@ -290,8 +301,8 @@ export default function Clinical() {
               <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
                 {conceptTargets.map((t) => (
                   <div key={t.gene} className="navlink rowhover" onClick={() => setState({ view: "dossier", selectedGene: t.gene })} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 13px", border: "1px solid #eef0f3", borderRadius: "9px" }}>
-                    <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px" }}>{t.gene}</span>
-                    <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1 }}>{t.name}</span>
+                    <span style={{ fontSize: "13.5px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace", width: "76px", flexShrink: 0 }}>{t.gene}</span>
+                    <span style={{ fontSize: "12.5px", color: "#6b7280", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={t.name}>{t.name}</span>
                     <span style={{ display: "inline-block", padding: "3px 9px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: t.rColor, background: t.rBg }}>{t.rLabel}</span>
                   </div>
                 ))}
@@ -341,11 +352,11 @@ export default function Clinical() {
                     <div>
                       <span title={m.riskNote} style={{ display: "inline-block", padding: "4px 10px", borderRadius: "7px", fontSize: "11.5px", fontWeight: 700, color: m.riskColor, background: m.riskBg }}>{m.riskLabel}</span>
                     </div>
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
-                      <div style={{ fontSize: "11.5px", color: "#8a92a0" }}>{m.name}</div>
+                      <div style={{ fontSize: "11.5px", color: "#8a92a0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.name}</div>
                     </div>
-                    <div style={{ fontSize: "12.5px", color: "#4a515e" }}>
+                    <div style={{ minWidth: 0, fontSize: "12.5px", color: "#4a515e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={`${m.moduleId} ${m.moduleShort}`}>
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{m.moduleId}</span> {m.moduleShort}
                     </div>
                     <div style={{ textAlign: "center" }}>

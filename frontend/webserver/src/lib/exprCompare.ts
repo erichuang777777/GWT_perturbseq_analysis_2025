@@ -52,7 +52,9 @@ function splitLine(line: string): string[] {
 
 export function parseExpression(text: string): ParseResult {
   const warnings: string[] = [];
-  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  // Drop blank lines and `#` comment lines (a mock/export file may carry a
+  // provenance/de-identification header) before header + column detection.
+  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith("#"));
   if (lines.length === 0) {
     return { rows: [], nRaw: 0, piiColumns: [], droppedNonGene: 0, warnings: ["No data found."], ok: false };
   }

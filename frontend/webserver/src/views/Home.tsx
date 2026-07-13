@@ -168,21 +168,26 @@ export default function Home() {
           style={{ border: "1px solid #e6d9d0", borderRadius: "16px", overflow: "hidden", cursor: "pointer", background: "#fff" }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "1.15fr 1fr", alignItems: "stretch" }}>
-            <div style={{ padding: "26px 28px" }}>
+            <div style={{ padding: "26px 28px", minWidth: 0 }}>
               <div style={{ fontSize: "11px", fontWeight: 700, color: "#b04a2f", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>Why two views?</div>
               <div style={{ fontSize: "21px", fontWeight: 700, letterSpacing: "-.4px", marginBottom: "10px", lineHeight: 1.2 }}>
-                One dataset, two opposing first impressions
+                Researcher value vs. clinical risk, across all {all.length.toLocaleString()} targets
               </div>
               <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#4a515e", margin: "0 0 14px" }}>
-                Researchers are drawn to the targets with the strongest, broadest effects. Clinicians flag those same
-                targets for pleiotropy and dosage risk. The most interesting hit is often the most dangerous — so the
-                portal shows each side the axis it cares about first.
+                Researchers are drawn to the targets with the strongest, broadest effects. Clinicians read the same
+                targets through a risk lens — pipeline flags, safety liabilities and population-genetics constraint. The
+                conflict-zone flagships make the tension concrete: <strong>CD3E</strong> and <strong>BCL10</strong> sit in
+                the Clear tier, while <strong>VAV1</strong>, <strong>STAT3</strong> and <strong>PLCG1</strong> carry a
+                Caution flag despite their high researcher value.
               </p>
               <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#b04a2f" }}>See it in the figure atlas →</div>
+              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "8px", lineHeight: 1.45 }}>
+                Source: CD4 Perturb-seq screen · risk tier = pipeline red flags + safety liabilities + gnomAD LoF-intolerance · public/flagship/fig_tension.png
+              </div>
             </div>
             <img
-              src={`${import.meta.env.BASE_URL}flagship/screen_story.png`}
-              alt="One dataset, two opposing first impressions — researcher's effect-breadth axis vs clinician's risk-flag axis, with STAT3/VAV1 in the conflict zone"
+              src={`${import.meta.env.BASE_URL}flagship/fig_tension.png`}
+              alt="Researcher value vs. clinical risk across all 7,249 targets — downstream DE breadth against perturbation effect size, coloured by clinical risk tier, with conflict-zone flagships CD3E, VAV1, STAT3, PLCG1 and BCL10 called out"
               loading="lazy"
               style={{ width: "100%", height: "100%", minHeight: "220px", objectFit: "cover", objectPosition: "left center", display: "block", borderLeft: "1px solid #eee" }}
             />

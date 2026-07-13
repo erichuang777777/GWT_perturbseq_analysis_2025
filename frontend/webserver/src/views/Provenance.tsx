@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { FlagshipFigure } from "../components/ui";
 
 // Provenance & Methods page. Renders the two committed disclosure artifacts
 // shipped in public/ (see docs/frontend_disclosure_spec.md):
@@ -227,6 +228,12 @@ export default function Provenance() {
           ))}
       </div>
       {disc.coverage.note && <p style={{ fontSize: "12.5px", color: "#6b7280", lineHeight: 1.55, margin: 0 }}>{disc.coverage.note}</p>}
+      {"measured_downstream_genes" in disc.coverage && (
+        <p style={{ fontSize: "11.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "8px", padding: "9px 12px", lineHeight: 1.5, margin: "10px 0 0" }}>
+          <strong>Note on <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>measured_downstream_genes</span> ({String(disc.coverage.measured_downstream_genes)}):</strong>{" "}
+          this figure is the variable axis of the source <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>S3</span> h5ad object and is <strong>not independently reproducible from the CSVs shipped in this repository</strong>, which give 10,271–10,273 significant downstream genes. The small gap reflects the difference between the h5ad var axis and the per-condition significant-gene tables; it is disclosed here rather than silently reconciled.
+        </p>
+      )}
 
       {/* registry tabs */}
       <div style={sec}>Registry</div>
@@ -299,6 +306,17 @@ export default function Provenance() {
           <li key={i} style={{ fontSize: "13px", color: "#4a515e", lineHeight: 1.55 }}>{l}</li>
         ))}
       </ul>
+
+      {/* external-validation reproduction figure */}
+      <div style={sec}>External-validation reproduction</div>
+      <FlagshipFigure
+        src={`${import.meta.env.BASE_URL}flagship/fig_validation.png`}
+        alt="External-validation reproduction figure: three cross-checks against Open Targets, STRING and the independent GEO GSE318876 CRISPRa HIV screen, with a right panel showing STRING known-partner recovery for the five flagship genes; per-check tallies are printed on the figure panels"
+        title="External evidence reproduction"
+        caption="Three corroborative cross-checks the pipeline ran against public sources — Open Targets association re-checks, STRING known-partner recovery for the flagship genes, and overlap with the independent GEO GSE318876 CRISPRa HIV screen. The exact per-check tallies are printed on the figure's own panels. This is a corroborative overlap figure, not a live re-query; the phenotype-matched external screen (Track D) is documented separately as null — see the validation ladder below."
+        footnote={<>GSE318876 measures HIV infection, not T-cell activation, so this is a corroborative overlap check (association ≠ causation), not a phenotype-matched confirmation.</>}
+        source="Open Targets · STRING v12 · GEO GSE318876 · public/flagship/fig_validation.png"
+      />
 
       {/* validation ladder */}
       {disc.validation?.ladder?.length ? (

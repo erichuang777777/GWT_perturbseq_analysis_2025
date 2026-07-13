@@ -7,6 +7,7 @@ import { consensus, fmtEffect, rankedTargets, type RankedTarget } from "../lib/l
 import { downloadFile, toCSV } from "../lib/download";
 import { useStore } from "../store/store";
 import PageReferences from "../components/ui/PageReferences";
+import { FlagshipFigure } from "../components/ui";
 
 const ROW_HEIGHT = 54;
 const TABLE_HEIGHT = 700;
@@ -372,6 +373,16 @@ export default function Explorer() {
         </div>
         <div style={{ fontSize: "13px", color: "#6b7280", marginBottom: "16px" }}>
           Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by composite priority
+        </div>
+
+        <div style={{ marginBottom: "20px" }}>
+          <FlagshipFigure
+            src={`${import.meta.env.BASE_URL}flagship/fig_funnel.png`}
+            alt="Researcher druggability funnel: 11,526 genome-wide CD4 targets narrow to 7,249 measured in-portal, 621 gate-passing, and 302 advance-ready deliverables; the deliverables split by tractability modality and direction of effect"
+            title="From genome-wide screen to an advance-ready shortlist"
+            caption="The druggability funnel behind this table: 11,526 genome-wide CD4 targets → 7,249 measured and QC-passed in this portal → 621 gate-passing → 302 advance-ready. The right panel breaks the 302 deliverables down by tractability modality and by direction of effect."
+            source="CD4 Perturb-seq screen · readiness engine · public/flagship/fig_funnel.png"
+          />
         </div>
 
         <div style={{ border: "1px solid #e2e5ea", borderRadius: "13px", overflow: "hidden" }}>

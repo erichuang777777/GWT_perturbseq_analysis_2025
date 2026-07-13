@@ -34,7 +34,22 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
   const [result, setResult] = useState<CompareResult | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
   const [blocked, setBlocked] = useState<string | null>(null);
+  const [sampleLoading, setSampleLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Fetch the de-identified demonstration patient file shipped in public/ and
+  // run it through the exact same parse + compare path as an uploaded file.
+  const loadSamplePatient = () => {
+    setSampleLoading(true);
+    fetch(`${import.meta.env.BASE_URL}sample_patient_expression.csv`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`sample_patient_expression.csv ${r.status}`);
+        return r.text();
+      })
+      .then((t) => { setText(t); run(t); })
+      .catch((e) => { setResult(null); setBlocked(null); setWarnings([`Could not load the demonstration file: ${String(e)}`]); })
+      .finally(() => setSampleLoading(false));
+  };
 
   const run = (raw: string) => {
     setResult(null); setBlocked(null); setWarnings([]);
@@ -121,6 +136,16 @@ export default function ExpressionCompare({ targets }: { targets: RealTarget[] }
           >
             Load example
           </button>
+          <button
+            onClick={loadSamplePatient}
+            disabled={sampleLoading}
+            style={{ padding: "8px 14px", border: `1.5px solid ${GREEN}`, borderRadius: "9px", background: "#eef7f2", color: GREEN, fontSize: "12.5px", fontWeight: 600, cursor: sampleLoading ? "wait" : "pointer" }}
+          >
+            {sampleLoading ? "Loading…" : "Load sample patient file"}
+          </button>
+          <span style={{ fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.4 }}>
+            De-identified 25-gene demo — no PII, features only
+          </span>
         </div>
 
         <textarea
