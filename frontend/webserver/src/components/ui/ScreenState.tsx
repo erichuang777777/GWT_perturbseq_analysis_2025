@@ -10,7 +10,7 @@ export function FullScreen({ children }: { children: React.ReactNode }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+        fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
         color: "#4a515e",
         fontSize: "14px",
       }}

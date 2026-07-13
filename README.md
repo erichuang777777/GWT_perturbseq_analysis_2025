@@ -17,6 +17,20 @@ Analysis of genome-wide perturb-seq screen on primary T cells (see our [manuscri
 
 Please refer to the [figure map](https://github.com/emdann/GWT_perturbseq_analysis_2025/blob/master/metadata/figure_map.md) to find which scripts were used to generate a specific figure in the manuscript.
 
+## At a glance
+
+**The druggability funnel — genome-wide screen to an advance-ready shortlist.** 11,526 measured CD4⁺ targets narrow through QC and gate-passing to 302 advance-ready candidates; the right panel breaks those down by tractability modality and direction of effect.
+
+![Researcher druggability funnel](docs/readme_assets/druggability_funnel.png)
+
+**External validation — the calls reproduce against independent public data.** Open Targets disease associations (55/55, 26 exact GA matches), STRING known-partner recovery for the flagship targets (@confidence 700), and an independent CRISPRa HIV screen (GEO GSE318876).
+
+![External-validation reproduction](docs/readme_assets/external_validation.png)
+
+**What we built vs. what a user needs — six developer/user blindspots and how the portal closes each.** The gap between "is it built?" and "can I get my job done?" drove the two-perspective UI, plain-language tooltips, novelty flags, honest-safety lookup, and evidence-strength banners.
+
+![The developer–user gap: six blindspots](docs/readme_assets/dev_user_gap.png)
+
 ## Target-discovery toolkit quickstart
 
 On top of the manuscript analysis code above, this repo also ships a **target-discovery toolkit**:

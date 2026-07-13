@@ -8,6 +8,7 @@ import CompositeBreakdownPanel from "./dossier/CompositeBreakdownPanel";
 import StatisticalEvidencePanel from "./dossier/StatisticalEvidencePanel";
 import ConceptModulePanel from "./dossier/ConceptModulePanel";
 import DiseaseLinksPanel from "./dossier/DiseaseLinksPanel";
+import ExternalCorroborationPanel from "./dossier/ExternalCorroborationPanel";
 import TractabilityPanel from "./dossier/TractabilityPanel";
 import ClinicalLiteraturePanel from "./dossier/ClinicalLiteraturePanel";
 import ConditionSignalPanel from "./dossier/ConditionSignalPanel";
@@ -40,8 +41,9 @@ export default function Dossier() {
           <ConditionSignalPanel t={t} />
           <StageLabel n={2} title="Mechanism" sub="Which immune concept does the target act through?" />
           <ConceptModulePanel t={t} />
-          <StageLabel n={3} title="Disease relevance" sub="Where is the target genetically linked to disease?" />
+          <StageLabel n={3} title="Disease relevance" sub="Where is the target genetically linked to disease, and does independent external evidence corroborate it?" />
           <DiseaseLinksPanel t={t} />
+          <ExternalCorroborationPanel t={t} />
           <StageLabel n={4} title="Tractability & translation" sub="Can it be drugged, and what clinical precedent exists?" />
           <TractabilityPanel t={t} />
           <ClinicalLiteraturePanel t={t} />

@@ -18,7 +18,7 @@ export function drawFigure(el: HTMLElement, S: AppState) {
   const base = (extra?: Record<string, unknown>) =>
     Object.assign(
       {
-        font: { family: "IBM Plex Sans, sans-serif", size: 12, color: "#3a414d" },
+        font: { family: "IBM Plex Mono, ui-monospace, monospace", size: 12, color: "#3a414d" },
         paper_bgcolor: "#fff",
         plot_bgcolor: "#fff",
         margin: { l: 62, r: 20, t: 12, b: 54 },

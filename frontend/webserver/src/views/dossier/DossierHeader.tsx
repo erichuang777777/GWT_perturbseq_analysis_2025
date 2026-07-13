@@ -26,6 +26,14 @@ export default function DossierHeader({ t, comp, rank, total }: { t: RealTarget;
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "13px", marginBottom: "7px" }}>
             <h1 style={{ fontSize: "34px", fontWeight: 700, letterSpacing: "-.8px", margin: 0, fontFamily: "'IBM Plex Mono', monospace" }}>{t.gene}</h1>
+            {t.primaryOutcome && (
+              <span
+                title={`Primary-outcome target #${t.primaryOutcomeRank} of 15 — the server's headline result, selected by trans-effect (downstream DE) breadth ranking`}
+                style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "5px 11px", borderRadius: "20px", fontSize: "11.5px", fontWeight: 700, color: "#fff", background: "#5b3fb4", letterSpacing: ".2px" }}
+              >
+                ★ Primary outcome{t.primaryOutcomeRank ? ` · #${t.primaryOutcomeRank}` : ""}
+              </span>
+            )}
             <Badge label={Rt.label} color={Rt.color} bg={Rt.bg} />
             <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", borderRadius: "8px", fontSize: "14px", fontWeight: 700, color: Gt.color, background: Gt.bg }}>{t.grade ?? "—"}</span>
           </div>

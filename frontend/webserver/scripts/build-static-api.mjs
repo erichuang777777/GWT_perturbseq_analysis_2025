@@ -55,6 +55,8 @@ write("targets.json", {
     readinessCall: t.readiness ? t.readiness.call : null,
     readinessStage: t.readiness ? t.readiness.stage : null,
     primaryCondition: t.primaryCondition,
+    primaryOutcome: t.primaryOutcome ?? false,
+    primaryOutcomeRank: t.primaryOutcomeRank ?? null,
     href: `/api/v1/targets/${t.gene}.json`,
   })),
 });
@@ -76,7 +78,24 @@ for (const t of targets) {
   for (const d of t.diseases || []) {
     if (!d.id) continue;
     if (!byDisease.has(d.id)) byDisease.set(d.id, { id: d.id, name: d.name, targets: [] });
-    byDisease.get(d.id).targets.push({ gene: t.gene, name: t.name, overallScore: d.overallScore, source: d.source });
+    // Enriched row: a disease→targets query returns actionable detail
+    // (effect, readiness call, grade, DE breadth, primary-outcome flag,
+    // external genetic support), not just a gene name — plus an href to the
+    // full record. Returning bare names is useless to a caller.
+    byDisease.get(d.id).targets.push({
+      gene: t.gene,
+      name: t.name,
+      overallScore: d.overallScore,
+      source: d.source,
+      grade: t.grade,
+      effect: t.effect,
+      fdr: t.fdr,
+      readinessCall: t.readiness ? t.readiness.call : null,
+      nTotalDeGenes: t.nTotalDeGenes ?? null,
+      primaryOutcome: t.primaryOutcome ?? false,
+      gwasTopImmuneScore: t.externalEvidence?.gwas?.topImmuneGAScore ?? null,
+      href: `/api/v1/targets/${t.gene}.json`,
+    });
   }
 }
 const diseaseIndex = [];

@@ -6,11 +6,13 @@ import FigureModal from "./gallery/FigureModal";
 import StructureModal from "./gallery/StructureModal";
 import PageReferences from "../components/ui/PageReferences";
 import { T, plddtColor, type Lang } from "./gallery/i18n";
+import { useStore } from "../store/store";
 
 const ACCENT = "#5b3fb4";
 type Tab = "figures" | "structures";
 
 export default function Gallery() {
+  const { setState } = useStore();
   const [data, setData] = useState<GalleryData | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   // Portal is English-only (delivery requirement) — no language switcher.
@@ -26,23 +28,32 @@ export default function Gallery() {
 
   const t = T[lang];
 
+  // Only primary-placement charts appear in the main gallery. Supplement
+  // charts live in the Docs → Supplementary tab; archived charts are retired.
+  const primaryCharts = useMemo(
+    () => (data ? data.charts.filter((c) => c.placement === "primary") : []),
+    [data],
+  );
+
   // Group by the canonical English family label.
   const families = useMemo(() => {
-    if (!data) return [] as { key: string; label: string }[];
-    const keys = Array.from(new Set(data.charts.map((c) => c.en.family))).sort();
+    const keys = Array.from(new Set(primaryCharts.map((c) => c.en.family))).sort();
     return keys.map((k) => ({ key: k, label: k }));
-  }, [data]);
+  }, [primaryCharts]);
 
   const shownCharts = useMemo(() => {
-    if (!data) return [];
-    return family === "__all__" ? data.charts : data.charts.filter((c) => c.en.family === family);
-  }, [data, family]);
+    return family === "__all__" ? primaryCharts : primaryCharts.filter((c) => c.en.family === family);
+  }, [primaryCharts, family]);
 
   if (status === "loading") return <InlineScreen>Loading gallery…</InlineScreen>;
   if (status === "error" || !data) return <InlineScreen>Couldn't load the gallery catalog.</InlineScreen>;
 
   return (
     <main style={{ flex: 1, maxWidth: "1280px", width: "100%", margin: "0 auto", padding: "34px 28px 70px" }}>
+      <div style={{ display: "flex", gap: "4px", marginBottom: "18px", background: "#f2f0f9", borderRadius: "9px", padding: "3px", width: "fit-content" }}>
+        <span className="navlink" onClick={() => setState({ view: "figures" })} style={{ padding: "6px 16px", borderRadius: "7px", fontSize: "12px", fontWeight: 600, color: "#5b4a86", background: "transparent" }}>Interactive figures</span>
+        <span className="navlink" style={{ padding: "6px 16px", borderRadius: "7px", fontSize: "12px", fontWeight: 600, color: "#fff", background: ACCENT }}>Gallery (EDA)</span>
+      </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", flexWrap: "wrap" }}>
         <div style={{ maxWidth: "760px" }}>
           <h1 style={{ fontSize: "30px", fontWeight: 700, letterSpacing: "-.8px", margin: "0 0 10px" }}>{t.heading}</h1>
@@ -53,7 +64,7 @@ export default function Gallery() {
       <div style={{ display: "flex", gap: "8px", margin: "24px 0 18px" }}>
         {(["figures", "structures"] as Tab[]).map((tk) => {
           const active = tab === tk;
-          const n = tk === "figures" ? data.charts.length : data.structures.length;
+          const n = tk === "figures" ? primaryCharts.length : data.structures.length;
           return (
             <button
               key={tk}

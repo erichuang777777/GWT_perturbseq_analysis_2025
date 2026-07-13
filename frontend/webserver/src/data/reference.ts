@@ -48,19 +48,42 @@ export const RED_FLAG_LABELS: Record<string, string> = {
 
 // Weight presets re-order the researcher's VIEW of the real evidence; they
 // never change the evidence itself or the (rule-based, real) readiness call.
+// Every preset carries a "breadth" weight (Task 3's 6th axis): existing
+// presets set it to 0, and the dedicated "Breadth-led" preset weights it
+// alone so the 15 breadth-selected primary-outcome targets rise to the top.
 export const WPRESETS: Record<string, Record<string, number>> = {
-  Balanced: { stat: 20, robust: 20, safety: 20, popgen: 20, external: 20 },
-  "Genetics-led": { stat: 15, robust: 10, safety: 15, popgen: 30, external: 30 },
-  "Safety-first": { stat: 15, robust: 25, safety: 35, popgen: 15, external: 10 },
-  "Signal-first": { stat: 40, robust: 25, safety: 15, popgen: 10, external: 10 },
+  Balanced: { stat: 20, robust: 20, safety: 20, popgen: 20, external: 20, breadth: 0 },
+  "Genetics-led": { stat: 15, robust: 10, safety: 15, popgen: 30, external: 30, breadth: 0 },
+  "Safety-first": { stat: 15, robust: 25, safety: 35, popgen: 15, external: 10, breadth: 0 },
+  "Signal-first": { stat: 40, robust: 25, safety: 15, popgen: 10, external: 10, breadth: 0 },
+  // Breadth alone (all other axes 0) — the axis the 15 primary-outcome
+  // targets were selected on. With ties broken by raw DE-gene breadth (see
+  // lib/logic.ts rankedTargets), all 15 occupy the top of the table.
+  "Breadth-led": { stat: 0, robust: 0, safety: 0, popgen: 0, external: 0, breadth: 50 },
 };
 
-export const WKEYS: { k: string; label: string; short: string; color: string }[] = [
-  { k: "stat", label: "Statistical", short: "Stat", color: "#1a5fb4" },
-  { k: "robust", label: "Robustness", short: "Robust", color: "#0d7d5a" },
-  { k: "safety", label: "Safety", short: "Safety", color: "#b7791f" },
-  { k: "popgen", label: "Pop-gen", short: "Pop-gen", color: "#6b40b8" },
-  { k: "external", label: "External", short: "Extern", color: "#c0503f" },
+// Per-preset hover tooltips (Task 2 / 3).
+export const WPRESET_TIPS: Record<string, string> = {
+  Balanced: "Even weight across all axes (20/20/20/20/20; breadth 0) — no axis is privileged.",
+  "Genetics-led": "Weights human genetics: population-genetics constraint (pop-gen) and Open Targets disease-association most heavily.",
+  "Safety-first": "Weights the safety axis most heavily — surfaces targets with the fewest red flags, liabilities and constraint concerns first.",
+  "Signal-first": "Weights the statistical (on-target effect-size) axis most heavily — surfaces the strongest perturbation effects first.",
+  "Breadth-led": "Weights downstream DE-gene breadth alone — the axis the 15 primary-outcome targets were selected on; it floats them to the top of the table.",
+};
+
+// The 5 real sub-score axes + the new breadth axis (Task 3). `tip` is the
+// exact hover definition shown in the Explorer weight panel (Task 2).
+export const WKEYS: { k: string; label: string; short: string; color: string; tip: string }[] = [
+  { k: "stat", label: "Statistical", short: "Stat", color: "#1a5fb4", tip: "On-target effect size (score 8–99): |log2FC| from 0–40 maps linearly onto the score; effects above 40 are capped." },
+  { k: "robust", label: "Robustness", short: "Robust", color: "#0d7d5a", tip: "Cross-donor reproducibility (score 5–99): mean cross-donor correlation ×100. When correlation is missing, the replicate-pass flag substitutes (pass → 50, fail → 20)." },
+  { k: "safety", label: "Safety", short: "Safety", color: "#b7791f", tip: "Descriptive safety (score 5–95): from a base of 60, −15 per pipeline red flag, −10 per Open Targets safety liability, −15 for an off-target flag, −10 for high gnomAD constraint (+10 for low)." },
+  { k: "popgen", label: "Pop-gen", short: "Pop-gen", color: "#6b40b8", tip: "gnomAD LoF-constraint tier (discrete): high 88 / moderate 60 / low 32 / unknown 50. LoF-intolerance = depletion of loss-of-function variants in the population." },
+  // RENAMED from "External": this axis is the Open Targets disease-ASSOCIATION
+  // score, which is DISTINCT from the GWAS/STRING/HIV external revalidation
+  // shown in the Dossier's External-corroboration panel. Tooltip makes that
+  // distinction explicit.
+  { k: "external", label: "Disease association (Open Targets)", short: "Disease assoc.", color: "#c0503f", tip: "Open Targets overall disease-association score (score 0–99): the maximum across this gene's associated diseases, ×100. This is disease-association evidence — distinct from the independent GWAS / STRING / HIV external validation shown in the Dossier's External-corroboration panel." },
+  { k: "breadth", label: "Breadth", short: "Breadth", color: "#5b3fb4", tip: "Downstream DE-gene breadth (score 5–99, log-scaled): the axis the 15 primary-outcome targets were selected on. log10(nTotalDeGenes+1) scaled against the p99 breadth (≈2172 genes) and capped, so a few very-broad outliers don't flatten the scale." },
 ];
 
 // ---------- figure atlas ----------
@@ -71,8 +94,7 @@ export const WKEYS: { k: string; label: string; short: string; color: string }[]
 // "unavailable" panel for it rather than fabricating positions.
 export const FIGURES: Figure[] = [
   { id: "volcano", num: "S6", title: "Perturbation effect volcano", cat: "Differential expression", src: "3_DE_analysis/DE_results_figure.ipynb", desc: "Genome-scale on-target knockdown effect per gene — effect size against statistical significance, per culture condition. Positive and negative regulators separate by direction; move the FDR threshold to re-call significance." },
-  { id: "umap", num: "3A", title: "Functional clustering (UMAP)", cat: "Functional interaction", src: "6_functional_interaction/cluster_plot.ipynb", desc: "Regulators embedded by downstream transcriptional similarity and grouped into functional clusters. This repo does not ship the 2D embedding coordinates behind this panel, so it is shown as an honest \"unavailable\" state rather than fabricated positions — real cluster membership is instead visible in the condition-specificity heatmap." },
-  { id: "heatmap", num: "3B", title: "Cluster condition-specificity", cat: "Functional interaction", src: "6_functional_interaction/condition_specificity.ipynb", desc: "Intra-cluster correlation of each of the 112 co-regulation clusters, per culture condition — how tightly a cluster's members move together, and whether that changes with stimulation." },
+  { id: "heatmap", num: "3B", title: "Cluster condition-specificity", cat: "Functional interaction", src: "src/6_functional_interaction/results/clustering_condition_specificity.csv", img: "flagship/fig_condition_specificity.png", desc: "Intra-cluster correlation of each of the 112 co-regulation clusters, per culture condition. The per-condition mean is near-identical across Rest / Stim 8 hr / Stim 48 hr (0.237 / 0.239 / 0.229), so a naïve per-condition view looks flat — but per cluster the conditions diverge (45/112 span >0.15). Clusters are sorted by condition-specificity (68/112 across-condition stable; 44 condition-specific), and the right panel centers each cluster on its own mean to expose which condition each specific cluster tightens in." },
   { id: "cytokine", num: "2A", title: "Cytokine regulators", cat: "Cytokine regulators", src: "5_cytokine_regulators/cytokine_regulators_overview.ipynb", desc: "The strongest positive and negative regulators of a selected cytokine (top/bottom 12 by signed effect, among significant hits), ranked by effect. Pick a cytokine to re-rank." },
   { id: "polar", num: "4C", title: "Th1 / Th2 polarization", cat: "Polarization signatures", src: "4_polarization_signatures/polarization_signature.ipynb", desc: "Each of 3,861 genes modeled in both states, placed on the Th1↔Th2 polarization axis (Th2 − Th1 coefficient) against the magnitude of its effect. Hover for the gene." },
   { id: "gwas", num: "7", title: "Autoimmune GWAS enrichment", cat: "Disease genetics", src: "6_functional_interaction/autoimmune_analysis/opentargets_autoimmune_analysis.ipynb", desc: "Enrichment of autoimmune-disease GWAS genes across the 112 functional regulator clusters (Open Targets). Choose a disease; the dashed line marks nominal significance (-log10 P = 1.3)." },

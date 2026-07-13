@@ -102,6 +102,24 @@ CACHE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_cache"
 READINESS_CACHE = CACHE_DIR / "readiness_full.parquet"
 ANNOTATED_CACHE = CACHE_DIR / "concept_annotated_full.parquet"
 
+# ---------- Level-4 external revalidation tracks (per-target, independent of
+# the readiness engine) -- three orthogonal external corroboration sources
+# joined onto each target as `externalEvidence` (null sub-keys when a track
+# has no row for that gene; honest "no external hit", never a fabricated 0).
+#   track_a  Open Targets GWAS genetic-association re-check (55 targets)
+#   track_b  STRING known-partner recovery in the CD4 downstream set (15)
+#   track_c  GEO GSE318876 independent CRISPRa HIV screen concordance (1,235)
+# See docs/mvp-research/level4_external_validation/LEVEL4_EXTERNAL_VALIDATION.md
+L4_DIR = REPO_ROOT / "docs" / "mvp-research" / "level4_external_validation"
+TRACK_A_CSV = L4_DIR / "track_a_gwas_genetic_association.csv"
+TRACK_B_CSV = L4_DIR / "track_b_string_partner_recovery.csv"
+TRACK_C_CSV = L4_DIR / "track_c_gse318876_target_evidence.csv"
+
+# The 15 primary-outcome targets — the server's headline result, selected by
+# trans-effect (downstream DE) breadth ranking. Read from the repo's own
+# shortlist file rather than hard-coded, so it stays in sync with the source.
+SHORTLIST_CSV = REPO_ROOT / "docs" / "mvp-research" / "candidate_shortlist_top15.csv"
+
 # Minimum best-condition statistical_evidence_grade for a gene to be included,
 # UNION any gene (any grade) whose primary-condition readiness_call is
 # "advance" or "watchlist" — see README's Data section.
@@ -175,6 +193,101 @@ def parse_score(v):
         return v
 
 
+def _clean_str(v):
+    """CSV cell -> trimmed str or None (empty / NaN / 'nan' -> None)."""
+    if v is None:
+        return None
+    try:
+        if pd.isna(v):
+            return None
+    except (TypeError, ValueError):
+        pass
+    s = str(v).strip()
+    return s if s and s.lower() != "nan" else None
+
+
+def load_external_tracks() -> dict[str, dict]:
+    """Build a per-gene externalEvidence dict from the three Level-4 tracks.
+
+    Returns { GENE: {"gwas": {...}|None, "string": {...}|None, "hiv": {...}|None} }.
+    Every sub-key is present only when that track actually has a row for the
+    gene; otherwise it's None (honest "no external hit" — never fabricated).
+    A gene absent from all three tracks does not appear in the dict at all,
+    so the export emits externalEvidence: null for it.
+    """
+    out: dict[str, dict] = {}
+
+    def slot(gene: str) -> dict:
+        return out.setdefault(gene, {"gwas": None, "string": None, "hiv": None})
+
+    # track_a — Open Targets GWAS genetic-association re-check (55 targets)
+    if TRACK_A_CSV.exists():
+        ta = pd.read_csv(TRACK_A_CSV)
+        for _, r in ta.iterrows():
+            g = _clean_str(r.get("target_gene"))
+            if not g:
+                continue
+            slot(g)["gwas"] = {
+                "topImmuneDisease": _clean_str(r.get("top_immune_disease")),
+                "topImmuneGAScore": nan_to_none(r.get("top_immune_GA_score")),
+                "topAnyDisease": _clean_str(r.get("top_any_disease")),
+                "topAnyGAScore": nan_to_none(r.get("top_any_GA_score")),
+                "nImmuneGeneticAssoc": nan_to_none(r.get("n_immune_genetic_assoc")),
+                "classicAutoimmuneHit": _clean_str(r.get("classic_autoimmune_hit")),
+                "hasClassicAutoimmune": bool(r.get("has_classic_autoimmune"))
+                if not pd.isna(r.get("has_classic_autoimmune"))
+                else None,
+                "footprintClass": _clean_str(r.get("footprint_class")),
+            }
+        print(f"track_a (GWAS): {len(ta)} targets", file=sys.stderr)
+
+    # track_b — STRING known-partner recovery in the CD4 downstream set (15)
+    if TRACK_B_CSV.exists():
+        tb = pd.read_csv(TRACK_B_CSV)
+        for _, r in tb.iterrows():
+            g = _clean_str(r.get("target_gene"))
+            if not g:
+                continue
+            slot(g)["string"] = {
+                "group": _clean_str(r.get("group")),
+                "nKnownPartners": nan_to_none(r.get("n_known_partners")),
+                "nInDownstream": nan_to_none(r.get("n_in_downstream")),
+                "nDownstreamTotal": nan_to_none(r.get("n_downstream_total")),
+                "recoveryFrac": nan_to_none(r.get("recovery_frac")),
+            }
+        print(f"track_b (STRING): {len(tb)} targets", file=sys.stderr)
+
+    # track_c — GEO GSE318876 independent CRISPRa HIV screen (1,235)
+    if TRACK_C_CSV.exists():
+        tc = pd.read_csv(TRACK_C_CSV)
+        for _, r in tc.iterrows():
+            g = _clean_str(r.get("target"))
+            if not g:
+                continue
+            slot(g)["hiv"] = {
+                "hivHitClass": _clean_str(r.get("hiv_hit_class")),
+                "bestLfc": nan_to_none(r.get("best_lfc")),
+                "screen": _clean_str(r.get("screen")),
+                "bestDir": _clean_str(r.get("best_dir")),
+                "inLibrary": bool(r.get("in_library")) if not pd.isna(r.get("in_library")) else None,
+                "inVal55": bool(r.get("in_val55")) if not pd.isna(r.get("in_val55")) else None,
+                "movesInUninfected": bool(r.get("moves_in_uninfected"))
+                if not pd.isna(r.get("moves_in_uninfected"))
+                else None,
+            }
+        print(f"track_c (HIV GSE318876): {len(tc)} targets", file=sys.stderr)
+
+    return out
+
+
+def load_shortlist() -> list[str]:
+    """The 15 primary-outcome (breadth-selected) targets, in shortlist order."""
+    if not SHORTLIST_CSV.exists():
+        return []
+    sl = pd.read_csv(SHORTLIST_CSV)
+    return [g for g in sl["target"].tolist() if isinstance(g, str)]
+
+
 def _cache_is_fresh() -> bool:
     if not (READINESS_CACHE.exists() and ANNOTATED_CACHE.exists()):
         return False
@@ -200,6 +313,16 @@ def main() -> None:
 
     evidence_genes = sorted(p.stem for p in EVIDENCE_DIR.glob("*.json"))
     print(f"Evidence-cache genes ({len(evidence_genes)}) — deep external evidence only for these: {evidence_genes}", file=sys.stderr)
+
+    # Per-target external revalidation (tracks a/b/c) + primary-outcome shortlist.
+    external_by_gene = load_external_tracks()
+    shortlist = load_shortlist()
+    shortlist_set = set(shortlist)
+    print(
+        f"External-evidence tracks cover {len(external_by_gene)} genes; "
+        f"primary-outcome shortlist has {len(shortlist)} targets: {shortlist}",
+        file=sys.stderr,
+    )
 
     # Local (zero-network) UK Biobank lymphocyte-count LoF-burden -- see module docstring.
     burden = load_burden_estimates("lymphocyte_count", path=LYMPHOCYTE_BURDEN_TSV)
@@ -477,6 +600,14 @@ def main() -> None:
             "literature": literature_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
+            # Per-target external corroboration from the three Level-4 tracks.
+            # null when this gene is in none of them (honest "no external hit").
+            "externalEvidence": external_by_gene.get(gene),
+            # True for the 15 breadth-selected primary-outcome targets (the
+            # server's headline result). Rank within the shortlist (1-based)
+            # or None. Foregrounded with a badge across the journey.
+            "primaryOutcome": gene in shortlist_set,
+            "primaryOutcomeRank": (shortlist.index(gene) + 1) if gene in shortlist_set else None,
         })
 
     call_counts = pd.Series([t["readiness"]["call"] for t in targets_out if t["readiness"]]).value_counts().to_dict()

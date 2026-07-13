@@ -77,8 +77,6 @@ export default function Figures() {
   if (S.figureId === "volcano") {
     segControls = [mkSeg("Culture condition", conds, S.figCondition, (k) => ({ figCondition: k }))];
     fdrSlider = true;
-  } else if (S.figureId === "heatmap") {
-    segControls = [mkSeg("Culture condition", conds, S.figCondition, (k) => ({ figCondition: k }))];
   } else if (S.figureId === "cytokine" && status === "ready") {
     // Only cytokines with >=20 significant regulators make it into
     // figures.json (see build_figures_data.py) -- offer exactly that real
@@ -108,7 +106,9 @@ export default function Figures() {
   // fixes elsewhere).
 
   useEffect(() => {
-    if (status === "ready" && panelRef.current) drawFigure(panelRef.current, S);
+    // Static-image figures (figMeta.img) and the UMAP message panel have no
+    // Plotly chart to draw — skip drawFigure so it never touches a detached ref.
+    if (status === "ready" && panelRef.current && !figMeta.img) drawFigure(panelRef.current, S);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, S.figureId, S.figCondition, S.figThresh, S.figCytokine, S.figDisease]);
 
@@ -121,7 +121,11 @@ export default function Figures() {
     <main style={{ flex: 1, display: "flex", maxWidth: "1400px", margin: "0 auto", width: "100%" }}>
       {/* figure rail */}
       <aside style={{ width: "262px", flexShrink: 0, borderRight: "1px solid #e2e5ea", padding: "22px 16px" }}>
-        <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".8px", color: "#8a92a0", textTransform: "uppercase", margin: "4px 6px 12px" }}>Figures</div>
+        <div style={{ display: "flex", gap: "4px", marginBottom: "16px", background: "#f2f0f9", borderRadius: "9px", padding: "3px" }}>
+          <span className="navlink" style={{ flex: 1, textAlign: "center", padding: "6px 0", borderRadius: "7px", fontSize: "11.5px", fontWeight: 600, color: "#fff", background: "#5b3fb4" }}>Interactive</span>
+          <span className="navlink" onClick={() => setState({ view: "gallery" })} style={{ flex: 1, textAlign: "center", padding: "6px 0", borderRadius: "7px", fontSize: "11.5px", fontWeight: 600, color: "#5b4a86", background: "transparent" }}>Gallery (EDA)</span>
+        </div>
+        <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: ".8px", color: "#8a92a0", textTransform: "uppercase", margin: "4px 6px 12px" }}>Interactive figures</div>
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
           {figureRail.map((f) => (
             <div key={f.id} className="navlink" onClick={() => setState({ figureId: f.id })} style={{ display: "flex", alignItems: "center", gap: "11px", padding: "10px 12px", borderRadius: "10px", background: f.bg }}>
@@ -172,7 +176,16 @@ export default function Figures() {
             node between the Plotly-managed div and the plain message div (Plotly
             mutates its element imperatively, e.g. adding the "js-plotly-plot"
             class, which React would otherwise silently carry over on reuse) */}
-        {S.figureId === "umap" ? (
+        {figMeta.img ? (
+          <div key="static-image" style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "16px", background: "#fff", display: "flex", justifyContent: "center" }}>
+            <img
+              src={`${import.meta.env.BASE_URL}${figMeta.img}`}
+              alt={figMeta.title}
+              loading="lazy"
+              style={{ display: "block", maxWidth: "100%", height: "auto", maxHeight: "760px", objectFit: "contain" }}
+            />
+          </div>
+        ) : S.figureId === "umap" ? (
           <div key="umap-message" style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "28px 24px", minHeight: "462px", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ maxWidth: "560px", textAlign: "center", color: "#4a515e", fontSize: "13.5px", lineHeight: 1.6 }}>
               <div style={{ fontSize: "22px", marginBottom: "10px" }}>—</div>
@@ -191,7 +204,8 @@ export default function Figures() {
         <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginTop: "14px", fontSize: "11.5px", color: "#8a92a0", lineHeight: 1.5, maxWidth: "820px" }}>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ⓘ</span>{" "}
           <span>
-            Values are real data extracted from this repo&apos;s pipeline outputs (see each figure&apos;s source). Drag to zoom, double-click to reset, hover for the gene. Descriptive figures never feed any readiness or evidence-grade call.
+            Values are real data extracted from this repo&apos;s pipeline outputs (see each figure&apos;s source).{" "}
+            {figMeta.img ? "This panel is a static, pipeline-rendered figure." : "Drag to zoom, double-click to reset, hover for the gene."} Descriptive figures never feed any readiness or evidence-grade call.
           </span>
         </div>
 

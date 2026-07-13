@@ -16,8 +16,6 @@ export default function Header() {
   });
   const rT = tab(rActive, "#1a5fb4");
   const cT = tab(cActive, "#0d7d5a");
-  const fT = tab(fActive, "#5b3fb4");
-  const gT = tab(gActive, "#5b3fb4");
 
   const slGenes = state.shortlist.filter((g) => TARGETS.find((x) => x.gene === g));
 
@@ -89,16 +87,9 @@ export default function Header() {
         <span
           className="navlink"
           onClick={() => setState({ view: "figures" })}
-          style={{ padding: "7px 13px", borderRadius: "7px", fontSize: "13px", fontWeight: 500, color: fT.color, background: fT.background }}
+          style={{ padding: "7px 13px", borderRadius: "7px", fontSize: "13px", fontWeight: 500, color: (fActive || gActive) ? "#fff" : "#4a515e", background: (fActive || gActive) ? "#5b3fb4" : "transparent" }}
         >
-          Figure atlas
-        </span>
-        <span
-          className="navlink"
-          onClick={() => setState({ view: "gallery" })}
-          style={{ padding: "7px 13px", borderRadius: "7px", fontSize: "13px", fontWeight: 500, color: gT.color, background: gT.background }}
-        >
-          Gallery
+          Figures &amp; Gallery
         </span>
       </nav>
 

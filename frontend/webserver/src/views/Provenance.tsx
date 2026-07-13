@@ -49,6 +49,15 @@ interface ValidationBlock {
 interface Disclosure {
   versions: Record<string, string>;
   coverage: Record<string, unknown> & { note?: string };
+  paper_reference?: {
+    cite?: string;
+    library_size_genes?: number;
+    perturbed_with_trans_effects?: number;
+    perturbed_with_trans_effects_pct?: number;
+    trans_effect_significance?: string;
+    mean_downstream_de_genes?: number;
+    summary?: string;
+  };
   disclaimer: { short: string; long: string };
   principles: { key: string; text: string }[];
   limitations: string[];
@@ -231,7 +240,13 @@ export default function Provenance() {
       {"measured_downstream_genes" in disc.coverage && (
         <p style={{ fontSize: "11.5px", color: "#7a6a3f", background: "#fbf9f2", border: "1px solid #eddfc0", borderRadius: "8px", padding: "9px 12px", lineHeight: 1.5, margin: "10px 0 0" }}>
           <strong>Note on <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>measured_downstream_genes</span> ({String(disc.coverage.measured_downstream_genes)}):</strong>{" "}
-          this figure is the variable axis of the source <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>S3</span> h5ad object and is <strong>not independently reproducible from the CSVs shipped in this repository</strong>, which give 10,271–10,273 significant downstream genes. The small gap reflects the difference between the h5ad var axis and the per-condition significant-gene tables; it is disclosed here rather than silently reconciled.
+          this figure is the variable (measured-gene) axis of the source <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>DE_stats.h5ad</span> object, which lives only in <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>S3</span> and is <strong>not present in this local repository</strong>. The signed-DE tables that <em>are</em> shipped here give 10,271–10,273 <strong>significant</strong> downstream genes. The gap is therefore a data-availability limitation plus the distinction between the h5ad's full measured-gene axis and the per-condition significant-gene tables — <strong>not</strong> a paper-vs-platform definition difference; it is disclosed here rather than silently reconciled.
+        </p>
+      )}
+      {disc.paper_reference && (
+        <p style={{ fontSize: "11.5px", color: "#3f5a7a", background: "#f2f6fb", border: "1px solid #cfe0f0", borderRadius: "8px", padding: "9px 12px", lineHeight: 1.5, margin: "10px 0 0" }}>
+          <strong>Paper reference numbers</strong>{disc.paper_reference.cite ? <> (<span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{disc.paper_reference.cite}</span>)</> : null}:{" "}
+          the source paper reports <strong>{disc.paper_reference.perturbed_with_trans_effects?.toLocaleString()} ({disc.paper_reference.perturbed_with_trans_effects_pct}%)</strong> of perturbed genes with significant trans-effects ({disc.paper_reference.trans_effect_significance}), and a mean of <strong>{disc.paper_reference.mean_downstream_de_genes}</strong> downstream DE genes per perturbation, drawn from a <strong>{disc.paper_reference.library_size_genes?.toLocaleString()}</strong>-gene library. These authoritative figures are shown alongside — not merged into — this portal's own coverage numbers above.
         </p>
       )}
 

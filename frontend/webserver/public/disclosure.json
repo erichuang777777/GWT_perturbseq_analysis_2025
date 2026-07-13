@@ -13,6 +13,7 @@
   "coverage": {
     "targets_in_portal": 7249,
     "genome_total_targets": 11526,
+    "genome_library_size": 12748,
     "de_rows_total": 33983,
     "measured_downstream_genes": 10282,
     "conditions": ["Rest", "Stim8hr", "Stim48hr"],
@@ -21,7 +22,17 @@
     "deep_external_evidence_genes": 21,
     "gnomad_constraint_genes": 11267,
     "evidence_fetched_at": "2026-07-08",
-    "note": "Every target carries real statistics + a real readiness call. Deeper external evidence (drugs / disease associations / clinical trials / constraint) is populated only for the genes the cache covers; every other field shows 'unknown' + a coverage note, never a fabricated zero."
+    "note": "genome_total_targets = 11,526 measured targets, a subset of the 12,748-gene library (genome_library_size = the union of all expressed genes + all TFs). de_rows_total = 33,983 is one row per target x condition (11,086 targets measured in all 3 conditions, 285 in 2, 155 in 1); it is not 11,526 x 3. Every measured target carries real statistics + a real readiness call. Deeper external evidence (drugs / disease associations / clinical trials / constraint) is populated only for the genes the cache covers; every other field shows 'unknown' + a coverage note, never a fabricated zero."
+  },
+  "paper_reference": {
+    "_note": "Authoritative reference figures from the source paper, shown alongside platform coverage numbers.",
+    "cite": "Zhu R., Dann E. et al. 2025, bioRxiv 10.64898/2025.12.23.696273",
+    "library_size_genes": 12748,
+    "perturbed_with_trans_effects": 7807,
+    "perturbed_with_trans_effects_pct": 67,
+    "trans_effect_significance": "FDR<10%, >=3 downstream DE genes, in >=1 condition",
+    "mean_downstream_de_genes": 81.61,
+    "summary": "Per the paper, 7,807 (67%) of perturbed genes had significant trans-effects (FDR<10%, >=3 DE genes, in >=1 condition), with a mean of 81.61 downstream DE genes per perturbation."
   },
   "disclaimer": {
     "short": "Research use only — not clinical software.",

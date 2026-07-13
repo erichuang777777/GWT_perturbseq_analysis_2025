@@ -11,9 +11,18 @@ export interface ChartLang {
   data_explanation: string;
 }
 
+export type ChartPlacement = "primary" | "supplement" | "archive";
+
 export interface GalleryChart {
   id: string;
   group: string;
+  /**
+   * Editorial placement in the portal. "primary" charts appear in the main
+   * gallery; "supplement" charts are moved to the Supplementary (EDA) tab;
+   * "archive" charts are retired and shown in neither. Charts predating this
+   * field are treated as "primary" (see loadGallery normalization).
+   */
+  placement: ChartPlacement;
   img: string;
   en: ChartLang;
   zh: ChartLang;
@@ -62,8 +71,13 @@ export function loadGallery(): Promise<GalleryData> {
       return r.json();
     }),
   ]).then(([charts, structures]) => {
+    // Anything not explicitly tagged is treated as a primary gallery chart.
+    const normalized = (charts as GalleryChart[]).map((c) => ({
+      ...c,
+      placement: (c.placement ?? "primary") as ChartPlacement,
+    }));
     cache = {
-      charts: charts as GalleryChart[],
+      charts: normalized,
       structures: structures as GalleryStructure[],
     };
     return cache;

@@ -85,10 +85,13 @@ export default function Deck() {
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "12px" }}>
           <Tile n="33,983" l="perturbation × condition DE rows" />
-          <Tile n="11,526" l="unique target genes" />
+          <Tile n="11,526" l="measured targets (of 12,748-gene library)" />
           <Tile n="4 × 3" l="donors × culture conditions" />
           <Tile n="M01–20" l="immune concept modules" />
         </div>
+        <p style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5, margin: "10px 0 0" }}>
+          The <strong style={{ color: C.soft }}>33,983</strong> DE rows are one row per target × condition (11,086 targets measured in all 3 conditions, 285 in 2, 155 in 1) — not 11,526 × 3. The 11,526 measured targets are a subset of the paper's 12,748-gene library. In the source paper, <strong style={{ color: C.soft }}>7,807 (67%)</strong> of perturbed genes had significant trans-effects (FDR&lt;10%, ≥3 DE genes, in ≥1 condition), with a mean of <strong style={{ color: C.soft }}>81.61</strong> downstream DE genes per perturbation.
+        </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "14px" }}>
           {["Target cards", "Readiness engine", "Calibration", "External evidence", "Disease translation", "Concept layer M01–M20"].map((c) => (
             <span key={c} style={chip}><b style={{ color: C.blue }}>{c}</b></span>

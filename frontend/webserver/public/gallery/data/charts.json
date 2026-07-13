@@ -2,6 +2,7 @@
   {
     "id": "C1",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/C1.png",
     "en": {
       "title": "Knockdown effect and breadth across stimulation states",
@@ -14,6 +15,7 @@
   {
     "id": "C2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/C2.png",
     "en": {
       "title": "Pseudo-volcano: CD4+ T-cell targets by on-target effect size and DE-gene count",
@@ -26,6 +28,7 @@
   {
     "id": "C3",
     "group": "Core gallery",
+    "placement": "archive",
     "img": "figures/C3.png",
     "en": {
       "title": "QC funnel",
@@ -38,6 +41,7 @@
   {
     "id": "D1",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D1.png",
     "en": {
       "title": "Distribution of Downstream DE Genes Across Three Conditions",
@@ -50,6 +54,7 @@
   {
     "id": "D10",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D10.png",
     "en": {
       "title": "Q-Q Plot: On-Target Effect Size Distribution Across CD4+ T-Cell Conditions",
@@ -62,6 +67,7 @@
   {
     "id": "D2",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D2.png",
     "en": {
       "title": "Box",
@@ -74,6 +80,7 @@
   {
     "id": "D3",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D3.png",
     "en": {
       "title": "Ridgeline",
@@ -86,6 +93,7 @@
   {
     "id": "D4",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D4.png",
     "en": {
       "title": "Histogram",
@@ -98,6 +106,7 @@
   {
     "id": "D5",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D5.png",
     "en": {
       "title": "ECDF",
@@ -110,6 +119,7 @@
   {
     "id": "D6",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D6.png",
     "en": {
       "title": "On-target effect size across conditions for 15 prioritized targets",
@@ -122,6 +132,7 @@
   {
     "id": "D7",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/D7.png",
     "en": {
       "title": "On-Target Effect Size Distribution Across Conditions",
@@ -134,6 +145,7 @@
   {
     "id": "D8",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/D8.png",
     "en": {
       "title": "Raincloud",
@@ -146,6 +158,7 @@
   {
     "id": "D9",
     "group": "Core gallery",
+    "placement": "supplement",
     "img": "figures/D9.png",
     "en": {
       "title": "1D KDE",
@@ -158,6 +171,7 @@
   {
     "id": "H1",
     "group": "Core gallery",
+    "placement": "archive",
     "img": "figures/H1.png",
     "en": {
       "title": "Marimekko Mosaic Treemap of DE-Stat Rows by Culture Condition and On-Target Effect",
@@ -170,6 +184,7 @@
   {
     "id": "H2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/H2.png",
     "en": {
       "title": "Sunburst",
@@ -182,6 +197,7 @@
   {
     "id": "H3",
     "group": "Core gallery",
+    "placement": "archive",
     "img": "figures/H3.png",
     "en": {
       "title": "Icicle",
@@ -194,6 +210,7 @@
   {
     "id": "H4",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/H4.png",
     "en": {
       "title": "Sequential QC-Filtering Funnel for CD4+ T-Cell Target Discovery",
@@ -206,6 +223,7 @@
   {
     "id": "H5",
     "group": "Core gallery",
+    "placement": "archive",
     "img": "figures/H5.png",
     "en": {
       "title": "Funnel",
@@ -218,6 +236,7 @@
   {
     "id": "H6",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/H6.png",
     "en": {
       "title": "Parallel-coordinates plot of CD4+ T-cell activation metrics across stimulation conditions",
@@ -230,6 +249,7 @@
   {
     "id": "H7",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/H7.png",
     "en": {
       "title": "CD4+ T-Cell Target Perturbations: Four-Dimensional Classification by Culture, On-Target Effect, DE-Gene Grade, and Filter Status",
@@ -242,6 +262,7 @@
   {
     "id": "M1",
     "group": "Core gallery",
+    "placement": "archive",
     "img": "figures/M1.png",
     "en": {
       "title": "Pearson Correlation Heatmap of CD4+ T-Cell Target Discovery Metrics",
@@ -254,6 +275,7 @@
   {
     "id": "M10",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M10.png",
     "en": {
       "title": "Top DE Gene Targets across TCR Stimulation Conditions",
@@ -266,6 +288,7 @@
   {
     "id": "M2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M2.png",
     "en": {
       "title": "Pearson Correlation Matrix of CD4+ T-Cell Target Features",
@@ -278,9 +301,10 @@
   {
     "id": "M3",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M3.png",
     "en": {
-      "title": "Hexbin Density: Cells Assayed vs. DE Gene Breadth Across CD4+ Targets",
+      "title": "QC: is DE breadth driven by cell count?",
       "family": "Matrices",
       "description": "Hexbin density plot mapping cells assayed per target (X-axis, log scale) against total differentially expressed genes per target (Y-axis, log scale). Hexagon bins are colored by target density (log scale). A dashed horizontal line indicates the median of 2 DE genes, revealing the distribution of transcriptomic perturbation breadth relative to experimental depth.",
       "data_explanation": "The plot reveals how experimental sample size (cells assayed) correlates with the transcriptomic scope (DE gene count) of CD4+ T-cell target perturbations. Targets clustered near the median DE threshold inform which candidate targets achieve focused, reproducible transcriptomic effects—a key criterion for selecting targets with interpretable and targetable mechanisms in CD4+ biology."
@@ -290,9 +314,10 @@
   {
     "id": "M4",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M4.png",
     "en": {
-      "title": "Density-colored scatter: knockdown strength vs response breadth",
+      "title": "Biology: does knockdown strength predict response breadth?",
       "family": "Matrices",
       "description": "Scatter of on-target effect size (x) vs total downstream DE genes (y, log), with each point colored by local point density ('Targets at this density', viridis). Not a continuous KDE/contour surface — the shading is a per-point density count. Stronger knockdown (more negative x) coincides with broader response.",
       "data_explanation": "Same as M3 two-column layout, suitable for medium point counts."
@@ -302,6 +327,7 @@
   {
     "id": "M5",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M5.png",
     "en": {
       "title": "Pairwise structure of DE metrics: effect size decouples from response breadth",
@@ -314,6 +340,7 @@
   {
     "id": "M6",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M6.png",
     "en": {
       "title": "×",
@@ -326,6 +353,7 @@
   {
     "id": "M7",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M7.png",
     "en": {
       "title": "Target Cell Assay Coverage vs. Differential Expression: Joint Distribution",
@@ -338,6 +366,7 @@
   {
     "id": "M8",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M8.png",
     "en": {
       "title": "Shortlist genes group by their three-condition knockdown profile",
@@ -350,6 +379,7 @@
   {
     "id": "M9",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/M9.png",
     "en": {
       "title": "Contour",
@@ -362,6 +392,7 @@
   {
     "id": "N1",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N1.png",
     "en": {
       "title": "STRING",
@@ -374,6 +405,7 @@
   {
     "id": "N2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N2.png",
     "en": {
       "title": "Chord",
@@ -386,6 +418,7 @@
   {
     "id": "N3",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N3.png",
     "en": {
       "title": "Three-Set Euler Diagram: Significant Genes, Gating Filter, and Off-Target Genes",
@@ -398,6 +431,7 @@
   {
     "id": "N4",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N4.png",
     "en": {
       "title": "Downstream DE Gene Count by Target Gene and Stimulation Condition",
@@ -410,6 +444,7 @@
   {
     "id": "N5",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N5.png",
     "en": {
       "title": "CD4+ T-cell knockdown effect trajectories across stimulation time course",
@@ -422,6 +457,7 @@
   {
     "id": "N6",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N6.png",
     "en": {
       "title": "CD4+ T-cell targets by differentially expressed gene count",
@@ -434,6 +470,7 @@
   {
     "id": "N7",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/N7.png",
     "en": {
       "title": "UpSet plot",
@@ -446,6 +483,7 @@
   {
     "id": "R1",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R1.png",
     "en": {
       "title": "14 of 15 Shortlisted CD4+ T-Cell Targets: Downstream Gene Dysregulation Breadth",
@@ -458,6 +496,7 @@
   {
     "id": "R10",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R10.png",
     "en": {
       "title": "Dot-plot matrix (scanpy)",
@@ -470,6 +509,7 @@
   {
     "id": "R2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R2.png",
     "en": {
       "title": "Diverging bar",
@@ -482,6 +522,7 @@
   {
     "id": "R3",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R3.png",
     "en": {
       "title": "Distribution of knockdown response magnitudes across REST, 8-hour, and 48-hour stimulation conditions",
@@ -494,6 +535,7 @@
   {
     "id": "R4",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R4.png",
     "en": {
       "title": "Waterfall",
@@ -506,6 +548,7 @@
   {
     "id": "R5",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R5.png",
     "en": {
       "title": "CD4+ T-Cell Target Discovery: Downstream Gene Breadth vs. On-Target Effect Size",
@@ -518,6 +561,7 @@
   {
     "id": "R6",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R6.png",
     "en": {
       "title": "Grouped bar",
@@ -530,6 +574,7 @@
   {
     "id": "R7",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R7.png",
     "en": {
       "title": "Mean On-Target Effect Size by Stimulation Condition",
@@ -542,6 +587,7 @@
   {
     "id": "R8",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R8.png",
     "en": {
       "title": "Point plot",
@@ -554,6 +600,7 @@
   {
     "id": "R9",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/R9.png",
     "en": {
       "title": "MA plot",
@@ -566,6 +613,7 @@
   {
     "id": "V1",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V1.png",
     "en": {
       "title": "PCA of CD4+ T-cell targets by mean effect magnitude",
@@ -578,6 +626,7 @@
   {
     "id": "V2",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V2.png",
     "en": {
       "title": "t-SNE",
@@ -590,6 +639,7 @@
   {
     "id": "V3",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V3.png",
     "en": {
       "title": "UMAP",
@@ -602,6 +652,7 @@
   {
     "id": "V4",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V4.png",
     "en": {
       "title": "Curated targets differ in how knockdown magnitude shifts with stimulation",
@@ -614,6 +665,7 @@
   {
     "id": "V5",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V5.png",
     "en": {
       "title": "Curated targets ranked by knockdown magnitude, split by condition",
@@ -626,6 +678,7 @@
   {
     "id": "V6",
     "group": "Core gallery",
+    "placement": "primary",
     "img": "figures/V6.png",
     "en": {
       "title": "Effect size and DE-gene count load on separate principal axes",
@@ -638,6 +691,7 @@
   {
     "id": "A1",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A1.png",
     "en": {
       "title": "CD4+ Perturb-seq Context-Specific DE Benchmark: PR Curve, ROC Curve, and Regulator Ranking",
@@ -650,6 +704,7 @@
   {
     "id": "A2",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A2.png",
     "en": {
       "title": "Loss-intolerant genes drop out below the cell-count gate",
@@ -662,6 +717,7 @@
   {
     "id": "A3",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A3.png",
     "en": {
       "title": "Immune drug-delivery decision layer: turning 'important' into 'which drug can we make today'",
@@ -674,6 +730,7 @@
   {
     "id": "A4",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A4.png",
     "en": {
       "title": "Kinetic archetypes and clinical avoid-list for CD4+ T-cell targets",
@@ -686,6 +743,7 @@
   {
     "id": "A5",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A5.png",
     "en": {
       "title": "Threshold Sensitivity Analysis for CD4+ T-cell Perturbation Target Discovery",
@@ -698,6 +756,7 @@
   {
     "id": "A6",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A6.png",
     "en": {
       "title": "How we know a CD4+ T-cell Perturb-seq target is real",
@@ -710,6 +769,7 @@
   {
     "id": "A7",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A7.png",
     "en": {
       "title": "CD4+ T-cell Perturb-seq external validation results",
@@ -722,6 +782,7 @@
   {
     "id": "A8",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A8.png",
     "en": {
       "title": "Phenotype-signed ranking and pathway validation of CD4+ T-cell perturbation targets",
@@ -734,6 +795,7 @@
   {
     "id": "A9",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A9.png",
     "en": {
       "title": "GB10 Signed Matrix vs LINCS - Directional Agreement and Rank Correlation (4 Targets, Non-T-Cell Lines)",
@@ -746,6 +808,7 @@
   {
     "id": "A10",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A10.png",
     "en": {
       "title": "Evidence Coverage Improvement: gnomAD Integration for CD4+ T-cell Targets",
@@ -758,6 +821,7 @@
   {
     "id": "A11",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A11.png",
     "en": {
       "title": "The Developer–User Gap: Six Blindspots in Perturbase",
@@ -770,6 +834,7 @@
   {
     "id": "A12",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A12.png",
     "en": {
       "title": "One Dataset, Two Opposing First Impressions",
@@ -782,6 +847,7 @@
   {
     "id": "A13",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A13.png",
     "en": {
       "title": "Top CD4+ T-cell Perturbation Targets by DE Gene Count",
@@ -794,6 +860,7 @@
   {
     "id": "A14",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A14.png",
     "en": {
       "title": "Context-Specific Regulators: Baseline Correction Diagnostic",
@@ -806,6 +873,7 @@
   {
     "id": "A15",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A15.png",
     "en": {
       "title": "Perturb-seq Platform Validation: AUROC, Survivorship Bias Filtering, and Context-Specific Regulation",
@@ -818,6 +886,7 @@
   {
     "id": "A16",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A16.png",
     "en": {
       "title": "Integrated Perturbation Analysis: Curation Pipeline and Context-Specific Target Effects",
@@ -830,6 +899,7 @@
   {
     "id": "A17",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A17.png",
     "en": {
       "title": "Signed-DE application & external validation (7-panel)",
@@ -842,6 +912,7 @@
   {
     "id": "A18",
     "group": "Analysis & publication",
+    "placement": "primary",
     "img": "figures/A18.png",
     "en": {
       "title": "Downstream Reactome pathway enrichment for 5 flagship perturbations",

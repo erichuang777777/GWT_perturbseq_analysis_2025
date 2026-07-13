@@ -108,9 +108,27 @@ export default function Clinical() {
           const nTrials = t.clinicalTrials.length;
           const risk = clinicalRisk(t);
           const rt = RISK_TIERS[risk.key];
+          // External genetic support (independent Open Targets GWAS re-check,
+          // Level-4 track A). Shown honestly: a real disease + GA score when
+          // present, an explicit "not re-checked" when the gene is absent.
+          const gwas = t.externalEvidence?.gwas ?? null;
+          const gaScore = gwas?.topImmuneGAScore ?? null;
+          const hasGwas = gaScore != null && gaScore > 0;
           return {
             gene: t.gene,
             name: t.name,
+            primary: t.primaryOutcome,
+            gwasLabel: hasGwas
+              ? `GWAS ${gaScore!.toFixed(2)}${gwas?.topImmuneDisease ? " · " + gwas.topImmuneDisease : ""}`
+              : gwas
+                ? "no immune GWAS association"
+                : "not GWAS-re-checked",
+            gwasHas: hasGwas,
+            gwasTitle: hasGwas
+              ? `Independent Open Targets GWAS genetic-association re-check: top immune-disease GA score ${gaScore!.toFixed(2)}${gwas?.topImmuneDisease ? " (" + gwas.topImmuneDisease + ")" : ""}${gwas?.hasClassicAutoimmune ? " · classic-autoimmune hit" : ""}`
+              : gwas
+                ? "Re-checked in Open Targets GWAS genetics but no immune disease association found"
+                : "Not among the 55 targets re-checked in the Level-4 Open Targets GWAS track",
             moduleId: t.module?.id ?? "—",
             moduleShort: t.module ? t.module.name.replace(/_/g, " ") : "no assigned module",
             assoc: assoc.overallScore != null ? assoc.overallScore.toFixed(2) : "unknown",
@@ -353,8 +371,16 @@ export default function Clinical() {
                       <span title={m.riskNote} style={{ display: "inline-block", padding: "4px 10px", borderRadius: "7px", fontSize: "11.5px", fontWeight: 700, color: m.riskColor, background: m.riskBg }}>{m.riskLabel}</span>
                     </div>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                        <span style={{ fontSize: "14px", fontWeight: 600, fontFamily: "'IBM Plex Mono', monospace" }}>{m.gene}</span>
+                        {m.primary && (
+                          <span title="Primary-outcome target (breadth-selected shortlist of 15)" style={{ fontSize: "9px", fontWeight: 700, color: "#fff", background: "#5b3fb4", padding: "1px 5px", borderRadius: "20px" }}>★</span>
+                        )}
+                      </div>
                       <div style={{ fontSize: "11.5px", color: "#8a92a0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.name}</div>
+                      <div title={m.gwasTitle} style={{ fontSize: "10.5px", marginTop: "2px", color: m.gwasHas ? "#6b40b8" : "#b0b6c0", fontFamily: m.gwasHas ? "inherit" : "'IBM Plex Mono', monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {m.gwasHas ? "⌁ " : ""}{m.gwasLabel}
+                      </div>
                     </div>
                     <div style={{ minWidth: 0, fontSize: "12.5px", color: "#4a515e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={`${m.moduleId} ${m.moduleShort}`}>
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#9aa1ad", fontSize: "10.5px" }}>{m.moduleId}</span> {m.moduleShort}

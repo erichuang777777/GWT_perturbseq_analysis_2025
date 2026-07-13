@@ -5,10 +5,10 @@ const API_VERSION = "v1";
 // not actually produce.
 const apiEndpoints = [
   { path: "/meta.json", desc: "Dataset build stamp, target/module counts, and this endpoint list." },
-  { path: "/targets.json", desc: "Slim index of all screened targets with rank, readiness call, grade and effect size." },
-  { path: "/targets/{gene}.json", desc: "Full record for one target — statistical evidence, readiness-engine domains, tractability and module membership." },
+  { path: "/targets.json", desc: "Index of all screened targets — each row carries grade, effect size, FDR, readiness call/stage, primary-condition and primary-outcome flag, plus an href to the full record." },
+  { path: "/targets/{gene}.json", desc: "Full record for one target — statistical evidence, readiness-engine domains, tractability, module membership, disease links, clinical trials, gnomAD constraint, and per-target GWAS / STRING / HIV external corroboration." },
   { path: "/diseases.json", desc: "Real disease associations (MONDO id, name, target count) aggregated from Open Targets, most-referenced first." },
-  { path: "/diseases/{sanitizedId}/targets.json", desc: "Targets matched to a disease context, ranked by real Open Targets association score." },
+  { path: "/diseases/{sanitizedId}/targets.json", desc: "Targets matched to a disease context, ranked by Open Targets association score — each row carries grade, effect, readiness call, DE breadth, GWAS immune score and an href to the full record." },
   { path: "/popgen/{gene}.json", desc: "Population-genetics constraint metrics (gnomAD-derived) for one gene." },
 ];
 
@@ -25,8 +25,20 @@ const apiSample = `{
     "gradeNum": 4,
     "effect": 14.10,
     "fdr": 1e-16,
+    "nCells": 1204,
+    "nTotalDeGenes": 173,
+    "crossDonorCorrelationMean": 0.71,
     "primaryCondition": "Stim8hr",
-    "readiness": { "call": "advance", "stage": "R4" }
+    "primaryOutcome": true,
+    "readiness": { "call": "advance", "stage": "R3" },
+    "diseases": [ { "id": "EFO_0000685", "name": "rheumatoid arthritis", "overallScore": 0.34 } ],
+    "clinicalTrials": [ /* real ClinicalTrials.gov records */ ],
+    "gnomad": { "constraintTier": "moderate" },
+    "externalEvidence": {
+      "gwas":   { "topImmuneDisease": "...", "topImmuneGAScore": 0.62 },
+      "string": { "nKnownPartners": 173, "nInDownstream": 69, "recoveryFrac": 0.40 },
+      "hiv":    { "hivHitClass": "...", "bestLfc": 1.2, "screen": "GSE318876" }
+    }
   }
 }`;
 

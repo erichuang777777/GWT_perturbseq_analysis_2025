@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { renderMarkdown } from "../lib/markdown";
+import { galleryAsset, loadGallery, type GalleryChart } from "../data/gallery";
 
 // Documentation hub. Surfaces the project's user-facing docs entirely in
 // English: an authored getting-started / plain-language / researcher guide
@@ -41,6 +42,7 @@ export default function Docs() {
   const [mdErr, setMdErr] = useState<string | null>(null);
   const [supp, setSupp] = useState<SuppData | null>(null);
   const [suppErr, setSuppErr] = useState<string | null>(null);
+  const [suppFigs, setSuppFigs] = useState<GalleryChart[] | null>(null);
 
   const base = import.meta.env.BASE_URL;
 
@@ -79,6 +81,14 @@ export default function Docs() {
       .then(setSupp)
       .catch((e) => setSuppErr(String(e)));
   }, [tab, supp, base]);
+
+  // Supplement-placement gallery charts also surface under this tab.
+  useEffect(() => {
+    if (tab !== "supplementary" || suppFigs) return;
+    loadGallery()
+      .then((g) => setSuppFigs(g.charts.filter((c) => c.placement === "supplement")))
+      .catch(() => setSuppFigs([]));
+  }, [tab, suppFigs]);
 
   const tabs: { k: Tab; label: string }[] = useMemo(
     () => [
@@ -231,6 +241,30 @@ export default function Docs() {
                   ))}
                 </div>
               </div>
+
+              {/* supplement-placement gallery figures */}
+              {suppFigs && suppFigs.length > 0 && (
+                <div style={{ marginBottom: "24px" }}>
+                  <div style={{ fontSize: "13px", fontWeight: 700, margin: "0 0 4px" }}>Supplementary figures</div>
+                  <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "12px", lineHeight: 1.5 }}>
+                    Alternate views of the primary-gallery distributions, retained here as supporting evidence.
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "16px" }}>
+                    {suppFigs.map((c) => (
+                      <div key={c.id} style={card}>
+                        <div style={{ aspectRatio: "4 / 3", background: "#fafafb", border: "1px solid #eef0f3", borderRadius: "8px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>
+                          <img src={galleryAsset(c.img)} alt={c.en.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "3px" }}>
+                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10.5px", fontWeight: 600, color: ACCENT }}>{c.id}</span>
+                          <span style={{ fontSize: "10.5px", color: "#9aa1ad" }}>{c.en.family}</span>
+                        </div>
+                        <div style={{ fontSize: "12.5px", fontWeight: 600, color: "#1a1d24", lineHeight: 1.35 }}>{c.en.title}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* embedded tables */}
               {supp.tables.map((t) => (

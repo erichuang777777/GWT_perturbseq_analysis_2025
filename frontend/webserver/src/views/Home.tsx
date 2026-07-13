@@ -184,6 +184,9 @@ export default function Home() {
               <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "8px", lineHeight: 1.45 }}>
                 Source: CD4 Perturb-seq screen · risk tier = pipeline red flags + safety liabilities + gnomAD LoF-intolerance · public/flagship/fig_tension.png
               </div>
+              <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "6px", lineHeight: 1.45 }}>
+                Per the source paper, 7,807 (67%) of perturbed genes show significant trans-effects (FDR&lt;10%, ≥3 DE genes, in ≥1 condition), with a mean of 81.61 downstream DE genes per perturbation — the "breadth" axis read here.
+              </div>
             </div>
             <img
               src={`${import.meta.env.BASE_URL}flagship/fig_tension.png`}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { DECISION_META, REVIEWERS } from "../../data/reference";
 import type { VoteStatus } from "../../data/types";
 import { consensus, fmtTs, initials } from "../../lib/logic";
@@ -5,8 +6,10 @@ import { useStore } from "../../store/store";
 
 // Human reviewer voting layer: sits on top of the evidence, never written
 // back into it. Self-contained -- pulls its own store slice by gene.
+// Collapsed by default (human judgement is opt-in, layered on the evidence).
 export default function ReviewerDecisionPanel({ gene }: { gene: string }) {
   const { state, castVote, setVoteNote, clearMyVote, setReviewer, votesFor, myVote } = useStore();
+  const [open, setOpen] = useState(false);
   const DM = DECISION_META;
   const dVotes = votesFor(gene);
   const dCons = consensus(dVotes);
@@ -40,10 +43,15 @@ export default function ReviewerDecisionPanel({ gene }: { gene: string }) {
 
   return (
     <div style={{ border: "1.5px dashed #c7bfe0", borderRadius: "14px", padding: "18px 22px", marginBottom: "22px", background: "#faf9fd" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap", marginBottom: "14px" }}>
+      <div
+        className="navlink"
+        onClick={() => setOpen((o) => !o)}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap", marginBottom: open ? "14px" : 0, cursor: "pointer" }}
+      >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span style={{ fontSize: "12px", color: "#8a80a8", transform: open ? "rotate(90deg)" : "none", transition: "transform .12s", display: "inline-block" }}>▸</span>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", color: "#6b40b8", background: "#efe9fb", padding: "4px 9px", borderRadius: "5px" }}>Reviewer decision</span>
-          <span style={{ fontSize: "11.5px", color: "#8a80a8" }}>Human judgement — layered on the evidence, never written back into it.</span>
+          <span style={{ fontSize: "11.5px", color: "#8a80a8" }}>Human judgement — layered on the evidence, never written back into it.{!open && " (click to open)"}</span>
         </div>
         <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 12px", borderRadius: "20px", fontSize: "12.5px", fontWeight: 600, color: DM[dCons.status].color, background: DM[dCons.status].bg }}>
@@ -52,6 +60,15 @@ export default function ReviewerDecisionPanel({ gene }: { gene: string }) {
           </span>
           <span style={{ fontSize: "11.5px", fontFamily: "'IBM Plex Mono', monospace", color: "#8a80a8" }}>{tally}</span>
         </div>
+      </div>
+
+      {open && <>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "9px 12px", marginBottom: "14px", background: "#efe9fb", border: "1px solid #d9cef0", borderRadius: "9px" }}>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "12px", color: "#6b40b8", flexShrink: 0, marginTop: "1px" }}>ⓘ</span>
+        <span style={{ fontSize: "11.5px", lineHeight: 1.5, color: "#5b4a86" }}>
+          <strong>Demonstration reviewers</strong> — A. Okafor, R. Mehta, L. Sørensen and J. Park are fictional demo personas. Votes are stored only in your
+          browser (localStorage) and are not real review records; they are never sent anywhere or written back into the evidence.
+        </span>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "24px", alignItems: "start" }}>
@@ -103,6 +120,7 @@ export default function ReviewerDecisionPanel({ gene }: { gene: string }) {
           {dMine && <div className="navlink" onClick={() => clearMyVote(gene)} style={{ fontSize: "11px", color: "#a49cbe", marginTop: "7px" }}>Clear my vote</div>}
         </div>
       </div>
+      </>}
     </div>
   );
 }
