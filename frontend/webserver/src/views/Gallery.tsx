@@ -11,7 +11,7 @@ import { useStore } from "../store/store";
 const ACCENT = "#5b3fb4";
 const CORE5_ORDER = ["CD3E", "CD247", "LAT", "PLCG1", "VAV1"];
 const CORE5_INDEX = new Map(CORE5_ORDER.map((gene, index) => [gene, index]));
-const PUBLICATION_HIGHLIGHT_IDS = ["A16", "A15", "A3"];
+const PUBLICATION_HIGHLIGHT_IDS = ["A7", "A12", "A16"];
 const FAMILY_ORDER = [
   "Dimensionality reduction & composite",
   "Distributions",
@@ -160,7 +160,7 @@ export default function Gallery() {
                 <span style={{ fontSize: "12px", color: "#7a6a3f" }}>3 key figures</span>
               </div>
               <div style={{ fontSize: "13px", lineHeight: 1.5, color: "#5f6672", marginBottom: "14px", maxWidth: "850px" }}>
-                The three figures that best summarize the platform's contribution: reproducible curation, validation, and translation into a delivery decision. Click any figure for the full publication view and provenance.
+                The three figures that best summarize the platform's contribution: external validation, honest interpretation of competing signals, and the integrated curation story. Click any figure for the full publication view and provenance.
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "18px" }}>
                 {publicationHighlights.map((c) => chartCard(c, true, true))}
