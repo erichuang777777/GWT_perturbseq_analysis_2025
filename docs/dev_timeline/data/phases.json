@@ -1,0 +1,75 @@
+[
+  {
+    "phase": 0,
+    "name": "Exploratory research",
+    "status": "active",
+    "active_days": ["2026-07-04", "2026-07-05"],
+    "evidence": "Not one of the roadmap's own phases -- added on request to cover the pre-sprint literature/decision work: 16 PubMed/OpenAlex/ClinicalTrials.gov research topics + sources/project_roadmap.md + sources/project_decision_log.md, all landing in the single 2026-07-05 'Initial GWT perturbseq platform snapshot' commit. Drawn separately from P1-P8's shared time axis (gap before the formal sprint start), and excluded from the 5-category commit grid below.",
+    "source": "sources/project_roadmap.md and sources/project_decision_log.md, both dated 2026-07-04"
+  },
+  {
+    "phase": 1,
+    "name": "Evidence Browser MVP",
+    "status": "active",
+    "active_days": ["2026-07-07", "2026-07-08", "2026-07-09"],
+    "evidence": "Core scaffold (build_target_cards.py, target_card_api.py) already present in the 2026-07-05 initial snapshot; PR #1/#3/#26/#28/#30/#32/#33 (2026-07-07 to 2026-07-09) refine the dossier/dashboard on top of it.",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 1"
+  },
+  {
+    "phase": 2,
+    "name": "External Evidence Stream",
+    "status": "active",
+    "active_days": ["2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-12"],
+    "evidence": "gnomAD safety overlay + mechanism_graph first added 2026-07-07 (PR #6); Level-4 external validation (GWAS/STRING/GSE318876) 2026-07-10 (PR #54); UPDATED 2026-07-12: 'Tier-2: replace 15-gene demo gnomAD seed with full-genome v2.1.1 overlay' + 'Surface the paper's own regulator nominations (Tier-1)' + 'Add tier1 disease expansion (621 genes x 3 sources)' (PRs #80/#84/#85).",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 2"
+  },
+  {
+    "phase": 3,
+    "name": "Cell-Level Integration",
+    "status": "sparse",
+    "active_days": ["2026-07-07", "2026-07-10"],
+    "evidence": "src/9_cell_integration/cell_integration_pipeline.py scaffold already present 2026-07-05; extended once 2026-07-07 (h5ad extension code, commit 3fe9ab2) and relabeled exploratory/descriptive 2026-07-10. No other touches found.",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 3"
+  },
+  {
+    "phase": 4,
+    "name": "Perturbation Validation",
+    "status": "superseded",
+    "active_days": [],
+    "shown_in_chart": false,
+    "evidence": "REMOVED from the chart per user request (2026-07-12): the plan to validate on real single-cell data was superseded once a precomputed 'signed DE' matrix became available from an S3 source -- 'Task A: extract gate-passing signed DE matrix from precomputed S3 source' (2026-07-10 15:13 UTC), landing as PR #53 'GB10 signed DE application' (2026-07-11 00:03 UTC) and extended 2026-07-12 ('Add signed directional module-effect scoring from in-repo full_signed_DE'). The project validated against that pseudobulk-level signed-DE result instead, so the cell-level code below was intentionally never scheduled to run -- not merely blocked by sandbox limits. The code itself still exists and was verified against synthetic data, for the record: src/9_cell_integration/perturbation_response_analysis.py (added 2026-07-07 10:31 UTC, relabeled exploratory/descriptive 2026-07-10) implements guide_assignment_qc(), a Mixscape-style responder/escaper classifier (classify_perturbation_response(): PCA + difference-of-means axis + 2-component Gaussian mixture, reimplemented from scratch because pertpy failed to install in the sandbox -- a blitzgsea transitive-dependency build failure; verified at 81.8% accuracy against a synthetic ground truth, not real data), and run_sceptre_external(), an honest external hook (shells out to an R/sceptre driver script if supplied; degrades to status='unavailable' otherwise). Per RUN_ON_REAL_DATA.md, the real corpus is 32 files / 1.68 TiB (smallest ~131 GiB), which would not have fit the sandbox regardless -- consistent with docs/sandbox_blocked_tasks.md and PR #2's own statement about the same constraint.",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 4; src/9_cell_integration/{perturbation_response_analysis.py, README.md, RUN_ON_REAL_DATA.md}; PR #53"
+  },
+  {
+    "phase": 5,
+    "name": "ML-Ready Feature Table",
+    "status": "active",
+    "active_days": ["2026-07-10", "2026-07-11"],
+    "evidence": "CORRECTED after user follow-up: no file is literally named target_condition_features.csv/weak_labels.csv/benchmark_targets.csv, but four feature-table-builder scripts implement the same role under src/10_ml_perturbation_prediction/ -- build_features.py (known_regulator_classifier), build_real_features.py (real_features_baseline), build_gene_features.py (genept_baseline), build_gears_dataset.py (gears_model) -- added 2026-07-10 16:25 UTC through 2026-07-11 00:49 UTC. See ml_attempts.json for the exact commits.",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 5; docs/ml_feasibility_assessment.md, 2026-07-11"
+  },
+  {
+    "phase": 6,
+    "name": "ML Prioritization",
+    "status": "active",
+    "active_days": ["2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11"],
+    "evidence": "T1 (2026-07-08 23:40 UTC): first supervised perturbation-response-prediction benchmark, honest/methodology-only. T1 deep dive (2026-07-10 to 07-11): two independent architectures -- GenePT text-embedding+Ridge and the official cell-gears GNN package -- both tested and both an honest negative result (do not beat the naive mean-profile baseline; pearson_de ~0 for GEARS), matching the 2025 Nature Methods literature consensus per docs/ml_feasibility_assessment.md. T2 (2026-07-11): known-regulator classifier, 5 algorithms (LogisticRegression/LinearSVC/kNN/RandomForest/HistGradientBoosting) vs. the existing AUROC-0.85 ranking baseline, with an AUPRC pass that reverses the initial 'ML beats baseline' claim once class imbalance and leakage are accounted for.",
+    "source": "sources/project_roadmap.md, 2026-07-04, Phase 6; roadmap explicitly says 'do not build a drug success/failure classifier as the first model' -- the T2 classifier work honors that by testing ranking/PU-learning-style baselines instead."
+  },
+  {
+    "phase": 7,
+    "name": "Server establish",
+    "status": "active",
+    "active_days": ["2026-07-07", "2026-07-08", "2026-07-10", "2026-07-11", "2026-07-12"],
+    "evidence": "Not one of the roadmap's own phases -- added on request to track the FastAPI backend's build-out as its own thread. api/app.py + the first 10 routers (build/calibration/cards/disease/evidence/genes/imports/mechanism/population/readiness) added 2026-07-07 17:02-17:24 UTC; individual_concept.py router 2026-07-08 00:39; disease_drug.py + meta.py routers 2026-07-10; upload_ui.py router 2026-07-11 17:21; signed_module_effect.py router 2026-07-12 03:27. docs/server_modules.md (2026-07-11 07:25) consolidates 13 routers into one reference, marking the backend as mature. No router additions found on 2026-07-09 (that day's work was almost entirely frontend/UX -- see P8).",
+    "source": "git log --diff-filter=A on src/3_DE_analysis/api/routers/*.py"
+  },
+  {
+    "phase": 8,
+    "name": "Interface optimization",
+    "status": "active",
+    "active_days": ["2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11"],
+    "evidence": "Not one of the roadmap's own phases -- added on request to track the frontend/UX rework as its own thread: individual concept-profile tab and entity-centric dossier page (2026-07-08); the day-long 2026-07-09 UX push (render_*() dashboard refactor, deep-link wiring, IL2RA-fixture fix, readiness-call promotion); persona-split redesign + Wave 1b/1c/1d trust fixes + discovery-table dead-end fixes (2026-07-10); culminating in 'Replace Streamlit dashboard with React CD4 Target Discovery Portal' (2026-07-11 07:00 UTC).",
+    "source": "git log --grep, commit subjects matching fix(ux)/feat(frontend)/persona/dossier/'Replace Streamlit'"
+  }
+]

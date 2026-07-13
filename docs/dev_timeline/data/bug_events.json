@@ -1,0 +1,101 @@
+[
+ {
+  "sha": "e2399ff70d9344d418b8d83f2dcd7e565cd4ba24",
+  "label": "C3 automated test suite (defensive, pre-empts future regressions)",
+  "found": true,
+  "day": "2026-07-07",
+  "slot": 1,
+  "category": "stats_analysis",
+  "diff": 526
+ },
+ {
+  "sha": "33b36c67b323309b4fe22320e7f4841d5e128563",
+  "label": "readiness CLI cwd footgun: silent zero-overlay fallback",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 132
+ },
+ {
+  "sha": "89b5d853eeabbbe74b920de780d1c26ebab81484",
+  "label": "gnomAD bulk coverage 6% -> 97%",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 1,
+  "category": "data_processing",
+  "diff": 2
+ },
+ {
+  "sha": "32478f6700e8b5e2284139f28348575ae5d6e7f4",
+  "label": "IL2RA fixture rendered as every gene's real profile",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 2,
+  "category": "visualization",
+  "diff": 258
+ },
+ {
+  "sha": "bcfde343ef8df7954cd31f9d6b3e607ee46f1174",
+  "label": "UX blindspot batch (human sync-merge commit)",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 2,
+  "category": "documentation",
+  "diff": 473
+ },
+ {
+  "sha": "32c7d924042b6e9ce30d0d636e59627d0b2b8acd",
+  "label": "parity_03 shape-label bug",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 0,
+  "category": "data_processing",
+  "diff": 10
+ },
+ {
+  "sha": "046e7d496fb45f96b6a8f0f10c5a13958f5945e7",
+  "label": "reproducibility shape-column bug",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 36
+ },
+ {
+  "sha": "1e2a159515f04ab3beda4a55f02227a337f8a6a1",
+  "label": "external QA agent: 9 findings logged",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 1,
+  "category": "documentation",
+  "diff": 64
+ },
+ {
+  "sha": "2217ca7afc0eee9404585ed6e427a9aca8246f99",
+  "label": "T2 classifier AUPRC reverses prior positive claim",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 382
+ },
+ {
+  "sha": "d9d7b1284593a71790b3e16a2552b9c4427b5b73",
+  "label": "researcher-guide calibration attribution fix",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 1,
+  "category": "data_processing",
+  "diff": 3
+ },
+ {
+  "sha": "68af47db9eaf73c08dc9de8264b5fd31979bf310",
+  "label": "release-freeze audit: 3 frontend build-wiring issues",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 2,
+  "category": "visualization",
+  "diff": 18940
+ }
+]
