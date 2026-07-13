@@ -30,7 +30,7 @@ export default function Dossier() {
 
   return (
     <main style={{ flex: 1, maxWidth: "1120px", margin: "0 auto", width: "100%", padding: "20px 28px 70px" }}>
-      <DossierHeader t={t} comp={tRankInfo._comp} rank={tRankInfo._rank} total={TARGETS.length} />
+      <DossierHeader t={t} comp={tRankInfo._comp} />
       <ReviewerDecisionPanel gene={t.gene} />
       <CompositeBreakdownPanel t={t} />
 

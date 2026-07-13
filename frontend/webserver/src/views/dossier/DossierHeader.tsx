@@ -3,7 +3,7 @@ import type { RealTarget } from "../../data/types";
 import { useStore } from "../../store/store";
 import Badge from "../../components/ui/Badge";
 
-export default function DossierHeader({ t, comp, rank, total }: { t: RealTarget; comp: number; rank: number; total: number }) {
+export default function DossierHeader({ t, comp }: { t: RealTarget; comp: number }) {
   const { setState, navTo } = useStore();
   const call = t.readiness?.call;
   const Rt = call ? READINESS[call] : { label: "Unreviewed", color: "#8a92a0", bg: "#f7f8fa" };
@@ -51,9 +51,9 @@ export default function DossierHeader({ t, comp, rank, total }: { t: RealTarget;
           </div>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0 }}>
-          <div style={{ fontSize: "11px", color: "#9aa1ad", fontWeight: 600, letterSpacing: ".5px", textTransform: "uppercase", marginBottom: "4px" }}>Composite priority</div>
+          <div title="A 0–100 weighted blend of the evidence sub-scores that moves with your weight sliders. It reorders your view of the hypotheses; it never changes the evidence or the rule-based readiness call. This is the second of the portal's two rankings — the first is the fixed 15-gene primary-outcome shortlist (our rule, by trans-effect breadth)." style={{ fontSize: "11px", color: "#9aa1ad", fontWeight: 600, letterSpacing: ".5px", textTransform: "uppercase", marginBottom: "4px", cursor: "help" }}>Perturbation score <span style={{ fontSize: "10px", color: "#b0b6c0", fontFamily: "'IBM Plex Mono', monospace" }} aria-hidden>ⓘ</span></div>
           <div style={{ fontSize: "42px", fontWeight: 700, letterSpacing: "-1.5px", color: "#1a5fb4", lineHeight: 1 }}>{comp}</div>
-          <div style={{ fontSize: "12px", color: "#9aa1ad", marginTop: "3px" }}>rank #{rank} of {total}</div>
+          <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "3px" }}>0–100 · moves with your weights</div>
         </div>
       </div>
     </>

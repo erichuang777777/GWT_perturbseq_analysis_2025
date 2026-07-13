@@ -77,9 +77,9 @@ export default function Home() {
             <div style={{ fontSize: "11px", fontWeight: 700, color: "#8a92a0", letterSpacing: ".4px", textTransform: "uppercase", marginBottom: "8px" }}>What you see first</div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "7px" }}>
               {[
+                "15 primary-outcome genes — our breadth-ranked shortlist",
                 "Readiness call — advance / validate / watchlist",
-                "On-target effect size + downstream breadth",
-                "Composite priority score and rank",
+                "Perturbation score — reweightable 0–100 priority",
               ].map((li) => (
                 <li key={li} style={{ fontSize: "13px", color: "#5b6270", display: "flex", gap: "9px" }}>
                   <span style={{ color: "#1a5fb4" }}>→</span> {li}

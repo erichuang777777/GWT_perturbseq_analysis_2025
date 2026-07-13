@@ -7,7 +7,7 @@ export default function StatisticalEvidencePanel({ t, comp, gradeColor }: { t: R
   const metrics = [
     { label: "|log2 fold-change| (peak condition)", value: fmtEffect(t.effect), color: "#1a1d24" },
     { label: "FDR (BH), peak condition", value: fmtFdr(t.fdr), color: "#1a1d24" },
-    { label: "Composite priority", value: String(comp), color: "#1a5fb4" },
+    { label: "Perturbation score", value: String(comp), color: "#1a5fb4" },
     { label: "Evidence grade", value: t.grade ?? "unknown", color: gradeColor },
     { label: "Cells captured", value: t.nCells != null ? t.nCells.toLocaleString() : "unknown", color: "#1a1d24" },
     { label: "Guides", value: t.nGuides ?? "unknown", color: "#1a1d24" },

@@ -1,5 +1,5 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { SOURCE_VERSION, TARGETS } from "../data/dataset";
 import { GRADE, READINESS, DECISION_META, WKEYS, WPRESETS, WPRESET_TIPS } from "../data/reference";
 import type { Call, Grade } from "../data/types";
@@ -37,6 +37,9 @@ export default function Explorer() {
   const all = TARGETS;
   const R = READINESS;
   const G = GRADE;
+  // Researcher toggle: isolate the 15 primary-outcome genes (our fixed,
+  // breadth-ranked headline shortlist). Local view state — no store change.
+  const [primaryOnly, setPrimaryOnly] = useState(false);
 
   // ---- facets ----
   const readinessFacets = (["advance", "validate", "watchlist", "deprioritize"] as Call[]).map((k) => {
@@ -109,6 +112,7 @@ export default function Explorer() {
   const filtGenes = new Set(filtered.map((t) => t.gene));
   const dfilter = S.decisionFilter;
   const rankedFiltered = rankedTargets(w).filter((t) => {
+    if (primaryOnly && !t.primaryOutcome) return false;
     if (!filtGenes.has(t.gene)) return false;
     if (dfilter !== "all") {
       const c = consensus(votesFor(t.gene));
@@ -350,12 +354,14 @@ export default function Explorer() {
             <button
               onClick={() => {
                 const csv = toCSV<RankedTarget>(rankedFiltered, [
-                  ["rank", (t) => t._rank],
+                  ["row_in_current_view", (t) => t._rank],
                   ["gene", (t) => t.gene],
                   ["name", (t) => t.name],
+                  ["primary_outcome", (t) => t.primaryOutcome ? "yes" : ""],
+                  ["primary_outcome_rank_of_15", (t) => t.primaryOutcomeRank ?? ""],
                   ["module_id", (t) => t.module?.id ?? ""],
                   ["module_name", (t) => t.module?.name ?? ""],
-                  ["composite_priority", (t) => t._comp],
+                  ["perturbation_score", (t) => t._comp],
                   ["readiness_call", (t) => t.readiness?.call ?? "unknown"],
                   ["readiness_stage", (t) => t.readiness?.stage ?? "unknown"],
                   ["evidence_grade", (t) => t.grade ?? "unknown"],
@@ -380,8 +386,18 @@ export default function Explorer() {
             </button>
           </div>
         </div>
-        <div style={{ fontSize: "13px", color: "#6b7280", marginBottom: "16px" }}>
-          Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by composite priority
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", marginBottom: "16px" }}>
+          <div style={{ fontSize: "13px", color: "#6b7280" }}>
+            Showing <strong style={{ color: "#1a1d24" }}>{rankedFiltered.length}</strong> of {all.length} targets · ranked by perturbation score (your weights). ★ marks the 15 primary-outcome genes — our fixed breadth-ranked shortlist.
+          </div>
+          <span
+            className="navlink"
+            onClick={() => setPrimaryOnly((v) => !v)}
+            title="Isolate the 15 primary-outcome genes — the server's headline result, selected by trans-effect (downstream DE) breadth. This shortlist is fixed; the weight sliders never change it."
+            style={{ fontSize: "12px", fontWeight: 600, padding: "6px 12px", borderRadius: "8px", whiteSpace: "nowrap", cursor: "pointer", border: `1.5px solid ${primaryOnly ? "#b7791f" : "#d6dbe3"}`, color: primaryOnly ? "#fff" : "#9a6510", background: primaryOnly ? "#b7791f" : "#fbf7ee" }}
+          >
+            ★ Primary-outcome only (15)
+          </span>
         </div>
 
         <div style={{ marginBottom: "20px" }}>
@@ -416,7 +432,7 @@ export default function Explorer() {
             <div>Concept module</div>
             <div style={{ textAlign: "right" }}>|log2FC|</div>
             <div style={{ textAlign: "right" }}>DE breadth</div>
-            <div style={{ textAlign: "right" }}>Priority</div>
+            <div style={{ textAlign: "right", cursor: "help" }} title="Perturbation score — a 0–100 weighted blend of the evidence sub-scores that moves with your weight sliders. Reorders your view; never changes the evidence or the readiness call.">Perturb. score</div>
             <div style={{ textAlign: "center" }}>Readiness</div>
             <div style={{ textAlign: "center" }}>Grade</div>
             <div style={{ textAlign: "center" }}>Review</div>

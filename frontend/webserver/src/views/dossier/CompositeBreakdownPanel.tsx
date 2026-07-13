@@ -28,7 +28,7 @@ export default function CompositeBreakdownPanel({ t }: { t: RealTarget }) {
   return (
     <div style={{ border: "1px solid #e2e5ea", borderRadius: "14px", padding: "18px 22px", marginBottom: "26px", background: "#fbfcfd" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-        <h3 style={{ fontSize: "14px", fontWeight: 700, margin: 0 }}>How this priority is composed</h3>
+        <h3 style={{ fontSize: "14px", fontWeight: 700, margin: 0 }}>How this perturbation score is composed</h3>
         <span style={{ fontSize: "11px", fontFamily: "'IBM Plex Mono', monospace", color: "#6b7280" }}>weights: {state.weightPreset}</span>
       </div>
       <div style={{ display: "flex", height: "30px", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
