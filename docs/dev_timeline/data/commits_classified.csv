@@ -1,0 +1,463 @@
+sha,iso,day,slot,category,diff,lane,is_human,subject
+50a539c022e4e529ca6f8eeb7d0c94efa55553fd,2026-07-05T13:43:47+00:00,2026-07-05,1,data_processing,3247735,manual,True,Initial GWT perturbseq platform snapshot
+a4b4e82be16d942530ec36978be362c165aa2316,2026-07-07T07:25:48+00:00,2026-07-07,0,documentation,505,main,False,Add detailed development plan for CD4 Perturb-seq target-discovery toolkit
+7d1bf29daa49981d95414431f3253ede003ddb19,2026-07-07T07:44:11+00:00,2026-07-07,0,stats_analysis,841,main,False,"Add readiness engine, real batch flag, and researcher upload merge loop"
+314ec9b56b2a1e7925f31bd808dfeb1eb28bfb1c,2026-07-07T07:46:01+00:00,2026-07-07,0,stats_analysis,132,main,False,"Wire dashboard for column-mapping wizard, merge, and readiness"
+e56154e0fe882d19003a2a6a0296622093b78436,2026-07-07T07:51:10+00:00,2026-07-07,0,documentation,165,main,False,Add executable implementation plan tracking wave 1 (done) and remaining waves
+10b90b9656cef761ab1d9cf41f5ec4b19aab31e4,2026-07-07T08:17:20+00:00,2026-07-07,1,documentation,273,main,False,Add broad-effect/chromatin confounder quarantine to readiness engine (C7)
+b38c1f8622163ce73433ff3c967676a6f47d0ec8,2026-07-07T08:20:22+00:00,2026-07-07,1,stats_analysis,114,main,False,Add local druggability/safety overlay columns to target cards (1.3)
+d2815f14f6ab2f75a761c919547c9b7a35d4cc48,2026-07-07T08:23:53+00:00,2026-07-07,1,stats_analysis,227,main,False,Add calibration harness proving the ranking recovers known biology (1.6)
+7e9c5dc97fbe16173eefc23b910890ae183214d4,2026-07-07T08:25:06+00:00,2026-07-07,1,documentation,84,main,False,"Mark wave 2 (C7 quarantine, local overlays, calibration harness) done"
+967a9acef8c2c7f0a4d1a322639a5462a5282d85,2026-07-07T08:51:17+00:00,2026-07-07,1,documentation,810,main,False,"Add external-evidence layer: ClinicalTrials.gov, PubMed, Open Targets (Module C)"
+f48492d894548b16e7d9860ec50e17c9cfee8f6f,2026-07-07T08:56:11+00:00,2026-07-07,1,documentation,156,main,False,Add provenance footer; document Wave 3 completion and honest §1.5 descope
+948a19f5fe469f60706313945355a4fed75b1c70,2026-07-07T09:01:39+00:00,2026-07-07,1,stats_analysis,246,main,False,Add disease translator: rank targets by real Open Targets genetics (1.7)
+f667930c28d935655058c3d8d9babeb27738e1bc,2026-07-07T09:13:02+00:00,2026-07-07,1,stats_analysis,131,main,False,"Add QC funnel, robustness scatter, and per-target evidence chart (Wave 5)"
+c3755d7ce6132fb4126df3bb6be5521e8cd1f915,2026-07-07T09:34:57+00:00,2026-07-07,1,stats_analysis,125,main,False,Harden pipeline: fix 6 issues from full correctness/robustness review
+3fe9ab289dda5924aaa6b5f7642483d106e7f22f,2026-07-07T10:31:05+00:00,2026-07-07,1,external_integration,708,main,False,Add cell-level (h5ad) extension code + real-data run instructions (1.9)
+d1a2c521d80c7f3f569773559c30888aaf9266df,2026-07-07T10:49:10+00:00,2026-07-07,1,stats_analysis,348,main,False,"Apply a technical review's high-value fixes: KD status, CSI redesign, control-panel calibration"
+8d9c31695c1b12bc450366363d9a235e912bc974,2026-07-07T11:03:52+00:00,2026-07-07,1,stats_analysis,325,main,False,"Add gene identifier resolution, result_status, and full 4-layer versioning (B1/B2/B4)"
+69bd5e4c1b3766c19420b2466af0ce1ab5750b89,2026-07-07T11:08:26+00:00,2026-07-07,1,stats_analysis,250,main,False,Add CRE schema placeholders and alias-tolerant search (B5/B6)
+e2399ff70d9344d418b8d83f2dcd7e565cd4ba24,2026-07-07T11:23:04+00:00,2026-07-07,1,stats_analysis,526,main,False,"Add C3 automated test suite (golden-file, join-integrity, known-answer, empty-state)"
+bbd6451992c894a767817a83a3c01d3f52e52be3,2026-07-07T11:25:30+00:00,2026-07-07,1,documentation,192,main,False,Add C4 data dictionary (docs/data_dictionary.md)
+c6a83844ccc8d89a64ec7f00049a870e08f5bb0d,2026-07-07T11:29:13+00:00,2026-07-07,1,documentation,226,main,False,Add C5/C6 data governance checklist and cache/version invalidation policy
+27933acde409a69ef52538288020abb483879929,2026-07-07T12:26:04+00:00,2026-07-07,1,documentation,134,main,False,Add concept doc for CellxGene safety + membrane/TCGA-GTEx overlay integration
+d32f08c7527778b22b8082ef7d530265ae52ee9f,2026-07-07T13:09:55+00:00,2026-07-07,1,documentation,391,main,False,"Add project wiki source (zh-TW): introduction, maintenance, roadmap, plan, tech debt"
+fc443e25db1d0efa34b59cfc66dbd4852c80b096,2026-07-07T13:27:28+00:00,2026-07-07,1,data_processing,87,main,False,Add: MVP_開發目標與資料簡報.md
+49c50d4cddcde2ccae823b820705f5e5518f6e52,2026-07-07T13:27:30+00:00,2026-07-07,1,data_processing,16,main,False,Add: candidate_shortlist_top15.csv
+ffef9d329ef9f450bb2ff3df6c9582561670764e,2026-07-07T13:27:32+00:00,2026-07-07,1,data_processing,21,main,False,Add: data_resource_inventory.csv
+6ed3001ec480185c61d17077b326e83c061c54cf,2026-07-07T13:49:55+00:00,2026-07-07,1,stats_analysis,180,main,False,Fix two upload-path defects: kd_status not_assessed + mapped n_total_de_genes
+2e03622bd29a8b0f94e14eb87649a1a689b7a188,2026-07-07T14:04:31+00:00,2026-07-07,1,documentation,164,main,False,"Add architecture refactor plan (zh-TW): module split, isolation, safe swap"
+afc96ec71af9d0cf93ae7abcb0ccefec66bf39e7,2026-07-07T14:12:19+00:00,2026-07-07,1,visualization,82,main,False,Extract dashboard into an independent frontend/ package (arch plan Phase 0.5)
+ba4ea4f976ba0a5d3d746087a674b1df49d925f9,2026-07-07T14:15:32+00:00,2026-07-07,1,data_processing,87,main,False,Add: ENHANCEMENT_連結器加強建議.md
+d401253f7b59cbaa17d61d09ea9afe8d24aa637d,2026-07-07T14:15:34+00:00,2026-07-07,1,data_processing,9,main,False,Add: connector_enrichment_demo.csv
+f3a047475adac2300a0478b18a331252f1419b53,2026-07-07T14:15:35+00:00,2026-07-07,1,data_processing,123,main,False,Add: MODULE3_病人層假設引擎_DEMO設計.md
+5b5f1b95848473ac7f4908c9d91fb7d1b935d664,2026-07-07T14:15:37+00:00,2026-07-07,1,stats_analysis,16,main,False,Add: module3_population_hypothesis_demo.csv
+4393e5eec048cdc39d05c99980c2e02b136dd162,2026-07-07T14:15:39+00:00,2026-07-07,1,external_integration,38,main,False,Add: module3_disease_drug_evidence_match_demo.json
+6f789bdb474946746f21eaf7b577463ee686b6ee,2026-07-07T14:19:01+00:00,2026-07-07,1,stats_analysis,369,main,False,Refactor Phase 0: single-source config/ + contracts/card_schema.py
+31f9903ccc8682d211799d8b61f559e57cc5f5b5,2026-07-07T14:19:21+00:00,2026-07-07,1,data_processing,273,main,False,Merge remote-tracking branch 'origin/claude/drug-discovery-tool-plan-258jof' into claude/drug-discovery-tool-plan-258jof
+11b62bee9d3597a6270876a3caf93f3aa8ba3619,2026-07-07T14:25:45+00:00,2026-07-07,1,documentation,92,main,False,Add: ADC_LOCAL_DATA_INGESTION_SPEC.md
+770cca7764f15c1f124de45547f77e2c69efbc89,2026-07-07T14:25:48+00:00,2026-07-07,1,external_integration,5589,main,False,Add: adc_overlay_gwt_overlap_full.csv
+e0988c95c7cc50b9dac4fd11800981ff95a1e70c,2026-07-07T14:27:55+00:00,2026-07-07,1,stats_analysis,385,main,False,Add Module 3 part A: population LoF-burden hypothesis engine
+13ce0727471464ed22b91ea40e2732685589fde3,2026-07-07T14:28:13+00:00,2026-07-07,1,external_integration,5681,main,False,Merge remote-tracking branch 'origin/claude/drug-discovery-tool-plan-258jof' into claude/drug-discovery-tool-plan-258jof
+36a27998ec91d6e1f4493a8fea4ac6461333af89,2026-07-07T14:34:53+00:00,2026-07-07,1,data_processing,69,main,False,Add: PATHWAY_DRUG_DATA_SOURCES_建議.md
+5d8008b922fb7d9e68e4f093c738edc5a0ada41c,2026-07-07T14:38:30+00:00,2026-07-07,1,external_integration,111,main,False,Fix fetch_open_targets: actually query tractability/genetics/safetyLiabilities
+db6c4b52f57700e806f76c20241dafbb3d5f403d,2026-07-07T14:41:21+00:00,2026-07-07,1,external_integration,126,main,False,Add match_disease_drug_evidence (Module 3 part B): disease-drug evidence matching
+649c1b4f36be8b5af73294eece48ac7d69a5f344,2026-07-07T14:41:23+00:00,2026-07-07,1,external_integration,56,main,False,Add tests for match_disease_drug_evidence (4 passing locally)
+ebd97a48968ba7c7f49dcccadc71c251bea16ed6,2026-07-07T14:43:01+00:00,2026-07-07,1,external_integration,402,main,False,Wire real ADC membrane-overlay data into tractability_modality (§1.12)
+499b07fe0ba01ee259327bdcba21ab9b7a2eebec,2026-07-07T14:43:19+00:00,2026-07-07,1,external_integration,362,main,False,Merge remote-tracking branch 'origin/claude/drug-discovery-tool-plan-258jof' into claude/drug-discovery-tool-plan-258jof
+e1cdb5db75321a42c41649fc7d036d4f5011c513,2026-07-07T14:44:34+00:00,2026-07-07,1,external_integration,51,main,False,Add drug_class classification to match_disease_drug_evidence
+f174a1676779cecaa10e33105713dee65646764b,2026-07-07T14:44:36+00:00,2026-07-07,1,external_integration,206,main,False,Add pathway_network_cache: Reactome + STRING offline-batch cache
+10eb6e7579b838431f9165b07bfc05174a646ab7,2026-07-07T14:44:39+00:00,2026-07-07,1,external_integration,50,main,False,Add tests for pathway_network_cache (4 passing locally)
+178a1fe86db3acd2b9b46683a739d9cd804c2f8f,2026-07-07T14:45:18+00:00,2026-07-07,1,external_integration,307,main,False,Merge remote-tracking branch 'origin/claude/drug-discovery-tool-plan-258jof' into claude/drug-discovery-tool-plan-258jof
+eee8b07d16016a65bbb59c44bb94b2b6c80dbf92,2026-07-07T14:47:20+00:00,2026-07-07,1,documentation,0,main,False,"Add membrane/tractability overlay snapshot (11,311 genes, public HPA/UniProt/CSPA-derived)"
+713356250827ba91808b796b06b9b46ccc9f4b29,2026-07-07T14:47:24+00:00,2026-07-07,1,documentation,0,main,False,"Add GTEx per-tissue expression overlay snapshot (30 tissues, 9,727 genes, public GTEx-derived)"
+74f228fc199216366a0def9ed55c33fd21c04dc8,2026-07-07T14:49:10+00:00,2026-07-07,1,documentation,0,main,False,"Fix schema: aggregate to per-gene (ensembl_id, n_tissues_expressed, max_expression_outside_cd4_context)"
+f6511a45b7c7b2c89343f0d28b45b11dfda1145d,2026-07-07T14:50:22+00:00,2026-07-07,1,documentation,0,main,False,"Remove orphaned overlay file -- superseded by docs/mvp-research/adc_overlay_gwt_overlap_full.csv, which the cloud's safety_overlay.py (commit ebd97a48) actually reads via MEMBRANE_OVERLAY_PATH_DEFAULT"
+ecc00384ce3b39c31c1f126f6feac08f645c9912,2026-07-07T14:51:24+00:00,2026-07-07,1,documentation,79,main,False,"Add docs/mvp-research/README.md: 總覽交接文件,現況標記+合併指引"
+0aede006e234beec03bce452b661a5b00bca1d5b,2026-07-07T15:01:58+00:00,2026-07-07,1,external_integration,255,main,False,"Activate real GTEx safety-window overlay (§1.12, second half)"
+fe2098af2a33372b6d6ac376f3913054cb8dcac9,2026-07-07T15:03:20+00:00,2026-07-07,1,documentation,79,main,False,Merge remote-tracking branch 'origin/claude/drug-discovery-tool-plan-258jof' into claude/drug-discovery-tool-plan-258jof
+d13aed1aa65140d701b6e74278f59db8cd21da8e,2026-07-07T15:11:40+00:00,2026-07-07,1,external_integration,161,main,False,"Reconcile with parallel session's GTEx aggregation (off-context, semantically correct)"
+4848818ff7880097bce0ce9280f81d7191100467,2026-07-07T15:16:02+00:00,2026-07-07,1,documentation,76,main,False,Update mvp-research handoff doc: all 11 items now complete post-merge
+54947490171da16ffca803f6c55b304a6124453e,2026-07-07T15:27:47+00:00,2026-07-07,1,documentation,135,main,False,"Add detailed next-phases plan (gnomAD, arch refactor 1-4, mechanism graph, signature/prediction)"
+0ccdce1772aee2d32ef7b06a835093c740b3636a,2026-07-07T15:41:31+00:00,2026-07-07,1,external_integration,618,main,False,A2: add mechanism graph (Reactome + STRING + evidence overlay)
+d1ae0ce46b34d172dde17134657e90a50925802f,2026-07-07T15:41:44+00:00,2026-07-07,1,stats_analysis,238,main,False,refactor(common): add common/ package; consolidate utc_now + unavailable-source dup
+322d3ec1c9254e0e95996ceeabc423f53ca7fe6c,2026-07-07T15:43:24+00:00,2026-07-07,1,external_integration,319,main,False,"Add gnomAD LOEUF/pLI safety overlay (direction C, additive)"
+40abf2122033b36d344f5dd5e7c390bfb332cd34,2026-07-07T15:45:17+00:00,2026-07-07,1,stats_analysis,60,main,False,refactor(common): consolidate bool/float coercion duplication
+4340bffad6aa9807d0e1d9ee1a7f3319eb658878,2026-07-07T15:48:16+00:00,2026-07-07,1,external_integration,57,main,False,"refactor(common): consolidate the ""unavailable"" degrade-wrapper duplication"
+959443f96cab00e66b912bb2f777fcc3a5a977f1,2026-07-07T15:49:26+00:00,2026-07-07,1,external_integration,618,main,False,Merge branch 'worktree-agent-a6b04a285976c28dd' into claude/drug-discovery-tool-plan-258jof
+3989448d091f4175ff64a3feadd505287045bf87,2026-07-07T15:52:22+00:00,2026-07-07,1,stats_analysis,355,main,False,Merge branch 'worktree-agent-aebaab3f98aab14e5' into claude/drug-discovery-tool-plan-258jof
+6ad21ed0f6d7c8a3ec46ad3c8fdf0a6b07a6a091,2026-07-07T16:50:03+00:00,2026-07-07,2,stats_analysis,693,main,False,Add A3 perturbation-prediction benchmark harness (methodology-only)
+f67e2130b09e48502fbf27d455afe42529334e90,2026-07-07T16:55:49+00:00,2026-07-07,2,stats_analysis,875,main,False,Add A1a signature-to-compound infrastructure + A4 combination explorer
+e6d17afb7272a8b2261ec76e7cdb68ff8ff21ef9,2026-07-07T16:56:58+00:00,2026-07-07,2,stats_analysis,875,main,False,Merge branch 'worktree-agent-a74cc339114a5a37e' into claude/drug-discovery-tool-plan-258jof
+a2f88505abedef17b2dd985799c09b0e07823e2b,2026-07-07T17:02:35+00:00,2026-07-07,2,stats_analysis,11234,main,False,refactor(arch Phase 2): package-ize src/3_DE_analysis into layered modules
+6bfd2f5cb279e819071776baff4376a1d669b825,2026-07-07T17:11:59+00:00,2026-07-07,2,stats_analysis,501,main,False,refactor(arch Phase 3): decouple core/readiness.py from the evidence layer
+7a4f0a1dd04f1487d951095f70ceb1b7a310d656,2026-07-07T17:14:44+00:00,2026-07-07,2,external_integration,57,main,False,Fix: essential genes no longer fabricate safety_window_score=0
+2ab7bd36be69d3d6710fefa384a26eb2bf3ef63d,2026-07-07T17:24:31+00:00,2026-07-07,2,stats_analysis,2545,main,False,refactor(arch Phase 4): split the API god-module into per-resource routers
+99a8110ef1b32327e0c3b8d937178fde40408722,2026-07-07T17:32:37+00:00,2026-07-07,2,stats_analysis,11780,main,False,Merge branch 'worktree-agent-aba1cc6031b08aeec' into claude/drug-discovery-tool-plan-258jof
+edb5a13855f165ce16d52c186493502d2571bc20,2026-07-08T00:17:44+00:00,2026-07-08,0,data_processing,75,main,False,Add visualization module: VISUALIZATION_MODULE_設計文件.md
+9fb6c9861d2a6dba37929bfc5f1a3b52c3797135,2026-07-08T00:17:46+00:00,2026-07-08,0,data_processing,233,main,False,Add visualization module: STAGE1_靜態圖表目錄.md
+6ff89e6a32590bc6e4ffc64b3cdb0254e25c4584,2026-07-08T00:17:48+00:00,2026-07-08,0,data_processing,50,main,False,Add visualization module: STAGE2_互動設計規格.md
+aae00e362ea20984bfcc2af6d15215fa036faa09,2026-07-08T00:17:50+00:00,2026-07-08,0,data_processing,32,main,False,Add visualization module: chart_catalog.csv
+3187ef87f549747021e2f49655d6e9502af09ccc,2026-07-08T00:17:52+00:00,2026-07-08,0,data_processing,11,main,False,Add visualization module: interactivity_spec.csv
+08125b94cd4d30a10b2d6b226635ff9c98f88813,2026-07-08T00:17:54+00:00,2026-07-08,0,data_processing,11,main,False,Add interactive/3D prototype: STAGE2_interactive_prototype.html
+672a5bd94d224ca9321101f29db3b5ce392ad731,2026-07-08T00:17:57+00:00,2026-07-08,0,data_processing,10,main,False,Add interactive/3D prototype: STAGE3_3d_rotatable.html
+4bc240896c13c0ecd21273351d209746e320ee70,2026-07-08T00:18:07+00:00,2026-07-08,0,visualization,0,main,False,Add figure: gallery_1_distributions.png
+33c7c33eb23ebf4e0b184ee310e79a2ff6105968,2026-07-08T00:18:09+00:00,2026-07-08,0,visualization,0,main,False,Add figure: gallery_2_matrices.png
+e996a6d6c327ea76efdaac5bca7c5a66e36a1183,2026-07-08T00:18:12+00:00,2026-07-08,0,visualization,0,main,False,Add figure: gallery_3_ranking.png
+54f1259ebb83dd67128ba442e28f13c4c4a485cd,2026-07-08T00:18:15+00:00,2026-07-08,0,visualization,0,main,False,Add figure: gallery_4_dimred.png
+f5b20f0b867d3e5c8dc63a9985947b5ca82b31a2,2026-07-08T00:18:17+00:00,2026-07-08,0,visualization,0,main,False,Add figure: gallery_5_networks.png
+298927be844f517fd5e1c75a9db11cb6a45b629c,2026-07-08T00:18:20+00:00,2026-07-08,0,visualization,0,main,False,Add figure: viz_dotplot_3d.png
+9e61f719cbab55251557a58f2ca3bd339ad44d32,2026-07-08T00:18:22+00:00,2026-07-08,0,visualization,0,main,False,Add figure: viz_prototype_4panel.png
+8ddb2197a1ae7796dffcfa45419d437f77fe91e3,2026-07-08T00:18:25+00:00,2026-07-08,0,data_processing,2729,main,False,Add AlphaFold structure: CD3E_P07766_AF.cif
+97216ddf8ea8022e7353a0746dd8cd962678038a,2026-07-08T00:18:27+00:00,2026-07-08,0,data_processing,3160,main,False,Add AlphaFold structure: LAT_O43561_AF.cif
+94b534bed17f3e60c9a624abbc54807ad2ce10fe,2026-07-08T00:18:30+00:00,2026-07-08,0,data_processing,2274,main,False,Add AlphaFold structure: CD247_P20963_AF.cif
+734699dfec98a2bcd2ea746c957dcf80b44eea57,2026-07-08T00:18:33+00:00,2026-07-08,0,data_processing,15116,main,False,Add AlphaFold structure: PLCG1_P19174_AF.cif
+94a5366f842c5e2a88462ab7917d54ef71bedd3c,2026-07-08T00:18:36+00:00,2026-07-08,0,data_processing,10085,main,False,Add AlphaFold structure: VAV1_P15498_AF.cif
+071d513944c1e811362b00cdf167c5f2e4386988,2026-07-08T00:23:10+00:00,2026-07-08,0,documentation,149,main,False,Add COMPASS concept-integration + individual-sample-input plan
+04a8244f5751a6bd40df1d39e6b2e380731fe69a,2026-07-08T00:26:48+00:00,2026-07-08,0,documentation,30,main,False,"Rewrite the ""no patient-level input"" guardrail for the concept-profile demo (P5)"
+fdb36930b357cd71285f378f108ce0d952c3ea0d,2026-07-08T00:33:54+00:00,2026-07-08,0,visualization,557,main,False,feat(frontend): add 個體概念剖面 COMPASS waterfall tab (P4 / §2B)
+bf3d4d7eacd681a56f7e1b358e526bb2550f94cc,2026-07-08T00:34:28+00:00,2026-07-08,0,stats_analysis,498,main,False,P1: formalize concept dictionary + seed-modules schema validator
+0540c37a121d69dc952f1e906968bd9f4b06b4d6,2026-07-08T00:34:39+00:00,2026-07-08,0,data_processing,80,sandbox,False,Add module alignment doc: 三模組定位與雲端同步
+d894405eead96cbd82e019f5586a68c8645c0ed4,2026-07-08T00:37:41+00:00,2026-07-08,0,data_processing,2,sandbox,False,Fix: next_phases_plan has three lettered directions A/B/C not four
+03e5ff89394e701efc3a8f5e53ab7ecc65723c4f,2026-07-08T00:39:27+00:00,2026-07-08,0,stats_analysis,735,main,False,"Add individual-sample concept-profile demo (COMPASS-analog, P2+P3)"
+9f40b80024f8eb475bd11d221a5916080cdd0175,2026-07-08T00:41:18+00:00,2026-07-08,0,visualization,557,main,False,Merge branch 'worktree-agent-aed8e14eb240a0062' into claude/drug-discovery-tool-plan-258jof
+86108ce2e4b7fc6a362c59297cf4166a2689943d,2026-07-08T00:41:18+00:00,2026-07-08,0,stats_analysis,498,main,False,Merge branch 'worktree-agent-a2efde00d7b23b952' into claude/drug-discovery-tool-plan-258jof
+da3cca4a2c776ebee3bf293860c76f33285051a7,2026-07-08T00:45:00+00:00,2026-07-08,0,data_processing,33786,main,False,Merge remote-tracking branch 'origin/main' into claude/drug-discovery-tool-plan-258jof
+2a69a5b2b22f7243299409ed6462c20f6e80f53b,2026-07-08T01:10:11+00:00,2026-07-08,0,documentation,138,main,False,Document tasks blocked in this sandbox (for execution elsewhere)
+9eb444bd736fe6a0b45ceca3bdfa5af3dd535aa5,2026-07-08T01:48:58+00:00,2026-07-08,0,documentation,267,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+a7ba33fea7475813145939b14bc0b38b7a407b04,2026-07-08T01:49:00+00:00,2026-07-08,0,documentation,323,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+9a04557692ffb0d815a7b34c75f0fd77d301758c,2026-07-08T01:49:02+00:00,2026-07-08,0,documentation,350,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+46e0e643c40ab1081ebd23f95b097ce9c8e21c19,2026-07-08T01:49:04+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+9f8cf4334b65a445746275d2584c067fa02da081,2026-07-08T01:49:06+00:00,2026-07-08,0,documentation,416,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+fe23ede101570fe80510e5c71c482aee1e9a6e4d,2026-07-08T01:49:07+00:00,2026-07-08,0,documentation,267,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+55cef0bdeb6a6f5799944a30ed9e07574e620e18,2026-07-08T01:49:09+00:00,2026-07-08,0,documentation,315,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+51aa1db5f8b42dbeee08ce49dc940967945383d2,2026-07-08T01:49:11+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+2a47b0269f672ec104af51b5c9d8c72817c2385b,2026-07-08T01:49:13+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+92b71b9aed2ff8021a2e6fbf12821e6bc3ab1572,2026-07-08T01:49:14+00:00,2026-07-08,0,documentation,267,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+38fd3b315e799d2b9688724bff427ba36be430b2,2026-07-08T01:49:16+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+6d460c5cd8d13fd5fa7ab45207c42cbe10f7c4dc,2026-07-08T01:49:18+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+cf9a7c50f4e432341a4fc425c0adbbf4ca4d8513,2026-07-08T01:49:20+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+a800709535121e83f8097e87bf2543cec8f65a6c,2026-07-08T01:49:22+00:00,2026-07-08,0,documentation,259,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+76e93d4439d4928852fa28bef428814485d0c2a8,2026-07-08T01:49:24+00:00,2026-07-08,0,documentation,321,sandbox,False,PR10: Open Targets/CT/PubMed evidence snapshot
+46dbbd1b0c3d5302999fe2dd274e54d04593ac0c,2026-07-08T01:49:25+00:00,2026-07-08,0,documentation,123,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+fe1d098b2533fd975c5433f830ea3b6f87f1ad93,2026-07-08T01:49:27+00:00,2026-07-08,0,documentation,138,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+09db964ed1ab75d1c40a89d8fe2fd7f0e92989b7,2026-07-08T01:49:29+00:00,2026-07-08,0,documentation,108,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+cc3c90b6e66ddb478a24d68f87b403c97293cd39,2026-07-08T01:49:31+00:00,2026-07-08,0,documentation,78,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+b342d52678db86ffe25f2b414c62485bf1896da0,2026-07-08T01:49:32+00:00,2026-07-08,0,documentation,113,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+ef2d21e9bc9c1a6eb3e4f1fd192904ba88c5d051,2026-07-08T01:49:34+00:00,2026-07-08,0,documentation,103,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+cd51dd8a6ad47a8529bab9f4a75d5005a7015ade,2026-07-08T01:49:36+00:00,2026-07-08,0,documentation,253,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+547b61f2926d5ce6cc4b4e5898730afc4ae4057b,2026-07-08T01:49:38+00:00,2026-07-08,0,documentation,88,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+4ab2c7c2a154caf6af145bd0db8881662a75091a,2026-07-08T01:49:40+00:00,2026-07-08,0,documentation,75,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+5a5a36cbfd9f67f7afc685639a9da1b8bb063eef,2026-07-08T01:49:42+00:00,2026-07-08,0,documentation,88,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+9256db9729b8ba04c1906a33299b6958044c5a81,2026-07-08T01:49:43+00:00,2026-07-08,0,documentation,83,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+16a511a5aff95e145a63a0d133e83ff32a37276e,2026-07-08T01:49:45+00:00,2026-07-08,0,documentation,83,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+e76e81eb10cbcd45187e019f38412a778981b5f5,2026-07-08T01:49:47+00:00,2026-07-08,0,documentation,88,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+401aa904204d6584d5af1614bdd1098d0e226e63,2026-07-08T01:49:49+00:00,2026-07-08,0,documentation,88,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+a690ab43cc63fb35ae2f0ad7230771b1427e0eb3,2026-07-08T01:49:50+00:00,2026-07-08,0,documentation,198,sandbox,False,PR10: Reactome+STRING mechanism-graph snapshot
+7831aafb9705f35c6c9ac47e30e49b20d80d5671,2026-07-08T01:49:52+00:00,2026-07-08,0,documentation,23,sandbox,False,"PR10: gnomAD v4 LOEUF/pLI, 8->15 genes"
+d3ff8d0a3e3c507b8273f8b8d64ea4cfeca75642,2026-07-08T01:49:55+00:00,2026-07-08,0,data_processing,3670,sandbox,False,PR10: broad-effect AlphaFold structures
+186b944e963a073b39de1c43a61060c2f7232e97,2026-07-08T01:49:57+00:00,2026-07-08,0,data_processing,2613,sandbox,False,PR10: broad-effect AlphaFold structures
+2df41cfa719f40560ce068f44024b4a9d19a53d6,2026-07-08T01:50:00+00:00,2026-07-08,0,data_processing,24396,sandbox,False,PR10: broad-effect AlphaFold structures
+ef527c8c0128006a240f3f5ab0edb5c732929996,2026-07-08T01:50:03+00:00,2026-07-08,0,data_processing,2601,sandbox,False,PR10: broad-effect AlphaFold structures
+e9b9facaa6b43c38d47b9d180dc01a063202d22e,2026-07-08T01:50:06+00:00,2026-07-08,0,data_processing,8899,sandbox,False,PR10: broad-effect AlphaFold structures
+92e60cc29dfeef66106aa092d4100ce5d4b1db49,2026-07-08T01:50:09+00:00,2026-07-08,0,data_processing,3721,sandbox,False,PR10: broad-effect AlphaFold structures
+c3c834cf9972021cbae3e273748fc0f1dde4fc66,2026-07-08T01:50:11+00:00,2026-07-08,0,data_processing,8902,sandbox,False,PR10: broad-effect AlphaFold structures
+a9a30c3610a424ab99bd5fa5f4fdd1a017356d26,2026-07-08T01:50:14+00:00,2026-07-08,0,data_processing,4135,sandbox,False,PR10: broad-effect AlphaFold structures
+d95390002c64e1cdb347e9b83e649d85a8ffa692,2026-07-08T01:50:17+00:00,2026-07-08,0,data_processing,5201,sandbox,False,PR10: broad-effect AlphaFold structures
+84345caf2cdf3a0bfda46fa9c1d7632900916d8a,2026-07-08T01:50:19+00:00,2026-07-08,0,data_processing,3708,sandbox,False,PR10: broad-effect AlphaFold structures
+5cdb42587970e9562255296dfbc158787996bd4b,2026-07-08T01:50:21+00:00,2026-07-08,0,documentation,56,sandbox,False,PR10: execution report
+17ca87e9446307f700bd5321d3ac49cf0d72e0a8,2026-07-08T02:31:59+00:00,2026-07-08,0,external_integration,83,sandbox,False,Task F: LINCS/CMap acquisition + connectivity module
+9835e14f909bb450329104ce7150ab56b92b2767,2026-07-08T02:32:02+00:00,2026-07-08,0,documentation,979,sandbox,False,Task F: real 978-gene demo signatures (4 covered genes)
+9bb00011414eda9a3c8f72f4a49e4082db50ebff,2026-07-08T02:32:04+00:00,2026-07-08,0,documentation,16,sandbox,False,Task F: shortlist LINCS coverage (4/15)
+00730aea68aec9f0fb17908032b25692a0174926,2026-07-08T02:32:05+00:00,2026-07-08,0,external_integration,47,sandbox,False,Task F: acquisition doc + honest coverage limits
+00a5bc6c4a3f3b6512f40b3dc06abc31b9f44fe1,2026-07-08T02:33:15+00:00,2026-07-08,0,documentation,64,sandbox,False,Task A: GB10 runbook (reduced-run first)
+aea49e0f6a8e6ad0684e6b86243277dafe038988,2026-07-08T02:38:36+00:00,2026-07-08,0,external_integration,22,sandbox,False,Fix: PLCG1 is a covered immune candidate; correct the zero-immune-coverage overstatement
+aa98b48ab8f719eb094f192fe0da3e65a4b5782a,2026-07-08T02:38:58+00:00,2026-07-08,0,external_integration,11,sandbox,False,Fix: PLCG1 is a covered immune candidate; correct zero-immune-coverage claim
+24e908b6804f5e0cb876539f85d65d6093a1a3e6,2026-07-08T02:39:00+00:00,2026-07-08,0,documentation,9,sandbox,False,Fix: add missing make_pseudobulk.py merge sub-step (two subparsers: aggregate + merge)
+7e3ad9c8eda87838289405bc74daf1c1d656a99e,2026-07-08T02:41:20+00:00,2026-07-08,0,external_integration,3,sandbox,False,Fix: correct residual '4 non-immune' phrasing in RECOMMENDATION (3 non-immune + PLCG1 immune)
+f92e9a31acb27c969905e04f535fe4de6fed8229,2026-07-08T10:15:51+00:00,2026-07-08,1,external_integration,58,main,False,Fix red main: update golden tests to the parallel session's real data landings
+1ed6c1bafa13ca4f97cf5bf0157c76aa045eb5bf,2026-07-08T11:12:48+00:00,2026-07-08,1,external_integration,280,main,False,"Adopt gnomAD v4 threshold (0.6), wire committed LINCS data, de-dup connectivity_score"
+61bedb0a470fe028d2ea88c7084652e3542fb1ff,2026-07-08T15:08:19+00:00,2026-07-08,1,documentation,46,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+4984eed3847a77b7819b2e1b17502957050e4996,2026-07-08T15:08:24+00:00,2026-07-08,1,data_processing,33984,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+e6a76529a3c15bab83be5c58a79a90253f671e98,2026-07-08T15:08:26+00:00,2026-07-08,1,data_processing,13,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+d9caf591032146075cdad7d5eaf144902612d9e6,2026-07-08T15:08:28+00:00,2026-07-08,1,documentation,38,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+6a3d80e711e4868172c91ab955e5ef53b86d0cd7,2026-07-08T15:08:32+00:00,2026-07-08,1,data_processing,33984,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+1fb82ac6baadf7cac6bfbde17764841d02d1a1a5,2026-07-08T15:08:36+00:00,2026-07-08,1,documentation,35,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+74963043bcb0dbd7f8591cb28d7125f1419f03ec,2026-07-08T15:08:39+00:00,2026-07-08,1,data_processing,11527,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+df758c8e8bce8b39efa02efbc87471ee983068fb,2026-07-08T15:08:42+00:00,2026-07-08,1,data_processing,11527,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+33cdd9794d57892f61eeebc5f57b4711bc9e1a89,2026-07-08T15:08:45+00:00,2026-07-08,1,data_processing,2132,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+bebc921a9c1d02b9bb008e8e1b5017a9e1285d56,2026-07-08T15:08:47+00:00,2026-07-08,1,documentation,65,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+765818189eef1bc39fcbf94a00bb569b15edaf8a,2026-07-08T15:08:49+00:00,2026-07-08,1,data_processing,4,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+e6a979036e6d466472f6fe00ea5e41f35c6dba64,2026-07-08T15:08:51+00:00,2026-07-08,1,data_processing,19,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+aa9173cd62a6f58f26a70b9f373640a6101514f8,2026-07-08T15:08:54+00:00,2026-07-08,1,documentation,177,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+e1362affb6c48bf36018210e2e712e9384267922,2026-07-08T15:08:56+00:00,2026-07-08,1,documentation,66,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+682e4f0621de4a8ca3d8407934d1e9bdafbc962b,2026-07-08T15:08:58+00:00,2026-07-08,1,documentation,162,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+111c75a1974974e3234f3f6665db1e7c4583ef6a,2026-07-08T15:09:00+00:00,2026-07-08,1,documentation,93,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+c3fcee850feca600b5bee2b901ee33cf9ccace93,2026-07-08T15:09:02+00:00,2026-07-08,1,documentation,72,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+786e40e4a66143327ac41de4bb759be866348cfe,2026-07-08T15:09:04+00:00,2026-07-08,1,data_processing,16,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+a4f0aa435a0c1d41c144b76c8296821eb2b190cd,2026-07-08T15:09:06+00:00,2026-07-08,1,documentation,83,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+7530aab6f44d244453ea1df8cf2f756c35ef6f9a,2026-07-08T15:09:08+00:00,2026-07-08,1,data_processing,19,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+c43c6866e52b484c38ac825f284a78eadb07521e,2026-07-08T15:09:10+00:00,2026-07-08,1,documentation,139,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+671e87449ed083834cd5c9494f945fd5272ac7e2,2026-07-08T15:09:12+00:00,2026-07-08,1,documentation,97,sandbox,False,Add seven-stage pipeline (raw→dashboard) w/ R×Python cross-val + Opus 2-round review
+e53ca08ce4f7a36e5d36306d2d01fe5ebf6e7bfc,2026-07-08T15:56:36+00:00,2026-07-08,1,documentation,124,main,False,"Add improvement roadmap (deep-research-backed, repo-grounded, phased)"
+301ed9b4bf72f7e1e38d7a82735efeedcdbf72f8,2026-07-08T16:40:40+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+d24ec16a37423d1661301c0b463ba38cf0622bf0,2026-07-08T16:40:42+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+10801d6ef17dd03495f0ba1fee2e8262920ddb22,2026-07-08T16:40:44+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+1df2855b486f627dc8b29acb71ca8764c1eb5fba,2026-07-08T16:40:47+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+968c3a92e5ddc58bd8a3a63b6a9d039aa5f2fe51,2026-07-08T16:40:49+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+82204d141e9ee4b7e55e02120f2bcd98929e9bad,2026-07-08T16:40:52+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+f532405ba9f1796d6983c4fe2a21e8ef05d23889,2026-07-08T16:40:54+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+8a0d0fe85eafde182c2b20e04c72704dcc1939c6,2026-07-08T16:40:57+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+d16dc8b43cfe509b0fd44e2a57dd201ba14811ec,2026-07-08T16:40:59+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+27e461870dcea24f71a02f7837c2a3785813cf1e,2026-07-08T16:41:02+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+022a039bbad63b6303db205e3893b56c9ba4bb07,2026-07-08T16:41:04+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+32503d8be69f1148da6f5fcd2790e183d9f18cb0,2026-07-08T16:41:07+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+15d71f698a176f2d491bf679007d4384f229fcee,2026-07-08T16:41:10+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+35a3ab4f8cd0394241037c6a1d159341a2e0377a,2026-07-08T16:41:13+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+60318cd12e46b75121abccaa02bbeff418d95e19,2026-07-08T16:41:16+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+7382e4aae4cc313ed39e2361f8fa8ab3651222e2,2026-07-08T16:41:19+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+8c59d3f0489dfa6d790a16ec95606645e8126723,2026-07-08T16:41:22+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+91a0f4f6734f4fbb09c3a3998da55b01fdbedcbb,2026-07-08T16:41:25+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+92f6c1832b6bcc7a6702522e2910242bcbaad0cb,2026-07-08T16:41:28+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+7ad3b9bd7adbc0705b62abe2c74e221ddce977b7,2026-07-08T16:41:30+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+b11f116dcaee2c21cadf836ac038970b487b89e1,2026-07-08T16:41:33+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+51588afbe0ec91597ce4734a4eedc1f1489b144b,2026-07-08T16:41:35+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+88edc9beeca3a048daccbd5caeee418e11b687c0,2026-07-08T16:41:38+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+30713f5d761867cfbb9a095d3fe0a10885e134b7,2026-07-08T16:41:40+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+f08bccbaa08352a322691b605768649b48dcfa43,2026-07-08T16:41:43+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+6d8e6c05914134c1a415af6cb3c5459814ea46df,2026-07-08T16:41:45+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+b0326566ac69e4b39c84d911e53fa7df7537e8b2,2026-07-08T16:41:47+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+1cfcaf7a76c80cde1cf59fdcd30918f466cfb6c7,2026-07-08T16:41:50+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+682547d027205b10a2424f6e9b38ffeee7864c0c,2026-07-08T16:41:52+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+6b8784cce3d831b718aff9c2e73cbb3c9aac3e1c,2026-07-08T16:41:55+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+fe3ffc6cf3ae04a8b68c013b2fe18e0393ff3216,2026-07-08T16:41:58+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+0b10d07b168e3362b3294533031cb3cbf2e2f59a,2026-07-08T16:42:01+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+ec5c315017664b993df024a3487853e7622c34ff,2026-07-08T16:42:04+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+c95326f8cb08cd280989a1f7a09ae43066ecc881,2026-07-08T16:42:07+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+a763a478550d64c1aaee6e7f933f3470b7044ced,2026-07-08T16:42:09+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+99babe2b1f80e7f33e176a4857c578f2c68bdd3a,2026-07-08T16:42:12+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+44bd83148da02b8a9606189370c56bd7bb3c8fe4,2026-07-08T16:42:15+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+68f241fcc5d7da3431470c8738350e7800d9abf5,2026-07-08T16:42:18+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+e55ce9056130d339fbd6c4ea66c3d6bcddde0a53,2026-07-08T16:42:21+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+7cc79b675f15b9fcc4fecc869b6979cce89373ca,2026-07-08T16:42:26+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+69aa2b26dda1179f7b3ac92f7ac80c86fa06f1e4,2026-07-08T16:42:29+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+6febf864ab3a66f51f791dd61ca74425778eb329,2026-07-08T16:42:32+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+a9605f5b466da8591815ac9e6edad8a86ab016b9,2026-07-08T16:42:35+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+6e3130d1dbbc923d1108a754d964285e8dc57479,2026-07-08T16:42:37+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+d68399da56201dafb3feebb18084b972bd095e58,2026-07-08T16:42:40+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+fd6cb3354285ad418096be12c79a09b2be72bcb4,2026-07-08T16:42:42+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+5d500e346865c8143dabad6d43cfd5e78a877847,2026-07-08T16:42:44+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+816bed8bc94fa754beb372e553c71f85980e5f20,2026-07-08T16:42:47+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+f45bdd33e5558732c8f00e371e3281ec904f9584,2026-07-08T16:42:50+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+4088cd03f6455d6504de75b7999737e0362dff81,2026-07-08T16:42:52+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+d83990d8394d74a2b34739f43098cef0dd1cca48,2026-07-08T16:42:55+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+f75b96e22746a0c6a0531d0d4204a3fb08151e0a,2026-07-08T16:42:58+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+94666e01d81228ce393d988a41d8a17ae821fd16,2026-07-08T16:43:01+00:00,2026-07-08,2,visualization,0,sandbox,False,Refine 53 figures to publication grade (figure-style §1-§9)
+30d510c345822323f16667b110d1a383385802a8,2026-07-08T16:43:04+00:00,2026-07-08,2,documentation,96,sandbox,False,Refined figure catalog (53 charts)
+ee81fa42a0ae65b05fa2223d95c827ea32dfed20,2026-07-08T16:43:06+00:00,2026-07-08,2,data_processing,54,sandbox,False,Refined figure catalog (machine-readable)
+da457f06a78f1aff0ad12345396b24afacc58efa,2026-07-08T16:48:59+00:00,2026-07-08,2,data_processing,438,sandbox,False,Add Cascade Distillation generative art (p5.js) — seven-stage pipeline as flow-field distillation
+35e4759196e9391dc1f061b7d6679ef7fbb1d4da,2026-07-08T16:49:01+00:00,2026-07-08,2,documentation,19,sandbox,False,Add Cascade Distillation algorithmic philosophy manifesto
+b426172b3c8ce788d1f43132823f2347758b3ebe,2026-07-08T17:09:11+00:00,2026-07-08,2,external_integration,485,main,False,P2.1: wire LINCS L1000 compound-reversal into connectivity explorer
+6596cb8556086526d570c3e612eb16397176083f,2026-07-08T17:15:24+00:00,2026-07-08,2,stats_analysis,658,main,False,Phase 1: descriptive genetic-support tiering + composite safety-liability
+bbb915ebceaed513714f563618fce1977ede9043,2026-07-08T17:16:15+00:00,2026-07-08,2,external_integration,485,main,False,Merge branch 'worktree-agent-afad6605e384de8df' into claude/drug-discovery-tool-plan-258jof
+2cf888bfa4e4e47d4b76cc105faedca7b75aec58,2026-07-08T17:16:15+00:00,2026-07-08,2,stats_analysis,658,main,False,Merge branch 'worktree-agent-a5dce5c3a10b0a63b' into claude/drug-discovery-tool-plan-258jof
+5bbea9888e34ccd7b5aef0f0da6a9a1f15db2312,2026-07-08T17:21:12+00:00,2026-07-08,2,data_processing,94905,main,False,Merge remote-tracking branch 'origin/main' into claude/drug-discovery-tool-plan-258jof
+05801848e2cff432130867ed66bf92df85c1912a,2026-07-08T17:21:12+00:00,2026-07-08,2,documentation,12,main,False,Integrate roadmap Phase 1 + Phase 2; mark status
+49bce0ee505bb782fe71fe1ddf6e87f4afa5927b,2026-07-08T17:57:13+00:00,2026-07-08,2,documentation,82,main,False,Add server north-star (data-portal goal) for discussion
+fabc52410cfffaa6c8943fa154077d4e4b20c617,2026-07-08T18:07:46+00:00,2026-07-08,2,stats_analysis,133,main,False,"North-star Phase 1: enrich OpenAPI docs (decision-invariant, docs-only)"
+abafb56d6351ca49fad3dbe14774b7f89ce265a9,2026-07-08T18:12:52+00:00,2026-07-08,2,documentation,116,main,False,Add consumer-facing API quickstart (docs/API.md)
+34436c0f685450c58fd41bc5aff53d7906c63f16,2026-07-08T18:18:26+00:00,2026-07-08,2,stats_analysis,39,main,False,Surface engine/dataset/schema versions on /api/health (additive)
+ec7789dec617e5c0a8af2c41e3878d3a0303105d,2026-07-08T18:27:24+00:00,2026-07-08,2,visualization,883,main,False,frontend: add entity-centric target dossier page (northstar Phase 2)
+80158d90c8db07ff40112c410562048fa045bbf5,2026-07-08T18:27:59+00:00,2026-07-08,2,visualization,883,main,False,Merge branch 'worktree-agent-abc451e11d1d0a0be' into claude/drug-discovery-tool-plan-258jof
+6c2f0bedc4b86eb3e7436934cf789494c1cdcde2,2026-07-08T18:37:10+00:00,2026-07-08,2,stats_analysis,60,main,False,Bulk JSON export: stamp provenance + fix pre-existing NaN crash
+24cc931f9162ace8ac7734b050159894daa39abf,2026-07-08T22:59:17+00:00,2026-07-08,2,visualization,30,main,False,Add onboarding intro to the dashboard landing (好上手 / UI friendly)
+8a015d32e2ec2dc94d1a100c1320753241394dfc,2026-07-08T23:13:33+00:00,2026-07-08,2,stats_analysis,43,main,False,Stamp version headers on every API response; record confirmed product decisions
+5bdc2517d9f168ce666fdc8b9df929423e3722ca,2026-07-08T23:16:10+00:00,2026-07-08,2,documentation,142,wiki,False,Add Development Guide wiki page (zh-TW) for collaborators
+5f5d7b4218ff48ca8737a5707dbce6b31dec96f7,2026-07-08T23:40:36+00:00,2026-07-08,2,stats_analysis,386,main,False,"Add supervised ML perturbation-prediction benchmark (honest, methodology-only)"
+20e045fdc75c5925114e64cc6165cefff8450c1b,2026-07-08T23:41:35+00:00,2026-07-08,2,documentation,341,wiki,False,"Add complete Manual wiki page (zh-TW): references, data sources, docs index, commits, ASCII architecture"
+1eb379288479668056857a9878b2504a1788bb2e,2026-07-09T00:15:51+00:00,2026-07-09,0,data_processing,502,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+4a726673545832320909511e96f55fe9ee8f0057,2026-07-09T00:15:53+00:00,2026-07-09,0,data_processing,421,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+0b2bb3375d10ad8fb800479b1b2e2ed9c9503295,2026-07-09T00:15:55+00:00,2026-07-09,0,documentation,236,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+e2218e9ce1b9b6d31cd4fa1f527d50a37e928395,2026-07-09T00:15:57+00:00,2026-07-09,0,documentation,23,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+772ba12e4434394dce08dbe34b10106b02ede4aa,2026-07-09T00:15:59+00:00,2026-07-09,0,documentation,20,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+22e7e7934b4619067a811ad76b909578eeb54098,2026-07-09T00:16:01+00:00,2026-07-09,0,data_processing,1236,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+5700cc02345c7928c570d5e3d1c8bbb58d232cf1,2026-07-09T00:16:03+00:00,2026-07-09,0,data_processing,1,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+eed3e3007d1107cae5728699d326bb61dcf8e68b,2026-07-09T00:16:05+00:00,2026-07-09,0,data_processing,16,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+bfcd762b13a88d28a04ec30d72c4450af64b4dbe,2026-07-09T00:16:07+00:00,2026-07-09,0,data_processing,1,sandbox,False,Add two-entry UI interactive prototypes (Rank Board + Risk×Evidence) with real GWT/gnomAD/Open Targets data + 2-round review
+33b36c67b323309b4fe22320e7f4841d5e128563,2026-07-09T00:53:42+00:00,2026-07-09,0,stats_analysis,132,main,False,Fix readiness CLI cwd footgun: root-anchor default overlay paths
+46b1c6b8d4fb736856bbd510bfbdf3ed996bbb11,2026-07-09T00:53:58+00:00,2026-07-09,0,stats_analysis,510,main,False,Add descriptive immune-concept annotation + immune-priority ranking
+d9c225f3627348d40bacbd74bc3ed5b91c742be7,2026-07-09T00:54:21+00:00,2026-07-09,0,stats_analysis,263,main,False,Add stimulation-dependent switch explorer + /api/switches
+088af587a87c1b9aca33cb1d0e44a38399668468,2026-07-09T04:48:28+00:00,2026-07-09,0,documentation,44,main,False,Record data-coverage stocktake + refresh blocked-task current-state numbers
+083ae92df99d079b64b6da796557f1cfb2a4fd24,2026-07-09T06:14:12+00:00,2026-07-09,0,documentation,158,main,False,"Record D/E/F follow-up plan (second exploration wave), self-reviewed"
+ca52c69b484b57d3f395579f0bd65b193f35df07,2026-07-09T06:49:53+00:00,2026-07-09,0,stats_analysis,573,main,False,Add robustness-first filter-then-rank overlay + /api/robust_ranked (follow-up D)
+7a91e58ebbdba7a2e0734983b79fb2667d36b781,2026-07-09T06:51:08+00:00,2026-07-09,0,stats_analysis,573,main,False,Merge D: robustness-first ranking (robust_ranking.py + /api/robust_ranked)
+df0855eddc57abb7bd4e4388a2ab106132cb91cf,2026-07-09T06:54:46+00:00,2026-07-09,0,stats_analysis,346,main,False,"Add genetic double-support endpoint (disease x population), direction E"
+ef82b983a7d666495f24e854b45fc62445831faf,2026-07-09T06:55:52+00:00,2026-07-09,0,stats_analysis,346,main,False,Merge E: genetic double-support (genetic_double_support.py + /api/genetic_double_support)
+fee54c520679a76e4d9d84adb9528d340b8169a5,2026-07-09T06:57:21+00:00,2026-07-09,0,stats_analysis,4835,sandbox,True,Merge main (PR #21 concept_annotation/robust follow-ups) into UI prototype branch
+8dc45ca724a3f74f5321d6c2cd0cb0e740c7a90c,2026-07-09T07:06:23+00:00,2026-07-09,0,data_processing,52,sandbox,False,Wire cloud immune-concept ranking into Entry A (concept_annotation module signals: immune_interest + stimulation_gated)
+a027088f783dce8ec42399e6993e7074877f89cf,2026-07-09T07:06:26+00:00,2026-07-09,0,data_processing,2472,sandbox,False,Wire cloud immune-concept ranking into Entry A (concept_annotation module signals: immune_interest + stimulation_gated)
+f0777a0c0e25a5b6e775d8cbedd9dde8b01a120f,2026-07-09T07:06:28+00:00,2026-07-09,0,data_processing,2,sandbox,False,Wire cloud immune-concept ranking into Entry A (concept_annotation module signals: immune_interest + stimulation_gated)
+d15eee0db7bf981b1e2e0f9c2a3609863ace2c70,2026-07-09T07:18:33+00:00,2026-07-09,0,stats_analysis,666,main,False,Add integrated multi-axis triage card + /api/triage (direction F)
+95f326c9e443fe05301b9be9993ef13d04c2333d,2026-07-09T07:19:15+00:00,2026-07-09,0,stats_analysis,666,main,False,Merge F: integrated multi-axis triage card (triage_view.py + /api/triage)
+101e91cbd2819df51ab34aa834750192195a1d7f,2026-07-09T07:23:57+00:00,2026-07-09,0,visualization,122,main,False,"Wire D/E/F into the dashboard (robust ranking, double-support, triage tab)"
+ce2d2155ee350a53bae783cc0dd28b466e7e1c85,2026-07-09T08:08:13+00:00,2026-07-09,1,data_processing,314,sandbox,False,Complete P1 (L2 Target Dossier prototype) + context-specific shortlist
+077b1f8b103aa65eef96dd8b190a0d22ac81330d,2026-07-09T08:08:15+00:00,2026-07-09,1,data_processing,2,sandbox,False,Complete P1 (L2 Target Dossier prototype) + context-specific shortlist
+4fe49913780e7c6336925fd58bced5b91fff59a8,2026-07-09T08:08:17+00:00,2026-07-09,1,data_processing,97,sandbox,False,Complete P1 (L2 Target Dossier prototype) + context-specific shortlist
+8028c4851f30146e4e83c062e90bdeb1867223b8,2026-07-09T08:08:19+00:00,2026-07-09,1,documentation,55,sandbox,False,Complete P1 (L2 Target Dossier prototype) + context-specific shortlist
+863b814095defd540c8a101cda9c366e4bcd1119,2026-07-09T08:08:22+00:00,2026-07-09,1,visualization,0,sandbox,False,Complete P1 (L2 Target Dossier prototype) + context-specific shortlist
+51074fa34bc013e7fe260184d8d2e7fafd6aa3fc,2026-07-09T08:08:33+00:00,2026-07-09,1,stats_analysis,1865,sandbox,True,Merge main into UI prototype branch (P1 + context-specific)
+a7c5b9ba5f5d3035ef8217fb03dba6f3f645327f,2026-07-09T08:18:00+00:00,2026-07-09,1,visualization,0,sandbox,False,Fix figure title + README: kinetic claim only; 9/20 immune-module genes distinguished from 11 non-immune
+3880c6cf87c403897bc723b4a5af7b701392ec96,2026-07-09T08:18:02+00:00,2026-07-09,1,documentation,2,sandbox,False,Fix figure title + README: kinetic claim only; 9/20 immune-module genes distinguished from 11 non-immune
+ca3425a037b09b13ae63d80c70755ec4e838421d,2026-07-09T10:01:39+00:00,2026-07-09,1,documentation,0,sandbox,True,Merge main before delivery decision layer
+9edf4a588c0da8965eb996a73472fda3d51661d5,2026-07-09T10:01:41+00:00,2026-07-09,1,documentation,86,sandbox,False,Add GB10-free delivery decision layer: context-specific × deliverability × polarity
+cac2cb88583117a2d48a76b1b700228a0e6a5561,2026-07-09T10:01:44+00:00,2026-07-09,1,data_processing,97,sandbox,False,Add GB10-free delivery decision layer: context-specific × deliverability × polarity
+a3043661e508e2e3d604f4a02104ddc21efb3f68,2026-07-09T10:01:46+00:00,2026-07-09,1,data_processing,1236,sandbox,False,Add GB10-free delivery decision layer: context-specific × deliverability × polarity
+82ef93888ab64ef6cb4c4ddacc11e23951f03fa9,2026-07-09T10:01:49+00:00,2026-07-09,1,visualization,0,sandbox,False,Add GB10-free delivery decision layer: context-specific × deliverability × polarity
+0f351e20a49f967a905e195498c6f94c5d0c6979,2026-07-09T10:23:02+00:00,2026-07-09,1,documentation,206,main,False,Add reproducibility dossier: full pipeline ordered by stage + verification
+56d1dbcce24988f261deab062a9f839a49e4bddd,2026-07-09T11:15:58+00:00,2026-07-09,1,data_processing,110,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+5d51f13418e8fe109c984f0029c975ed07baddc0,2026-07-09T11:16:00+00:00,2026-07-09,1,data_processing,94,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+a028717083c17930c9c437326de4e5def50021c2,2026-07-09T11:16:03+00:00,2026-07-09,1,data_processing,2,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+50432e4a8d233cb8999f104f1186207b3d091072,2026-07-09T11:16:05+00:00,2026-07-09,1,data_processing,1236,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+e213718c70911289424bdb7fb27dd0653f25e8ad,2026-07-09T11:16:07+00:00,2026-07-09,1,data_processing,28,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+b6585b0471b6ff65bab7b732fbdc4996722a28b7,2026-07-09T11:16:10+00:00,2026-07-09,1,data_processing,1236,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+54ad9602ad07dea9ef13ae4ba2026a00a7d8b5dd,2026-07-09T11:16:12+00:00,2026-07-09,1,visualization,0,sandbox,False,Ideas 2-4: polarity + kinetic archetypes + clinical avoid-list (all GB10-free); wire into both prototypes
+51d19ada0b5ddb60f00a947c0e94d26d9b69be99,2026-07-09T11:16:41+00:00,2026-07-09,1,documentation,27,sandbox,False,Add kinetics+avoid readme
+9eeaeb1e7df805fbb6f844cdd8c906879720d88e,2026-07-09T11:47:11+00:00,2026-07-09,1,documentation,55,main,False,Record frontend fix plan (FE-1..FE-4; FE-2 includes tab restructure)
+da688f72d91b0fe2dcad3c0d2a50da95e0adf4ae,2026-07-09T12:00:49+00:00,2026-07-09,1,visualization,411,main,False,FE-3: extract shared ui_chips.py badge module; pages/2 reuses it
+0e14f3e8395ecaa1b2d5d64a9729b39490a5e41f,2026-07-09T12:03:57+00:00,2026-07-09,1,stats_analysis,92,main,False,FE-1 (receiver): dossier accepts ?target=&dataset_id= deep-link
+097c6d273abe42cf2a372dc6216c0ce99d4af6be,2026-07-09T12:11:02+00:00,2026-07-09,1,visualization,114,main,False,"FE-2 + FE-4 + FE-1(sender): reorder tabs (Triage front-door), deep-link, unify concept flatten"
+ec014946d3bb3d34056bb424d392d00e8aeab9ff,2026-07-09T13:46:40+00:00,2026-07-09,1,visualization,878,sandbox,True,Merge main before coverage fix
+49fd1c6c3c10ae0d59c72ee57d0eee3ea32d143e,2026-07-09T13:46:43+00:00,2026-07-09,1,data_processing,2256,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+176a747eb7140591032be341975e549eb74d862e,2026-07-09T13:46:45+00:00,2026-07-09,1,data_processing,396,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+8edd5686d804c59f3cc4629ce4706fdd163f9c1c,2026-07-09T13:46:47+00:00,2026-07-09,1,documentation,27,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+40ad7128b7cfab82187ed85c4a0ac7dfd3e98c8f,2026-07-09T13:46:50+00:00,2026-07-09,1,visualization,0,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+598e2d975d8015b3914b8359f0b14c807e4c6f08,2026-07-09T13:46:53+00:00,2026-07-09,1,data_processing,2,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+7765229b2df3fc06969048b3d56b331c24cbc5c8,2026-07-09T13:46:58+00:00,2026-07-09,1,data_processing,2,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+89b5d853eeabbbe74b920de780d1c26ebab81484,2026-07-09T13:47:00+00:00,2026-07-09,1,data_processing,2,sandbox,False,Evidence coverage fix: bulk gnomAD 6%->97%; recompute avoid-list (27->387); re-embed prototypes
+9ac578bd9b4de5e905b29da097f3f39f2e21ee22,2026-07-09T14:02:55+00:00,2026-07-09,1,visualization,131,main,False,refactor(dashboard): extract each Streamlit tab body into render_*() functions
+7f3a77c0e32d5c54d7f4a1c8ec9ce857431af1b5,2026-07-09T14:03:42+00:00,2026-07-09,1,visualization,131,main,False,Merge FE-5: extract dashboard tab bodies into render_*() functions
+6e25edd5ffaf5b010f2dbf4dc340a9457bcddb9b,2026-07-09T14:20:13+00:00,2026-07-09,1,stats_analysis,140,main,False,Enrich target dossier with per-target descriptive axes (closes the FE-1 loop)
+b8231426f8f2ef42979f2f4447bb83d433bd8695,2026-07-09T14:53:23+00:00,2026-07-09,1,visualization,0,sandbox,False,"Add platform cover: dual-perspective conflict (researcher vs clinician), 2D + animation"
+b43ec4496c1705f26f32fc4ab5dd1559286126e0,2026-07-09T14:53:26+00:00,2026-07-09,1,data_processing,0,sandbox,False,"Add platform cover: dual-perspective conflict (researcher vs clinician), 2D + animation"
+93ea3f4e8d871b499470ff10746be18cad4bd1ba,2026-07-09T14:53:30+00:00,2026-07-09,1,documentation,13,sandbox,False,"Add platform cover: dual-perspective conflict (researcher vs clinician), 2D + animation"
+4290bd867c73acb2240ec9b0f75070d0ac5d47d2,2026-07-09T15:27:05+00:00,2026-07-09,1,visualization,271,sandbox,True,sync main before EN push
+5f78af5b5d65375de9df0692ddc2e0aefde1121c,2026-07-09T15:27:09+00:00,2026-07-09,1,visualization,0,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+5b61cb17107b5423c642e3eaa5765a5e0f601aec,2026-07-09T15:27:12+00:00,2026-07-09,1,data_processing,0,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+22f20245cf4d380f88e3283948bcbb9177655889,2026-07-09T15:27:15+00:00,2026-07-09,1,data_processing,252,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+1387ecdcfc72847b63fa04a0c1c1d7de824aa7f9,2026-07-09T15:27:18+00:00,2026-07-09,1,data_processing,178,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+5e012e65444233bdfc79237e2cbe91f9f736afaf,2026-07-09T15:27:20+00:00,2026-07-09,1,data_processing,122,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+e19fd7302c9cd545712c2e7a93389e01d8d2a99e,2026-07-09T15:27:22+00:00,2026-07-09,1,data_processing,2470,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+e789cb8e760d6f57096d46d64a4660c3fd9d1652,2026-07-09T15:27:24+00:00,2026-07-09,1,data_processing,774,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+7134cf94ea8c60a883ca75c436b92bd589bb4e55,2026-07-09T15:27:26+00:00,2026-07-09,1,data_processing,2450,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+d7b76af4bc813b14fdbf7dc2cc667e3a915c5b25,2026-07-09T15:27:29+00:00,2026-07-09,1,data_processing,2,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+1aeeb0dbf5f3ee9cfee0e186beda79e17d606fc2,2026-07-09T15:27:31+00:00,2026-07-09,1,visualization,0,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+e5b8d4d0dcab85cc6845bb6bd4501bd513137c3d,2026-07-09T15:27:34+00:00,2026-07-09,1,visualization,0,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+7ece1d548015cd7f6a2d2dd9e328204d60a8b099,2026-07-09T15:27:36+00:00,2026-07-09,1,data_processing,97,sandbox,False,"Global English: cover (2D+animation), 3 prototypes, and all data values translated to English"
+01e1c53f09f1a763cf6b0a18ce683396a8f5bef3,2026-07-09T16:17:22+00:00,2026-07-09,2,documentation,215,main,False,docs: add UX/trust fix plan (blind-spot map → phased fixes)
+32478f6700e8b5e2284139f28348575ae5d6e7f4,2026-07-09T16:37:00+00:00,2026-07-09,2,visualization,258,main,False,fix(dossier): stop rendering the IL2RA fixture waterfall as every gene's concept profile; add glossary + structural-limits banner
+bcfde343ef8df7954cd31f9d6b3e607ee46f1174,2026-07-09T17:01:39+00:00,2026-07-09,2,documentation,473,sandbox,True,sync main before blindspot-fix push
+ba30696dcad27c45d2b8506d334c90a6e781e038,2026-07-09T17:01:43+00:00,2026-07-09,2,data_processing,210,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+88b15ebd05eeb522727c65f35b286d6df1bbd6d1,2026-07-09T17:01:45+00:00,2026-07-09,2,data_processing,67,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+5a8200a26201fe4e0f08a3950a503450fbdba82c,2026-07-09T17:01:48+00:00,2026-07-09,2,data_processing,11527,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+20e2d9e8fcd76d9914d943a066057d7933517c82,2026-07-09T17:01:51+00:00,2026-07-09,2,data_processing,97,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+4177bb5096e0334cb6e901be92ca77524238b5d1,2026-07-09T17:01:53+00:00,2026-07-09,2,data_processing,97,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+643a46f9c16fb67f71b2aadc8fc9a03958ac453d,2026-07-09T17:01:56+00:00,2026-07-09,2,visualization,0,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+0178f2f53531b9b9dd72fbfa66f98aaba2e98115,2026-07-09T17:01:58+00:00,2026-07-09,2,documentation,51,sandbox,False,"Blindspot fixes: any-gene funnel diagnosis, known-vs-novel, evidence strength, Entry B dual-mode reposition"
+af1415b401a65f7c8ce8896101cb98096e2faf66,2026-07-09T17:18:23+00:00,2026-07-09,2,documentation,135,sandbox,False,"Add real-user moderated test script (2 personas, 10-min protocol) — closes the 'no real user' blindspot"
+77cf424b89ac90d498685dd8fd8afeb5665ff376,2026-07-09T17:43:15+00:00,2026-07-09,2,stats_analysis,102,main,False,"fix(ux): promote the readiness call + next step to the top of the dossier, add persona wayfinding"
+7d06639197f2cf06cb654d40e2a06c2e634583dd,2026-07-10T00:52:39+00:00,2026-07-10,0,documentation,183,main,False,docs: step-by-step UX flow analysis + dev plan (researcher/clinician lens)
+b555d33dc7e70a6b9c478328b70e74e50d44f3c6,2026-07-10T01:01:53+00:00,2026-07-10,0,visualization,181,main,False,"fix(ux): wire remaining discovery tables to the dossier deep-link, remove Target Explorer's duplicate mini-dossier"
+2a665a5585806feeb0803f78a9d5f81bb7b08cfb,2026-07-10T01:29:33+00:00,2026-07-10,0,stats_analysis,102,sandbox,True,sync main before validation push
+09be2525dd611fad1e4a244dee43bf07d59bfa99,2026-07-10T01:29:35+00:00,2026-07-10,0,data_processing,1226,sandbox,False,"Methodological validation (GB10-free): ranking benchmark (AUROC 0.85), essential-gene dropout diagnosis, baseline-expression correction"
+0f832ef41f80a016286228e9b7f3425edd34a36c,2026-07-10T01:29:38+00:00,2026-07-10,0,data_processing,11527,sandbox,False,"Methodological validation (GB10-free): ranking benchmark (AUROC 0.85), essential-gene dropout diagnosis, baseline-expression correction"
+6c797a3f5e9c22dd33445e1c1d5acaf72f2c80f0,2026-07-10T01:29:40+00:00,2026-07-10,0,data_processing,97,sandbox,False,"Methodological validation (GB10-free): ranking benchmark (AUROC 0.85), essential-gene dropout diagnosis, baseline-expression correction"
+2184c52be7f371297672f8fd69a19d24db9eed0d,2026-07-10T01:29:43+00:00,2026-07-10,0,visualization,0,sandbox,False,"Methodological validation (GB10-free): ranking benchmark (AUROC 0.85), essential-gene dropout diagnosis, baseline-expression correction"
+611cf2ad2481afa456b292ab9879d7e88b3a6e61,2026-07-10T01:29:46+00:00,2026-07-10,0,documentation,84,sandbox,False,"Methodological validation (GB10-free): ranking benchmark (AUROC 0.85), essential-gene dropout diagnosis, baseline-expression correction"
+9a019d69ab1831b937babdc86cfbdc36f86c0cad,2026-07-10T01:54:37+00:00,2026-07-10,0,visualization,401,main,False,fix(ux): reorder dossier sections into a persona-oriented sequence
+a65ae5b17a2cf9ddcb740b83670efcfe27165442,2026-07-10T02:55:31+00:00,2026-07-10,0,documentation,298,manual,True,Add frontend design doc for researcher & clinical-evidence personas (#35)
+6ccf7699dc51f8aeaea9ba29af48d5b225b666b9,2026-07-10T03:23:50+00:00,2026-07-10,0,visualization,3265,main,False,feat(frontend): persona-split redesign — researcher workspace + clinical-evidence lookup
+d825836906429b9e722ced73c0b7d1bc74849ed6,2026-07-10T04:08:01+00:00,2026-07-10,0,stats_analysis,564,main,False,fix(ux): Wave 1b/1c/1d trust fixes + Wave 2 cold-start/ops
+282a8b6430a7c18c8be32ddb9a1815a531cf7d6b,2026-07-10T04:21:43+00:00,2026-07-10,0,visualization,4188,sandbox,True,sync main before reproducibility-audit push
+ea6f0e113dc637dd45c6648c905a86b862be815f,2026-07-10T04:21:45+00:00,2026-07-10,0,data_processing,26,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+1a3113af20efdb8b9e4441c80e90a9726e32b2a2,2026-07-10T04:21:47+00:00,2026-07-10,0,documentation,67,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+1f9ebac1c86de67d63884782275a1043491d2b5d,2026-07-10T04:21:49+00:00,2026-07-10,0,data_processing,5,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+57958c33afe11714bd9cdce12da3657e62b73f6d,2026-07-10T04:21:51+00:00,2026-07-10,0,documentation,56,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+31aa502dd526a33f0d207b078b29f87adf181542,2026-07-10T04:21:53+00:00,2026-07-10,0,data_processing,25,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+02a4ea2e5ef736577af9a3c6a9b9602ae6880a9a,2026-07-10T04:21:55+00:00,2026-07-10,0,documentation,86,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+71c83cd371815d67b1194f3f4638e3b529932891,2026-07-10T04:21:57+00:00,2026-07-10,0,data_processing,9,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+cb28d56f7bc74a1cef699541e9f6d4ffba7aa2e7,2026-07-10T04:21:59+00:00,2026-07-10,0,documentation,21,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+c9a52dc3374e364ab659f1a5cae19fa51933f6a2,2026-07-10T04:22:02+00:00,2026-07-10,0,data_processing,0,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+1a03724defc673fc3bdec31d2bec07a0082c2df0,2026-07-10T04:22:04+00:00,2026-07-10,0,documentation,55,sandbox,False,"Third-party reproducibility audit: per-stage R↔Python parity (row/cell-level), figure registry, self-contained bundle, independent verification (5/5 stages both languages)"
+32c7d924042b6e9ce30d0d636e59627d0b2b8acd,2026-07-10T04:29:43+00:00,2026-07-10,0,data_processing,10,sandbox,False,"Fix parity_03 shape label: 11526x4 (incl index) = 11526x3=34,578 data cells compared"
+df5f1408fcaca5cd8cd3d21813cd13f4de2c8096,2026-07-10T05:55:46+00:00,2026-07-10,0,data_processing,19,sandbox,False,Freeze: pin all 7 pipeline stages + 3 work packages to immutable artifact version_ids + md5 (18 assets)
+9def80e47b31bcad5e9c20e1f1ecd30995c98556,2026-07-10T05:55:48+00:00,2026-07-10,0,documentation,92,sandbox,False,Freeze: pin all 7 pipeline stages + 3 work packages to immutable artifact version_ids + md5 (18 assets)
+046e7d496fb45f96b6a8f0f10c5a13958f5945e7,2026-07-10T05:58:30+00:00,2026-07-10,0,documentation,36,sandbox,False,"Fix shape column: use per-asset row×col (was Series shape (8,) bug across all 18 rows)"
+fae9c9a7b6538469f34cdb1d4918a452ba3de512,2026-07-10T06:24:44+00:00,2026-07-10,0,stats_analysis,343,manual,True,"Add task A GB10 handoff: S3 download tooling, local DE config, bandwidth findings"
+4d22ed3a3db856010d3d8f2f2d27411f5dc20913,2026-07-10T07:13:53+00:00,2026-07-10,0,stats_analysis,346,manual,True,Task A: extract gate-passing signed DE matrix from precomputed S3 source
+ba29a99e36fdec7144dffdff026f9b93f1634e9b,2026-07-10T08:40:17+00:00,2026-07-10,1,documentation,22,wiki,False,Add science-explainer website (zh-TW): step-by-step project walkthrough for newcomers
+1be0f97ab4f62372a9a2bdab273ced6bda9fbc3e,2026-07-10T08:41:57+00:00,2026-07-10,1,data_processing,599,wiki,False,Track the explainer site HTML (un-ignore docs/explainer/index.html)
+4d8e82767185230e036759c039e2b65cdbccd963,2026-07-10T09:06:34+00:00,2026-07-10,1,documentation,547,main,False,docs: human validation protocol (Phase 0 raw data → UI) + read-only collector
+5bc259b49138c06b6335d7ace68cf64ba7519f9d,2026-07-10T09:08:51+00:00,2026-07-10,1,stats_analysis,227,manual,True,"Task A: extract full genome-wide signed DE matrix (all 33,983 rows)"
+2aa6fc2ca58bda592a1bd15ce29e1eccf7d444e9,2026-07-10T14:24:50+00:00,2026-07-10,1,documentation,40,codex,False,Clarify target-level DE model in methods docs
+70250e8cdb99aef6e213951a17f5be572efaf9eb,2026-07-10T14:25:23+00:00,2026-07-10,1,data_processing,69,codex,False,Document reduced DE config and add full template
+447bf504526c3f8b3d659fcbf7e03da33be2dd09,2026-07-10T14:25:27+00:00,2026-07-10,1,data_processing,85,codex,False,Configure pseudobulk merge inputs
+4a8498079e7d293e9d7835a4ecc444b96124f339,2026-07-10T14:25:27+00:00,2026-07-10,1,documentation,20,codex,False,Update target-discovery dataset quickstart
+32f9bb38deb6b19f406ea10b029c1cbc11d8207b,2026-07-10T14:25:32+00:00,2026-07-10,1,stats_analysis,55,codex,False,Add standard limitations text
+844a4b4f45e10e01a5b791497130aa827e17c7c8,2026-07-10T14:25:33+00:00,2026-07-10,1,visualization,40,codex,False,Label integrated state summaries as exploratory
+1e2a159515f04ab3beda4a55f02227a337f8a6a1,2026-07-10T14:28:32+00:00,2026-07-10,1,documentation,64,main,False,docs: record external QA review findings against verified repo state
+f5d36fd18b1669286f9eaa2a3129cc5b38783761,2026-07-10T15:10:59+00:00,2026-07-10,1,visualization,200,codex,False,Refine evidence caveats and add tests
+01d5ab423f3750d9b714c8f776c8dca42f719f97,2026-07-10T15:43:33+00:00,2026-07-10,1,stats_analysis,10860,sandbox,False,signed DE application: add signed_ranking_v2.csv
+58fdb0bbf51a60c6a155e788a2d188cd2f7aee70,2026-07-10T15:43:36+00:00,2026-07-10,1,stats_analysis,12982,sandbox,False,signed DE application: add downstream_enrichment_v2.csv
+fb81a9fab7c88460a699335cadc31ddab2caaf11,2026-07-10T15:43:38+00:00,2026-07-10,1,external_integration,5,sandbox,False,signed DE application: add lincs_concordance.csv
+bc16a82b473990c7313118585ee8bfa5a98ed484,2026-07-10T15:43:41+00:00,2026-07-10,1,visualization,0,sandbox,False,signed DE application: add signed_application_figure.png
+fcc24b63c8fd217242cd0b7c2b3efad255809291,2026-07-10T15:43:43+00:00,2026-07-10,1,documentation,53,sandbox,False,signed DE application: add SIGNED_APPLICATION_METHODS.md
+8cebb157c911b8a2d9d091601fa4712cbd94dda5,2026-07-10T15:43:45+00:00,2026-07-10,1,documentation,33,sandbox,False,signed DE application: add GB10_SIGNED_DE_VALIDATION.md
+bdf2e1084cb989b7447e92ec5182cacdcf321615,2026-07-10T15:44:13+00:00,2026-07-10,1,data_processing,240,sandbox,False,signed DE application: Entry A with phenotype-signed axis
+6727f2db166bb46865ca22936d5cad878f068953,2026-07-10T16:25:35+00:00,2026-07-10,2,stats_analysis,664,manual,True,Add isolated ML exploration space (src/10_ml_perturbation_prediction/)
+0da666d89c6076a464b0a42aa1a9056a8f9c96aa,2026-07-10T18:12:13+00:00,2026-07-10,2,visualization,0,sandbox,False,Level 4 external validation: level4_external_validation_figure.png
+75aec61224a4a3963044004089e6f7a33b65bd16,2026-07-10T18:12:16+00:00,2026-07-10,2,documentation,108,sandbox,False,Level 4 external validation: LEVEL4_EXTERNAL_VALIDATION.md
+09a95b3df40d1ab975a77b965c5579e863891b48,2026-07-10T18:12:19+00:00,2026-07-10,2,external_integration,56,sandbox,False,Level 4 external validation: track_a_gwas_genetic_association.csv
+ebec37624cbe5987cd11088466e12893d51d2fcb,2026-07-10T18:12:22+00:00,2026-07-10,2,external_integration,16,sandbox,False,Level 4 external validation: track_b_string_partner_recovery.csv
+cf2f5ccae83fec817b587bfbb4d80d7363ada180,2026-07-10T18:12:26+00:00,2026-07-10,2,external_integration,1236,sandbox,False,Level 4 external validation: track_c_gse318876_target_evidence.csv
+937fde7607763742ba6813cb16cf1d1615d0f9ce,2026-07-10T18:12:29+00:00,2026-07-10,2,external_integration,56,sandbox,False,Level 4 external validation: validation_target_set.csv
+175246787a2e20c19aef377fa6d4cc13b863fc6a,2026-07-10T18:18:39+00:00,2026-07-10,2,documentation,2,sandbox,False,fix: STAT3 STRING recovery 36% -> 35% (115/324=35.49%)
+b56b3a8a2149620a65844c3d54b1ae4ee0c2a036,2026-07-10T23:05:07+00:00,2026-07-10,2,stats_analysis,448,manual,True,"GEARS benchmark: honest negative result (pearson_de ~0, does not beat mean baseline)"
+523869a642bc30b4843926a401a74268311712c9,2026-07-11T01:16:08+00:00,2026-07-11,0,documentation,260,main,False,docs: ML/DL feasibility assessment on GB10 signed-DE data
+7521a915a77690b641daa01d65447f16d929ec6a,2026-07-11T04:02:38+00:00,2026-07-11,0,documentation,215,wiki,False,"Add peer-review-grade technical methods & validation document (zh-TW, referenced)"
+6b3ff94a62553eb5cf3af5dde9b8504f43776430,2026-07-11T04:36:14+00:00,2026-07-11,0,data_processing,8,wiki,False,Fact-check fixes: correct positive-control gene list and explainer citations
+d69edf214dd7c29fe1a978ec4bf0ab289d9fdbaa,2026-07-11T04:49:35+00:00,2026-07-11,0,stats_analysis,1113,main,False,ML vs linear multi-model comparison: T2 classifier + T1 real-features rework
+2217ca7afc0eee9404585ed6e427a9aca8246f99,2026-07-11T05:41:20+00:00,2026-07-11,0,stats_analysis,382,main,False,"T2 classifier: add AUPRC alongside AUROC — reverses the ""positive"" finding"
+7229911fa4ba8498fd686fa6c9d6ea3c329d970f,2026-07-11T06:23:24+00:00,2026-07-11,0,documentation,209,wiki,False,Add researcher figure-reading guide (embeds codebase charts) + simplified 科普 charts
+caaa0d8d8a7aea558533a5a4cd6af47529548ac3,2026-07-11T06:36:33+00:00,2026-07-11,0,documentation,101,sandbox,True,Perturbase review: MASTER_REVIEW_SUMMARY.md
+f59a9588e8720e84f3a96a13d99f5c319b1d51bb,2026-07-11T06:36:35+00:00,2026-07-11,0,documentation,231,sandbox,True,Perturbase review: DATA_DICTIONARY.md
+d0253b56b66db2b7869cab1612dc033ffd9dd23c,2026-07-11T06:36:38+00:00,2026-07-11,0,data_processing,268,sandbox,True,Perturbase review: reproduce_signed_tracks.py
+9f965170b03e3cbcd09fc396f5829d075fbf06c4,2026-07-11T06:36:40+00:00,2026-07-11,0,documentation,175,sandbox,True,Perturbase review: reproduction_report.md
+9dafe1788adb59ed31589551bf01c02a6fb9e9ab,2026-07-11T06:36:43+00:00,2026-07-11,0,data_processing,1808,sandbox,True,Perturbase review: reactome_pathway_snapshot.csv
+33fd2492eec16c64dbb5f764729e591b89b96f92,2026-07-11T06:36:45+00:00,2026-07-11,0,data_processing,35,sandbox,True,Perturbase review: relevant_papers.csv
+93fa77bb1debfb36555895ce30c2fd161abf6219,2026-07-11T06:36:47+00:00,2026-07-11,0,data_processing,53,sandbox,True,Perturbase review: source_paper_assets.csv
+81b6690d2f97ffe85552547b5a26c529885ae25c,2026-07-11T06:36:49+00:00,2026-07-11,0,data_processing,23,sandbox,True,Perturbase review: drug_safety_overview.csv
+eab03c8e86b57c486b1cf539f544472089b18e35,2026-07-11T06:36:51+00:00,2026-07-11,0,visualization,17,sandbox,True,Perturbase review: perturbase_wordmark.svg
+242444d75333dd05c13580834024f453528b956a,2026-07-11T06:36:52+00:00,2026-07-11,0,visualization,49,sandbox,True,Perturbase review: perturbase_scientific.svg
+91c9e4213663107de2ebed584433d2d5abb21a9f,2026-07-11T06:36:55+00:00,2026-07-11,0,visualization,0,sandbox,True,Perturbase review: figure1_flagship.png
+7a243d6f8c037fd8bb526b664870efbf82fc1e92,2026-07-11T06:36:58+00:00,2026-07-11,0,visualization,0,sandbox,True,Perturbase review: figure_target_validation.png
+f637f3be0ee0727c856793bba7af974da72426ad,2026-07-11T06:37:02+00:00,2026-07-11,0,visualization,0,sandbox,True,Perturbase review: figure_signed_level4.png
+8ec5f5f84e38c220343947467e8e09eae7da55dd,2026-07-11T06:38:47+00:00,2026-07-11,0,stats_analysis,904,main,False,T2 classifier: add 5-model comparison + permutation test + precision@k + single-feature baselines
+226d419336d06a60d9dfc0894f5660572728c29c,2026-07-11T07:00:36+00:00,2026-07-11,0,visualization,8278,manual,True,Replace Streamlit dashboard with React CD4 Target Discovery Portal
+c747ef094853ec6e95c89fd5f7f497f7de723675,2026-07-11T07:22:26+00:00,2026-07-11,0,stats_analysis,11,main,False,T2 verification pass: add NaN guard to baseline metric computation (no-op on current data)
+1edae35fa84aac5ead80b2c547f977c54f0a3def,2026-07-11T07:25:08+00:00,2026-07-11,0,documentation,142,wiki,False,Add consolidated Server Module Reference (docs/server_modules.md)
+9ce9854620b12526d3d09853eedde2545135eb57,2026-07-11T08:03:57+00:00,2026-07-11,1,visualization,5734,manual,True,Wire the portal to real data from this repo's own pipeline
+20ed7aedfbbd78aa72b0216c8e5fb16136c89e83,2026-07-11T09:09:56+00:00,2026-07-11,1,data_processing,325,wiki,False,"Add researcher-oriented guide site (docs/researcher_guide/), counterpart to the 科普 explainer"
+d9d7b1284593a71790b3e16a2552b9c4427b5b73,2026-07-11T12:41:42+00:00,2026-07-11,1,data_processing,3,wiki,False,"Fix calibration attribution in researcher guide: AUROC 0.85 is the ranking benchmark, not the calibration panel"
+00ffb8d564a9554991a2412a4972c430b856e62f,2026-07-11T12:48:26+00:00,2026-07-11,1,visualization,58110,manual,True,Expand real-data target list from 21 to 660 genes
+cfdec5b686e7857b3eb16c08ad44ef4e6941b7fb,2026-07-11T13:01:50+00:00,2026-07-11,1,documentation,82,wiki,False,Add wiki architecture & docs map (wiki/Map.md)
+ecab7aa9dae6bb5340d400f03bdea5d892e7f1fc,2026-07-11T13:17:08+00:00,2026-07-11,1,visualization,669188,manual,True,"Cache full-screen readiness compute; expand to 7,236 real genes"
+7ae9bc04a7ece0de3f3433cd386c24e2a5e42195,2026-07-11T15:33:33+00:00,2026-07-11,1,visualization,1511,manual,True,Add back the 13 grade<2 genes with a real watchlist call
+7c924beba187d28503678aeea3d4e4c501e2302b,2026-07-11T15:56:15+00:00,2026-07-11,1,documentation,41,main,False,Release-freeze WP1/WP2: fix data-dictionary counts + mark upload A.1/A.2 resolved
+3ec13c2260c94320769533def5f563d223f8aedf,2026-07-11T15:58:48+00:00,2026-07-11,1,visualization,9814,sandbox,False,Add Perturbase front-end assets: English figures + per-figure scripts + bilingual catalog
+dbe1f60d1ca00771d5526c4fec582eb5132b1ae3,2026-07-11T16:06:30+00:00,2026-07-11,2,documentation,1021,main,False,Release-freeze WP3/WP4: per-stage EDA reports + make freeze integrity runner
+b226f3e20424b99a157b9b67d96dc93e285371cf,2026-07-11T16:19:47+00:00,2026-07-11,2,stats_analysis,813,main,False,Release-freeze WP5/WP6: OF-1/OF-3 gate resolution + release docs + green suite
+05e7f513b23feafb2f183190241a5a2b1e975bca,2026-07-11T16:57:55+00:00,2026-07-11,2,documentation,994,sandbox,False,Add final closure audit: backend reproducibility + front-end coverage + dev-sequence/module-isolation
+1e85409fc8e9b31f6fea1eb8e010fa572fff1cdc,2026-07-11T17:21:37+00:00,2026-07-11,2,stats_analysis,349,main,False,Add standalone live upload tool (GET /upload) driving the /api/imports flow
+68af47db9eaf73c08dc9de8264b5fd31979bf310,2026-07-11T18:20:37+00:00,2026-07-11,2,visualization,18940,main,False,Fix three frontend build-wiring issues from the release freeze
+a83c25d9f5d5e0a4d5aa81ef67755557965bc8fe,2026-07-12T03:03:04+00:00,2026-07-12,0,documentation,9,main,False,Fix stale gnomAD seed count + document n_donors placeholder (OF-4)
+125b91a3e8112d5abe74a20783a2f86c7125ccd5,2026-07-12T03:03:31+00:00,2026-07-12,0,documentation,207,wiki,False,Add centralized provenance registry (data sources x algorithms x references)
+72433ad93eca954cc45fe8d924473535c314f1ec,2026-07-12T03:13:47+00:00,2026-07-12,0,documentation,33,main,False,"Add honest ""scope & positioning relative to the source paper"" section"
+8de1c4901e76b5a5e346bc7ee98b4ed1317a56f8,2026-07-12T03:15:08+00:00,2026-07-12,0,documentation,142,wiki,False,Add frontend disclosure spec (what docs to surface in the portal + gaps)
+2ecf610ace848fcce1372129bedafa7752c2f5ca,2026-07-12T03:24:06+00:00,2026-07-12,0,visualization,155,wiki,False,Add ready-to-render disclosure.json bundle + provenance CSV to portal public/
+0a29e63f5dddd3ba0691192fdaf0dbde8cf127ac,2026-07-12T03:27:06+00:00,2026-07-12,0,stats_analysis,362,main,False,Add signed directional module-effect scoring from in-repo full_signed_DE
+2d38766e2534be2f5e1b7f018b09d0e794761f0e,2026-07-12T03:48:24+00:00,2026-07-12,0,documentation,110,wiki,False,Add data-use/terms and bulk-download schema docs (portal disclosure follow-ups)
+8862e6eca01e2f006910f09feed5f3817360939f,2026-07-12T03:55:32+00:00,2026-07-12,0,external_integration,214,main,False,Surface the paper's own regulator nominations (Tier-1 ②)
+f31b883afd70f50258bec4c5e1fa7b708cbfd97c,2026-07-12T04:30:49+00:00,2026-07-12,0,visualization,338,wiki,False,frontend: add Provenance/Methods view; wire the three dead Footer links
+4090c57520976e0065139fb950ec91301d0a8810,2026-07-12T04:38:52+00:00,2026-07-12,0,visualization,8,wiki,False,frontend: add Provenance link to the top Header nav (next to API docs)
+5d70ea896cf430836d0657b1ea075a64eafb9483,2026-07-12T04:46:51+00:00,2026-07-12,0,stats_analysis,230,main,False,Surface the paper's autoimmune-cluster enrichment per gene
+65fc6310b8bbdc5be63c7a1bdd0342eefac30f21,2026-07-12T04:48:52+00:00,2026-07-12,0,documentation,150,wiki,False,Add documentation index (full inventory) + refresh stale stage descriptions
+b1164cbf941c105b90d08586e754bb10ab34e044,2026-07-12T06:05:49+00:00,2026-07-12,0,documentation,46,wiki,False,Add concise READMEs for the 5 undocumented src stages; update doc index
+efd76d62938d0e570f3da315eb0b68778b98c1b8,2026-07-12T06:09:20+00:00,2026-07-12,0,documentation,111,wiki,False,Slim the wiki nav layer by de-duplicating into dedicated docs
+e414d453eaa0488ec8575954aff6fe058cd5e47e,2026-07-12T06:26:35+00:00,2026-07-12,0,data_processing,237,wiki,False,Add 4-page project slide deck (docs/slides/) + infographic page
+8f31abfffbc8c845d36385fc538065b2ca25de16,2026-07-12T06:36:54+00:00,2026-07-12,0,documentation,19517,main,False,Tier-2: replace 15-gene demo gnomAD seed with full-genome v2.1.1 overlay
+238a02017e12ee72dca20900f882c748064ed9cb,2026-07-12T06:48:39+00:00,2026-07-12,0,data_processing,223,wiki,False,Add English version of the project slide deck (docs/slides/index.en.html)
+4cf36c6b873903506332e4f35fe455277628ea61,2026-07-12T06:59:55+00:00,2026-07-12,0,data_processing,37189,main,False,Add tier1 disease expansion (621 genes x 3 sources) + top-50 structure assets
+74b35d136055311f00526b93cb2644a125bfdd39,2026-07-12T07:09:48+00:00,2026-07-12,0,visualization,206,wiki,False,"frontend: integrate the project deck as a native ""Overview"" view"
+0d9f578c3ca8bd32fb67e5bd7e2c8575050bf2b8,2026-07-12T07:52:41+00:00,2026-07-12,0,visualization,12,wiki,False,frontend: add a flagship figure hero to each Home persona card
+9b4ba8523e72bbe88ed801a47e2281331b733b20,2026-07-12T07:53:17+00:00,2026-07-12,0,data_processing,4,wiki,False,Commit the flagship figures for the Home cards (un-ignore from **.png)
+bac75df7f9321bd2c671727e74f7910e9004d68c,2026-07-12T08:01:17+00:00,2026-07-12,1,documentation,83,wiki,False,Add curated Frontend Handoff (docs/FRONTEND_HANDOFF.md)

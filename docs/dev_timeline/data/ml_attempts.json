@@ -1,0 +1,65 @@
+[
+ {
+  "sha": "5f5d7b4218ff48ca8737a5707dbce6b31dec96f7",
+  "label": "T1: first supervised ML perturbation-prediction benchmark (honest, methodology-only)",
+  "found": true,
+  "day": "2026-07-08",
+  "slot": 2,
+  "category": "stats_analysis",
+  "diff": 386
+ },
+ {
+  "sha": "6727f2db166bb46865ca22936d5cad878f068953",
+  "label": "isolated ML exploration space added (src/10_ml_perturbation_prediction/)",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 2,
+  "category": "stats_analysis",
+  "diff": 664
+ },
+ {
+  "sha": "b56b3a8a2149620a65844c3d54b1ae4ee0c2a036",
+  "label": "GEARS GNN benchmark: honest negative result (pearson_de ~0, does not beat mean baseline)",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 2,
+  "category": "stats_analysis",
+  "diff": 448
+ },
+ {
+  "sha": "d69edf214dd7c29fe1a978ec4bf0ab289d9fdbaa",
+  "label": "ML vs linear multi-model comparison: T2 classifier + T1 real-features rework",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 1113
+ },
+ {
+  "sha": "2217ca7afc0eee9404585ed6e427a9aca8246f99",
+  "label": "T2 classifier: add AUPRC alongside AUROC — reverses the \"positive\" finding",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 382
+ },
+ {
+  "sha": "8ec5f5f84e38c220343947467e8e09eae7da55dd",
+  "label": "T2 classifier: add 5-model comparison + permutation test + precision@k + single-feature baselines",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 904
+ },
+ {
+  "sha": "c747ef094853ec6e95c89fd5f7f497f7de723675",
+  "label": "T2 verification pass: add NaN guard to baseline metric computation (no-op on current data)",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "stats_analysis",
+  "diff": 11
+ }
+]

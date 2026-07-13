@@ -1,0 +1,110 @@
+[
+ {
+  "sha": "2e03622bd29a8b0f94e14eb87649a1a689b7a188",
+  "label": "architecture_refactor_plan.md",
+  "found": true,
+  "day": "2026-07-07",
+  "slot": 1,
+  "category": "documentation",
+  "diff": 164
+ },
+ {
+  "sha": "54947490171da16ffca803f6c55b304a6124453e",
+  "label": "next_phases_plan.md",
+  "found": true,
+  "day": "2026-07-07",
+  "slot": 1,
+  "category": "documentation",
+  "diff": 135
+ },
+ {
+  "sha": "e53ca08ce4f7a36e5d36306d2d01fe5ebf6e7bfc",
+  "label": "improvement_roadmap.md",
+  "found": true,
+  "day": "2026-07-08",
+  "slot": 1,
+  "category": "documentation",
+  "diff": 124
+ },
+ {
+  "sha": "49bce0ee505bb782fe71fe1ddf6e87f4afa5927b",
+  "label": "server_northstar.md",
+  "found": true,
+  "day": "2026-07-08",
+  "slot": 2,
+  "category": "documentation",
+  "diff": 82
+ },
+ {
+  "sha": "9eeaeb1e7df805fbb6f844cdd8c906879720d88e",
+  "label": "frontend_fix_plan.md",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 1,
+  "category": "documentation",
+  "diff": 55
+ },
+ {
+  "sha": "01e1c53f09f1a763cf6b0a18ce683396a8f5bef3",
+  "label": "ux_trust_fix_plan.md",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 2,
+  "category": "documentation",
+  "diff": 215
+ },
+ {
+  "sha": "083ae92df99d079b64b6da796557f1cfb2a4fd24",
+  "label": "def_followup_plan.md",
+  "found": true,
+  "day": "2026-07-09",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 158
+ },
+ {
+  "sha": "071d513944c1e811362b00cdf167c5f2e4386988",
+  "label": "compass_concept_integration_plan.md",
+  "found": true,
+  "day": "2026-07-08",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 149
+ },
+ {
+  "sha": "a65ae5b17a2cf9ddcb740b83670efcfe27165442",
+  "label": "frontend_design.md",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 298
+ },
+ {
+  "sha": "7d06639197f2cf06cb654d40e2a06c2e634583dd",
+  "label": "ux_flow_stepwise_plan.md",
+  "found": true,
+  "day": "2026-07-10",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 183
+ },
+ {
+  "sha": "1edae35fa84aac5ead80b2c547f977c54f0a3def",
+  "label": "server_modules.md",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 0,
+  "category": "documentation",
+  "diff": 142
+ },
+ {
+  "sha": "b226f3e20424b99a157b9b67d96dc93e285371cf",
+  "label": "ROADMAP.md (release freeze)",
+  "found": true,
+  "day": "2026-07-11",
+  "slot": 2,
+  "category": "stats_analysis",
+  "diff": 813
+ }
+]
