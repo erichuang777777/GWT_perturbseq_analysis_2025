@@ -42,7 +42,7 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SIGNED_DE_DIR = REPO_ROOT / "metadata/suppl_tables/full_signed_DE"
-CARDS_PATH = REPO_ROOT / "sources/target_tool_cache/a6bba17b-f194-4a50-8cf8-96e03eededd6/target_cards.csv"
+CARDS_PATH = REPO_ROOT / "sources/target_tool_cache/a792d68c-7adc-46a6-964a-35770e5adbde/target_cards.csv"
 OUT_DIR = REPO_ROOT / "src/10_ml_perturbation_prediction/data"
 CONDITIONS = ["Rest", "Stim8hr", "Stim48hr"]
 N_LANDMARK = 500  # 最常見顯著下游基因數，跟 genept_baseline 的 ~10,185 個測量基因量級不同

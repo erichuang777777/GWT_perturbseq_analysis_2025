@@ -1,4 +1,8 @@
-export type Lang = "en" | "zh";
+// Portal ships English-only (delivery requirement). The gallery previously
+// carried a zh translation table and a language switcher; both were removed so
+// the rendered UI is guaranteed single-language English. `Lang` is retained as
+// a one-member union so the chart/structure accessors stay type-safe.
+export type Lang = "en";
 
 export const T = {
   en: {
@@ -18,24 +22,6 @@ export const T = {
     downloadCif: "Download structure (.cif)",
     topologyPlot: "Transmembrane topology (Protter)",
     structNote: "Predicted model (AlphaFold). pLDDT is a per-residue confidence score, not an experimental measurement.",
-  },
-  zh: {
-    heading: "圖表與結構圖庫",
-    sub: "本專案流程產生的每一張圖表與預測蛋白結構，皆標註其底層資料來源。此為描述性參考資料，不參與 readiness 判定。",
-    figures: "圖表",
-    structures: "蛋白結構",
-    allFamilies: "全部類別",
-    source: "資料來源",
-    plddt: "平均 pLDDT",
-    length: "長度",
-    topology: "拓撲",
-    tm: "跨膜區段",
-    residues: "個胺基酸",
-    noStruct: "此蛋白無 AlphaFold 預測模型。",
-    openAF: "在 AlphaFold DB 開啟",
-    downloadCif: "下載結構檔 (.cif)",
-    topologyPlot: "跨膜拓撲圖 (Protter)",
-    structNote: "AlphaFold 預測模型。pLDDT 為每殘基信心分數，非實驗量測值。",
   },
 } as const;
 

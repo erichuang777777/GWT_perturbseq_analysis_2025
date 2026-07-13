@@ -24,7 +24,7 @@ from genetic_double_support import (
 from evidence.population import CAVEAT_TEXT, TRAIT_PATHS
 
 REPO = Path(__file__).resolve().parent.parent
-REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
+REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
 BURDEN_FILE = TRAIT_PATHS["lymphocyte_count"]
 
 REAL_DATA = REAL_CARDS.exists() and DISEASE_ASSOCIATIONS_PATH.exists() and BURDEN_FILE.exists()

@@ -23,7 +23,8 @@ export type View =
   | "gallery"
   | "apidocs"
   | "provenance"
-  | "deck";
+  | "deck"
+  | "docs";
 
 export interface AppState {
   view: View;

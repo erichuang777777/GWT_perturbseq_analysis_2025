@@ -19,7 +19,10 @@ router = APIRouter(tags=["Build"])
 # card_schema/v2 build. The legacy 31-col build is retained only as a regression
 # fixture (see its DEPRECATED.md) and is flagged so clients exclude it from the
 # default selection.
-CANONICAL_DATASET_ID = "a6bba17b-f194-4a50-8cf8-96e03eededd6"
+# a792d68c is a deterministic rebuild of the 39-col canonical from the frozen
+# DE_stats input (passes validate_cards(strict=True); see FREEZE_VALIDATION_REPORT.md);
+# it supersedes the original a6bba17b snapshot, which is absent from this checkout.
+CANONICAL_DATASET_ID = "a792d68c-7adc-46a6-964a-35770e5adbde"
 DEPRECATED_DATASET_IDS = {"e7ecd8d5-5463-43e3-9bf1-6e8a15d3e137"}
 
 

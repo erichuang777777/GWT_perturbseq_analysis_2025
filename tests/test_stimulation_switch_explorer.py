@@ -22,7 +22,7 @@ from stimulation_switch_explorer import (
 )
 
 REPO = Path(__file__).resolve().parent.parent
-REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a6bba17b-f194-4a50-8cf8-96e03eededd6" / "target_cards.csv"
+REAL_CARDS = REPO / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
 
 
 def _synthetic_cards() -> pd.DataFrame:

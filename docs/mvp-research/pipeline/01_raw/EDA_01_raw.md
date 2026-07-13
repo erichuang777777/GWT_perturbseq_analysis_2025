@@ -21,10 +21,10 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `index` | object | 0.0% | 33983 |
-| `target_contrast_gene_name` | object | 0.0% | 11526 |
-| `culture_condition` | object | 0.0% | 3 |
-| `target_contrast` | object | 0.0% | 11526 |
+| `index` | str | 0.0% | 33983 |
+| `target_contrast_gene_name` | str | 0.0% | 11526 |
+| `culture_condition` | str | 0.0% | 3 |
+| `target_contrast` | str | 0.0% | 11526 |
 | `chunk` | int64 | 0.0% | 681 |
 | `n_cells_target` | float64 | 0.0% | 2060 |
 | `n_up_genes` | int64 | 0.0% | 965 |
@@ -34,8 +34,8 @@
 | `ontarget_significant` | bool | 0.0% | 2 |
 | `target_baseMean` | float64 | 17.2% | 28133 |
 | `offtarget_flag` | bool | 0.0% | 2 |
-| `n_total_genes_category` | object | 0.0% | 4 |
-| `ontarget_effect_category` | object | 0.0% | 3 |
+| `n_total_genes_category` | str | 0.0% | 4 |
+| `ontarget_effect_category` | str | 0.0% | 3 |
 | `n_downstream` | int64 | 0.0% | 1280 |
 
 ### Numeric summary
@@ -67,24 +67,24 @@
 | column | dtype | missing % | distinct |
 |---|---|---|---|
 | `Unnamed: 0` | int64 | 0.0% | 12 |
-| `cell_sample_id` | object | 0.0% | 12 |
-| `10xrun_id` | object | 0.0% | 2 |
-| `donor_id` | object | 0.0% | 4 |
-| `culture_condition` | object | 0.0% | 3 |
-| `library_id` | object | 0.0% | 12 |
-| `library_prep_kit` | object | 0.0% | 1 |
-| `probe_hyb_loading` | object | 0.0% | 4 |
-| `GEM_loading` | object | 0.0% | 1 |
-| `sequencing_platform` | object | 0.0% | 1 |
+| `cell_sample_id` | str | 0.0% | 12 |
+| `10xrun_id` | str | 0.0% | 2 |
+| `donor_id` | str | 0.0% | 4 |
+| `culture_condition` | str | 0.0% | 3 |
+| `library_id` | str | 0.0% | 12 |
+| `library_prep_kit` | str | 0.0% | 1 |
+| `probe_hyb_loading` | str | 0.0% | 4 |
+| `GEM_loading` | str | 0.0% | 1 |
+| `sequencing_platform` | str | 0.0% | 1 |
 | `age` | int64 | 0.0% | 4 |
-| `sex` | object | 0.0% | 2 |
-| `ethnicity` | object | 0.0% | 3 |
+| `sex` | str | 0.0% | 2 |
+| `ethnicity` | str | 0.0% | 3 |
 | `weight_kg` | int64 | 0.0% | 4 |
 | `height_cm` | int64 | 0.0% | 2 |
-| `smoker` | object | 0.0% | 1 |
-| `blood_type` | object | 0.0% | 1 |
-| `anticoagulant` | object | 0.0% | 1 |
-| `harvest_date` | object | 0.0% | 3 |
+| `smoker` | str | 0.0% | 1 |
+| `blood_type` | str | 0.0% | 1 |
+| `anticoagulant` | str | 0.0% | 1 |
+| `harvest_date` | str | 0.0% | 3 |
 
 ### Numeric summary
 | column | count | missing % | min | median | max | mean |

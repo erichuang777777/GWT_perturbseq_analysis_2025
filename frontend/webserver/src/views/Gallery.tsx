@@ -12,7 +12,8 @@ type Tab = "figures" | "structures";
 export default function Gallery() {
   const [data, setData] = useState<GalleryData | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
-  const [lang, setLang] = useState<Lang>("en");
+  // Portal is English-only (delivery requirement) — no language switcher.
+  const lang: Lang = "en";
   const [tab, setTab] = useState<Tab>("figures");
   const [family, setFamily] = useState<string>("__all__");
   const [openChart, setOpenChart] = useState<GalleryChart | null>(null);
@@ -24,17 +25,12 @@ export default function Gallery() {
 
   const t = T[lang];
 
-  // Group by the canonical ENGLISH family (the zh.family labels in the source
-  // catalog are free-form and inconsistent -- the same English family can carry
-  // several zh spellings -- so keying off en.family keeps exactly one clean
-  // facet per group in both languages; we localize only the display label.
+  // Group by the canonical English family label.
   const families = useMemo(() => {
     if (!data) return [] as { key: string; label: string }[];
-    const zhLabel = new Map<string, string>();
-    for (const c of data.charts) if (!zhLabel.has(c.en.family)) zhLabel.set(c.en.family, c.zh.family);
     const keys = Array.from(new Set(data.charts.map((c) => c.en.family))).sort();
-    return keys.map((k) => ({ key: k, label: lang === "en" ? k : zhLabel.get(k) || k }));
-  }, [data, lang]);
+    return keys.map((k) => ({ key: k, label: k }));
+  }, [data]);
 
   const shownCharts = useMemo(() => {
     if (!data) return [];
@@ -50,17 +46,6 @@ export default function Gallery() {
         <div style={{ maxWidth: "760px" }}>
           <h1 style={{ fontSize: "30px", fontWeight: 700, letterSpacing: "-.8px", margin: "0 0 10px" }}>{t.heading}</h1>
           <p style={{ fontSize: "14.5px", lineHeight: 1.55, color: "#4a515e", margin: 0 }}>{t.sub}</p>
-        </div>
-        <div style={{ display: "flex", gap: "4px", background: "#f2f3f6", borderRadius: "9px", padding: "3px" }}>
-          {(["en", "zh"] as Lang[]).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLang(l)}
-              style={{ padding: "6px 14px", border: "none", borderRadius: "7px", cursor: "pointer", fontSize: "13px", fontWeight: 600, background: lang === l ? "#fff" : "transparent", color: lang === l ? ACCENT : "#6b7280", boxShadow: lang === l ? "0 1px 3px rgba(0,0,0,.08)" : "none" }}
-            >
-              {l === "en" ? "EN" : "中文"}
-            </button>
-          ))}
         </div>
       </div>
 

@@ -22,12 +22,12 @@
 ### Schema & missingness
 | column | dtype | missing % | distinct |
 |---|---|---|---|
-| `id` | object | 0.0% | 53 |
-| `title` | object | 0.0% | 53 |
-| `family` | object | 0.0% | 6 |
-| `filename` | object | 0.0% | 53 |
-| `version_id` | object | 0.0% | 53 |
-| `what` | object | 0.0% | 53 |
+| `id` | str | 0.0% | 53 |
+| `title` | str | 0.0% | 53 |
+| `family` | str | 0.0% | 6 |
+| `filename` | str | 0.0% | 53 |
+| `version_id` | str | 0.0% | 53 |
+| `what` | str | 0.0% | 53 |
 
 ### Numeric summary
 _(no numeric columns)_

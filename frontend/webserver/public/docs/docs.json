@@ -1,0 +1,64 @@
+{
+  "schema_version": "docs/v1",
+  "_note": "Curated English documentation content for the in-app Docs hub. Authored English (getting_started, for_everyone, for_researchers), plus embedded English markdown docs (manuscript, known_limitations) and external GitHub links to the full repo docs. See docs/documentation_index.md in the repo for the authoritative index.",
+  "repo_base": "https://github.com/erichuang777777/GWT_perturbseq_analysis_2025/blob/main/",
+  "getting_started": {
+    "title": "Getting started",
+    "blurb": "This portal is a static build of an auditable target-prioritisation layer over a genome-scale CRISPRi Perturb-seq screen in primary human CD4+ T cells. Research / hypothesis-generating use only — not clinical software.",
+    "run_local": [
+      "The portal is a static site — browsing reads a pre-exported real-dataset.json and needs no live backend.",
+      "Serve the dist/ folder with any static server: `python3 -m http.server 5173` from inside dist/, then open http://127.0.0.1:5173.",
+      "For the live upload tool + REST API, run the full repo: `make dev` (API on :8000, portal dev server on :5173); the upload page is at http://127.0.0.1:8000/upload and Swagger UI at /docs."
+    ],
+    "deploy": "The dist/ folder is self-contained and deploys to any static host (e.g. Netlify: drag-drop dist/, or connect the GitHub repo — netlify.toml is preconfigured with base=frontend/webserver, command=`npm run build`, publish=dist).",
+    "dataset": "Active canonical dataset a792d68c (39-column card_schema/v2, passes validate_cards(strict=True)); real-dataset.json holds 7,249 targets (6,628 watchlist / 319 validate / 302 advance)."
+  },
+  "for_everyone": {
+    "title": "For everyone — a plain-language tour",
+    "blurb": "How the platform turns 'one tube of blood' into a prioritised list of candidate drug targets, in twelve steps. No prior knowledge assumed.",
+    "steps": [
+      { "n": 1, "h": "Why start with T cells", "t": "CD4+ T cells orchestrate the immune response; genes that tune their behaviour are candidate targets for autoimmune and immunotherapy drugs." },
+      { "n": 2, "h": "The core question", "t": "Which genes act as switches on T-cell programs — and could a drug press those switches?" },
+      { "n": 3, "h": "CRISPRi dims a gene", "t": "CRISPR interference turns a target gene down (not out), mimicking what a drug that inhibits it might do." },
+      { "n": 4, "h": "Perturb-seq reads every cell", "t": "Single-cell RNA sequencing reads the whole transcriptome of each perturbed cell, so we see each knockdown's downstream effect." },
+      { "n": 5, "h": "Real human cells, genome scale", "t": "The screen covers 11,526 genes across 4 donors and 3 culture conditions (Rest, Stim 8hr, Stim 48hr) — 33,983 gene x condition results." },
+      { "n": 6, "h": "Differential expression", "t": "For each knockdown, we compare against matched control cells to measure which downstream genes changed." },
+      { "n": 7, "h": "Two credibility gates", "t": "Was the target actually knocked down (causal interpretability)? Is a broad effect real regulation or an essential-gene artefact?" },
+      { "n": 8, "h": "Target cards & readiness engine", "t": "Each gene gets a structured card with a four-level call: advance / validate / watchlist / deprioritize." },
+      { "n": 9, "h": "Red flags: strong signal != good target", "t": "Essential / broad-effect / off-target / unconfirmed-knockdown hits are capped low no matter how strong the statistics." },
+      { "n": 10, "h": "External evidence databases", "t": "We overlay Open Targets, gnomAD, GTEx, ChEMBL, ClinicalTrials.gov, PubMed, AlphaFold, STRING — always with 'unknown != 0' honesty." },
+      { "n": 11, "h": "Lessons from drug safety", "t": "In-vitro signal is not clinical efficacy; safety and druggability must be read back against human evidence." },
+      { "n": 12, "h": "Principles & current status", "t": "Everything is versioned and auditable; the one fundamental gap is prospective wet-lab validation (never done)." }
+    ]
+  },
+  "for_researchers": {
+    "title": "For researchers — how to read and use the platform",
+    "blurb": "A practical guide to interpreting and using the platform as a decision-support layer (consume, do not recompute).",
+    "sections": [
+      { "h": "30-second orientation", "t": "This is a decision-support layer on top of a published screen. It consumes the DE output; it does not re-run DE, pseudobulk, or the control baseline." },
+      { "h": "Dataset & provenance", "t": "Primary: Zhu, Dann et al. 2025 (bioRxiv 10.64898/2025.12.23.696273); SRA SRP643211 / GEO GSE314342; CZI Virtual Cells Platform. Each dataset_id is an immutable, versioned snapshot." },
+      { "h": "Reading a target card", "t": "Evidence grade, kd_status (four-state knockdown-causality gate), robustness, the decision call and its capping reason — all on the Dossier view, each panel stamped with its real data source." },
+      { "h": "Readiness engine & red-flag override", "t": "A composite score under adjustable weights, capped by red flags (essential / broad-effect / off-target / batch-confounded / knockdown-unconfirmed / direction-ambiguous)." },
+      { "h": "Calibration", "t": "Positive/negative controls, ranking AUROC 0.85 (21-gene CD4 positive panel), 99.96% of 4,774 negative controls graded correctly with 0% reaching advance, ranking stability Spearman r=0.943." },
+      { "h": "Concept layer M01-M20", "t": "Hand-auditable seed-gene overlap; descriptive only — never feeds the readiness call." },
+      { "h": "API & endpoints", "t": "Read-only REST API (see the API view): /targets, /targets/{gene}, /diseases, /diseases/{id}/targets, /popgen/{gene}, /figures/{id}. Versioned and build-stamped." },
+      { "h": "Limitations & how to cite", "t": "Association != causation; the only genome-wide CD4 CRISPR cross-check (GSE318876) measures HIV infection, not activation; phenotype-matched activation screens ran null on directional ranking. Cite Zhu, Dann et al. 2025." }
+    ]
+  },
+  "embedded_docs": [
+    { "key": "manuscript", "title": "Manuscript (appendix)", "file": "docs/manuscript.md", "desc": "Full manuscript draft: Perturbase — an auditable target-prioritisation layer. Research / hypothesis-generating use only." },
+    { "key": "known_limitations", "title": "Known limitations", "file": "docs/known_limitations.md", "desc": "The consolidated, honest register of what the toolkit does not do — recorded plainly per the 'unknown != 0' value." }
+  ],
+  "reference_docs": [
+    { "label": "README", "path": "README.md", "desc": "Project overview, toolkit quickstart, data pointers, citation." },
+    { "label": "Technical methods & validation", "path": "docs/technical_methods.md", "desc": "Definitions, statistical basis, validation numbers." },
+    { "label": "Data dictionary", "path": "docs/data_dictionary.md", "desc": "Every target-card column defined." },
+    { "label": "Concept dictionary (M01-M20)", "path": "docs/concept_dictionary.md", "desc": "The 20 immune-concept modules and their seed genes." },
+    { "label": "Figure guide", "path": "docs/figure_guide.md", "desc": "How to read each figure in the atlas." },
+    { "label": "Server module reference", "path": "docs/server_modules.md", "desc": "API/server module map." },
+    { "label": "Reproducibility record", "path": "docs/REPRODUCIBILITY.md", "desc": "What is real vs. sparse/seed-only, coverage numbers, versioning." },
+    { "label": "Perturbation validation plan", "path": "docs/perturbation_validation_plan.md", "desc": "The L1-L5 validation ladder and its acceptance criteria." },
+    { "label": "Human validation protocol", "path": "docs/human_validation_protocol.md", "desc": "Reviewer protocol and the active-dataset banner." },
+    { "label": "Provenance registry (CSV)", "path": "docs/provenance_registry.csv", "desc": "Data source x algorithm x reference, row by row." }
+  ]
+}

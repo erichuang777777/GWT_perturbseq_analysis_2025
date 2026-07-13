@@ -8,6 +8,7 @@ import Compare from "./views/Compare";
 import Dossier from "./views/Dossier";
 import Explorer from "./views/Explorer";
 import Deck from "./views/Deck";
+import Docs from "./views/Docs";
 import Home from "./views/Home";
 import Provenance from "./views/Provenance";
 import { InlineScreen } from "./components/ui/ScreenState";
@@ -47,6 +48,8 @@ function Router() {
       return <Provenance />;
     case "deck":
       return <Deck />;
+    case "docs":
+      return <Docs />;
     default:
       return <Home />;
   }
