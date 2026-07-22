@@ -104,3 +104,27 @@ def test_real_data_builtin_signature_ranks():
     for r in out["results"]:
         assert r["n_signature_hit"] >= 5
         assert r["direction"] in {"reverses_disease", "worsens_disease", "neutral"}
+
+
+@pytest.mark.skipif(not _HAS_SIGNED, reason="full_signed_DE parquet not present in this checkout")
+def test_rank_builtin_route_and_ui_page():
+    """P3-M: the builtin cohort-ranking GET twin + the live tool page."""
+    import sys
+    sys.path.insert(0, "src/3_DE_analysis")
+    from fastapi.testclient import TestClient
+    from api.app import app
+
+    c = TestClient(app)
+    page = c.get("/disease-reversal")
+    assert page.status_code == 200 and "text/html" in page.headers.get("content-type", "")
+
+    rb = c.get("/api/disease_reversal/_rank_builtin", params={"signature": "th2_vs_th1_polarization", "top": 3, "min_hits": 5})
+    assert rb.status_code == 200
+    body = rb.json()
+    assert body["available"] is True and body["min_hits"] == 5
+    for r in body["results"]:
+        assert r["n_signature_hit"] >= 5
+
+    assert c.get("/api/disease_reversal/_rank_builtin", params={"signature": "nope"}).status_code == 404
+    # literal route must not be shadowed by the /{gene} catch-all
+    assert c.get("/api/disease_reversal/GATA3").json().get("available") is True

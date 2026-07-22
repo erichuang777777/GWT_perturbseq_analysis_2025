@@ -56,6 +56,30 @@ def list_signatures() -> Dict[str, Any]:
 
 
 @router.get(
+    "/api/disease_reversal/_rank_builtin",
+    summary="Rank all targets by reversal of a builtin signature (descriptive)",
+)
+def rank_builtin_signature(
+    signature: str = Query(default="th2_vs_th1_polarization", description="a builtin signature id"),
+    condition: Optional[str] = Query(default=None),
+    top: int = Query(default=50, ge=1, le=1000),
+    min_hits: int = Query(default=3, ge=1),
+) -> Dict[str, Any]:
+    """Cohort ranking for a builtin signature (the GET twin of the POST route).
+
+    Lets the live tool rank every perturbation against a named in-repo signature
+    without shipping its (large) gene list to the client. Descriptive only.
+    """
+    try:
+        sig = disease_reversal.load_builtin_signature(signature)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    out = disease_reversal.rank_reversal(sig, condition=condition or None, top=top, min_hits=min_hits)
+    out["signature"] = signature
+    return out
+
+
+@router.get(
     "/api/disease_reversal/{gene}",
     summary="Per-target disease-reversal profile against a builtin signature (descriptive)",
 )
