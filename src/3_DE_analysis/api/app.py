@@ -90,6 +90,7 @@ OPENAPI_TAGS = [
     {"name": "Mechanism graph", "description": "Target-centered Reactome pathway + STRING interaction graph, overlaid with this platform's own evidence (descriptive only)."},
     {"name": "Concept profile (demo)", "description": "Exploratory individual-sample concept projection onto the 20 CD4 immune concept modules. Research demo, NOT medical software; request-only, never persisted."},
     {"name": "Clinical evidence (research use)", "description": "Disease x drug evidence-matching: whether a gene has a known drug, and whether that drug has actually been trialled for a specific disease. Evidence-matching only, NOT a treatment recommendation; live-queried (Open Targets + ClinicalTrials.gov), never persisted."},
+    {"name": "Disease reversal (research use)", "description": "Does knocking a target down push cells away from a disease signature? Directional reversal scoring over the in-repo signed DE table, against builtin or user-supplied signatures. Descriptive hypothesis-generation only (CRISPRi != pharmacology), never a readiness input."},
     {"name": "Meta", "description": "Coverage-at-a-glance for the sparse descriptive overlays (gnomAD/GTEx/disease-association/LINCS), computed from the loaded reference tables at request time -- never a number copied from documentation."},
 ]
 
@@ -138,6 +139,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "mechanism": "api.routers.mechanism",
     "individual_concept": "api.routers.individual_concept",
     "signed_module_effect": "api.routers.signed_module_effect",
+    "disease_reversal": "api.routers.disease_reversal",
     "paper_regulators": "api.routers.paper_regulators",
     "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",
