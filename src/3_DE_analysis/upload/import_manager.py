@@ -292,6 +292,131 @@ def validate_schema(source_type: str, columns: List[str], mode: str, df: Optiona
     }
 
 
+def qc_preflight(
+    df: Optional[pd.DataFrame],
+    source_type: str,
+    *,
+    min_cells: Optional[int] = None,
+    min_de_genes: Optional[int] = None,
+) -> Dict[str, Any]:
+    """Pre-scoring QC report for an upload preview (development plan P2-A).
+
+    Surfaces cell/guide/DE-gene coverage, donor count, and per-column missingness
+    for the key numeric fields, gated against the same thresholds the merge uses
+    (config.thresholds MIN_CELLS_DEFAULT / MIN_DE_GENES_DEFAULT). This is the
+    explicit, evidence-before-scoring view of the gates the merge already
+    enforces — so a researcher sees WHY a dataset would be capped before they
+    commit, rather than after.
+
+    Honesty (this repo's discipline):
+    * ``unknown != 0``: a gate column that is ABSENT is reported ``present:false``
+      / status ``unknown`` — never scored as a zero or silently passed.
+    * The report is computed on the (<=100-row) preview and says so
+      (``sampled_rows``); the real gate runs on the full table at merge time.
+    * ``gate`` is advisory: ``block`` (a present gate's median is below the floor),
+      ``warn`` (some rows below / recommended coverage missing), or ``pass``.
+    """
+    from config import thresholds as _thr
+
+    min_cells = int(_thr.MIN_CELLS_DEFAULT if min_cells is None else min_cells)
+    min_de_genes = int(_thr.MIN_DE_GENES_DEFAULT if min_de_genes is None else min_de_genes)
+
+    if df is None or df.empty:
+        return {
+            "gate": "unknown",
+            "sampled_rows": 0,
+            "checks": [],
+            "note": "no preview rows available to QC (unknown != 0 — not a pass)",
+            "thresholds": {"min_cells": min_cells, "min_de_genes": min_de_genes},
+        }
+
+    norm = normalize_columns([str(c) for c in df.columns])  # uploaded -> canonical
+    canonical_to_col: Dict[str, str] = {}
+    for uploaded, canonical in norm.items():
+        canonical_to_col.setdefault(canonical, uploaded)
+
+    checks: List[Dict[str, Any]] = []
+    gate = "pass"
+
+    def _numeric(canonical: str) -> Optional[pd.Series]:
+        col = canonical_to_col.get(canonical)
+        if col is None or col not in df.columns:
+            return None
+        return pd.to_numeric(df[col], errors="coerce")
+
+    def _add_floor_check(canonical: str, label: str, floor: int) -> None:
+        nonlocal gate
+        vals = _numeric(canonical)
+        if vals is None:
+            # unknown != 0 — absent gate column is honestly "unknown", not a fail.
+            checks.append({"key": canonical, "label": label, "present": False, "status": "unknown",
+                           "detail": f"{canonical} column not provided"})
+            return
+        clean = vals.dropna()
+        if clean.empty:
+            checks.append({"key": canonical, "label": label, "present": True, "status": "unknown",
+                           "detail": f"{canonical} present but all values non-numeric/blank"})
+            return
+        median = float(clean.median())
+        below = int((clean < floor).sum())
+        status = "pass"
+        if median < floor:
+            status = "block"; gate = "block"
+        elif below > 0:
+            status = "warn"; gate = "warn" if gate == "pass" else gate
+        checks.append({
+            "key": canonical, "label": label, "present": True, "status": status,
+            "floor": floor,
+            "min": float(clean.min()), "median": median, "max": float(clean.max()),
+            "n_below_floor": below, "n_values": int(clean.shape[0]),
+        })
+
+    _add_floor_check("n_cells", "Cells per target", min_cells)
+    _add_floor_check("n_total_de_genes", "DE genes per target", min_de_genes)
+
+    # Guides: coverage signal (no hard floor here — guide-less uploads are
+    # honestly downgraded downstream, kd_status not_assessed, not rejected).
+    guides = _numeric("n_guides")
+    if guides is None:
+        checks.append({"key": "n_guides", "label": "Guides per target", "present": False, "status": "unknown",
+                       "detail": "no guide column — on-target knockdown will be not_assessed (unknown != 0)"})
+    else:
+        clean = guides.dropna()
+        checks.append({"key": "n_guides", "label": "Guides per target", "present": True,
+                       "status": "pass" if not clean.empty else "unknown",
+                       "median": float(clean.median()) if not clean.empty else None,
+                       "n_values": int(clean.shape[0])})
+
+    # Donors: distinct count if a donor column is present.
+    donor_col = canonical_to_col.get("donor")
+    if donor_col and donor_col in df.columns:
+        n_donors = int(df[donor_col].dropna().astype(str).str.strip().replace("", pd.NA).dropna().nunique())
+        checks.append({"key": "n_donors", "label": "Distinct donors", "present": True,
+                       "status": "pass" if n_donors > 1 else "warn", "n_donors": n_donors,
+                       "detail": None if n_donors > 1 else "single donor — cross-donor robustness cannot be assessed"})
+        if n_donors <= 1 and gate == "pass":
+            gate = "warn"
+    else:
+        checks.append({"key": "n_donors", "label": "Distinct donors", "present": False, "status": "unknown",
+                       "detail": "no donor column provided"})
+
+    # Missingness for the key numeric columns that ARE present.
+    missingness: Dict[str, float] = {}
+    for canonical in ("effect_size", "logfc", "p_value", "fdr", "n_cells", "n_guides", "n_total_de_genes"):
+        col = canonical_to_col.get(canonical)
+        if col and col in df.columns:
+            missingness[canonical] = round(float(df[col].isna().mean()), 4)
+
+    return {
+        "gate": gate,
+        "sampled_rows": int(df.shape[0]),
+        "thresholds": {"min_cells": min_cells, "min_de_genes": min_de_genes},
+        "checks": checks,
+        "missingness": missingness,
+        "note": "Computed on the upload preview (first rows). The full-table gate runs at merge time.",
+    }
+
+
 def canonical_fields(source_type: str) -> Dict[str, List[str]]:
     """Return required + recommended canonical fields for a source type."""
     return {
@@ -458,6 +583,7 @@ def register_import(cache_root: Path, payload: ImportPayload, allowed_roots: Opt
         raise
     schema = validate_schema(source_type, columns, payload.mode, df=preview_df)
     context = context_match_score(preview_df, payload, source_type)
+    qc = qc_preflight(preview_df, source_type)
     route = ROUTES.get(source_type, "staging_only")
 
     merge_status = "staged"
@@ -491,6 +617,7 @@ def register_import(cache_root: Path, payload: ImportPayload, allowed_roots: Opt
         "preview_error": preview_error,
         "schema_validation": schema,
         "context_match": context,
+        "qc_report": qc,
     }
     (import_dir / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return metadata

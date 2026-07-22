@@ -99,6 +99,7 @@ Nothing is persisted beyond this server's local cache. <code>unknown</code> is s
 <fieldset id="fs-map" disabled>
   <legend>2 · Map columns</legend>
   <p class="muted" id="mapNote"></p>
+  <div id="qcPanel"></div>
   <table id="mapTable" class="hidden"><thead><tr><th>canonical field</th><th>your column</th></tr></thead><tbody></tbody></table>
   <div class="row" style="margin-top:10px"><button id="btnMap" class="secondary">Apply mapping</button></div>
 </fieldset>
@@ -119,6 +120,31 @@ const $ = (id) => document.getElementById(id);
 let importId = null, suggestion = null, uploadedCols = [], canonicalFields = null;
 
 function pill(txt, cls) { return `<span class="pill ${cls||''}">${txt}</span>`; }
+
+// Pre-flight QC gate (plan P2-A): show cell/guide/DE/donor coverage + missingness
+// BEFORE approve, and cap the merge button on a hard block. unknown != 0 —
+// absent gate columns render as "unknown", never a silent pass.
+function renderQC(qc) {
+  const el = $('qcPanel');
+  if (!qc) { el.innerHTML = ''; return; }
+  const gateCls = qc.gate === 'block' ? 'warn' : (qc.gate === 'warn' ? 'warn' : 'ok');
+  const rows = (qc.checks || []).map(c => {
+    const cls = c.status === 'block' ? 'warn' : (c.status === 'warn' ? 'warn' : (c.status === 'unknown' ? '' : 'ok'));
+    let detail = c.detail || '';
+    if (c.present && c.median != null && detail === '') {
+      detail = `median ${c.median}` + (c.floor != null ? ` (floor ${c.floor})` : '')
+             + (c.n_below_floor ? ` · ${c.n_below_floor} below floor` : '')
+             + (c.n_donors != null ? `` : '');
+    }
+    if (c.n_donors != null && detail === '') detail = `${c.n_donors} donor(s)`;
+    return `<tr><td>${c.label}</td><td>${pill(c.status, cls)}</td><td class="muted">${detail}</td></tr>`;
+  }).join('');
+  el.innerHTML = `<div class="card" style="margin:8px 0">`
+    + `<b>Pre-flight QC</b> ${pill(qc.gate, gateCls)} <span class="muted">· ${qc.sampled_rows} preview rows · floors: ${qc.thresholds.min_cells} cells / ${qc.thresholds.min_de_genes} DE genes</span>`
+    + `<table style="margin-top:6px"><tbody>${rows}</tbody></table>`
+    + (qc.gate === 'block' ? `<p class="muted" style="color:#b4402a">A gate's median is below the floor — this dataset would be capped at merge. Review before approving.</p>` : '')
+    + `<p class="muted">${qc.note}</p></div>`;
+}
 function setEnabled(fs, on) { $(fs).disabled = !on; }
 
 async function api(method, path, body) {
@@ -161,6 +187,7 @@ $('btnUpload').onclick = async () => {
     renderMapping(sug);
     setEnabled('fs-map', true);
     $('mapNote').innerHTML = `Detected <b>${uploadedCols.length}</b> columns · source type <code>${sug.source_type}</code> · status ${pill(res.merge_status, res.merge_status==='staged'?'ok':'warn')}`;
+    renderQC(res.qc_report);
   } catch (e) { alert('Upload failed: ' + e.message); }
   finally { $('btnUpload').disabled = false; }
 };
