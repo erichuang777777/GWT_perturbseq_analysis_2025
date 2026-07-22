@@ -142,6 +142,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "signed_module_effect": "api.routers.signed_module_effect",
     "disease_reversal": "api.routers.disease_reversal",
     "trans_network": "api.routers.trans_network",
+    "hypothesis": "api.routers.hypothesis",
     "paper_regulators": "api.routers.paper_regulators",
     "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",

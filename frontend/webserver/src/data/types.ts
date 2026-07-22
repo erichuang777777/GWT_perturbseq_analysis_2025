@@ -206,6 +206,10 @@ export interface RealTarget {
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
   novelty: Novelty | null;
+  // Deterministic, source-grounded testable hypothesis (plan P2-C). null when
+  // there is no directional signal to base one on (unknown != 0). A
+  // CRISPRi-knockdown prediction to test, never a therapeutic claim.
+  hypothesis: { text: string | null; suggestedValidation: string | null; basis: string[] } | null;
   // Disease-agnostic known-drug summary (plan P1-L). null when no drug is
   // indexed for this target (unknown != 0). A summary of drugs known to hit
   // this target, NOT a treatment claim; the disease-specific check lives in

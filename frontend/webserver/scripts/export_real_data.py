@@ -302,6 +302,7 @@ def main() -> None:
 
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
+    import hypothesis as hypothesis_mod
     from data.loaders import load_gene_set
     from evidence.population import build_population_hypothesis_card, load_burden_estimates
     from evidence.safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay
@@ -454,6 +455,23 @@ def main() -> None:
         primary_row = primary_by_gene[gene]
         primary_condition = primary_row["condition"]
         r_row = primary_call(gene, primary_row)
+
+        # Deterministic testable hypothesis (plan P2-C) — composed from the
+        # signed module effect + this gene's readiness next-step / pathway axis
+        # (all already in hand here). null when there is no directional signal
+        # (unknown != 0). Descriptive only.
+        hyp = hypothesis_mod.hypothesis_for_target(
+            gene,
+            next_validation_step=(r_row.get("next_validation_step") if r_row is not None else None),
+            pathway_axis=primary_row.get("pathway_axis"),
+        )
+        hypothesis_out = None
+        if hyp.get("available"):
+            hypothesis_out = {
+                "text": hyp.get("hypothesis"),
+                "suggestedValidation": hyp.get("suggested_validation"),
+                "basis": hyp.get("basis", []),
+            }
 
         conditions_out = []
         for _, crow in g_cards.iterrows():
@@ -628,6 +646,7 @@ def main() -> None:
             "clinicalTrials": trials_out,
             "literature": literature_out,
             "novelty": novelty_out,
+            "hypothesis": hypothesis_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
             # Per-target external corroboration from the three Level-4 tracks.

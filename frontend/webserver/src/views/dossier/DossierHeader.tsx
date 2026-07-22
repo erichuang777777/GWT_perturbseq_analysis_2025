@@ -56,6 +56,20 @@ export default function DossierHeader({ t, comp }: { t: RealTarget; comp: number
           <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "3px" }}>0–100 · moves with your weights</div>
         </div>
       </div>
+
+      {t.hypothesis && (t.hypothesis.text || t.hypothesis.suggestedValidation) && (
+        <div style={{ display: "flex", gap: "10px", padding: "13px 16px", background: "#f4f1fb", border: "1px solid #e5ddf6", borderRadius: "12px", marginBottom: "26px" }}>
+          <span aria-hidden style={{ fontSize: "15px", lineHeight: "20px" }}>🧪</span>
+          <div>
+            <div style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: ".5px", textTransform: "uppercase", color: "#7c3aed", marginBottom: "4px" }}>Testable hypothesis</div>
+            {t.hypothesis.text && <div style={{ fontSize: "13px", color: "#33323a", lineHeight: 1.5 }}>{t.hypothesis.text}</div>}
+            {t.hypothesis.suggestedValidation && (
+              <div style={{ fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>Suggested validation: {t.hypothesis.suggestedValidation}</div>
+            )}
+            <div style={{ fontSize: "10.5px", color: "#9aa1ad", marginTop: "5px" }}>Deterministic, derived from the target's own signals — a CRISPRi-knockdown prediction to test, not a therapeutic claim.</div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
