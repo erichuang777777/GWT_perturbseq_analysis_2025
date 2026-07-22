@@ -206,6 +206,16 @@ export interface RealTarget {
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
   novelty: Novelty | null;
+  // Disease-agnostic known-drug summary (plan P1-L). null when no drug is
+  // indexed for this target (unknown != 0). A summary of drugs known to hit
+  // this target, NOT a treatment claim; the disease-specific check lives in
+  // the separate disease x drug evidence route.
+  knownDrugs: {
+    knownDrugCount: number;
+    maxClinicalPhase: number | null;
+    anyApproved: boolean;
+    drugs: { name: string; maxPhase: number | null; isApproved: boolean }[];
+  } | null;
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
   populationBurden: PopulationBurden | null;
   // Per-target external corroboration; null when the gene is in none of the

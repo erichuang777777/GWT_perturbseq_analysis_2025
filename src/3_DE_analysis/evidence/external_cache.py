@@ -265,6 +265,14 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
         approvedSymbol
         tractability { label modality value }
         safetyLiabilities { event eventId biosamples { tissueLabel } }
+        knownDrugs(size: 20) {
+          count
+          rows {
+            phase
+            status
+            drug { id name isApproved maximumClinicalTrialPhase }
+          }
+        }
         associatedDiseases(page: {index: 0, size: 15}) {
           count
           rows {
@@ -315,12 +323,53 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
         for item in (target.get("safetyLiabilities") or [])
     ]
 
+    known_drugs = _summarize_known_drugs(target.get("knownDrugs") or {})
+
     return {
         "source_status": "ok",
         "items": [{"id": ensembl_id, "name": target.get("approvedSymbol")}],
         "tractability": tractability,
+        "known_drugs": known_drugs,
         "associated_diseases": associated_diseases,
         "safety_liabilities": safety_liabilities,
+    }
+
+
+# Open Targets clinical-trial phase is 0-4 (4 = approved); we surface the max
+# and whether ANY known drug is marked approved, as a disease-AGNOSTIC per-target
+# tractability summary (plan P1-L). This is a summary of drugs known to hit THIS
+# target, NOT a claim that the target is druggable the same way here, and NOT a
+# treatment recommendation -- the disease-specific check stays in the separate
+# /api/disease-drug-evidence route (match_disease_drug_evidence).
+def _summarize_known_drugs(known: Dict[str, Any]) -> Dict[str, Any]:
+    rows = known.get("rows") or []
+    drugs: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        drug = row.get("drug") or {}
+        name = drug.get("name")
+        if not name:
+            continue
+        phase = drug.get("maximumClinicalTrialPhase")
+        if phase is None:
+            phase = row.get("phase")
+        prev = drugs.get(name)
+        if prev is None or (phase is not None and (prev.get("max_phase") or -1) < phase):
+            drugs[name] = {
+                "name": name,
+                "max_phase": phase,
+                "is_approved": bool(drug.get("isApproved")),
+                "status": row.get("status"),
+            }
+    drug_list = sorted(drugs.values(), key=lambda d: (d.get("max_phase") or -1), reverse=True)
+    phases = [d["max_phase"] for d in drug_list if d["max_phase"] is not None]
+    return {
+        # `count` is Open Targets' total known-drug row count; `known_drug_count`
+        # is our distinct-drug count from the (<=20) rows pulled.
+        "count": known.get("count"),
+        "known_drug_count": len(drug_list),
+        "max_clinical_phase": max(phases) if phases else None,
+        "any_approved": any(d["is_approved"] for d in drug_list),
+        "drugs": drug_list[:10],
     }
 
 

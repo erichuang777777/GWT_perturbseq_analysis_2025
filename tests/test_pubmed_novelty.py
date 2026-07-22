@@ -83,3 +83,30 @@ def test_fetch_pubmed_network_failure_is_unknown_not_zero(monkeypatch):
     assert out["source_status"] == "unavailable"
     # A failed fetch must NOT masquerade as a measured novelty.
     assert "total_count" not in out
+
+
+def test_summarize_known_drugs_max_phase_and_approved():
+    """P1-L: distinct-drug count, max clinical phase, any-approved from OT rows."""
+    known = {
+        "count": 3,
+        "rows": [
+            {"phase": 2, "status": "Completed", "drug": {"name": "DrugA", "isApproved": False, "maximumClinicalTrialPhase": 2}},
+            {"phase": 4, "status": "Completed", "drug": {"name": "DrugB", "isApproved": True, "maximumClinicalTrialPhase": 4}},
+            # duplicate drug row keeps the higher phase
+            {"phase": 1, "status": "Active", "drug": {"name": "DrugA", "isApproved": False, "maximumClinicalTrialPhase": 2}},
+            {"phase": None, "status": None, "drug": {"name": None}},  # dropped (no name)
+        ],
+    }
+    summ = __import__("evidence.external_cache", fromlist=["_summarize_known_drugs"])._summarize_known_drugs(known)
+    assert summ["known_drug_count"] == 2
+    assert summ["max_clinical_phase"] == 4
+    assert summ["any_approved"] is True
+    assert summ["drugs"][0]["name"] == "DrugB"  # highest phase first
+
+
+def test_summarize_known_drugs_empty_is_honest_zero_count_not_fake():
+    summ = __import__("evidence.external_cache", fromlist=["_summarize_known_drugs"])._summarize_known_drugs({})
+    assert summ["known_drug_count"] == 0
+    assert summ["max_clinical_phase"] is None
+    assert summ["any_approved"] is False
+    assert summ["drugs"] == []

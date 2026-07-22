@@ -497,6 +497,22 @@ def main() -> None:
             mod = t.get("modality", "?")
             modality_summary.setdefault(mod, {})[t.get("label", "?")] = bool(t.get("value"))
 
+        # Known-drug summary (plan P1-L). null when the snapshot predates the
+        # knownDrugs query or has no drugs (unknown != 0). Disease-agnostic — a
+        # summary of drugs known to hit this target, NOT a treatment claim.
+        kd = ot.get("known_drugs") or {}
+        known_drugs_out = None
+        if kd.get("known_drug_count"):
+            known_drugs_out = {
+                "knownDrugCount": kd.get("known_drug_count"),
+                "maxClinicalPhase": kd.get("max_clinical_phase"),
+                "anyApproved": bool(kd.get("any_approved")),
+                "drugs": [
+                    {"name": d.get("name"), "maxPhase": d.get("max_phase"), "isApproved": bool(d.get("is_approved"))}
+                    for d in (kd.get("drugs") or [])[:6]
+                ],
+            }
+
         safety_liabilities = [
             {"event": s.get("event"), "tissues": s.get("tissues", [])}
             for s in (ot.get("safety_liabilities") or [])
@@ -607,6 +623,7 @@ def main() -> None:
             },
             "diseases": diseases_out,
             "tractabilityFlags": modality_summary,
+            "knownDrugs": known_drugs_out,
             "safetyLiabilities": safety_liabilities,
             "clinicalTrials": trials_out,
             "literature": literature_out,
