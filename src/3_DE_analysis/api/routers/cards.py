@@ -5,14 +5,14 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 
 import concept_annotation
 import robust_ranking
 import stimulation_switch_explorer
 import triage_view
 from api import deps
-from report.generate import build_report_payload, write_report
+from report.generate import build_report_payload, build_target_report_payload, render_target_html, write_report
 
 router = APIRouter(tags=["Target cards"])
 
@@ -325,3 +325,67 @@ def report_dataset(
     write_report(out_csv, report_path, dataset_id=dataset_id, fmt=fmt, top_n=top_n, provenance=provenance)
     media_type = "text/html" if fmt == "html" else "text/markdown"
     return FileResponse(str(report_path), filename=f"target_report.{fmt}", media_type=media_type)
+
+
+def _target_report_extras(gene: str, cards) -> Dict[str, Any]:
+    """Best-effort descriptive signals for a single-target report. Each block
+    degrades to absent (never raises) so a missing overlay/snapshot just omits
+    that section (unknown != 0)."""
+    extras: Dict[str, Any] = {}
+    row = None
+    try:
+        sub = cards[cards["target"].astype(str).str.upper() == gene.strip().upper()]
+        row = None if sub.empty else sub.iloc[0]
+    except Exception:  # noqa: BLE001
+        row = None
+    try:
+        import hypothesis as hypothesis_mod
+
+        extras["hypothesis"] = hypothesis_mod.hypothesis_for_target(
+            gene, pathway_axis=(row.get("pathway_axis") if row is not None else None)
+        )
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        import trans_network
+
+        extras["trans_effect_breadth"] = trans_network.breadth_for_target(gene)
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        from evidence.external_cache import load_snapshot
+
+        snap = load_snapshot(deps.EVIDENCE_DIR, gene) if hasattr(deps, "EVIDENCE_DIR") else None
+        if snap:
+            src = snap.get("sources", {})
+            lit = src.get("literature", {}) or {}
+            if lit.get("novelty"):
+                extras["novelty"] = lit["novelty"]
+            ot = src.get("open_targets", {}) or {}
+            if ot.get("known_drugs"):
+                extras["known_drugs"] = ot["known_drugs"]
+    except Exception:  # noqa: BLE001
+        pass
+    return extras
+
+
+@router.get("/api/reports/{dataset_id}/{target}", summary="Self-contained single-target HTML report (research use)")
+def report_target(dataset_id: str, target: str) -> Any:
+    """One target, one portable HTML file (inline CSS, no external assets) —
+    card + per-condition stats + the descriptive signals (hypothesis, novelty,
+    trans-effect breadth, known drugs) when available. For handing a candidate to
+    a collaborator who does not run the portal. Research/hypothesis-generating use
+    only; `unknown != 0` throughout."""
+    job_dir = deps._dataset_path(dataset_id)
+    out_csv = job_dir / "target_cards.csv"
+    if not out_csv.exists():
+        raise HTTPException(status_code=404, detail="dataset_id not found")
+    cards = deps._load_cards(out_csv)
+    payload = build_target_report_payload(
+        cards, target, dataset_id=dataset_id, provenance=deps._provenance_block(dataset_id),
+        extras=_target_report_extras(target, cards),
+    )
+    if payload is None:
+        raise HTTPException(status_code=404, detail=f"target {target!r} not found in dataset")
+    html = render_target_html(payload)
+    return HTMLResponse(content=html)
