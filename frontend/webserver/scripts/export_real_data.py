@@ -303,10 +303,20 @@ def main() -> None:
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     import hypothesis as hypothesis_mod
+    import trans_network
     from data.loaders import load_gene_set
     from evidence.population import build_population_hypothesis_card, load_burden_estimates
     from evidence.safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay
     from individual_concept_profile import load_concept_modules
+
+    # Trans-effect ego-networks (plan P3-I) — one batch pass over full_signed_DE;
+    # empty dict (and null per-gene) when the signed table isn't present.
+    try:
+        trans_neighborhoods = trans_network.all_neighborhoods(top_n=12)
+        print(f"Trans-effect neighborhoods: {len(trans_neighborhoods)} targets", file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001
+        print(f"Trans-effect neighborhoods unavailable: {exc}", file=sys.stderr)
+        trans_neighborhoods = {}
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
     cards = pd.read_csv(CARDS_CSV)
@@ -647,6 +657,9 @@ def main() -> None:
             "literature": literature_out,
             "novelty": novelty_out,
             "hypothesis": hypothesis_out,
+            # Top-N signed downstream edges for the ego-network panel (plan P3-I);
+            # null when this gene has no significant edge (unknown != 0).
+            "transNeighborhood": trans_neighborhoods.get(gene.upper()) or None,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
             # Per-target external corroboration from the three Level-4 tracks.

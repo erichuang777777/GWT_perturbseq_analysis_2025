@@ -169,6 +169,107 @@ def breadth_for_target(gene: str, path: Path = DEFAULT_OUTPUT) -> Dict[str, Any]
     }
 
 
+_SIGNED_CACHE: Dict[str, pd.DataFrame] = {}
+
+
+def _load_signed_de(glob_pattern: str = SIGNED_DE_GLOB) -> Optional[pd.DataFrame]:
+    key = glob_pattern
+    if key not in _SIGNED_CACHE:
+        parts = sorted(glob.glob(glob_pattern))
+        if not parts:
+            return None
+        _SIGNED_CACHE[key] = pd.concat([pd.read_parquet(p) for p in parts], ignore_index=True)
+    return _SIGNED_CACHE[key]
+
+
+def neighborhood_for_target(
+    gene: str,
+    *,
+    top_n: int = 12,
+    condition: Optional[str] = None,
+    max_padj: float = DEFAULT_MAX_PADJ,
+    glob_pattern: str = SIGNED_DE_GLOB,
+) -> Dict[str, Any]:
+    """Top-N signed downstream edges of a target's knockdown, for an ego-network view.
+
+    Returns the strongest (by |log_fc|) significant ``target -> downstream_gene``
+    edges with sign, so a consumer can draw the "what does knocking this down
+    move?" neighborhood (plan P3-I). Honest empty when the signed table is absent
+    or the target has no significant edge (``unknown != 0``, never fabricated).
+    """
+    signed_de = _load_signed_de(glob_pattern)
+    if signed_de is None:
+        return {"gene": gene, "available": False, "reason": "full_signed_DE table not present", "edges": []}
+    sub = signed_de[signed_de["target_gene"].astype(str).str.upper() == str(gene).strip().upper()].copy()
+    sub = sub[pd.to_numeric(sub["adj_p_value"], errors="coerce") <= max_padj]
+    if condition:
+        sub = sub[sub["culture_condition"] == condition]
+    if sub.empty:
+        return {"gene": str(gene).strip().upper(), "available": True, "measured": False, "edges": [],
+                "note": "no significant downstream edge measured (unknown != 0, not empty-because-zero)"}
+    # de-dup a downstream gene to its strongest-|log_fc| condition, then take top-N
+    sub["_abs"] = pd.to_numeric(sub["log_fc"], errors="coerce").abs()
+    sub = sub.sort_values("_abs", ascending=False).drop_duplicates(subset=["downstream_gene"])
+    top = sub.head(int(top_n))
+    edges = [
+        {
+            "downstream_gene": r["downstream_gene"],
+            "condition": r["culture_condition"],
+            "log_fc": round(float(r["log_fc"]), 4),
+            "direction": "up" if float(r["log_fc"]) > 0 else "down",
+        }
+        for _, r in top.iterrows()
+    ]
+    return {
+        "gene": str(gene).strip().upper(),
+        "available": True,
+        "measured": True,
+        "n_edges_shown": len(edges),
+        "total_significant_downstream": int(sub.shape[0]),
+        "direction_convention": "log_fc is the effect of KNOCKING THE TARGET DOWN; up = downstream gene rises on knockdown.",
+        "edges": edges,
+    }
+
+
+def all_neighborhoods(
+    *,
+    top_n: int = 12,
+    max_padj: float = DEFAULT_MAX_PADJ,
+    glob_pattern: str = SIGNED_DE_GLOB,
+) -> Dict[str, list]:
+    """Precompute every target's top-N signed downstream edges in one pass.
+
+    Efficient batch form for the static export (a single groupby, not one filter
+    per gene). Returns ``{GENE: [edge, ...]}`` for targets with >= 1 significant
+    edge; absent targets simply aren't keys (``unknown != 0``). Empty dict when
+    the signed table isn't present.
+    """
+    signed_de = _load_signed_de(glob_pattern)
+    if signed_de is None:
+        return {}
+    df = signed_de.copy()
+    df = df[pd.to_numeric(df["adj_p_value"], errors="coerce") <= max_padj]
+    if df.empty:
+        return {}
+    df["target_gene"] = df["target_gene"].astype(str).str.upper()
+    df["_abs"] = pd.to_numeric(df["log_fc"], errors="coerce").abs()
+    # strongest condition per (target, downstream), then top-N per target
+    df = df.sort_values("_abs", ascending=False).drop_duplicates(subset=["target_gene", "downstream_gene"])
+    out: Dict[str, list] = {}
+    for gene, grp in df.groupby("target_gene", sort=False):
+        top = grp.head(int(top_n))
+        out[gene] = [
+            {
+                "downstream_gene": r["downstream_gene"],
+                "condition": r["culture_condition"],
+                "log_fc": round(float(r["log_fc"]), 4),
+                "direction": "up" if float(r["log_fc"]) > 0 else "down",
+            }
+            for _, r in top.iterrows()
+        ]
+    return out
+
+
 def concentration_summary(path: Path = DEFAULT_OUTPUT) -> Dict[str, Any]:
     """Cohort-level hub concentration (Gini + top-5% edge share). Honest empty when unbuilt."""
     df = load_breadth(path)

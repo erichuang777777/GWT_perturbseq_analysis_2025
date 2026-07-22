@@ -10,13 +10,31 @@ flag; distinct from the card's ``n_total_de_genes``).
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 import trans_network
 
 router = APIRouter(tags=["Trans-effect breadth (research use)"])
+
+
+@router.get(
+    "/api/trans_network/{gene}/neighborhood",
+    summary="Top-N signed downstream edges of a target's knockdown (ego-network, descriptive)",
+)
+def get_neighborhood(
+    gene: str,
+    top_n: int = Query(default=12, ge=1, le=100),
+    condition: Optional[str] = Query(default=None),
+) -> Dict[str, Any]:
+    """The strongest downstream genes a knockdown moves, with sign — the data for
+    an ego-network "what does knocking this down touch?" view (plan P3-I).
+
+    `unknown != 0`: a target with no significant downstream edge returns
+    ``measured: false``, never a fabricated empty-because-zero. Descriptive only.
+    """
+    return trans_network.neighborhood_for_target(gene, top_n=top_n, condition=condition)
 
 
 @router.get(

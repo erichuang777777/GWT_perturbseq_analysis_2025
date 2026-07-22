@@ -210,6 +210,9 @@ export interface RealTarget {
   // there is no directional signal to base one on (unknown != 0). A
   // CRISPRi-knockdown prediction to test, never a therapeutic claim.
   hypothesis: { text: string | null; suggestedValidation: string | null; basis: string[] } | null;
+  // Top-N signed downstream edges of this target's knockdown, for the
+  // ego-network view (plan P3-I). null when no significant edge (unknown != 0).
+  transNeighborhood: { downstream_gene: string; condition: string; log_fc: number; direction: "up" | "down" }[] | null;
   // Disease-agnostic known-drug summary (plan P1-L). null when no drug is
   // indexed for this target (unknown != 0). A summary of drugs known to hit
   // this target, NOT a treatment claim; the disease-specific check lives in

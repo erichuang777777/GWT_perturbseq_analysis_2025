@@ -91,3 +91,20 @@ def test_real_overlay_serving_and_concentration():
     # An unmeasured gene reports measured=false, never breadth 0.
     ghost = tn.breadth_for_target("NOTAREALGENE12345")
     assert ghost["available"] is True and ghost.get("measured") is False
+
+
+@pytest.mark.skipif(not _HAS_OVERLAY, reason="overlay/signed table not present")
+def test_neighborhood_and_batch():
+    nb = tn.neighborhood_for_target("CD3E", top_n=5)
+    if nb.get("measured"):
+        assert nb["available"] is True
+        assert 1 <= len(nb["edges"]) <= 5
+        for e in nb["edges"]:
+            assert e["direction"] in {"up", "down"}
+            assert "downstream_gene" in e
+    ghost = tn.neighborhood_for_target("NOTAGENE999")
+    assert ghost["available"] is True and ghost.get("measured") is False
+    # batch helper agrees with per-gene for a measured gene
+    alln = tn.all_neighborhoods(top_n=5)
+    if "CD3E" in alln and nb.get("measured"):
+        assert len(alln["CD3E"]) == len(nb["edges"])
