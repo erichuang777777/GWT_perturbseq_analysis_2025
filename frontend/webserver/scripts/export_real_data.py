@@ -520,6 +520,18 @@ def main() -> None:
             {"pmid": l.get("pmid"), "title": l.get("title"), "year": l.get("year"), "journal": l.get("journal"), "url": l.get("url")}
             for l in (lit.get("items") or [])[:5]
         ]
+        # PubMed novelty descriptor (plan P0-E). Present only for evidence-cache
+        # genes whose snapshot carries the newer literature block; null otherwise
+        # (unknown != 0 — an uncovered gene is honestly "no novelty measured",
+        # never a fabricated "novel"). Descriptive only, never a readiness input.
+        nov = lit.get("novelty")
+        novelty_out = None
+        if isinstance(nov, dict) and nov.get("tier") != "unknown":
+            novelty_out = {
+                "tier": nov.get("tier"),
+                "literatureCount": nov.get("total_count"),
+                "noveltyScore": nov.get("novelty_score"),
+            }
 
         gn = gnomad_by_gene.get(gene)
         loeuf = nan_to_none(gn["loeuf"]) if gn is not None else None
@@ -598,6 +610,7 @@ def main() -> None:
             "safetyLiabilities": safety_liabilities,
             "clinicalTrials": trials_out,
             "literature": literature_out,
+            "novelty": novelty_out,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
             # Per-target external corroboration from the three Level-4 tracks.

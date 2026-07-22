@@ -90,6 +90,16 @@ export interface LiteratureItem {
   url: string;
 }
 
+// PubMed novelty descriptor (plan P0-E). null when no literature count was
+// measured for this gene (unknown != 0). `tier`: no_record | understudied |
+// moderate | well_studied. `noveltyScore` in (0,1], HIGHER = more novel
+// (fewer papers). Descriptive only — never feeds the readiness call.
+export interface Novelty {
+  tier: "no_record" | "understudied" | "moderate" | "well_studied";
+  literatureCount: number;
+  noveltyScore: number;
+}
+
 export interface Readiness {
   call: Call;
   stage: string;
@@ -195,6 +205,7 @@ export interface RealTarget {
   safetyLiabilities: { event: string; tissues: string[] }[];
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
+  novelty: Novelty | null;
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
   populationBurden: PopulationBurden | null;
   // Per-target external corroboration; null when the gene is in none of the
