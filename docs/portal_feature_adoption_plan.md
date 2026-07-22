@@ -7,6 +7,27 @@
 
 ---
 
+## 實作狀態(2026-07-22 本分支已落地)
+
+本計畫的 **10 個功能全部已實作、附測試、守紀律**(descriptive≠decision、`unknown≠0`、離線快取、加法式、provenance)。全部 23 個 API router 載入零降級。
+
+| 功能 | 狀態 | 主要落點 | 測試 |
+|------|------|------|------|
+| **P0-E** PubMed 新穎性 | ✅ | `evidence/external_cache.py`(`novelty_from_literature_count`)+ export/types/`ClinicalLiteraturePanel` | `test_pubmed_novelty.py` |
+| **P0-K** 疾病反轉 | ✅ | `disease_reversal.py` + `api/routers/disease_reversal.py` | `test_disease_reversal.py` |
+| **P1-F** 新穎性×效應象限 | ✅ | `lib/drawFigure.ts`(`noveltyEffect`)+ `reference.ts` | tsc |
+| **P1-L** 已核准藥連結 | ✅ | `fetch_open_targets`(`_summarize_known_drugs`)+ `TractabilityPanel` | `test_pubmed_novelty.py` |
+| **P1-H** trans-effect 廣度 | ✅ | `trans_network.py` + router + overlay parquet | `test_trans_network.py` |
+| **P2-A** QC 前置閘門 | ✅ | `upload/import_manager.py`(`qc_preflight`)+ `/upload` UI | `test_qc_preflight.py` |
+| **P2-C** 可測試假說 | ✅ | `hypothesis.py` + router + export + `DossierHeader` | `test_hypothesis.py` |
+| **P2-D** 自含 HTML 報告 | ✅ | `report/generate.py`(`render_target_html`)+ `/api/reports/{ds}/{gene}` | `test_target_report.py` |
+| **P3-I** 互動因果網路圖 | ✅ | `trans_network.neighborhood_for_target` + router + `TransNetworkPanel`(SVG) | `test_trans_network.py` |
+| **P3-M** 疾病 signature 上傳 | ✅ | `api/routers/disease_reversal_ui.py`(`/disease-reversal`)+ `_rank_builtin` | `test_disease_reversal.py` |
+
+**說明:** 全部新訊號皆為描述性,**不進** `_stage()`/`_red_flags()`(H 的 `broad_effect_candidate` 與 K 是否升級為決策維度仍為 §8 開放決策)。前端靜態資料需在有 canonical dataset 的環境重跑 `export_real_data.py --force` 才會填入新欄位(本 sandbox 僅有 deprecated dataset;plumbing 已就位、typecheck 通過)。
+
+---
+
 ## 0. 如何讀這份文件
 
 這是一份**可執行**的計畫,不是願景稿。每個提案都對應到本 repo **已存在的真實檔案與行號**,並註明「現況已有什麼 / 缺口在哪 / 具體改哪幾個檔 / 測試怎麼加 / 誠實 caveat / 成本」。
