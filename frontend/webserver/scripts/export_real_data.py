@@ -332,6 +332,7 @@ def main() -> None:
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
     import hypothesis as hypothesis_mod
+    import reliability as reliability_mod
     import trans_network
     from data.loaders import load_gene_set
     from evidence.population import build_population_hypothesis_card, load_burden_estimates
@@ -654,6 +655,16 @@ def main() -> None:
             "nTotalDeGenes": nan_to_none(primary_row.get("n_total_de_genes")),
             "nUpGenes": nan_to_none(primary_row.get("n_up_genes")),
             "nDownGenes": nan_to_none(primary_row.get("n_down_genes")),
+            # Reliability/confidence coefficient (G-perturb port): a 0-1 confidence
+            # band from the cross-guide/donor correlations the card already has.
+            # Descriptive; shown beside the readiness call, never folded into it.
+            "reliability": (lambda rel: {
+                "rDep": rel["r_dep"], "confidenceTier": rel["confidence_tier"], "sScore": rel["s_score"],
+            })(reliability_mod.reliability_for_card(
+                primary_row.get("crossguide_correlation"),
+                primary_row.get("crossdonor_correlation_mean"),
+                primary_row.get("ontarget_effect_size"),
+            )),
             "crossDonorCorrelationMean": nan_to_none(primary_row.get("crossdonor_correlation_mean")),
             "crossDonorCorrelationMin": nan_to_none(primary_row.get("crossdonor_correlation_min")),
             "replicatePassFlag": bool(primary_row.get("replicate_pass_flag")) if not pd.isna(primary_row.get("replicate_pass_flag")) else None,

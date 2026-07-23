@@ -93,6 +93,9 @@ OPENAPI_TAGS = [
     {"name": "Disease reversal (research use)", "description": "Does knocking a target down push cells away from a disease signature? Directional reversal scoring over the in-repo signed DE table, against builtin or user-supplied signatures. Descriptive hypothesis-generation only (CRISPRi != pharmacology), never a readiness input."},
     {"name": "Trans-effect breadth (research use)", "description": "Per-target out-degree in the KD->DEG trans-regulatory graph (a dual-use master-regulator/broad-effect signal) + cohort hub concentration, recomputed from the in-repo signed DE table. Descriptive only; NOT the readiness broad_effect red flag; distinct from the card's n_total_de_genes."},
     {"name": "Self-falsification audit (research use)", "description": "Does the system reject its own darlings? The fraction of the top trans-effect hubs vetoed by the readiness engine's own safety lists (vs the low-breadth tail), plus anchor cases with known right answers including a known NO. Descriptive audit, graded against the system's own decision inputs."},
+    {"name": "Reliability (research use)", "description": "Per-target 0-1 reliability coefficient (R_dep, ported from G-perturb) computed from the card's existing cross-guide/cross-donor correlations. A confidence band beside the readiness call, never folded into it; unknown != 0."},
+    {"name": "Readiness audit (research use)", "description": "Faithfulness self-check (each readiness call re-derived from its red-flag cap and checked for internal consistency, ported from the Predictability Audit) + typed evidence classes per target (ported from PerturbGate). Descriptive; never changes a call."},
+    {"name": "Axis validation (research use)", "description": "Validate a scoring axis against the source paper's own published regulator coefficients and return a validated/exploratory verdict (ported from the Validated Th1/Th2 Target Map) — don't let a weak axis nominate. unknown != 0."},
     {"name": "Meta", "description": "Coverage-at-a-glance for the sparse descriptive overlays (gnomAD/GTEx/disease-association/LINCS), computed from the loaded reference tables at request time -- never a number copied from documentation."},
 ]
 
@@ -146,6 +149,9 @@ _ROUTER_MODULES: Dict[str, str] = {
     "trans_network": "api.routers.trans_network",
     "hypothesis": "api.routers.hypothesis",
     "self_falsification": "api.routers.self_falsification",
+    "reliability": "api.routers.reliability",
+    "readiness_audit": "api.routers.readiness_audit",
+    "axis_validation": "api.routers.axis_validation",
     "paper_regulators": "api.routers.paper_regulators",
     "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",
