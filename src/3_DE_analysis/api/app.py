@@ -92,6 +92,7 @@ OPENAPI_TAGS = [
     {"name": "Clinical evidence (research use)", "description": "Disease x drug evidence-matching: whether a gene has a known drug, and whether that drug has actually been trialled for a specific disease. Evidence-matching only, NOT a treatment recommendation; live-queried (Open Targets + ClinicalTrials.gov), never persisted."},
     {"name": "Disease reversal (research use)", "description": "Does knocking a target down push cells away from a disease signature? Directional reversal scoring over the in-repo signed DE table, against builtin or user-supplied signatures. Descriptive hypothesis-generation only (CRISPRi != pharmacology), never a readiness input."},
     {"name": "Trans-effect breadth (research use)", "description": "Per-target out-degree in the KD->DEG trans-regulatory graph (a dual-use master-regulator/broad-effect signal) + cohort hub concentration, recomputed from the in-repo signed DE table. Descriptive only; NOT the readiness broad_effect red flag; distinct from the card's n_total_de_genes."},
+    {"name": "Self-falsification audit (research use)", "description": "Does the system reject its own darlings? The fraction of the top trans-effect hubs vetoed by the readiness engine's own safety lists (vs the low-breadth tail), plus anchor cases with known right answers including a known NO. Descriptive audit, graded against the system's own decision inputs."},
     {"name": "Meta", "description": "Coverage-at-a-glance for the sparse descriptive overlays (gnomAD/GTEx/disease-association/LINCS), computed from the loaded reference tables at request time -- never a number copied from documentation."},
 ]
 
@@ -144,6 +145,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "disease_reversal_ui": "api.routers.disease_reversal_ui",
     "trans_network": "api.routers.trans_network",
     "hypothesis": "api.routers.hypothesis",
+    "self_falsification": "api.routers.self_falsification",
     "paper_regulators": "api.routers.paper_regulators",
     "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",
