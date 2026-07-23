@@ -70,6 +70,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -80,7 +81,14 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SRC_3DE = REPO_ROOT / "src" / "3_DE_analysis"
 sys.path.insert(0, str(SRC_3DE))
 
-CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
+# The canonical reference dataset's cards. Overridable so this export can bake a
+# portal from ANY target-card CSV (a different in-repo run, or a user's own
+# perturb-seq screen already merged through /api/imports) without editing code:
+#   - env  GWT_CARDS_CSV=/path/to/target_cards.csv
+#   - flag --cards /path/to/target_cards.csv   (takes precedence)
+# The genome-scale bring-your-own-data path (accept any perturb-seq dataset).
+_DEFAULT_CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
+CARDS_CSV = Path(os.environ["GWT_CARDS_CSV"]) if os.environ.get("GWT_CARDS_CSV") else _DEFAULT_CARDS_CSV
 EVIDENCE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_evidence"
 GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
@@ -127,7 +135,9 @@ MIN_GRADE = 2
 
 # public/ (not src/) -- at ~7,200 genes this is fetched at runtime, not
 # bundled into the JS (see src/data/dataset.ts's loadDataset()).
-OUT_PATH = Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
+OUT_PATH = Path(os.environ["GWT_OUT_JSON"]) if os.environ.get("GWT_OUT_JSON") else (
+    Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
+)
 
 # Standard HGNC full names for the 21 genes this export covers. Public
 # nomenclature, not evidence -- kept separate from every statistic/score
@@ -298,7 +308,26 @@ def _cache_is_fresh() -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--force", action="store_true", help="Recompute readiness/annotation even if a fresh cache exists.")
+    parser.add_argument("--cards", type=Path, default=None,
+                        help="Path to a target_cards.csv to bake the portal from (any perturb-seq dataset). "
+                             "Overrides the GWT_CARDS_CSV env and the canonical default.")
+    parser.add_argument("--out", type=Path, default=None,
+                        help="Where to write real-dataset.json (default: public/real-dataset.json / GWT_OUT_JSON).")
     args = parser.parse_args()
+
+    # Flag beats env beats default, for both the input cards and the output JSON.
+    global CARDS_CSV, OUT_PATH
+    if args.cards is not None:
+        CARDS_CSV = args.cards
+    if args.out is not None:
+        OUT_PATH = args.out
+    if not CARDS_CSV.exists():
+        raise SystemExit(
+            f"cards CSV not found: {CARDS_CSV}\n"
+            "Point the export at a dataset with --cards /path/to/target_cards.csv "
+            "(or GWT_CARDS_CSV=...). The canonical dataset ships only in the full "
+            "reference checkout; a fresh sandbox may not contain it."
+        )
 
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
