@@ -19,7 +19,7 @@ from common import timeutil
 
 TABLE_EXTENSIONS = {".csv", ".tsv", ".txt", ".json", ".jsonl"}
 RAW_CELL_EXTENSIONS = {".h5ad", ".h5", ".hdf5", ".mtx", ".loom", ".zarr"}
-VALID_SOURCE_TYPES = {"auto", "target_evidence", "guide_evidence", "external_evidence", "metadata_manifest", "raw_cell_data"}
+VALID_SOURCE_TYPES = {"auto", "target_evidence", "guide_evidence", "external_evidence", "metadata_manifest", "raw_cell_data", "signed_de_evidence"}
 MAX_UPLOAD_BYTES = 25 * 1024 * 1024
 
 REQUIRED_COLUMNS: Dict[str, List[str]] = {
@@ -27,6 +27,11 @@ REQUIRED_COLUMNS: Dict[str, List[str]] = {
     "guide_evidence": ["guide", "target"],
     "external_evidence": ["target", "source"],
     "metadata_manifest": ["dataset_id", "file_path", "format"],
+    # A signed per-downstream-gene DE long table — the substrate the
+    # disease-reversal / trans-effect-breadth / ego-network engines need to run
+    # on a user's OWN perturb-seq screen (not just the bundled one). One row per
+    # target x downstream gene, with a signed effect. See signed_de_io.py.
+    "signed_de_evidence": ["target", "downstream_gene"],
 }
 
 RECOMMENDED_COLUMNS: Dict[str, List[str]] = {
@@ -34,6 +39,7 @@ RECOMMENDED_COLUMNS: Dict[str, List[str]] = {
     "guide_evidence": ["kd_score", "guide_id", "sgrna", "fdr", "effect_size"],
     "external_evidence": ["evidence_type", "pmid", "url", "disease", "drug", "clinical_phase"],
     "metadata_manifest": ["species", "cell_type", "condition", "donor", "batch", "source"],
+    "signed_de_evidence": ["condition", "log_fc", "adj_p_value", "zscore"],
 }
 
 ROUTES = {
@@ -41,6 +47,7 @@ ROUTES = {
     "guide_evidence": "csv_evidence_layer",
     "external_evidence": "external_evidence_layer",
     "metadata_manifest": "metadata_harmonization_layer",
+    "signed_de_evidence": "signed_de_layer",
     "raw_cell_data": "raw_cell_staging",
     "unknown_table": "staging_only",
     "unknown_file": "staging_only",
@@ -162,6 +169,10 @@ def infer_source_type(path: Path, columns: List[str], declared: Optional[str]) -
     keys = set(norm)
     if {"dataset_id", "file_path", "format"}.issubset(keys):
         return "metadata_manifest"
+    # A per-downstream-gene signed DE long table is the most specific target-keyed
+    # shape (target + downstream_gene), so detect it before target_evidence.
+    if "target" in keys and "downstream_gene" in keys:
+        return "signed_de_evidence"
     if {"guide", "target"}.issubset(keys):
         return "guide_evidence"
     if "target" in keys and ("condition" in keys or any(k in keys for k in ["effect_size", "logfc", "fdr", "p_value"])):

@@ -231,6 +231,41 @@ def neighborhood_for_target(
     }
 
 
+def breadth_report_from_frame(signed_de: pd.DataFrame, *, gene: Optional[str] = None, max_padj: float = DEFAULT_MAX_PADJ) -> Dict[str, Any]:
+    """Compute breadth + hub concentration directly from a signed-DE frame (e.g. a
+    user upload), bypassing the on-disk overlay — the "run trans-effect breadth on
+    your own screen" path. Returns the cohort summary, and a single gene's row when
+    ``gene`` is given."""
+    breadth = compute_breadth(signed_de, max_padj=max_padj)
+    if breadth.empty:
+        return {"available": True, "measured_targets": 0, "note": "no significant downstream edges in the provided table"}
+    edges = breadth["n_edges_total"].to_numpy()
+    order = np.sort(edges)[::-1]
+    k = max(1, int(np.ceil(len(order) * 0.05)))
+    top5 = float(order[:k].sum() / order.sum()) if order.sum() else float("nan")
+    out: Dict[str, Any] = {
+        "available": True,
+        "measured_targets": int(breadth.shape[0]),
+        "gini_trans_effect": round(_gini(edges), 4),
+        "top5pct_edge_share": round(top5, 4),
+    }
+    if gene is not None:
+        sub = breadth[breadth["target_gene"].astype(str).str.upper() == str(gene).strip().upper()]
+        if sub.empty:
+            out["gene"] = {"gene": str(gene).strip().upper(), "measured": False,
+                           "note": "no significant downstream edge for this target (unknown != 0)"}
+        else:
+            r = sub.iloc[0]
+            out["gene"] = {
+                "gene": str(r["target_gene"]).upper(),
+                "measured": True,
+                "trans_effect_breadth": int(r["trans_effect_breadth"]),
+                "breadth_percentile": float(r["breadth_percentile"]),
+                "broad_effect_candidate": bool(r["broad_effect_candidate"]),
+            }
+    return out
+
+
 def all_neighborhoods(
     *,
     top_n: int = 12,

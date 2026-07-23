@@ -17,6 +17,7 @@ Never a readiness input; does not cap any readiness call.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
@@ -33,6 +34,32 @@ class SignatureRequest(BaseModel):
     condition: Optional[str] = None   # Rest | Stim8hr | Stim48hr | None (all)
     top: int = 50
     min_hits: int = 3
+
+
+class UploadSignatureRequest(SignatureRequest):
+    import_id: str                # a signed_de_evidence import (from /api/imports)
+
+
+def _resolve_uploaded_signed_de(import_id: str):
+    """import_id -> (signed_de DataFrame, notes). Raises HTTPException on problems."""
+    from api import deps
+    from signed_de_io import read_signed_de_table
+    from upload.import_manager import read_import
+
+    try:
+        meta = read_import(deps.CACHE_ROOT, import_id)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"import_id not found: {import_id}")
+    if meta.get("source_type") != "signed_de_evidence":
+        raise HTTPException(status_code=400, detail=f"import {import_id} is {meta.get('source_type')}, not signed_de_evidence")
+    source_path = Path(meta["source_path"])
+    if not source_path.exists():
+        raise HTTPException(status_code=400, detail=f"source file missing: {source_path}")
+    deps._assert_allowed_input_path(source_path)
+    try:
+        return read_signed_de_table(source_path)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
 
 
 @router.get(
@@ -119,3 +146,22 @@ def rank_user_signature(req: SignatureRequest) -> Dict[str, Any]:
     return disease_reversal.rank_reversal(
         signature, condition=req.condition, top=req.top, min_hits=req.min_hits
     )
+
+
+@router.post(
+    "/api/disease_reversal/from_upload",
+    summary="Rank a user-uploaded screen by reversal of a signature (bring-your-own-data)",
+)
+def rank_on_uploaded_signed_de(req: UploadSignatureRequest) -> Dict[str, Any]:
+    """Run disease-reversal on a user's OWN signed-DE upload (a signed_de_evidence
+    import), not the bundled screen. This is the P1 "accept any perturb-seq
+    dataset" path. Descriptive only; unknown != 0."""
+    if not req.up and not req.down:
+        raise HTTPException(status_code=422, detail="signature is empty: provide at least one up or down gene")
+    signed_de, notes = _resolve_uploaded_signed_de(req.import_id)
+    signature = {"up": set(req.up), "down": set(req.down)}
+    out = disease_reversal.rank_reversal(
+        signature, condition=req.condition, top=req.top, min_hits=req.min_hits, signed_de=signed_de,
+    )
+    out["upload"] = {"import_id": req.import_id, **notes}
+    return out

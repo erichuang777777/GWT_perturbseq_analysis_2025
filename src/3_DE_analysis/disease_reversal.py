@@ -237,6 +237,7 @@ def rank_reversal(
     top: Optional[int] = None,
     min_hits: int = 3,
     glob_pattern: str = SIGNED_DE_GLOB,
+    signed_de: Optional[pd.DataFrame] = None,
 ) -> Dict[str, Any]:
     """Rank all perturbations by disease-reversal for a signature. Honest empty when unavailable.
 
@@ -244,8 +245,13 @@ def rank_reversal(
     signature genes BEFORE ranking — otherwise the head is dominated by 1-gene
     flukes. The applied value and how many rows it removed are reported in the
     payload (``min_hits`` / ``n_below_min_hits``), never silently hidden.
+
+    ``signed_de`` lets a caller pass a ready table (e.g. a user's uploaded signed
+    DE) directly, bypassing the in-repo file — the "run reversal on your own
+    screen" path.
     """
-    signed_de = load_signed_de(glob_pattern)
+    if signed_de is None:
+        signed_de = load_signed_de(glob_pattern)
     if signed_de is None:
         return {"available": False, "reason": "full_signed_DE table not present", "results": []}
     if condition:
