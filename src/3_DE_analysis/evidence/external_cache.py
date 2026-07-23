@@ -148,8 +148,12 @@ def novelty_from_literature_count(total_count: Optional[int]) -> Dict[str, Any]:
     return {"tier": tier, "total_count": count, "novelty_score": round(score, 4)}
 
 
-def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results: int = 10) -> Dict[str, Any]:
+def fetch_pubmed_literature(gene: str, context: Optional[str] = None, max_results: int = 10) -> Dict[str, Any]:
     """Query PubMed (NCBI E-utilities) for literature on ``gene`` in the given context.
+
+    ``context`` defaults to the deployment's domain context
+    (``domain_context.pubmed_context()`` — ``"CD4 T cell"`` unless overridden via
+    ``GWT_PUBMED_CONTEXT``), so a non-CD4 dataset measures novelty in ITS context.
 
     Returns the (<=``max_results``) most relevant ``items`` AND ``total_count`` --
     the full esearch hit count, which is the actual novelty signal (see
@@ -159,6 +163,10 @@ def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results:
     """
     if requests is None:
         return _unavailable("requests library not installed")
+    if context is None:
+        from domain_context import pubmed_context
+
+        context = pubmed_context()
     query = f"{gene}[Title/Abstract] AND {context}"
     try:
         search = requests.get(

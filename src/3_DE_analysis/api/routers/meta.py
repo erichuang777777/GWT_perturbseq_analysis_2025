@@ -24,6 +24,17 @@ from evidence.lincs_reference_cache import load_coverage as load_lincs_coverage
 router = APIRouter(tags=["Meta"])
 
 
+@router.get("/api/domain_context", summary="Effective domain context (CD4 defaults, overridable for any dataset)")
+def get_domain_context() -> Dict[str, Any]:
+    """The dataset-domain assumptions currently in effect (PubMed novelty context,
+    positive controls, off-context tissues, concept-module toggle) and how to
+    override them for a non-CD4 perturb-seq dataset (P2). Descriptive context
+    only — never changes the calibrated readiness decision path."""
+    import domain_context
+
+    return domain_context.describe()
+
+
 @router.get("/api/meta/coverage/{dataset_id}")
 def get_coverage(dataset_id: str) -> Dict[str, Any]:
     """Real, computed coverage counts for the sparse descriptive overlays,
