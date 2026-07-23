@@ -96,6 +96,7 @@ OPENAPI_TAGS = [
     {"name": "Reliability (research use)", "description": "Per-target 0-1 reliability coefficient (R_dep, ported from G-perturb) computed from the card's existing cross-guide/cross-donor correlations. A confidence band beside the readiness call, never folded into it; unknown != 0."},
     {"name": "Readiness audit (research use)", "description": "Faithfulness self-check (each readiness call re-derived from its red-flag cap and checked for internal consistency, ported from the Predictability Audit) + typed evidence classes per target (ported from PerturbGate). Descriptive; never changes a call."},
     {"name": "Axis validation (research use)", "description": "Validate a scoring axis against the source paper's own published regulator coefficients and return a validated/exploratory verdict (ported from the Validated Th1/Th2 Target Map) — don't let a weak axis nominate. unknown != 0."},
+    {"name": "False-positive audit (research use)", "description": "Phenome-breadth specificity flag (ported from Bench to Biobank) — a gene that associates with everything is specific to nothing. The one of three self-false-positive sub-checks computable from existing GWAS evidence; MHC-region + nearest-gene are honest measured:false stubs. A FP-risk band for a human, never a readiness input; unknown != 0."},
     {"name": "Meta", "description": "Coverage-at-a-glance for the sparse descriptive overlays (gnomAD/GTEx/disease-association/LINCS), computed from the loaded reference tables at request time -- never a number copied from documentation."},
 ]
 
@@ -152,6 +153,7 @@ _ROUTER_MODULES: Dict[str, str] = {
     "reliability": "api.routers.reliability",
     "readiness_audit": "api.routers.readiness_audit",
     "axis_validation": "api.routers.axis_validation",
+    "false_positive_audit": "api.routers.false_positive_audit",
     "paper_regulators": "api.routers.paper_regulators",
     "autoimmune_clusters": "api.routers.autoimmune_clusters",
     "freimer2022_crosscheck": "api.routers.freimer2022_crosscheck",

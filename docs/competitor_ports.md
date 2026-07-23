@@ -29,4 +29,14 @@
 
 - 前端 R_dep 徽章要在有 canonical dataset 的環境重跑 `export_real_data.py --force` 才會亮(plumbing + types 已就位、typecheck 過)。
 - 軸驗證的 `rho>=0.35 AND auroc>=0.65` 門檻是我們補的(#240 只算 metric、把 demotion 留在散文),已放進可調參數並標明。
-- 未移植:Bench2Biobank 的自我假陽性框架(MHC/nearest-gene/phenome-category)是策展輸出非程式碼;SNR predictability flag 需要 control-cell variance(卡片未帶)。
+- ~~未移植:Bench2Biobank 的自我假陽性框架~~ → **已部分移植**(見下)。SNR predictability flag 仍缺(需要 control-cell variance,卡片未帶)。
+
+## 追加 port #6(2026-07-23)
+
+| # | 技術 | 來源 | 落點 | 測試 |
+|---|---|---|---|---|
+| 6 | **自我假陽性審計 — phenome-breadth 特異性旗標**(「到處都關聯 = 不特異」;broad 且 immune 佔比低 → elevated FP risk) | Bench to Biobank #123 自我假陽性框架 | `false_positive_audit.py` + `/api/false_positive_audit/*` | `test_false_positive_audit.py` |
+
+- Bench2Biobank 的三個子檢查裡,**只有 phenome-breadth 能用現成資料算**(Level-4 track-A GWAS re-check 帶了每靶的關聯疾病數與免疫疾病數)。其餘兩個(**MHC-region** 需離線 Ensembl→座標表;**nearest-gene** 需 SNP 級 lead-variant 座標)一律回傳 `measured:false` + `requires:...`,**誠實標未量測,絕不假裝有**(`unknown≠0`)。
+- **descriptive≠decision**:這是給人看的「假陽性風險」band,`elevated_fp_risk` 絕不折進 readiness call。實測 55 個 GWAS-validated 靶點中 13 個被標 elevated(例:FOXN2 有 15 個關聯疾病但僅 1 個免疫 → 免疫關聯可能非特異)。
+- 完整競爭清單逐一對照與其餘技術的可行性評估見 `docs/competitor_landscape_audit.md`。
