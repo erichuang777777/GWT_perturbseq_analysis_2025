@@ -70,6 +70,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -80,7 +81,14 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SRC_3DE = REPO_ROOT / "src" / "3_DE_analysis"
 sys.path.insert(0, str(SRC_3DE))
 
-CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
+# The canonical reference dataset's cards. Overridable so this export can bake a
+# portal from ANY target-card CSV (a different in-repo run, or a user's own
+# perturb-seq screen already merged through /api/imports) without editing code:
+#   - env  GWT_CARDS_CSV=/path/to/target_cards.csv
+#   - flag --cards /path/to/target_cards.csv   (takes precedence)
+# The genome-scale bring-your-own-data path (accept any perturb-seq dataset).
+_DEFAULT_CARDS_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "a792d68c-7adc-46a6-964a-35770e5adbde" / "target_cards.csv"
+CARDS_CSV = Path(os.environ["GWT_CARDS_CSV"]) if os.environ.get("GWT_CARDS_CSV") else _DEFAULT_CARDS_CSV
 EVIDENCE_DIR = REPO_ROOT / "sources" / "target_tool_cache" / "_evidence"
 GNOMAD_CSV = REPO_ROOT / "sources" / "target_tool_cache" / "_overlays" / "gnomad_constraint_seed.csv"
 GENE_LISTS_DIR = REPO_ROOT / "metadata" / "gene_lists"
@@ -127,7 +135,9 @@ MIN_GRADE = 2
 
 # public/ (not src/) -- at ~7,200 genes this is fetched at runtime, not
 # bundled into the JS (see src/data/dataset.ts's loadDataset()).
-OUT_PATH = Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
+OUT_PATH = Path(os.environ["GWT_OUT_JSON"]) if os.environ.get("GWT_OUT_JSON") else (
+    Path(__file__).resolve().parents[1] / "public" / "real-dataset.json"
+)
 
 # Standard HGNC full names for the 21 genes this export covers. Public
 # nomenclature, not evidence -- kept separate from every statistic/score
@@ -298,14 +308,44 @@ def _cache_is_fresh() -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--force", action="store_true", help="Recompute readiness/annotation even if a fresh cache exists.")
+    parser.add_argument("--cards", type=Path, default=None,
+                        help="Path to a target_cards.csv to bake the portal from (any perturb-seq dataset). "
+                             "Overrides the GWT_CARDS_CSV env and the canonical default.")
+    parser.add_argument("--out", type=Path, default=None,
+                        help="Where to write real-dataset.json (default: public/real-dataset.json / GWT_OUT_JSON).")
     args = parser.parse_args()
+
+    # Flag beats env beats default, for both the input cards and the output JSON.
+    global CARDS_CSV, OUT_PATH
+    if args.cards is not None:
+        CARDS_CSV = args.cards
+    if args.out is not None:
+        OUT_PATH = args.out
+    if not CARDS_CSV.exists():
+        raise SystemExit(
+            f"cards CSV not found: {CARDS_CSV}\n"
+            "Point the export at a dataset with --cards /path/to/target_cards.csv "
+            "(or GWT_CARDS_CSV=...). The canonical dataset ships only in the full "
+            "reference checkout; a fresh sandbox may not contain it."
+        )
 
     from concept_annotation import annotate_targets
     from core.readiness import compute_readiness, load_overlays
+    import hypothesis as hypothesis_mod
+    import trans_network
     from data.loaders import load_gene_set
     from evidence.population import build_population_hypothesis_card, load_burden_estimates
     from evidence.safety_overlay import load_gnomad_constraint_overlay, load_gtex_safety_overlay
     from individual_concept_profile import load_concept_modules
+
+    # Trans-effect ego-networks (plan P3-I) — one batch pass over full_signed_DE;
+    # empty dict (and null per-gene) when the signed table isn't present.
+    try:
+        trans_neighborhoods = trans_network.all_neighborhoods(top_n=12)
+        print(f"Trans-effect neighborhoods: {len(trans_neighborhoods)} targets", file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001
+        print(f"Trans-effect neighborhoods unavailable: {exc}", file=sys.stderr)
+        trans_neighborhoods = {}
 
     print(f"Loading real target cards from {CARDS_CSV}", file=sys.stderr)
     cards = pd.read_csv(CARDS_CSV)
@@ -455,6 +495,23 @@ def main() -> None:
         primary_condition = primary_row["condition"]
         r_row = primary_call(gene, primary_row)
 
+        # Deterministic testable hypothesis (plan P2-C) — composed from the
+        # signed module effect + this gene's readiness next-step / pathway axis
+        # (all already in hand here). null when there is no directional signal
+        # (unknown != 0). Descriptive only.
+        hyp = hypothesis_mod.hypothesis_for_target(
+            gene,
+            next_validation_step=(r_row.get("next_validation_step") if r_row is not None else None),
+            pathway_axis=primary_row.get("pathway_axis"),
+        )
+        hypothesis_out = None
+        if hyp.get("available"):
+            hypothesis_out = {
+                "text": hyp.get("hypothesis"),
+                "suggestedValidation": hyp.get("suggested_validation"),
+                "basis": hyp.get("basis", []),
+            }
+
         conditions_out = []
         for _, crow in g_cards.iterrows():
             conditions_out.append({
@@ -497,6 +554,22 @@ def main() -> None:
             mod = t.get("modality", "?")
             modality_summary.setdefault(mod, {})[t.get("label", "?")] = bool(t.get("value"))
 
+        # Known-drug summary (plan P1-L). null when the snapshot predates the
+        # knownDrugs query or has no drugs (unknown != 0). Disease-agnostic — a
+        # summary of drugs known to hit this target, NOT a treatment claim.
+        kd = ot.get("known_drugs") or {}
+        known_drugs_out = None
+        if kd.get("known_drug_count"):
+            known_drugs_out = {
+                "knownDrugCount": kd.get("known_drug_count"),
+                "maxClinicalPhase": kd.get("max_clinical_phase"),
+                "anyApproved": bool(kd.get("any_approved")),
+                "drugs": [
+                    {"name": d.get("name"), "maxPhase": d.get("max_phase"), "isApproved": bool(d.get("is_approved"))}
+                    for d in (kd.get("drugs") or [])[:6]
+                ],
+            }
+
         safety_liabilities = [
             {"event": s.get("event"), "tissues": s.get("tissues", [])}
             for s in (ot.get("safety_liabilities") or [])
@@ -520,6 +593,18 @@ def main() -> None:
             {"pmid": l.get("pmid"), "title": l.get("title"), "year": l.get("year"), "journal": l.get("journal"), "url": l.get("url")}
             for l in (lit.get("items") or [])[:5]
         ]
+        # PubMed novelty descriptor (plan P0-E). Present only for evidence-cache
+        # genes whose snapshot carries the newer literature block; null otherwise
+        # (unknown != 0 — an uncovered gene is honestly "no novelty measured",
+        # never a fabricated "novel"). Descriptive only, never a readiness input.
+        nov = lit.get("novelty")
+        novelty_out = None
+        if isinstance(nov, dict) and nov.get("tier") != "unknown":
+            novelty_out = {
+                "tier": nov.get("tier"),
+                "literatureCount": nov.get("total_count"),
+                "noveltyScore": nov.get("novelty_score"),
+            }
 
         gn = gnomad_by_gene.get(gene)
         loeuf = nan_to_none(gn["loeuf"]) if gn is not None else None
@@ -595,9 +680,15 @@ def main() -> None:
             },
             "diseases": diseases_out,
             "tractabilityFlags": modality_summary,
+            "knownDrugs": known_drugs_out,
             "safetyLiabilities": safety_liabilities,
             "clinicalTrials": trials_out,
             "literature": literature_out,
+            "novelty": novelty_out,
+            "hypothesis": hypothesis_out,
+            # Top-N signed downstream edges for the ego-network panel (plan P3-I);
+            # null when this gene has no significant edge (unknown != 0).
+            "transNeighborhood": trans_neighborhoods.get(gene.upper()) or None,
             "gnomad": {"loeuf": loeuf, "pli": pli, "constraintTier": constraint_tier},
             "populationBurden": pop_burden_out,
             # Per-target external corroboration from the three Level-4 tracks.

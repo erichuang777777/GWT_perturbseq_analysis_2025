@@ -327,6 +327,151 @@ def render_html(payload: Dict[str, Any]) -> str:
 """
 
 
+TARGET_REPORT_COLUMNS = [
+    "condition", "statistical_evidence_grade", "n_cells_target", "n_guides",
+    "n_total_de_genes", "ontarget_effect_size", "fdr_min",
+    "crossdonor_correlation_mean", "crossguide_correlation", "kd_status",
+    "score_cap_reason",
+]
+
+
+def build_target_report_payload(
+    cards: pd.DataFrame,
+    target: str,
+    *,
+    dataset_id: str = "local",
+    provenance: Optional[Dict[str, Any]] = None,
+    extras: Optional[Dict[str, Any]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Assemble a single-target report payload. Returns None if the gene is absent.
+
+    ``extras`` is an optional dict of already-computed descriptive signals the
+    caller passes in (hypothesis, trans_effect_breadth, novelty, known_drugs) so
+    this module stays free of any network / overlay imports.
+    """
+    df = normalize_cards(cards)
+    if "target" not in df.columns:
+        return None
+    sub = df[df["target"].astype(str).str.upper() == str(target).strip().upper()].copy()
+    if sub.empty:
+        return None
+    # primary row = best grade, then most DE genes (mirrors the portal's primary pick)
+    sort_cols = [c for c in ("statistical_evidence_grade", "n_total_de_genes") if c in sub.columns]
+    if sort_cols:
+        sub = sub.sort_values(sort_cols, ascending=False)
+    primary = sub.iloc[0]
+    core = {c: (None if c not in sub.columns or pd.isna(primary.get(c)) else primary.get(c))
+            for c in ("target", "target_id", "pathway_axis", "clinical_axis", "druggable_class",
+                      "tractability_modality", "safety_note", "nearest_success_drug")}
+    return {
+        "kind": "target_report",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "dataset_id": dataset_id,
+        "target": str(primary.get("target")),
+        "primary_condition": primary.get("condition"),
+        "core": core,
+        "conditions": _safe_records(sub, TARGET_REPORT_COLUMNS),
+        "extras": extras or {},
+        "limitations": LIMITATIONS_PARAGRAPH,
+        "evidence_type_guide": EVIDENCE_TYPE_GUIDE,
+        "provenance": provenance or {},
+    }
+
+
+def _extras_html(extras: Dict[str, Any]) -> str:
+    if not extras:
+        return ""
+    blocks: List[str] = []
+    hyp = extras.get("hypothesis")
+    if isinstance(hyp, dict) and hyp.get("available"):
+        sv = f"<br><em>Suggested validation:</em> {hyp['suggested_validation']}" if hyp.get("suggested_validation") else ""
+        text = hyp.get("hypothesis") or ""
+        blocks.append(f"<div class='sig'><span>Testable hypothesis</span><p>{text}{sv}</p>"
+                      "<small>A CRISPRi-knockdown prediction to test, not a therapeutic claim.</small></div>")
+    nov = extras.get("novelty")
+    if isinstance(nov, dict) and nov.get("tier") not in (None, "unknown"):
+        blocks.append(f"<div class='sig'><span>PubMed novelty</span><p><strong>{nov.get('tier')}</strong> "
+                      f"· {nov.get('total_count')} hits · novelty {nov.get('novelty_score')}</p></div>")
+    br = extras.get("trans_effect_breadth")
+    if isinstance(br, dict) and br.get("measured"):
+        flag = " · broad-effect candidate" if br.get("broad_effect_candidate") else ""
+        blocks.append(f"<div class='sig'><span>Trans-effect breadth</span><p>{br.get('trans_effect_breadth')} "
+                      f"downstream genes (pct {br.get('breadth_percentile')}){flag}</p>"
+                      "<small>Dual-use: importance and broad-effect risk. Not the readiness red flag.</small></div>")
+    kd = extras.get("known_drugs")
+    if isinstance(kd, dict) and kd.get("known_drug_count"):
+        approved = " · approved drug exists" if kd.get("any_approved") else ""
+        names = ", ".join(d.get("name") for d in (kd.get("drugs") or [])[:6] if d.get("name"))
+        blocks.append(f"<div class='sig'><span>Known drugs</span><p>{kd.get('known_drug_count')} drugs "
+                      f"· max phase {kd.get('max_clinical_phase')}{approved}<br><small>{names}</small></p></div>")
+    if not blocks:
+        return ""
+    return "<h2>Descriptive signals</h2>\n  <div class='sigs'>" + "\n  ".join(blocks) + "</div>"
+
+
+def render_target_html(payload: Dict[str, Any]) -> str:
+    """Render a single-target, fully self-contained HTML report (inline CSS, no
+    external assets) — portable enough to hand to a collaborator who does not run
+    the portal (development plan P2-D)."""
+    core = payload["core"]
+    cond_df = pd.DataFrame(payload["conditions"])
+    cond_html = cond_df.to_html(index=False, escape=True) if not cond_df.empty else "<p>No records.</p>"
+    core_items = "".join(
+        f"<div class='metric'><span>{k}</span><strong>{'—' if v is None else v}</strong></div>"
+        for k, v in core.items()
+    )
+    evidence_items = "".join(
+        f"<li><strong>{item['label']}:</strong> {item['caveat']}</li>"
+        for item in payload.get("evidence_type_guide", EVIDENCE_TYPE_GUIDE)
+    )
+    provenance = payload.get("provenance") or {}
+    provenance_section = ""
+    if provenance:
+        provenance_items = "".join(f"<li><code>{k}</code>: {v}</li>" for k, v in provenance.items())
+        provenance_section = f"<h2>Provenance</h2>\n  <ul>{provenance_items}</ul>"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GWT Target Report — {payload['target']}</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; margin: 32px; color: #1f2933; max-width: 960px; }}
+    h1 {{ margin-bottom: 2px; font-family: 'Courier New', monospace; }}
+    .sub {{ color: #52606d; margin-top: 0; }}
+    h2 {{ margin: 24px 0 10px; border-bottom: 1px solid #e2e5ea; padding-bottom: 4px; }}
+    .metrics, .sigs {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 16px 0; }}
+    .metric {{ border: 1px solid #d8dee8; border-radius: 6px; padding: 10px 12px; }}
+    .metric span {{ display: block; color: #52606d; font-size: 12px; }}
+    .metric strong {{ display: block; margin-top: 4px; font-size: 16px; word-break: break-word; }}
+    .sig {{ border: 1px solid #e5ddf6; background: #f7f5fd; border-radius: 8px; padding: 10px 12px; }}
+    .sig span {{ display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #7c3aed; }}
+    .sig p {{ margin: 6px 0 2px; font-size: 13px; }}
+    .sig small {{ color: #6b7280; }}
+    table {{ border-collapse: collapse; width: 100%; font-size: 12px; overflow-x: auto; }}
+    th, td {{ border: 1px solid #d8dee8; padding: 6px 8px; text-align: left; }}
+    th {{ background: #f5f7fa; }}
+    .foot {{ color: #9aa1ad; font-size: 11px; margin-top: 24px; }}
+  </style>
+</head>
+<body>
+  <h1>{payload['target']}</h1>
+  <p class="sub">Primary condition: {payload.get('primary_condition') or '—'} · dataset <code>{payload['dataset_id']}</code> · generated {payload['generated_at']}</p>
+  <h2>Target card</h2>
+  <div class="metrics">{core_items}</div>
+  <h2>Per-condition statistics</h2>
+  {cond_html}
+  {_extras_html(payload.get('extras') or {})}
+  <h2>Limitations</h2>
+  <p>{payload.get('limitations', LIMITATIONS_PARAGRAPH)}</p>
+  <h2>Evidence type guide</h2>
+  <ul>{evidence_items}</ul>
+  {provenance_section}
+  <p class="foot">Research / hypothesis-generating use only — not clinical software. Every value is drawn from this repo's own pipeline; missing values render as unknown, never a fabricated zero.</p>
+</body>
+</html>
+"""
+
+
 def write_report(
     cards_path: Path,
     out_path: Path,

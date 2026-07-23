@@ -26,6 +26,30 @@ export default function TractabilityPanel({ t }: { t: RealTarget }) {
       ) : (
         <UnknownNotice>unknown — no positive tractability flags indexed in Open Targets</UnknownNotice>
       )}
+      {t.knownDrugs && (
+        <div style={{ marginTop: "14px", paddingTop: "12px", borderTop: "1px solid #eef0f3" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "8px" }}>
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "#1a1d24" }}>Known drugs against this target</span>
+            {t.knownDrugs.anyApproved && (
+              <span style={{ fontSize: "10.5px", fontWeight: 600, color: "#0a6e4f", background: "#e4f3ec", padding: "2px 8px", borderRadius: "20px" }}>approved drug exists</span>
+            )}
+            <span style={{ fontSize: "11px", color: "#8a92a0" }}>
+              {t.knownDrugs.knownDrugCount} drug{t.knownDrugs.knownDrugCount === 1 ? "" : "s"}
+              {t.knownDrugs.maxClinicalPhase != null ? ` · max phase ${t.knownDrugs.maxClinicalPhase}` : ""}
+            </span>
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {t.knownDrugs.drugs.map((d) => (
+              <span key={d.name} style={{ fontSize: "11px", color: "#4a515e", background: "#f2f4f7", padding: "3px 9px", borderRadius: "20px" }}>
+                {d.name}{d.maxPhase != null ? ` (ph ${d.maxPhase})` : ""}{d.isApproved ? " ✓" : ""}
+              </span>
+            ))}
+          </div>
+          <div style={{ fontSize: "10.5px", color: "#9aa1ad", marginTop: "8px" }}>
+            Disease-agnostic — drugs known to modulate this target, not a claim it is druggable the same way here, and not a treatment recommendation.
+          </div>
+        </div>
+      )}
       {t.readiness?.tractabilityModality && t.readiness.tractabilityModality !== "unknown" && (
         <div style={{ fontSize: "11px", color: "#9aa1ad", marginTop: "10px" }}>Readiness-engine tractability class: {t.readiness.tractabilityModality}</div>
       )}

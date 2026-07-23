@@ -23,6 +23,7 @@ plain Python process, with no access to session-scoped MCP tools.
 from __future__ import annotations
 
 import json
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -109,10 +110,63 @@ def fetch_trials(gene: str, conditions: Optional[List[str]] = None, max_results:
     return {"source_status": "ok", "items": items}
 
 
-def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results: int = 10) -> Dict[str, Any]:
-    """Query PubMed (NCBI E-utilities) for literature on ``gene`` in the given context."""
+# Absolute, documented, re-derivable literature-count -> novelty tier thresholds.
+# These are on the total PubMed hit count for "<gene>[Title/Abstract] AND <context>",
+# NOT the (<=max_results) items actually pulled back. A tier is deliberately an
+# absolute cut (no cohort needed) so a single gene's novelty is a self-contained,
+# reproducible fact; a cohort *percentile* can be layered on at export time on top
+# of the raw ``total_count`` when the whole covered set is in hand.
+#   unknown  -> fetch failed / count not measured (unknown != 0, never a silent 0)
+#   no_record-> the query genuinely returned 0 hits (a real zero, not "unknown")
+#   understudied / moderate / well_studied -> increasing literature depth
+NOVELTY_TIER_THRESHOLDS = ((10, "understudied"), (100, "moderate"))
+
+
+def novelty_from_literature_count(total_count: Optional[int]) -> Dict[str, Any]:
+    """Pure, deterministic novelty descriptor from a PubMed total hit count.
+
+    ``total_count is None`` -> ``{"tier": "unknown", ...}`` (the fetch failed or the
+    count was never measured -- honest unknown, never 0). ``total_count == 0`` ->
+    ``no_record`` (a genuine zero: the query ran and found nothing). Otherwise a
+    tier from ``NOVELTY_TIER_THRESHOLDS`` plus a monotonic ``novelty_score`` in
+    (0, 1] where HIGHER = more novel (fewer papers): ``1 / (1 + log10(count + 1))``.
+    Descriptive only -- never read by the readiness engine.
+    """
+    if total_count is None:
+        return {"tier": "unknown", "total_count": None, "novelty_score": None}
+    count = int(total_count)
+    if count <= 0:
+        # A measured zero is the MOST novel end of the scale, but still honestly
+        # distinguished from "unknown" so downstream never conflates the two.
+        return {"tier": "no_record", "total_count": 0, "novelty_score": 1.0}
+    tier = "well_studied"
+    for ceiling, name in NOVELTY_TIER_THRESHOLDS:
+        if count <= ceiling:
+            tier = name
+            break
+    score = 1.0 / (1.0 + math.log10(count + 1))
+    return {"tier": tier, "total_count": count, "novelty_score": round(score, 4)}
+
+
+def fetch_pubmed_literature(gene: str, context: Optional[str] = None, max_results: int = 10) -> Dict[str, Any]:
+    """Query PubMed (NCBI E-utilities) for literature on ``gene`` in the given context.
+
+    ``context`` defaults to the deployment's domain context
+    (``domain_context.pubmed_context()`` — ``"CD4 T cell"`` unless overridden via
+    ``GWT_PUBMED_CONTEXT``), so a non-CD4 dataset measures novelty in ITS context.
+
+    Returns the (<=``max_results``) most relevant ``items`` AND ``total_count`` --
+    the full esearch hit count, which is the actual novelty signal (see
+    ``novelty_from_literature_count``). ``total_count`` is a genuine measurement:
+    ``0`` means the query ran and matched nothing, distinct from a failed fetch
+    (``source_status: unavailable``, no ``total_count``).
+    """
     if requests is None:
         return _unavailable("requests library not installed")
+    if context is None:
+        from domain_context import pubmed_context
+
+        context = pubmed_context()
     query = f"{gene}[Title/Abstract] AND {context}"
     try:
         search = requests.get(
@@ -121,9 +175,15 @@ def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results:
             timeout=DEFAULT_TIMEOUT,
         )
         search.raise_for_status()
-        ids = search.json().get("esearchresult", {}).get("idlist", [])
+        esearch = search.json().get("esearchresult", {})
+        ids = esearch.get("idlist", [])
+        try:
+            total_count = int(esearch.get("count"))
+        except (TypeError, ValueError):
+            total_count = len(ids)  # fall back to what we can see rather than fabricate
+        novelty = novelty_from_literature_count(total_count)
         if not ids:
-            return {"source_status": "ok", "items": []}
+            return {"source_status": "ok", "items": [], "total_count": total_count, "novelty": novelty}
         summary = requests.get(
             PUBMED_ESUMMARY_API,
             params={"db": "pubmed", "id": ",".join(ids), "retmode": "json"},
@@ -148,7 +208,7 @@ def fetch_pubmed_literature(gene: str, context: str = "CD4 T cell", max_results:
                 "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
             }
         )
-    return {"source_status": "ok", "items": items}
+    return {"source_status": "ok", "items": items, "total_count": total_count, "novelty": novelty}
 
 
 def _open_targets_resolve_ensembl_id(gene: str) -> Optional[str]:
@@ -213,6 +273,14 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
         approvedSymbol
         tractability { label modality value }
         safetyLiabilities { event eventId biosamples { tissueLabel } }
+        knownDrugs(size: 20) {
+          count
+          rows {
+            phase
+            status
+            drug { id name isApproved maximumClinicalTrialPhase }
+          }
+        }
         associatedDiseases(page: {index: 0, size: 15}) {
           count
           rows {
@@ -263,12 +331,53 @@ def fetch_open_targets(gene: str) -> Dict[str, Any]:
         for item in (target.get("safetyLiabilities") or [])
     ]
 
+    known_drugs = _summarize_known_drugs(target.get("knownDrugs") or {})
+
     return {
         "source_status": "ok",
         "items": [{"id": ensembl_id, "name": target.get("approvedSymbol")}],
         "tractability": tractability,
+        "known_drugs": known_drugs,
         "associated_diseases": associated_diseases,
         "safety_liabilities": safety_liabilities,
+    }
+
+
+# Open Targets clinical-trial phase is 0-4 (4 = approved); we surface the max
+# and whether ANY known drug is marked approved, as a disease-AGNOSTIC per-target
+# tractability summary (plan P1-L). This is a summary of drugs known to hit THIS
+# target, NOT a claim that the target is druggable the same way here, and NOT a
+# treatment recommendation -- the disease-specific check stays in the separate
+# /api/disease-drug-evidence route (match_disease_drug_evidence).
+def _summarize_known_drugs(known: Dict[str, Any]) -> Dict[str, Any]:
+    rows = known.get("rows") or []
+    drugs: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        drug = row.get("drug") or {}
+        name = drug.get("name")
+        if not name:
+            continue
+        phase = drug.get("maximumClinicalTrialPhase")
+        if phase is None:
+            phase = row.get("phase")
+        prev = drugs.get(name)
+        if prev is None or (phase is not None and (prev.get("max_phase") or -1) < phase):
+            drugs[name] = {
+                "name": name,
+                "max_phase": phase,
+                "is_approved": bool(drug.get("isApproved")),
+                "status": row.get("status"),
+            }
+    drug_list = sorted(drugs.values(), key=lambda d: (d.get("max_phase") or -1), reverse=True)
+    phases = [d["max_phase"] for d in drug_list if d["max_phase"] is not None]
+    return {
+        # `count` is Open Targets' total known-drug row count; `known_drug_count`
+        # is our distinct-drug count from the (<=20) rows pulled.
+        "count": known.get("count"),
+        "known_drug_count": len(drug_list),
+        "max_clinical_phase": max(phases) if phases else None,
+        "any_approved": any(d["is_approved"] for d in drug_list),
+        "drugs": drug_list[:10],
     }
 
 

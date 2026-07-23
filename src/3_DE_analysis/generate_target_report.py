@@ -13,8 +13,10 @@ from report.generate import *  # noqa: F401,F403
 from report.generate import (  # noqa: F401
     CORE_COLUMNS,
     build_report_payload,
+    build_target_report_payload,
     normalize_cards,
     render_html,
     render_markdown,
+    render_target_html,
     write_report,
 )

@@ -7,6 +7,7 @@ import ReviewerDecisionPanel from "./dossier/ReviewerDecisionPanel";
 import CompositeBreakdownPanel from "./dossier/CompositeBreakdownPanel";
 import StatisticalEvidencePanel from "./dossier/StatisticalEvidencePanel";
 import ConceptModulePanel from "./dossier/ConceptModulePanel";
+import TransNetworkPanel from "./dossier/TransNetworkPanel";
 import DiseaseLinksPanel from "./dossier/DiseaseLinksPanel";
 import ExternalCorroborationPanel from "./dossier/ExternalCorroborationPanel";
 import TractabilityPanel from "./dossier/TractabilityPanel";
@@ -41,6 +42,7 @@ export default function Dossier() {
           <ConditionSignalPanel t={t} />
           <StageLabel n={2} title="Mechanism" sub="Which immune concept does the target act through?" />
           <ConceptModulePanel t={t} />
+          <TransNetworkPanel t={t} />
           <StageLabel n={3} title="Disease relevance" sub="Where is the target genetically linked to disease, and does independent external evidence corroborate it?" />
           <DiseaseLinksPanel t={t} />
           <ExternalCorroborationPanel t={t} />

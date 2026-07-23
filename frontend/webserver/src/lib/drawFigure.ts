@@ -189,6 +189,45 @@ export function drawFigure(el: HTMLElement, S: AppState) {
       { x: xr, y: xr.map((x) => slope * x + intc), mode: "lines", name: "linear fit", line: { color: "#A8373A", width: 2 }, hoverinfo: "skip" },
     ];
     layout = base({ xaxis: { title: "Perturbation effect (|log2FC|)", zeroline: true, zerolinecolor: "#d6dbe3", gridcolor: "#eef0f3" }, yaxis: { title: "Lymphocyte-count LoF-burden β (UK Biobank)", zeroline: true, zerolinecolor: "#d6dbe3", gridcolor: "#eef0f3" } });
+  } else if (S.figureId === "noveltyEffect") {
+    // Novelty × effect quadrant (plan P1-F). Real TARGETS only; a point exists
+    // only where BOTH a perturbation effect and a measured PubMed novelty are
+    // present — genes without a literature count are honestly absent, never
+    // plotted at zero (unknown != 0). Upper-right = strong effect + understudied.
+    const pts = TARGETS.filter((t) => t.novelty && t.novelty.noveltyScore != null && t.effect != null).map((t) => ({
+      g: t.gene,
+      x: t.effect as number,
+      y: t.novelty!.noveltyScore as number,
+      tier: t.novelty!.tier,
+      call: t.readiness?.call || "unreviewed",
+    }));
+    const CALL_COLOR: Record<string, string> = { advance: "#1a7f5a", validate: "#2563a8", watchlist: "#b8860b", deprioritize: "#9aa1ad", unreviewed: "#c0c6cf" };
+    const xs = pts.map((p) => p.x);
+    const medX = xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : 0;
+    const maxX = xs.length ? Math.max.apply(null, xs) : 1;
+    data = [
+      {
+        x: xs,
+        y: pts.map((p) => p.y),
+        text: pts.map((p) => `${p.g} · ${p.tier} · ${p.call}`),
+        mode: "markers",
+        type: "scatter",
+        name: "gene",
+        marker: { size: 9, color: pts.map((p) => CALL_COLOR[p.call] || "#c0c6cf"), opacity: 0.85, line: { width: 0.5, color: "#fff" } },
+        hovertemplate: "<b>%{text}</b><br>effect %{x:.2f}<br>novelty %{y:.2f} (higher = fewer papers)<extra></extra>",
+      },
+    ];
+    layout = base({
+      xaxis: { title: "Perturbation effect (|log2FC|)", zeroline: false, gridcolor: "#eef0f3" },
+      yaxis: { title: "PubMed novelty (higher = fewer papers)", range: [0, 1.02], gridcolor: "#eef0f3" },
+      shapes: [
+        { type: "line", x0: medX, x1: medX, y0: 0, y1: 1.02, line: { color: "#d6dbe3", width: 1, dash: "dot" } },
+        { type: "line", x0: 0, x1: maxX, y0: 0.5, y1: 0.5, line: { color: "#d6dbe3", width: 1, dash: "dot" } },
+      ],
+      annotations: [
+        { x: maxX, y: 1.0, xanchor: "right", yanchor: "top", showarrow: false, text: "strong effect · understudied", font: { size: 10, color: "#7c3aed" } },
+      ],
+    });
   }
   Plotly.react(el, data, layout, cfg);
 }

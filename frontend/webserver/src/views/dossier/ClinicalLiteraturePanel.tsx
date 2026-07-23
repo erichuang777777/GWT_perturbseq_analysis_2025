@@ -1,10 +1,34 @@
 import type { RealTarget } from "../../data/types";
 import SectionCard from "../../components/ui/SectionCard";
 
+const NOVELTY_META: Record<string, { label: string; color: string; bg: string }> = {
+  no_record: { label: "No PubMed record", color: "#7c3aed", bg: "#f3edff" },
+  understudied: { label: "Understudied", color: "#2563a8", bg: "#e8f1fb" },
+  moderate: { label: "Moderately studied", color: "#8a6d1f", bg: "#fbf3dc" },
+  well_studied: { label: "Well-studied", color: "#6b7280", bg: "#f1f2f4" },
+};
+
 export default function ClinicalLiteraturePanel({ t }: { t: RealTarget }) {
-  if (t.clinicalTrials.length === 0 && t.literature.length === 0) return null;
+  const nov = t.novelty;
+  if (t.clinicalTrials.length === 0 && t.literature.length === 0 && !nov) return null;
   return (
     <SectionCard title="Clinical trial & literature evidence" source="src: ClinicalTrials.gov / PubMed (cached fetch)">
+      {nov && (
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", flexWrap: "wrap" }}>
+          <span
+            style={{
+              fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "8px",
+              color: (NOVELTY_META[nov.tier] || NOVELTY_META.well_studied).color,
+              background: (NOVELTY_META[nov.tier] || NOVELTY_META.well_studied).bg,
+            }}
+          >
+            {(NOVELTY_META[nov.tier] || NOVELTY_META.well_studied).label}
+          </span>
+          <span style={{ fontSize: "11.5px", color: "#8a92a0" }}>
+            {nov.literatureCount} PubMed hit{nov.literatureCount === 1 ? "" : "s"} for “{t.gene} + CD4 T cell” · novelty {nov.noveltyScore.toFixed(2)} (higher = fewer papers)
+          </span>
+        </div>
+      )}
       {t.clinicalTrials.length > 0 ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: t.literature.length ? "16px" : 0 }}>
           {t.clinicalTrials.map((c) => (

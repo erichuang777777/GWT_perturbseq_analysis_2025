@@ -90,6 +90,16 @@ export interface LiteratureItem {
   url: string;
 }
 
+// PubMed novelty descriptor (plan P0-E). null when no literature count was
+// measured for this gene (unknown != 0). `tier`: no_record | understudied |
+// moderate | well_studied. `noveltyScore` in (0,1], HIGHER = more novel
+// (fewer papers). Descriptive only — never feeds the readiness call.
+export interface Novelty {
+  tier: "no_record" | "understudied" | "moderate" | "well_studied";
+  literatureCount: number;
+  noveltyScore: number;
+}
+
 export interface Readiness {
   call: Call;
   stage: string;
@@ -195,6 +205,24 @@ export interface RealTarget {
   safetyLiabilities: { event: string; tissues: string[] }[];
   clinicalTrials: ClinicalTrial[];
   literature: LiteratureItem[];
+  novelty: Novelty | null;
+  // Deterministic, source-grounded testable hypothesis (plan P2-C). null when
+  // there is no directional signal to base one on (unknown != 0). A
+  // CRISPRi-knockdown prediction to test, never a therapeutic claim.
+  hypothesis: { text: string | null; suggestedValidation: string | null; basis: string[] } | null;
+  // Top-N signed downstream edges of this target's knockdown, for the
+  // ego-network view (plan P3-I). null when no significant edge (unknown != 0).
+  transNeighborhood: { downstream_gene: string; condition: string; log_fc: number; direction: "up" | "down" }[] | null;
+  // Disease-agnostic known-drug summary (plan P1-L). null when no drug is
+  // indexed for this target (unknown != 0). A summary of drugs known to hit
+  // this target, NOT a treatment claim; the disease-specific check lives in
+  // the separate disease x drug evidence route.
+  knownDrugs: {
+    knownDrugCount: number;
+    maxClinicalPhase: number | null;
+    anyApproved: boolean;
+    drugs: { name: string; maxPhase: number | null; isApproved: boolean }[];
+  } | null;
   gnomad: { loeuf: number | null; pli: number | null; constraintTier: ConstraintTier | null };
   populationBurden: PopulationBurden | null;
   // Per-target external corroboration; null when the gene is in none of the
