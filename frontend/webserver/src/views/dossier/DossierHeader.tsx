@@ -35,6 +35,21 @@ export default function DossierHeader({ t, comp }: { t: RealTarget; comp: number
               </span>
             )}
             <Badge label={Rt.label} color={Rt.color} bg={Rt.bg} />
+            {t.reliability && t.reliability.confidenceTier !== "unknown" && (() => {
+              const meta: Record<string, { label: string; color: string; bg: string }> = {
+                high: { label: "high confidence", color: "#0a6e4f", bg: "#e4f3ec" },
+                moderate: { label: "moderate confidence", color: "#8a6d1f", bg: "#fbf3dc" },
+                low: { label: "low confidence", color: "#9a4a2a", bg: "#fbe9e0" },
+                unreliable: { label: "unreliable", color: "#8a92a0", bg: "#f2f4f7" },
+              };
+              const m = meta[t.reliability.confidenceTier] || meta.unreliable;
+              return (
+                <span title={`Reliability R_dep = ${t.reliability.rDep} (G-perturb: joint cross-guide × cross-donor reproducibility). A confidence band beside the readiness call — it never changes the call.`}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, color: m.color, background: m.bg, cursor: "help" }}>
+                  {m.label}{t.reliability.rDep != null ? ` · R_dep ${t.reliability.rDep.toFixed(2)}` : ""}
+                </span>
+              );
+            })()}
             <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", borderRadius: "8px", fontSize: "14px", fontWeight: 700, color: Gt.color, background: Gt.bg }}>{t.grade ?? "—"}</span>
           </div>
           <div style={{ fontSize: "16px", color: "#4a515e" }}>{t.name}</div>

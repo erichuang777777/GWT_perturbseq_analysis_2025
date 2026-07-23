@@ -210,6 +210,10 @@ export interface RealTarget {
   // there is no directional signal to base one on (unknown != 0). A
   // CRISPRi-knockdown prediction to test, never a therapeutic claim.
   hypothesis: { text: string | null; suggestedValidation: string | null; basis: string[] } | null;
+  // Reliability/confidence coefficient (G-perturb port). A 0-1 confidence band
+  // shown BESIDE the readiness call, never folded into it. rDep null when the
+  // cross-guide/donor correlations are unmeasured (unknown != 0).
+  reliability: { rDep: number | null; confidenceTier: "high" | "moderate" | "low" | "unreliable" | "unknown"; sScore: number | null } | null;
   // Top-N signed downstream edges of this target's knockdown, for the
   // ego-network view (plan P3-I). null when no significant edge (unknown != 0).
   transNeighborhood: { downstream_gene: string; condition: string; log_fc: number; direction: "up" | "down" }[] | null;
